@@ -1,0 +1,14 @@
+---
+title: "Gradient Boosting"
+author: "Jan-Philipp Kolb"
+date: "4 September 2018"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## 
+
+

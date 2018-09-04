@@ -2,14 +2,14 @@
 title: "README"
 author: "Jan-Philipp Kolb"
 date: "19 Juli 2018"
-output: html_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 
+## Course about statistical learning
 
 - [Your First Machine Learning Project in R Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
 
