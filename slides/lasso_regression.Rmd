@@ -1,0 +1,26 @@
+---
+title: "Lasso Regression"
+author: "Jan-Philipp Kolb"
+date: "25 September 2018"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
+
+- Lasso regression uses shrinkage
+- data values are shrunk towards a central point
+
+- [Ridge and lasso regularization work by adding a penalty term to the log likelihood function.](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
+
+- A tuning parameter, $\lambda$ controls the strength of the L1 penalty.
+
+
+## Links
+
+
+[A comprehensive beginners guide for Linear, Ridge and Lasso Regression](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/)
