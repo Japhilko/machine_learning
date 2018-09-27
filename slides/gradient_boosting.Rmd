@@ -24,6 +24,27 @@ knitr::opts_chunk$set(echo = FALSE)
 - The high flexibility results in many parameters that interact and influence heavily the behavior of the approach (number of iterations, tree depth, regularization parameters, etc.). This requires a large grid search during tuning.
 - Less interpretable although this is easily addressed with various tools (variable importance, partial dependence plots, LIME, etc.).
 
+
+## Two types of errors for tree methods
+
+### Bias related errors
+
+- Adaptive boosting
+- Gradient boosting
+
+### Variance related errors
+
+- Bagging
+- Random forest
+
+<!--
+https://www.slideshare.net/JaroslawSzymczak1/gradient-boosting-in-practice-a-deep-dive-into-xgboost
+
+What if we, instead of reweighting examples, made some corrections to prediction errors directly?
+
+Residual is a gradient of single observation error contribution in one of the most common evaluation measure for regression: RMSE
+-->
+
 ## Links
 
 - [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
