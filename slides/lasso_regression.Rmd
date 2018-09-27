@@ -19,8 +19,31 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - A tuning parameter, $\lambda$ controls the strength of the L1 penalty.
 
+##
+
+$$
+\sum\limits_{i=1}^n \big( y_i -\beta_0 - \sum\limits_{j=1}^p \beta_jx_{ij} \big)^2 + \lambda \sum\limits_{j=1}^p |\beta_j| = RSS + \lambda\sum\limits_{j=1}^p |\beta_j|.
+$$
+<!--
+wir haben einen penalty term, der hoch ist, wenn die Parameterschätzwerte hoch sind.
+
+Youtube Video zu Lasso
+https://www.youtube.com/watch?v=A5I1G1MfUmA
+-->
+
+
+```{r}
+
+```
+
+
+
+
+
 
 ## Links
 
 
 [A comprehensive beginners guide for Linear, Ridge and Lasso Regression](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/)
+
+- Course for statistical learning - [Youtube - Videos](https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/)
