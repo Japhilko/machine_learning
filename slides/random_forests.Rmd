@@ -1,0 +1,53 @@
+---
+title: "Random Forests"
+author: "Jan-Philipp Kolb"
+date: "1 Oktober 2018"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
+
+> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
+
+## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
+
+- Ensemble learning method - multitude of decision trees 
+- Random forests correct for decision trees' habit of overfitting to their training set.
+
+
+![](figure/expl_rf.png)
+
+
+<!--
+https://stats.stackexchange.com/questions/41443/how-to-actually-plot-a-sample-tree-from-randomforestgettree
+-->
+
+
+```{r,eval=F}
+install.packages("randomForest")
+ # https://www.instituteofanalytics.com/forum/uploads/editor/ls/4kivialj5lvj.pdf
+# devtools::install_github('araastat/reprtree')
+```
+
+
+
+```{r,eval=F}
+library(randomForest)
+library(reprtree)
+
+model <- randomForest(Species ~ ., data=iris, importance=TRUE, ntree=500, mtry = 2, do.trace=100)
+
+reprtree:::plot.getTree(model)
+```
+
+<!--
+https://de.slideshare.net/m80m07/random-forest
+
+http://www.math.uwaterloo.ca/~hachipma/stat946/koulis.pdf
+
+http://www.lsta.upmc.fr/BIAU/bs.pdf
+-->
