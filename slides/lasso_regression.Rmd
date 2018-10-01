@@ -32,11 +32,25 @@ https://www.youtube.com/watch?v=A5I1G1MfUmA
 -->
 
 
-```{r}
+## Lasso regression with package `glmnet`
 
+```{r,eval=F}
+install.packages("glmnet")
 ```
 
+```{r}
+library(glmnet)
+```
 
+```{r}
+x=matrix(rnorm(100*20),100,20)
+g2=sample(1:2,100,replace=TRUE)
+fit2=glmnet(x,g2,family="binomial")
+```
+
+```{r,eval=T}
+caret::varImp(fit2,lambda=0.0007567)
+```
 
 
 
