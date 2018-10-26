@@ -10,9 +10,41 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## 
+## [ctree example](https://datawookie.netlify.com/blog/2013/05/package-party-conditional-inference-trees/)
 
-### Recursive partitioning algorithms are special cases of a
+```{r,eval=F}
+install.packages("party")
+```
+
+## The data behind
+
+```{r}
+airq <- subset(airquality, !is.na(Ozone))
+summary(airq$Temp)
+```
+
+## A first model
+
+```{r}
+library(party)
+```
+
+
+```{r}
+air.ct <- ctree(Ozone ~ ., data = airq, controls = ctree_control(maxsurrogate = 3))
+```
+
+
+## The plot for `ctree`
+
+```{r}
+plot(air.ct)
+```
+
+
+
+
+## Recursive partitioning algorithms are special cases of a
 simple two-stage algorithm
 
 - First partition the observations by univariate splits in a recursive way and 
