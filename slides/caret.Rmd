@@ -1,0 +1,63 @@
+---
+title: "The package caret"
+author: "Jan-Philipp Kolb"
+date: "21 November 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+```{r}
+library(MLmetrics)
+library(party)
+library(partykit)
+library(caret)
+library(doParallel)
+
+```
+
+
+
+```{r}
+cvIndex <- caret::createFolds(gp.train.c$D_dropout, 10, returnTrain = T)
+  fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
+  
+ctrl  <- caret::trainControl(method = "cv",
+                               number = 10,
+                               index = cvIndex,
+                               summaryFunction = fiveStats,
+                               classProbs = TRUE)
+```
+
+
+
+```{r}
+n <-5000
+gp.train.c <- data.frame(D_dropout=as.factor(sample(c("yes","no"),n,replace=T)),
+                         sd_habit=runif(n),
+                         sd_identify=runif(n),
+                         another_var=as.factor(sample(c("yes","no","maybe"),n,replace=T)))
+```
+
+
+```{r}
+grid <- expand.grid(alpha = c(0,1),
+                      lambda = seq(0.5,0,length=50))
+```
+
+
+```{r}
+lasso<-caret::train( D_dropout ~  sd_habit + sd_identify ,
+                     data=gp.train.c,method ='glmnet',
+                     family= 'binomial',trControl = ctrl,
+                     tuneGrid = grid,metric = 'Kappa')
+```
+
+<!--
+https://github.com/topepo/caret/issues/145
+
+-->
