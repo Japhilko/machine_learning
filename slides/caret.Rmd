@@ -60,4 +60,9 @@ lasso<-caret::train( D_dropout ~  sd_habit + sd_identify ,
 <!--
 https://github.com/topepo/caret/issues/145
 
+https://github.com/topepo/caret/issues/330
+
+https://discuss.analyticsvidhya.com/t/something-is-wrong-all-the-accuracy-metric-values-are-missing/64825
+https://stackoverflow.com/questions/36181840/something-is-wrong-all-the-accuracy-metric-values-are-missing-error-in-caret
+https://github.com/topepo/caret/issues/160
 -->
