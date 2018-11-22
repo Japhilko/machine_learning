@@ -9,22 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 
+## Loading the libraries
 
 ```{r}
 library(MLmetrics)
 library(party)
 library(partykit)
 library(caret)
-library(doParallel)
-
 ```
 
 
 
 ```{r}
 cvIndex <- caret::createFolds(gp.train.c$D_dropout, 10, returnTrain = T)
-  fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
+fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
   
 ctrl  <- caret::trainControl(method = "cv",
                                number = 10,
