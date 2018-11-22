@@ -13,3 +13,27 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 
+## Kappa
+
+- [**Cohens Kappa**](http://thedatascientist.com/performance-measures-cohens-kappa-statistic/) is a performance measure.
+- It is used for inbalanced classes. 
+-  Cohens Kappa tells us how much better our classifier is performing over the performance of a classifier that simply guesses at random according to the frequency of each class.
+- Cohen’s Kappa is always less than or equal to 1. 
+- Values of 0 or less, indicate that the classifier is useless. 
+
+<!--
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3900052/
+-->
+
+## Sensitivity and Specificity
+
+
+- The Sensitivity (also called the true positive rate) measures the proportion of actual positives that are correctly identified as such.
+- Specificity (also called the true negative rate) measures the proportion of actual negatives that are correctly identified as such
+<!--
+https://en.wikipedia.org/wiki/Sensitivity_and_specificity
+-->
+- Sensitivity and Specificity are inversely proportional to each other. So when we increase Sensitivity, Specificity decreases and vice versa.
+<!--
+https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5
+-->

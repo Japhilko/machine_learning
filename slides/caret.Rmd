@@ -18,7 +18,22 @@ library(partykit)
 library(caret)
 ```
 
+## An example dataset
 
+```{r}
+n <-1000
+gp.train.c <- data.frame(D_dropout=as.factor(sample(c("yes","no"),n,replace=T)),
+                         sd_habit=runif(n),
+                         sd_identify=runif(n),
+                         another_var=as.factor(sample(c("yes","no","maybe"),n,replace=T)))
+```
+
+## Preliminaries
+
+- No missing values are possible in the dataset
+
+
+## 
 
 ```{r}
 cvIndex <- caret::createFolds(gp.train.c$D_dropout, 10, returnTrain = T)
@@ -33,13 +48,6 @@ ctrl  <- caret::trainControl(method = "cv",
 
 
 
-```{r}
-n <-5000
-gp.train.c <- data.frame(D_dropout=as.factor(sample(c("yes","no"),n,replace=T)),
-                         sd_habit=runif(n),
-                         sd_identify=runif(n),
-                         another_var=as.factor(sample(c("yes","no","maybe"),n,replace=T)))
-```
 
 
 ```{r}
@@ -49,7 +57,7 @@ grid <- expand.grid(alpha = c(0,1),
 
 
 ```{r}
-lasso<-caret::train( D_dropout ~  sd_habit + sd_identify ,
+lasso<-caret::train( D_dropout ~  sd_habit + sd_identify +another_var ,
                      data=gp.train.c,method ='glmnet',
                      family= 'binomial',trControl = ctrl,
                      tuneGrid = grid,metric = 'Kappa')
