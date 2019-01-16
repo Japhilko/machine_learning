@@ -1,0 +1,38 @@
+---
+title: "Topics"
+author: "Jan-Philipp Kolb"
+date: "16 1 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## [CRAN Machine Learning task view](https://cran.r-project.org/web/views/MachineLearning.html)
+
+
+
+
+
+## [Cluster Analysis](http://zevross.com/blog/machine-learning-r-workshop/)
+
+
+- Basic concepts in predictive modeling (prediction vs interpretability, bias-variance tradeoff, collinearity, creating dummy variables, training vs testing datasets/data splitting, parameter tuning)
+
+- An introduction to the caret package
+Regression (LM, GAM, SVM, random forest, boosting)
+Regularization/shrinkage (ridge, LASSO, elastic net) and dimension reduction (PLS)
+Classification (logistic, linear discriminant analysis, random forest and boosting)
+
+
+<!--
+https://www.hd-hub.de/course-dates/3-all/31-machine-learning-in-r-advanced-course
+
+https://www.denbi.de/planned-training-course-2019
+-->
+
+
+## Literature
+
+- 

@@ -1,0 +1,33 @@
+---
+title: "Introduction"
+author: "Jan-Philipp Kolb"
+date: "16 1 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Task: Find R-packages
+
+- 
+
+
+
+## Task View Machine Learning
+
+
+![](figure/taskviewmachinelearning.PNG)
+
+
+
+##
+
+```{r,eval=F}
+install.packages("ctv")
+ctv::install.views("MachineLearning")
+```
+
