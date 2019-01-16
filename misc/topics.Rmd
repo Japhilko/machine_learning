@@ -9,6 +9,25 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<!--
+https://de.slideshare.net/ShirinGlander/workshop-introduction-to-machine-learning-with-r
+https://www.shirin-glander.de/
+
+https://www.data2day.de/
+
+https://www.codecentric.de/karriere/standorte/karlsruhe/
+-->
+
+- About this course
+- Getting started
+- how to prepare your data for ML
+- ML with caret
+
+gitlab.com/ShirinG/intro_to_ml_workshop
+
+
+![](../figure/pic_hiddenlayers.PNG)
+
 ## [CRAN Machine Learning task view](https://cran.r-project.org/web/views/MachineLearning.html)
 
 
@@ -36,3 +55,53 @@ https://www.denbi.de/planned-training-course-2019
 ## Literature
 
 - 
+
+
+# Das Grunddatenblatt
+
+## Name des Workshops (deutsch):
+
+- Einführung in Machine Learning mit R
+
+## Name des Workshops (englisch):
+
+- Introduction to machine learning with R
+
+## Beschreibung der Inhalte:
+
+The course will provide an overview of using R for supervised learning. The session will step through the process of machine learning from importing the data to analysis and presentation of the results.
+We will cover high-level approaches to modeling (e.g., the caret package). 
+
+We will provide a thorough workflow in R that can be used with many different regression or classification techniques. Case studies on real data will be used to illustrate the functionality and several different predictive models are illustrated. 
+<!--
+Vorgestellt werden alle Schritte vom Import der Daten bis zur Analyse und Präsentation der Ergebnisse.
+-->
+
+
+Data preparation and exploration.
+
+<!--
+Andere Kurse:
+
+https://www.r-bloggers.com/code-for-workshop-introduction-to-machine-learning-with-r/
+-->
+
+
+<!--
+Die über 9000 R-Pakete, die auf CRAN verfügbar sind, zeigen die Vielfältigkeit der Programmiersprache R. Einige R-Pakete dienen als Schnittstellen zu anderen Programmen und Programmiersprachen und erweitern damit deutlich das Spektrum der Aufgaben, die mit R bearbeitet werden können.  So können beispielsweise zahlreiche Programmierschnittstellen so genannte API’s mit dem Paket httr angesprochen werden. Das Paket leaflet kann verwendet werden um Javascript Funktionalität für interaktive Graphiken zu nutzen. Darüber hinaus existieren Schnittstellen zu zahlreichen Datenbankanwendungen. R kann verwendet werden um HTML-Präsentationen und Word-Dokumente zu erzeugen. In diesem Kurs werden einige der interessantesten Schnittstellen vorgestellt. 
+-->
+
+
+<!--
+https://www.rstudio.com/workshops/applied-machine-learning/
+
+Machine learning is the study and application of algorithms that learn from and make predictions on data. From search results to self-driving cars, it has manifested itself in all areas of our lives and is one of the most exciting and fast-growing fields of research in the world of data science. 
+
+This two-day course will provide an overview of using R for supervised learning. The session will step through the process of building, visualizing, testing, and comparing models that are focused on prediction. The goal of the course is to provide a thorough workflow in R that can be used with many different regression or classification techniques. Case studies on real data will be used to illustrate the functionality and several different predictive models are illustrated. 
+
+The course focuses on both high-level approaches to modeling (e.g., the caret package) and newer modeling packages in the tidyverse: recipes, rsample, yardstick, and tidyposterior. Basic familiarity with R and the tidyverse is required. 
+
+This course is taught by Dr. Max Kuhn a Software Engineer at RStudio. He is the author or maintainer of several R packages for predictive modeling including caret, Cubist, C50 and others. He routinely teaches classes in predictive modeling at rstudio::conf, Predictive Analytics World, and UseR! and his publications include work on neuroscience biomarkers, drug discovery, molecular diagnostics and response surface methodology. He and Kjell Johnson wrote the award-winning book Applied Predictive Modeling in 2013.
+
+-->
+
