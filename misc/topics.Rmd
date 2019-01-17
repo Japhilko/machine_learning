@@ -69,10 +69,10 @@ https://www.denbi.de/planned-training-course-2019
 
 ## Beschreibung der Inhalte:
 
-The course will provide an overview of using R for supervised learning. The session will step through the process of machine learning from importing the data to analysis and presentation of the results.
-We will cover high-level approaches to modeling (e.g., the caret package). 
+The course will provide a starting point for using R for supervised learning. The session will step through the process of machine learning from importing the data to analysis and presentation of the results.
+We will cover high-level approaches to modeling (e.g., the caret package) and provide a thorough workflow in R that can be used with many different regression or classification techniques. Case studies on real data will be used to illustrate the functionality and several different predictive models are illustrated. 
 
-We will provide a thorough workflow in R that can be used with many different regression or classification techniques. Case studies on real data will be used to illustrate the functionality and several different predictive models are illustrated. 
+
 <!--
 Vorgestellt werden alle Schritte vom Import der Daten bis zur Analyse und Präsentation der Ergebnisse.
 -->
@@ -105,3 +105,15 @@ This course is taught by Dr. Max Kuhn a Software Engineer at RStudio. He is the 
 
 -->
 
+## Für wen ist der Kurs geeignet
+
+Empirisch arbeitende Wissenschaflterinnen und Wissenschaflter, die Grundkenntnisse in R haben und diese gerne erweitern wollen.
+
+## Was wissen sie
+
+Der Workshop vermittelt einen stark anwendungsorientierten Einstieg in die Nutzung von Paketen im Bereich Machine Learning.
+
+
+## Was sollten sie wissen
+
+Grundkenntnisse in der Programmierung mit R sollten vorhanden sein. Die Teilnehmer sollten verschiedene Regressionsverfahren anwenden können.
