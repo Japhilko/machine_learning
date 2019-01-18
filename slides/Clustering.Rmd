@@ -1,0 +1,14 @@
+---
+title: "Clustering"
+author: "Jan-Philipp Kolb"
+date: "18 Januar 2019"
+output: beamer_presentation
+---
+
+```{r setupClustering, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Links
+
+- [Using clusterlab to benchmark clustering algorithms](https://www.r-bloggers.com/using-clusterlab-to-benchmark-clustering-algorithms/)

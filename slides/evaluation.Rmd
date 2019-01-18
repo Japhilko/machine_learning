@@ -37,3 +37,20 @@ https://en.wikipedia.org/wiki/Sensitivity_and_specificity
 <!--
 https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5
 -->
+
+## [ROC Curves](https://www.r-bloggers.com/roc-curves/)
+
+```{r,eval=F,echo=F}
+install.packages("gganimate")
+install.packages("magick")
+```
+
+
+
+
+```{r}
+library(tidyverse)
+library(gganimate)  
+library(magick)     
+```
+
