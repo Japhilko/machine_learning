@@ -31,6 +31,29 @@ Youtube Video zu Lasso
 https://www.youtube.com/watch?v=A5I1G1MfUmA
 -->
 
+## [Lasso Regression](https://en.wikipedia.org/wiki/Lasso_(statistics))
+
+- lasso (least absolute shrinkage and selection operator) is a regression analysis method that performs both variable selection and regularization in order to enhance the prediction accuracy and interpretability of the statistical model it produces.
+- Originally introduced in geophysics literature in 1986
+- Independently rediscovered and popularized in 1996 by Robert Tibshirani, who coined the term and provided further insights into the observed performance.
+
+
+
+Lasso was originally formulated for least squares models and this simple case reveals a substantial amount about the behavior of the estimator, including its relationship to ridge regression and best subset selection and the connections between lasso coefficient estimates and so-called soft thresholding. It also reveals that (like standard linear regression) the coefficient estimates need not be unique if covariates are collinear.
+
+Though originally defined for least squares, lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
+
+- Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
+
+The LASSO is closely related to basis pursuit denoising.
+
+
+
+## [The L1 norm explained](https://stats.stackexchange.com/questions/347257/geometrical-interpretation-of-l1-regression)
+
+![](figure/BBRXC.png)
+
+
 
 ## Lasso regression with package `glmnet`
 
@@ -53,6 +76,16 @@ caret::varImp(fit2,lambda=0.0007567)
 ```
 
 
+## 
+
+- LASSO is a feature selection method.
+<!--
+https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
+-->
+- LASSO regression has inbuilt penalization functions to reduce overfitting.
+<!--
+https://www.analyticsvidhya.com/blog/2016/12/introduction-to-feature-selection-methods-with-an-example-or-how-to-select-the-right-variables/
+-->
 
 
 ## Links
@@ -63,3 +96,7 @@ caret::varImp(fit2,lambda=0.0007567)
 - Course for statistical learning - [Youtube - Videos](https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/)
 
 - [pcLasso: a new method for sparse regression](https://www.r-bloggers.com/pclasso-a-new-method-for-sparse-regression/)
+
+- [Youtube - lasso regression - clearly explained](https://www.youtube.com/watch?v=NGf0voTMlcs) 
+
+- [Glmnet Vignette](https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html)

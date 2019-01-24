@@ -13,7 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Task: Find R-packages
 
-- 
+Go to https://cran.r-project.org/ and search for packages that,...
+
+- can be used for lasso regression
 
 <!--
 https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
@@ -26,7 +28,7 @@ https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 
 
 
-##
+## Install all packages of a task view
 
 ```{r,eval=F}
 install.packages("ctv")
@@ -35,7 +37,7 @@ ctv::install.views("MachineLearning")
 
 
 
-## 
+## Literature for machine learning
 
 ![](figure/book_ml1.jpg)
 
@@ -45,6 +47,8 @@ https://lgatto.github.io/IntroMachineLearningWithR/index.html
 https://www.kaggle.com/camnugent/introduction-to-machine-learning-in-r-tutorial
 
 https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/
+
+https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-678/
 -->
 
 ## Links
