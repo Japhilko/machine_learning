@@ -71,3 +71,4 @@ plot(airct, type = "simple")
 
 - [**Vignette**](https://cran.r-project.org/web/packages/partykit/vignettes/ctree.pdf) for package `partykit` 
 
+- [Conditional Inference Trees](https://rpubs.com/awanindra01/ctree)

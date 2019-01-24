@@ -46,3 +46,7 @@ https://www.kaggle.com/camnugent/introduction-to-machine-learning-in-r-tutorial
 
 https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/
 -->
+
+## Links
+
+- Google`s [Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course/)

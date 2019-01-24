@@ -51,3 +51,15 @@ http://www.math.uwaterloo.ca/~hachipma/stat946/koulis.pdf
 
 http://www.lsta.upmc.fr/BIAU/bs.pdf
 -->
+
+
+## Random forests in package `caret`
+
+- [models: A List of Available Models in train](https://rdrr.io/cran/caret/man/models.html)
+
+- [Practical guide to implement machine learning with CARET package in R](https://www.analyticsvidhya.com/blog/2016/12/practical-guide-to-implement-machine-learning-with-caret-package-in-r-with-practice-problem/)
+
+
+## Links
+
+- [The Random Forest Algorithm](https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd)
