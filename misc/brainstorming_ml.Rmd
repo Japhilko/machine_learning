@@ -10,8 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-
-
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d) (essentially regression/classification vs EDA)
 
 - Exploratory data analysis

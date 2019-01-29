@@ -9,6 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
+
+### Supervised Learning 
+
+- we have prior knowledge of what the output values for our samples should be. 
 
 
 ## Task: Find R-packages
@@ -35,7 +40,7 @@ install.packages("ctv")
 ctv::install.views("MachineLearning")
 ```
 
-
+## [Prediction vs. Causation in Regression Analysis](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
 
 ## Literature for machine learning
 
@@ -50,6 +55,17 @@ https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours
 
 https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-678/
 -->
+
+## Introduction to machine learning with R
+
+- [Your First Machine Learning Project in R Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
+
+
+- chapter about machine learning in [awesome R](https://awesome-r.com/)
+
+
+- [Shiny App for machine learning](https://www.showmeshiny.com/machlearn/)
+
 
 ## Links
 
