@@ -114,14 +114,16 @@ https://en.wikipedia.org/wiki/Sensitivity_and_specificity
 https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5
 -->
 
+## [receiver operating characteristic](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc)
+
+
+
 ## [ROC Curves](https://www.r-bloggers.com/roc-curves/)
 
 ```{r,eval=F,echo=F}
 install.packages("gganimate")
 install.packages("magick")
 ```
-
-
 
 
 ```{r}
