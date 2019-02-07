@@ -1,0 +1,132 @@
+---
+title: "Brainstorming - find topics"
+author: "Jan-Philipp Kolb"
+date: "15 Januar 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d) (essentially regression/classification vs EDA)
+
+- Exploratory data analysis
+
+
+
+Bias-variance tradeoff
+
+Curse of dimensionality
+
+Cross-validation +++
+
+## LASSO, Ridge and elasticnet
+
+- [what is better in which situation](https://web.stanford.edu/~hastie/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf)
+
+Kernal regression? +++
+
+- Bagging and boosting 
+
+
+CART (classification and regression trees)
+
+Classification
+
+Support vector machines (both classification and regression). +++
+
+Neural networks (plus gradient descent)
+       Perceptron
+       Multilayer perceptron (aka  feedforward neural network with two or more layers)
+       backpropagation
+
+Causal graphs/search algorithms
+
+
+<!--
+https://www.r-bloggers.com/automated-dashboard-for-classification-neural-network-in-r/
+
+-->
+
+
+## Further ideas
+
+- Present the usage of databases like PostgreSQL or MySQL
+- Present possibilities like AWS
+
+
+
+
+
+
+## First part
+
+- importing data
+
+- what to do with missing data
+- introduce/explain datasets used (OSM dataset, PUF GESIS Panel)
+- parallelization
+
+## Second part - lasso regression
+
+- cross validation
+- evaluation (confusion matrix)
+- glmnet package
+
+
+## Third part
+
+- gbm package
+- ensemble methods - gradient boosting
+
+(caret package)
+
+## Sixth Part
+
+[](http://blog.conceptnet.io/posts/2017/how-to-make-a-racist-ai-without-really-trying/)
+
+
+## 
+
+[HDBSCAN](https://cran.r-project.org/web/packages/dbscan/vignettes/hdbscan.html)
+
+<!--
+better implemented in python
+-->
+
+- 
+
+
+- how to run python from R
+
+```{r}
+library(reticulate)
+```
+
+
+[hdbscan](https://pypi.org/project/hdbscan/) - slow in R
+
+you should use instead of kmeans
+
+
+dimension reduction procedure
+
+[Umap](https://github.com/lmcinnes/umap)
+
+https://arxiv.org/pdf/1802.03426.pdf
+
+<!--
+Bescheid sagen, dass Python auf den Rechnern installiert sein sollte
+-->
+
+- mention interfaces to databases
+
+
+
+class myscript{public static void main string[] args{System.out.println("Hello World");}}
+
+
+
+

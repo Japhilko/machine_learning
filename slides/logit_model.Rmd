@@ -9,6 +9,16 @@ output: beamer_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## 
+
+- The logarithmic function is used for the link between probability and logits
+
+- The Logit function is used to [linearize sigmoid curves](https://de.wikipedia.org/wiki/Logit).
+
+<!--
+Die Logit-Funktion wird zur Linearisierung von sigmoiden Kurven verwendet.
+-->
+
 ## The package `caret`
 
 - Classification and Regression Training

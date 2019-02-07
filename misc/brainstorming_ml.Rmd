@@ -46,3 +46,9 @@ Causal graphs/search algorithms
 https://www.r-bloggers.com/automated-dashboard-for-classification-neural-network-in-r/
 
 -->
+
+
+## Further ideas
+
+- Present the usage of databases like PostgreSQL or MySQL
+- Present possibilities like AWS
