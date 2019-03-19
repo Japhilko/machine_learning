@@ -9,6 +9,28 @@ output: beamer_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
+## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
+
+Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
+
+The idea of gradient boosting originated in the observation by Leo Breiman that boosting can be interpreted as an optimization algorithm on a suitable cost function.
+
+
+Breiman, L. (1997). "Arcing The Edge". Technical Report 486. Statistics Department, University of California, Berkeley.
+
+
+<!--
+-->
+
+## Explicit algorithms
+
+Explicit regression gradient boosting algorithms were subsequently developed by Jerome H. Friedman,[2][3] simultaneously with the more general functional gradient boosting perspective of Llew Mason, Jonathan Baxter, Peter Bartlett and Marcus Frean.[4][5] 
+
+
+The latter two papers introduced the view of boosting algorithms as iterative functional gradient descent algorithms. That is, algorithms that optimize a cost function over function space by iteratively choosing a function (weak hypothesis) that points in the negative gradient direction. This functional gradient view of boosting has led to the development of boosting algorithms in many areas of machine learning and statistics beyond regression and classification.
+
+
 ## [**Advantages of gradient boosting**](http://uc-r.github.io/gbm_regression)
 
 - Often provides predictive accuracy that cannot be beat.
@@ -45,11 +67,6 @@ What if we, instead of reweighting examples, made some corrections to prediction
 Residual is a gradient of single observation error contribution in one of the most common evaluation measure for regression: RMSE
 -->
 
-## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
-
-Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
-
-The idea of gradient boosting originated in the observation by Leo Breiman that boosting can be interpreted as an optimization algorithm on a suitable cost function.[1] Explicit regression gradient boosting algorithms were subsequently developed by Jerome H. Friedman,[2][3] simultaneously with the more general functional gradient boosting perspective of Llew Mason, Jonathan Baxter, Peter Bartlett and Marcus Frean.[4][5] The latter two papers introduced the view of boosting algorithms as iterative functional gradient descent algorithms. That is, algorithms that optimize a cost function over function space by iteratively choosing a function (weak hypothesis) that points in the negative gradient direction. This functional gradient view of boosting has led to the development of boosting algorithms in many areas of machine learning and statistics beyond regression and classification.
 
 
 ## [Gradient Boosting for Linear Regression - why does it not work?](https://stats.stackexchange.com/questions/186966/gradient-boosting-for-linear-regression-why-does-it-not-work)
@@ -70,3 +87,8 @@ What am I missing here? Is linear regression somehow inappropriate to use with G
 
 
 - [How to Visualize Gradient Boosting Decision Trees With XGBoost in Python](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
+
+
+<!--
+https://www.researchgate.net/figure/A-simple-example-of-visualizing-gradient-boosting_fig5_326379229
+-->
