@@ -1,0 +1,68 @@
+---
+title: "Making Use of Machine Learning Resources from Python"
+author: "Alexander Murray-Watters"
+date: "April 9, 2019"
+output: beamer_presentation
+---
+
+# Why Python? Isn't this an R course?
+
+
+
+
+# Installing Python
+
+
+
+# Calling python from R using reticulate
+
+```{r}
+library(reticulate)
+
+
+```
+## The minimum you need to be aware of
+Python, just like R, has different kinds of objects. Some commonly
+used ones are:
+
+1. Integers (1, 2, 3, 4,...)
+2. Decimal (.34234, .123, pi)
+   (Called "numeric" in R, "floats" in Python).
+3. DataFrame (from the pandas library in R).
+4. Array (called a matrix in R).
+5. Series (called a vector in R).
+
+There are many other kinds of objects (and you can create your
+own). The relevant point for using reticulate is that you need to make
+sure the kind of object you are using in R is being converted to the
+right kind of object for the python function you are trying to make
+use of.
+
+If a function in python requires an integer, you can't simply pass it
+a number from R, as R defaults to using "numeric" objects to represent
+numbers. You have to convert the "numeric" to an "integer" first.
+
+```{r}
+
+a.number <- 1
+
+class(a.number)
+
+class(as.integer(a.number))
+
+```
+
+
+
+# An example using HDBSCAN
+
+
+
+
+# An example using UMAP
+
+
+
+
+# Resources for futher reading
+
