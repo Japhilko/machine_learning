@@ -1,5 +1,10 @@
-Course about statistical learning
----------------------------------
+First part
+----------
+
+-   Introducing Machine Learning
+
+Links
+-----
 
 -   [Your First Machine Learning Project in R
     Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
