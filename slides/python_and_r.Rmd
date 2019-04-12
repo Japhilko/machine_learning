@@ -59,7 +59,46 @@ class(as.integer(a.number))
 
 # An example using HDBSCAN
 
+## The R version (from dbscan package)
 
+```{r}
+
+## cluster the moons data set with HDBSCAN
+
+library(dbscan)
+
+data(moons)
+res <- dbscan::hdbscan(moons, minPts = 5)
+
+res
+
+plot(moons, col = res$cluster + 1, main="R implementation")
+
+
+
+```
+
+## Python version.
+
+As the python version runs significantly faster (and uses less memory),
+you may want to go to the hassle of using it instead of the R
+implementation.
+
+```{r}
+
+hdbscan.main <- import("hdbscan")
+
+hdbscan.py <- function(data, minPts){
+    hdbscan.main$HDBSCAN(min_cluster_size=as.integer(minPts))$fit_predict(data)
+}
+
+
+clust.assignment <- hdbscan.py(data=as.matrix(moons), minPts=5)
+
+plot(moons, col = clust.assignment + 1, main="Python implementation")
+
+
+```
 
 
 # An example using UMAP
@@ -88,7 +127,7 @@ umap <- function(x, n_neighbors = 10, min_dist = 0.1,
 
     return(umap.obj$fit_transform(data, y = y))
 }
-
+ 
 ## Generating fake standard normal data.
 
 fake.data <- cbind(rnorm(n=100), rnorm(n=100), rnorm(n=100))
