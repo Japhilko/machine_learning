@@ -9,6 +9,55 @@ output: beamer_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
+
+
+## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+
+## How many cores are available
+
+
+```{r}
+library(doParallel)
+detectCores()
+```
+
+## 
+
+```{r}
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+```
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+```{r}
+stopCluster(cl)
+```
+
+
+```{r}
+?parallel::makeCluster
+```
+
+
+
+
 ## Links
 
 - [Presentations on ‘Elements of Neural Networks & Deep Learning’ ](https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-45/)

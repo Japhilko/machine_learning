@@ -10,6 +10,48 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+
+## 
+
+- The logarithmic function is used for the link between probability and logits
+
+- The Logit function is used to [linearize sigmoid curves](https://de.wikipedia.org/wiki/Logit).
+
+<!--
+Die Logit-Funktion wird zur Linearisierung von sigmoiden Kurven verwendet.
+-->
+
+## The package `caret`
+
+- Classification and Regression Training
+
+```{r,eval=F}
+install.packages("caret")
+```
+
+```{r}
+library("caret")
+```
+
+- [**Vignette `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html) - 
+
+## 
+
+```{r,eval=F}
+?caret::train
+```
+
+
+
+```{r}
+logit<-train(,data = gp.train.c,
+                        method = 'glm',
+                        family = 'binomial',
+                        trControl = ctrl0)")
+```
+
+
+
 ## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
 
 - Lasso regression uses shrinkage
@@ -100,3 +142,5 @@ https://www.analyticsvidhya.com/blog/2016/12/introduction-to-feature-selection-m
 - [Youtube - lasso regression - clearly explained](https://www.youtube.com/watch?v=NGf0voTMlcs) 
 
 - [Glmnet Vignette](https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html)
+
+- [Regularization Methods in R](https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/multiple-regression/Regularization-Methods/Regularization-Methods-in-R/index.html)

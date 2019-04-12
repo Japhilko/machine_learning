@@ -1,5 +1,5 @@
 ---
-title: "Random Forests"
+title: "Decission Trees and Random Forests"
 author: "Jan-Philipp Kolb"
 date: "1 Oktober 2018"
 output: beamer_presentation
@@ -8,6 +8,38 @@ output: beamer_presentation
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+
+## [Decision Trees](http://www.statmethods.net/advstats/cart.html)
+
+[Regression tree vs. classification tree](http://www.statmethods.net/advstats/cart.html)
+
+
+```{r}
+library(rpart)
+```
+
+Grow a tree
+
+```{r}
+fit <- rpart(Kyphosis ~ Age + Number + Start,
+   method="class", data=kyphosis)
+
+printcp(fit) # display the results
+plotcp(fit) # visualize cross-validation results
+summary(fit) # detailed summary of splits
+```
+
+```{r}
+# plot tree
+plot(fit, uniform=TRUE,
+   main="Classification Tree for Kyphosis")
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+```
+
+[Decision Trees and Random Forest](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
+
+
 
 ## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
 
@@ -63,3 +95,5 @@ http://www.lsta.upmc.fr/BIAU/bs.pdf
 ## Links
 
 - [The Random Forest Algorithm](https://towardsdatascience.com/the-random-forest-algorithm-d457d499ffcd)
+
+- CRAN Task View [Machine & Statistical Learning](http://cran.r-project.org/web/views/MachineLearning.html)

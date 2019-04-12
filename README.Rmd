@@ -9,12 +9,33 @@ output: md_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## First part
+## Part A - introduction
 
-- Introducing Machine Learning
+- [What is machine learning and why should you care](intro_ml.Rmd)
+- [Parallelization](doParallel.Rmd)
+
+## Part B - lasso and ridge regression
+
+- [Lasso regression](slides/lasso_regression.Rmd)
+- The `glmnet` package
 
 
 
+## Part C - Supervised Learning: Bagging and Boosting, tree-methods 
+
+
+## Part D - Supervised Learning: Neural Network
+
+
+## Part E - Unsupervised Learning: kmeans, hdbscan
+
+
+
+## Part F - The dangers of machine learning
+
+## Part G - `reticulate` package: Umap
+
+- work with python and R
 
 ## Links
 

@@ -10,6 +10,11 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
+
+
+## Resources
+
+
 ```{r,echo=F}
 slides_path <- getwd()
 git_path <- gsub("slides","",slides_path)
@@ -18,6 +23,34 @@ if (Sys.info()$nodename=="MAC14077"){
   slides_path <- paste0(git_path,"/slides")
 }
 ```
+
+
+- [Package `kknn`](https://cran.r-project.org/web/packages/kknn/kknn.pdf)
+
+```{r,eval=F}
+install.packages("kknn")
+```
+
+```{r}
+library("kknn")
+```
+
+
+## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
+
+```{r}
+install.packages("dbscan")
+```
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(maps)
+library(dbscan)
+```
+
 
 
 
