@@ -1,0 +1,146 @@
+---
+title: "Making Use of Machine Learning Resources from Python"
+author: "Alexander Murray-Watters"
+date: "April 9, 2019"
+output: beamer_presentation
+---
+
+# Why Python? Isn't this an R course?
+
+
+
+
+# Installing Python
+
+
+
+
+
+# Calling python from R using reticulate
+
+```{r}
+library(reticulate)
+
+
+
+```
+## The minimum you need to be aware of
+Python, just like R, has different kinds of objects. Some commonly
+used ones are:
+
+1. Integers (1, 2, 3, 4,...)
+2. Decimal (.34234, .123, pi)
+   (Called "numeric" in R, "floats" in Python).
+3. DataFrame (from the pandas library in R).
+4. Array (called a matrix in R).
+5. Series (called a vector in R).
+
+There are many other kinds of objects (and you can create your
+own). The relevant point for using reticulate is that you need to make
+sure the kind of object you are using in R is being converted to the
+right kind of object for the python function you are trying to make
+use of.
+
+If a function in python requires an integer, you can't simply pass it
+a number from R, as R defaults to using "numeric" objects to represent
+numbers. You have to convert the "numeric" to an "integer" first.
+
+```{r}
+
+a.number <- 1
+
+class(a.number)
+
+class(as.integer(a.number))
+
+```
+
+
+
+# An example using HDBSCAN
+
+## The R version (from dbscan package)
+
+```{r}
+
+## cluster the moons data set with HDBSCAN
+
+library(dbscan)
+
+data(moons)
+res <- dbscan::hdbscan(moons, minPts = 5)
+
+res
+
+plot(moons, col = res$cluster + 1, main="R implementation")
+
+
+
+```
+
+## Python version.
+
+As the python version runs significantly faster (and uses less memory),
+you may want to go to the hassle of using it instead of the R
+implementation.
+
+```{r}
+
+hdbscan.main <- import("hdbscan")
+
+hdbscan.py <- function(data, minPts){
+    hdbscan.main$HDBSCAN(min_cluster_size=as.integer(minPts))$fit_predict(data)
+}
+
+
+clust.assignment <- hdbscan.py(data=as.matrix(moons), minPts=5)
+
+plot(moons, col = clust.assignment + 1, main="Python implementation")
+
+
+```
+
+
+# An example using UMAP
+```{r}
+
+
+umap.main <- import("umap")
+
+## New version using reticulate.
+umap <- function(x, n_neighbors = 10, min_dist = 0.1,
+                 metric = 'euclidean', y = c(),
+                 n_components = 2, ...){
+
+    ## Have to convert in order to ensure reticulate gives 
+    ## UMAP the right kind of python objects.
+    data <- as.matrix(x)
+    n_neighbors <- as.integer(n_neighbors)
+    n_components <- as.integer(n_components)
+
+    ## Intializing umap object with var. parameters.
+    umap.obj <- umap.main$UMAP(n_neighbors = n_neighbors,
+                               min_dist = min_dist,
+                               metric = metric,
+                               n_components = n_components,
+                               ...)
+
+    return(umap.obj$fit_transform(data, y = y))
+}
+ 
+## Generating fake standard normal data.
+
+fake.data <- cbind(rnorm(n=100), rnorm(n=100), rnorm(n=100))
+
+head(fake.data)
+
+## Performing reduction.
+
+dim.reduct <- umap(fake.data, n_neighbors = 15, min_dist = 0, metric = "euclidean", n_components = 1)
+
+head(dim.reduct)
+
+```
+
+# Resources for further reading
+
