@@ -7,7 +7,15 @@ output: beamer_presentation
 
 # Why Python? Isn't this an R course?
 
-
+It'd be great if you only had to use a single programming language,
+but unfortunately that's not the way the world works. While most new
+statistical methods are initially implemented for R (as their creators
+are statisticians), machine learning algorithms are usually created by
+computer scientists, who have built their own data analysis tool set
+around Python. While the algorithms are often ported to R (this is
+especially easy when Python was simply used as a convenient "wrapper"
+for the algorithm), there is often a delay, and the quality of the new
+implementation can be very poor.
 
 
 # Installing Python
@@ -101,7 +109,17 @@ plot(moons, col = clust.assignment + 1, main="Python implementation")
 ```
 
 
+
 # An example using UMAP
+
+Other algorithms are often too new to have mature R
+implementations. One of the more exciting examples of this is a
+non-linear dimension reduction technique called UMAP(TODO: INSERT
+MEANING OF ACRONYM). While at least one R version exists, it is
+significantly slower and more resource intensive than the python
+implementation. The python version is also constantly receiving
+updates, as it is the main focus of the originator of the algorithm.
+
 ```{r}
 
 
