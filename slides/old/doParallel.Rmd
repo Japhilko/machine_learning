@@ -1,0 +1,55 @@
+---
+title: "parallel"
+author: "Jan-Philipp Kolb"
+date: "30 Januar 2019"
+output: beamer_presentation
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+
+## How many cores are available
+
+
+```{r}
+library(doParallel)
+detectCores()
+```
+
+## 
+
+```{r}
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+```
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+```{r}
+stopCluster(cl)
+```
+
+
+```{r}
+?parallel::makeCluster
+```
+

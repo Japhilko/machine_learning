@@ -1,0 +1,66 @@
+---
+title: "Clustering"
+author: "Jan-Philipp Kolb"
+date: "18 Januar 2019"
+output: beamer_presentation
+---
+
+```{r setupClustering, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+
+## Resources
+
+
+```{r,echo=F}
+slides_path <- getwd()
+git_path <- gsub("slides","",slides_path)
+if (Sys.info()$nodename=="MAC14077"){
+  git_path <- "D:/Daten/GitHub/machine_learning/"
+  slides_path <- paste0(git_path,"/slides")
+}
+```
+
+
+- [Package `kknn`](https://cran.r-project.org/web/packages/kknn/kknn.pdf)
+
+```{r,eval=F}
+install.packages("kknn")
+```
+
+```{r}
+library("kknn")
+```
+
+
+## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
+
+```{r}
+install.packages("dbscan")
+```
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(maps)
+library(dbscan)
+```
+
+
+
+
+```{r}
+load(paste0(git_path,"/data/osmsa_PLZ_14.RData"))
+```
+
+
+
+
+## Links
+
+- [Using clusterlab to benchmark clustering algorithms](https://www.r-bloggers.com/using-clusterlab-to-benchmark-clustering-algorithms/)

@@ -10,6 +10,16 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+## First part
+
+- importing data
+
+- what to do with missing data
+- introduce/explain datasets used (OSM dataset, PUF GESIS Panel)
+- parallelization
+
+
+
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d) (essentially regression/classification vs EDA)
 
 - Exploratory data analysis
@@ -60,14 +70,6 @@ https://www.r-bloggers.com/automated-dashboard-for-classification-neural-network
 
 
 
-
-## First part
-
-- importing data
-
-- what to do with missing data
-- introduce/explain datasets used (OSM dataset, PUF GESIS Panel)
-- parallelization
 
 ## Second part - lasso regression
 
