@@ -20,18 +20,48 @@ implementation can be very poor.
 
 # Installing Python
 
+Go to https://www.python.org/ and download the latest version. Then
+run the installer, choosing the defaults.
 
+Install the `reticulate` package so that you can call python from R.
 
+```{r, eval=FALSE}
+install.packages("reticulate")
+
+```
+
+Load the `reticulate` package.
+
+```{r}
+library(reticulate)
+
+```
 
 
 # Calling python from R using reticulate
 
 ```{r}
-library(reticulate)
 
+## Importing the math library from python
+math.main <- import("math")
 
+## Square root can take integers.
+math.main$sqrt(4)
+
+## Square root can take decimal numbers.
+math.main$sqrt(4.2)
+
+## Log is base e.
+math.main$log(math.main$e)
+
+## Base 10 log.
+math.main$log10(10)
 
 ```
+
+
+
+
 ## The minimum you need to be aware of
 Python, just like R, has different kinds of objects. Some commonly
 used ones are:
