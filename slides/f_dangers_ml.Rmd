@@ -37,16 +37,22 @@ https://www.theverge.com/2018/1/12/16882408/google-racist-gorillas-photo-recogni
 ## Other examples
 
 - The COMPAS algorithm (sometimes used to decide who gets parole),
-resulted in racist parole decisions:
-https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm
-	- Code and data used in the writer's analysis is available at: https://github.com/propublica/compas-analysis
+resulted in [racist parole decisions](https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm)
+	- Code and data used in the writer's analysis is available on [github](https://github.com/propublica/compas-analysis)
 
--If your model's predictions effect what new data is gathered (e.g.,
+- If your model's predictions effect what new data is gathered (e.g.,
 predictive policing) there is a risk of creating distorting feedback
-loops. One example involves using a model of where arrests for a
+loops. [One example](https://www.themarshallproject.org/2016/02/03/policing-the-future) involves using a model of where arrests for a
 particular crime occurred to guide police patrol assignments, resulting
 in more arrests in those areas (due to the increased patrol presence),
-leading to more patrol assignments in that area, etc.: https://www.themarshallproject.org/2016/02/03/policing-the-future
+leading to more patrol assignments in that area, etc.
+	- A notorious example of a feedback loop resulting in junk data
+      and horrific consequences is the "[body
+      count](https://en.wikipedia.org/wiki/Vietnam_War_body_count_controversy#Body_count_inflation)",
+      which invovled using the number of "enemies" killed as a measure
+      for how well the war was progressing. As commanders were assesed
+      based on the their unit's count, there was a strong incentive
+      for falsification -- in one way or another.
 
 - Other concerning models include the evaluation of teachers,
   calculating credit scores, and citizenship scores (e.g., [social
@@ -56,7 +62,7 @@ leading to more patrol assignments in that area, etc.: https://www.themarshallpr
 ## There is no magic to machine learning
 
 
-- If someone can't explain how their method works in simple way, but
+- If someone can't explain how their method works in a simple way, but
 insists it solves all of your problems, they're selling snake oil.
 
 - The most oversold method right now (neural networks and deep
