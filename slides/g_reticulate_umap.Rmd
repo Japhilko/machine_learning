@@ -7,23 +7,64 @@ output: beamer_presentation
 
 # Why Python? Isn't this an R course?
 
-
+It'd be great if you only had to use a single programming language,
+but unfortunately that's not the way the world works. While most new
+statistical methods are initially implemented for R (as their creators
+are statisticians), machine learning algorithms are usually created by
+computer scientists, who have built their own data analysis tool set
+around Python. While the algorithms are often ported to R (this is
+especially easy when Python was simply used as a convenient "wrapper"
+for the implementation), there is often a delay, and the quality of
+the R implementation can be very poor.
 
 
 # Installing Python
 
+Go to https://www.python.org/ and download the latest version. Then
+run the installer, choosing the defaults.
 
+Install the `reticulate` package so that you can call python from R.
 
+```{r, eval=FALSE}
+install.packages("reticulate")
+
+```
+
+Load the `reticulate` package.
+
+```{r}
+library(reticulate)
+
+```
 
 
 # Calling python from R using reticulate
 
 ```{r}
-library(reticulate)
 
+## Importing the math library from python
+math.main <- import("math")
 
+## We access functions from the imported python library using the \$
+## operator.
+
+## Square root can take integers.
+math.main$sqrt(4)
+
+## Square root can take decimal numbers.
+math.main$sqrt(4.2)
+
+## Log is base e.
+math.main$log(math.main$e)
+
+## Base 10 log.
+math.main$log10(10)
 
 ```
+
+
+
+
 ## The minimum you need to be aware of
 Python, just like R, has different kinds of objects. Some commonly
 used ones are:
@@ -59,12 +100,60 @@ class(as.integer(a.number))
 
 # An example using HDBSCAN
 
+## The R version (from dbscan package)
+
+```{r}
+
+## cluster the moons data set with HDBSCAN
+
+library(dbscan)
+
+data(moons)
+res <- dbscan::hdbscan(moons, minPts = 5)
+
+res
+
+plot(moons, col = res$cluster + 1, main="R implementation")
+
+
+
+```
+
+## Python version.
+
+As the python version runs significantly faster (and uses less memory),
+you may want to go to the hassle of using it instead of the R
+implementation.
+
+```{r}
+
+hdbscan.main <- import("hdbscan")
+
+hdbscan.py <- function(data, minPts){
+    hdbscan.main$HDBSCAN(min_cluster_size=as.integer(minPts))$fit_predict(data)
+}
+
+
+clust.assignment <- hdbscan.py(data=as.matrix(moons), minPts=5)
+
+plot(moons, col = clust.assignment + 1, main="Python implementation")
+
+
+```
 
 
 
 # An example using UMAP
-```{r}
 
+Other algorithms are often too new to have mature R
+implementations. One of the more exciting examples of this is a
+non-linear dimension reduction technique called UMAP(TODO: INSERT
+MEANING OF ACRONYM). While at least one R version exists, it is
+significantly slower and more resource intensive than the python
+implementation. The python version is also constantly receiving
+updates, as it is the main focus of the originator of the algorithm.
+
+```{r}
 
 umap.main <- import("umap")
 
@@ -88,7 +177,7 @@ umap <- function(x, n_neighbors = 10, min_dist = 0.1,
 
     return(umap.obj$fit_transform(data, y = y))
 }
-
+ 
 ## Generating fake standard normal data.
 
 fake.data <- cbind(rnorm(n=100), rnorm(n=100), rnorm(n=100))
@@ -103,5 +192,19 @@ head(dim.reduct)
 
 ```
 
-# Resources for further reading
+# Additional resources and further reading
+
+
+- Automate the Boring Stuff with Python (applied intro to Python): https://automatetheboringstuff.com/
+
+- Scikit-learn (general machine learning library): https://scikit-learn.org/stable/index.html
+
+- Pandas (Python's version of data.frames and other R-like
+  structures): https://pandas.pydata.org/
+	  - 10 minute introduction: https://pandas.pydata.org/pandas-docs/stable/
+ 
+- Keras (easy to use "deep learning" libray): https://keras.io/
+	- Example workflow: https://pythonprogramming.net/introduction-deep-learning-python-tensorflow-keras/
+	
+	
 
