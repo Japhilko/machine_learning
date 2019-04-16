@@ -1,6 +1,6 @@
 ---
 title: "The dangers of machine learning"
-author: "Jan-Philipp Kolb"
+author: "Alexander Murray-Watters"
 date: "12 April 2019"
 output: slidy_presentation
 ---
@@ -9,27 +9,77 @@ output: slidy_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Models are often uninterpretable
+As the models produced by, e.g., a neural network are often
+uninterpretable, it is difficult to work out where a model went wrong.
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+TODO: Insert bit on Google flu trends screw ups.
+https://www.nature.com/news/when-google-got-flu-wrong-1.12413
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## Biased data
 
-## Slide with Bullets
+Garbage in => Garbage out.
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+TODO: Insert bit on racist Google image search 
 
-## Slide with R Output
+https://www.theguardian.com/technology/2018/jan/12/google-racism-ban-gorilla-black-people
+https://www.theverge.com/2018/1/12/16882408/google-racist-gorillas-photo-recognition-algorithm-ai
 
-```{r cars, echo = TRUE}
-summary(cars)
-```
 
-## Slide with Plot
+## Example: How to make a racist AI
 
-```{r pressure}
-plot(pressure)
-```
 
+(Based on: https://blog.conceptnet.io/posts/2017/how-to-make-a-racist-ai-without-really-trying/)
+
+
+
+
+## Other examples
+
+- The COMPAS algorithm (sometimes used to decide who gets parole),
+resulted in racist parole decisions:
+https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm
+	- Code and data used in the writer's analysis is available at: https://github.com/propublica/compas-analysis
+
+-If your model's predictions effect what new data is gathered (e.g.,
+predictive policing) there is a risk of creating distorting feedback
+loops. One example involves using a model of where arrests for a
+particular crime occurred to guide police patrol assignments, resulting
+in more arrests in those areas (due to the increased patrol presence),
+leading to more patrol assignments in that area, etc.: https://www.themarshallproject.org/2016/02/03/policing-the-future
+
+- Other concerning models include the evaluation of teachers,
+  calculating credit scores, and citizenship scores (e.g., [social
+  credit system in China](https://en.wikipedia.org/wiki/Social_Credit_System)).
+
+
+## There is no magic to machine learning
+
+
+- If someone can't explain how their method works in simple way, but
+insists it solves all of your problems, they're selling snake oil.
+
+- The most oversold method right now (neural networks and deep
+  learning), is essentially a form of non-linear regression. As with any
+  form of regression, the model is only as good as its assumptions and
+  data. 
+	  - If you are trying to make predictions for data that is not
+  within the range of your sample, the model will almost certainly perform poorly.
+	  - If your data suffer from a selection effect, an incorrectly
+        randomized experiment/trial, or other problems with the data
+        gathering process, applying a machine learning model (like any
+        statistical model) will perform poorly.
+
+- Overfitting and out-of-sample prediction are still both
+  problems. The only known solution (at the present time) is to
+  already know a close to true underlying model (as in much of
+  physics).
+
+ "Once men turned their thinking over to machines in the hope that this
+would set them free. But that only permitted other men with machines
+to enslave them.” Frank Herbert, Dune, 1965.
+
+# Further reading
+
+ - Weapons of Math Destruction by Cathy O’Neil (non-technical, with more examples)
+ 
