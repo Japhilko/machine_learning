@@ -14,8 +14,8 @@ are statisticians), machine learning algorithms are usually created by
 computer scientists, who have built their own data analysis tool set
 around Python. While the algorithms are often ported to R (this is
 especially easy when Python was simply used as a convenient "wrapper"
-for the algorithm), there is often a delay, and the quality of the new
-implementation can be very poor.
+for the implementation), there is often a delay, and the quality of
+the R implementation can be very poor.
 
 
 # Installing Python
@@ -44,6 +44,9 @@ library(reticulate)
 
 ## Importing the math library from python
 math.main <- import("math")
+
+## We access functions from the imported python library using the \$
+## operator.
 
 ## Square root can take integers.
 math.main$sqrt(4)
@@ -152,7 +155,6 @@ updates, as it is the main focus of the originator of the algorithm.
 
 ```{r}
 
-
 umap.main <- import("umap")
 
 ## New version using reticulate.
@@ -190,5 +192,19 @@ head(dim.reduct)
 
 ```
 
-# Resources for further reading
+# Additional resources and further reading
+
+
+- Automate the Boring Stuff with Python (applied intro to Python): https://automatetheboringstuff.com/
+
+- Scikit-learn (general machine learning library): https://scikit-learn.org/stable/index.html
+
+- Pandas (Python's version of data.frames and other R-like
+  structures): https://pandas.pydata.org/
+	  - 10 minute introduction: https://pandas.pydata.org/pandas-docs/stable/
+ 
+- Keras (easy to use "deep learning" libray): https://keras.io/
+	- Example workflow: https://pythonprogramming.net/introduction-deep-learning-python-tensorflow-keras/
+	
+	
 
