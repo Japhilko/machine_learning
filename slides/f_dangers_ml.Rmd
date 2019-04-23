@@ -100,23 +100,24 @@ pos.vectors <- which(glove.df$word %in% positive.words)
 neg.vectors <- which(glove.df$word %in% negative.words)
 
 ## Limiting dataset to only those words in our lists of pos/neg words.
-glove.df <- glove.df[c(pos.vectors, neg.vectors),]
+glove.df.reduc <- glove.df[c(pos.vectors, neg.vectors),]
 
 ## Need to reassign posiions now (since we have a smaller dataset).
-pos.vectors <- which(glove.df$word %in% positive.words)
-neg.vectors <- which(glove.df$word %in% negative.words)
+pos.vectors <- which(glove.df.reduc$word %in% positive.words)
+neg.vectors <- which(glove.df.reduc$word %in% negative.words)
 
 
 ## Binary indicator for positive or negative words.
-sentiment.vec <- ifelse(1:length(glove.df$word)%in%pos.vectors, 1, -1)
+sentiment.vec <- ifelse(1:length(glove.df.reduc$word)%in%pos.vectors,
+                        1, ifelse(1:length(glove.df.reduc$word)%in%neg.vectors, -1, 0))
 
 ## backing up word vector
-word.backup <- glove.df$word
+word.backup <- glove.df.reduc$word
 
 ## Converting to matrix for glmnet.
-glove.df <- as.matrix(glove.df[,-1] )
+glove.df.reduc <- as.matrix(glove.df.reduc[,-1] )
 
-rownames(glove.df) <- word.backup
+rownames(glove.df.reduc) <- word.backup
 
 ## garbage collecting to recover RAM.
 gc(); gc(); gc();
@@ -132,9 +133,9 @@ sum(test.df%in%train.df)
 
 
 ## Fitting a model -- lasso regression.
-fit.cv <- cv.glmnet(glove.df[train.df,], sentiment.vec[train.df],family="binomial" )
+fit.cv <- cv.glmnet(glove.df.reduc[train.df,], sentiment.vec[train.df],family="binomial" )
 
-pred.fit <- predict(fit.cv$glmnet.fit, glove.df[test.df,], s=fit.cv$lambda.min)
+pred.fit <- predict(fit.cv$glmnet.fit, glove.df.reduc[test.df,], s=fit.cv$lambda.min)
 
 pred.fit[sample(1:nrow(pred.fit), size=100),]
 
@@ -147,6 +148,8 @@ pred.fit[sample(1:nrow(pred.fit), size=100),]
 library(ggplot2)
 library(dplyr)
 
+
+## Making sure things make sense.
 ggplot(tibble(pred.fit,
               pos.neg = as.character(sentiment.vec[c(pos.vectors, neg.vectors)[test.df]]))) +
   aes(x = pos.neg, y = pred.fit) +
@@ -156,6 +159,66 @@ ggplot(tibble(pred.fit,
 
 
 ```
+
+
+```{r}
+## Calculating the mean sentiment of a sentence.
+calc.sentiment <- function(input.text="This is great!", reg.model = fit.cv,
+                           known.word.list = word.backup, glove.df){
+
+  ## Simple pattern that matches whitespace or puncuation. Note:
+  ## screws-up apostrophes and hyphens!
+  simple.regex <- "[[:blank:]|[:punct:]]"
+
+  ## Splits text using our regex into a vector of words and empty spaces.
+  word.vec <- tolower(unlist(strsplit(input.text, simple.regex)))
+
+  ## Deleting the empty spaces. 
+  word.vec <- word.vec[nchar(word.vec)>0]
+
+
+  n.unknown.words <- sum(!(word.vec %in% glove.df$word))
+
+  ## If no words match, return 0.  
+  if(n.unknown.words == length(unique(word.vec))){return(0)}
+
+  ## If only 1 word matches, we have to transpose the matrix so that
+  ## it matches what glmnet needs.
+  ## else if((length(unique(word.vec)) - n.unknown.words) == 1 ){
+  ##   new.data <- t(as.matrix(glove.df[which(glove.df$word %in% word.vec),]))
+  ## }
+  else{
+    new.data <- as.matrix(glove.df[which(glove.df$word %in% word.vec),])
+  }
+  
+  pred.val <- predict(reg.model$glmnet.fit,
+                      new.data,
+                      s=reg.model$lambda.min)
+
+  print(pred.val)  
+
+#  return(mean(c(pred.val, rep.int(0, times=n.unknown.words))))
+  return(mean(c(pred.val)))
+}
+
+## Need to make sure no NA's in dataset
+##glove.df complete.cases(glove.df)
+
+## Backup list of words
+word.backup <- glove.df$word
+
+#convert to matrix and drop list of words (otherwise we end up with
+#matrix of strings, not numbers)
+glove.df <- as.matrix(glove.df[, -1])
+
+calc.sentiment("Let's go out for Italian food.", glove.df=glove.df)
+
+calc.sentiment("Let's go out for Chinese food.", glove.df=glove.df)
+
+calc. sentiment("Let's go out for Mexican food.", glove.df=glove.df)
+
+```
+
 
 
 Even when a method appears to be unbiased on the surface, if there is
