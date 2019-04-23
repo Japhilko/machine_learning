@@ -31,8 +31,135 @@ https://www.theverge.com/2018/1/12/16882408/google-racist-gorillas-photo-recogni
 
 (Based on: https://blog.conceptnet.io/posts/2017/how-to-make-a-racist-ai-without-really-trying/)
 
+We grab the GloVe pre-trained word vector first: https://nlp.stanford.edu/projects/glove/
 
 
+
+A word vector is a representation of a word within what is called a
+"word vector space". These vector spaces attempt to model the semantic
+and syntatical context of words, and are usually constructed by
+feeding a large body of text into a neural network. The neural network
+is usually constructed so that given an input such as context (e.g.,
+the other words in a sentence surounding the word to be predict),
+predict what word should "fit". The other direction is also possible,
+that is, predict "context" given a particular word.
+
+This particular GloVe word vector dataset has a 1.9 million word
+vocabulary is 1.75 Gigabytes large (compressed), 5 Gigabytes
+uncompressed.
+
+- Method for constructing dataset: https://nlp.stanford.edu/pubs/glove.pdf
+
+- Dataset: http://nlp.stanford.edu/data/glove.42B.300d.zip
+
+
+
+
+```{r}
+library(dplyr)
+library(glmnet)
+
+glove.df <- read.csv("~/Downloads/glove.42B.300d.txt",
+                 header=TRUE, sep=" ",quote="",
+                 col.names=c("word",paste0("e",1:300)))
+
+glove.df$word <- as.character(glove.df$word)
+
+
+## Did the file read in correctly?
+head(glove.df$word, n=100)
+
+dim(glove.df)
+
+head(glove.df$e1)
+
+```
+
+```{r}
+
+# We use the scan function to read in the list of words as it has an
+# easy way to distinguish comments from data (that way we don't have
+# to bother with grep or regular expressions).
+negative.words <- scan("../data/negative-words.txt", comment.char=";", what="", blank.lines.skip=T)
+
+positive.words <- scan("../data/positive-words.txt", comment.char=";", what="", blank.lines.skip=T)
+
+length(positive.words)
+length(negative.words)
+
+head(positive.words)
+head(negative.words)
+
+
+```
+
+```{r}
+
+## Locating postive and negative words in our dataset.
+pos.vectors <- which(glove.df$word %in% positive.words)
+neg.vectors <- which(glove.df$word %in% negative.words)
+
+## Limiting dataset to only those words in our lists of pos/neg words.
+glove.df <- glove.df[c(pos.vectors, neg.vectors),]
+
+## Need to reassign posiions now (since we have a smaller dataset).
+pos.vectors <- which(glove.df$word %in% positive.words)
+neg.vectors <- which(glove.df$word %in% negative.words)
+
+
+## Binary indicator for positive or negative words.
+sentiment.vec <- ifelse(1:length(glove.df$word)%in%pos.vectors, 1, -1)
+
+## backing up word vector
+word.backup <- glove.df$word
+
+## Converting to matrix for glmnet.
+glove.df <- as.matrix(glove.df[,-1] )
+
+rownames(glove.df) <- word.backup
+
+## garbage collecting to recover RAM.
+gc(); gc(); gc();
+
+
+## Testing/traing datasets. 80% for training, 20% for testing.
+train.df <- sample(1:length(word.backup), size=length(word.backup)*.8)
+
+test.df <-  which(!(1:length(word.backup))%in%train.df)
+
+## If this isn't 0 then we've messed up our spliting procedure.
+sum(test.df%in%train.df)
+
+
+## Fitting a model -- lasso regression.
+fit.cv <- cv.glmnet(glove.df[train.df,], sentiment.vec[train.df],family="binomial" )
+
+pred.fit <- predict(fit.cv$glmnet.fit, glove.df[test.df,], s=fit.cv$lambda.min)
+
+pred.fit[sample(1:nrow(pred.fit), size=100),]
+
+
+
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+ggplot(tibble(pred.fit,
+              pos.neg = as.character(sentiment.vec[c(pos.vectors, neg.vectors)[test.df]]))) +
+  aes(x = pos.neg, y = pred.fit) +
+  geom_boxplot() +
+  labs(title = "Boxplot of model Coefficents by word type",
+       x="Positive or Negative ", y = "Coefficent")
+
+
+```
+
+
+Even when a method appears to be unbiased on the surface, if there is
+bias in how data are collected, the *model* will also be biased.
 
 ## Other examples
 
