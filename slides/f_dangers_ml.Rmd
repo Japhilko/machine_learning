@@ -137,14 +137,14 @@ fit.cv <- cv.glmnet(glove.df.reduc[train.df,], sentiment.vec[train.df],family="b
 
 pred.fit <- predict(fit.cv$glmnet.fit, glove.df.reduc[test.df,], s=fit.cv$lambda.min)
 
-pred.fit[sample(1:nrow(pred.fit), size=100),]
+pred.fit[sample(1:nrow(pred.fit), size=10),]
 
 
 
 ```
 
 
-```{r}
+```{r, echo=TRUE}
 library(ggplot2)
 library(dplyr)
 
@@ -161,7 +161,7 @@ ggplot(tibble(pred.fit,
 ```
 
 
-```{r}
+```{r, echo=TRUE, message=FALSE}
 ## Calculating the mean sentiment of a sentence.
 calc.sentiment <- function(input.text="This is great!", reg.model = fit.cv,
                            known.word.list = word.backup, glove.df){
@@ -177,7 +177,7 @@ calc.sentiment <- function(input.text="This is great!", reg.model = fit.cv,
   word.vec <- word.vec[nchar(word.vec)>0]
 
 
-  n.unknown.words <- sum(!(word.vec %in% glove.df$word))
+  n.unknown.words <- sum(!(word.vec %in% known.word.list))
 
   ## If no words match, return 0.  
   if(n.unknown.words == length(unique(word.vec))){return(0)}
@@ -188,21 +188,16 @@ calc.sentiment <- function(input.text="This is great!", reg.model = fit.cv,
   ##   new.data <- t(as.matrix(glove.df[which(glove.df$word %in% word.vec),]))
   ## }
   else{
-    new.data <- as.matrix(glove.df[which(glove.df$word %in% word.vec),])
+    new.data <- as.matrix(glove.df[which(known.word.list %in% word.vec),])
   }
-  
+
+
   pred.val <- predict(reg.model$glmnet.fit,
                       new.data,
                       s=reg.model$lambda.min)
 
-  print(pred.val)  
-
-#  return(mean(c(pred.val, rep.int(0, times=n.unknown.words))))
   return(mean(c(pred.val)))
 }
-
-## Need to make sure no NA's in dataset
-##glove.df complete.cases(glove.df)
 
 ## Backup list of words
 word.backup <- glove.df$word
@@ -211,13 +206,42 @@ word.backup <- glove.df$word
 #matrix of strings, not numbers)
 glove.df <- as.matrix(glove.df[, -1])
 
+gc()
+
+```
+Now for the Racism
+
+
+```{r, echo=TRUE}
 calc.sentiment("Let's go out for Italian food.", glove.df=glove.df)
 
 calc.sentiment("Let's go out for Chinese food.", glove.df=glove.df)
 
-calc. sentiment("Let's go out for Mexican food.", glove.df=glove.df)
+calc.sentiment("Let's go out for Mexican food.", glove.df=glove.df)
+
+
+
 
 ```
+So "Mexican" is rated lower than the other two.
+
+
+What about names?
+
+```{r, echo=TRUE}
+calc.sentiment("My name is Emily", glove.df=glove.df)
+
+calc.sentiment("My name is Heather", glove.df=glove.df)
+
+calc.sentiment("My name is Yvette", glove.df=glove.df)
+
+calc.sentiment("My name is Shaniqua", glove.df=glove.df)
+
+
+```
+
+A stereotypical black name (Shaniqua) is rated far more negatively
+than a stereotypical white name (such as Emily or Heather).
 
 
 
