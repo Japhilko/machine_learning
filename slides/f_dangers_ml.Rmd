@@ -58,24 +58,30 @@ uncompressed.
 ```{r}
 library(dplyr)
 library(glmnet)
+```
 
+
+```{r, echo=TRUE, eval=FALSE}
 glove.df <- read.csv("~/Downloads/glove.42B.300d.txt",
                  header=TRUE, sep=" ",quote="",
                  col.names=c("word",paste0("e",1:300)))
+```
 
+```{r}
+load("../data/saved_data_loaded.RData")
 glove.df$word <- as.character(glove.df$word)
 
 
+
+```
+
+```{r, echo=TRUE}
 ## Did the file read in correctly?
 head(glove.df$word, n=100)
 
 dim(glove.df)
 
 head(glove.df$e1)
-
-```
-
-```{r}
 
 # We use the scan function to read in the list of words as it has an
 # easy way to distinguish comments from data (that way we don't have
@@ -93,7 +99,7 @@ head(negative.words)
 
 ```
 
-```{r}
+```{r, echo=TRUE}
 
 ## Locating postive and negative words in our dataset.
 pos.vectors <- which(glove.df$word %in% positive.words)
@@ -204,7 +210,7 @@ word.backup <- glove.df$word
 
 #convert to matrix and drop list of words (otherwise we end up with
 #matrix of strings, not numbers)
-glove.df <- as.matrix(glove.df[, -1])
+glove.df.final <- as.matrix(glove.df[, -1])
 
 gc()
 
@@ -213,11 +219,11 @@ Now for the Racism
 
 
 ```{r, echo=TRUE}
-calc.sentiment("Let's go out for Italian food.", glove.df=glove.df)
+calc.sentiment("Let's go out for Italian food.", glove.df=glove.df.final)
 
-calc.sentiment("Let's go out for Chinese food.", glove.df=glove.df)
+calc.sentiment("Let's go out for Chinese food.", glove.df=glove.df.final)
 
-calc.sentiment("Let's go out for Mexican food.", glove.df=glove.df)
+calc.sentiment("Let's go out for Mexican food.", glove.df=glove.df.final)
 
 
 
@@ -229,13 +235,13 @@ So "Mexican" is rated lower than the other two.
 What about names?
 
 ```{r, echo=TRUE}
-calc.sentiment("My name is Emily", glove.df=glove.df)
+calc.sentiment("My name is Emily", glove.df=glove.df.final)
 
-calc.sentiment("My name is Heather", glove.df=glove.df)
+calc.sentiment("My name is Heather", glove.df=glove.df.final)
 
-calc.sentiment("My name is Yvette", glove.df=glove.df)
+calc.sentiment("My name is Yvette", glove.df=glove.df.final)
 
-calc.sentiment("My name is Shaniqua", glove.df=glove.df)
+calc.sentiment("My name is Shaniqua", glove.df=glove.df.final)
 
 
 ```
