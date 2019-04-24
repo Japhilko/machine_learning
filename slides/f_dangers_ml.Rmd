@@ -13,8 +13,25 @@ knitr::opts_chunk$set(echo = FALSE)
 As the models produced by, e.g., a neural network are often
 uninterpretable, it is difficult to work out where a model went wrong.
 
-TODO: Insert bit on Google flu trends screw ups.
-https://www.nature.com/news/when-google-got-flu-wrong-1.12413
+Google Flu trends is a prime example of this. For many years, Google
+was able to accurately describe where the flu had spread to (and how
+many people had it) faster than the CDC (Centers for Disease Control
+and Prevention). Google wrote tracked the spread of flu by looking for
+spikes in the number of searches for the flu (or flu related
+symptoms). There was some discussion of using Google Flu trends as
+part of the US government's response to flu outbreaks. The downside is
+that when other events caused people to search about the flu on
+Google, such as the Swine flu outbreak in 2009, the model broke down,
+as it couldn't distinguish searches about the news story from searches
+about the flu. Changes in how the news coverge has also led to
+problems with Google's method. Since the individual components of a
+neural network are difficult to interpret, it can be hard to tell if
+the problem is with the variables included (or excluded) from the
+model, or if the problem is with the model parameters, functional
+relationship between variables, or some other
+cause. https://www.nature.com/news/when-google-got-flu-wrong-1.12413
+
+TODO: Insert image.
 
 ## Biased data
 
@@ -25,6 +42,7 @@ TODO: Insert bit on racist Google image search
 https://www.theguardian.com/technology/2018/jan/12/google-racism-ban-gorilla-black-people
 https://www.theverge.com/2018/1/12/16882408/google-racist-gorillas-photo-recognition-algorithm-ai
 
+TODO: Insert image.
 
 ## Example: How to make a racist AI
 
