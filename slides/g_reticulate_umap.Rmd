@@ -206,5 +206,5 @@ head(dim.reduct)
 - Keras (easy to use "deep learning" libray): https://keras.io/
 	- Example workflow: https://pythonprogramming.net/introduction-deep-learning-python-tensorflow-keras/
 	
-	
+- [R Interface to Python](https://rstudio.github.io/reticulate/)	
 
