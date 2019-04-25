@@ -3,7 +3,7 @@ title: "Introducing Machine Learning "
 author: "Jan-Philipp Kolb"
 date: "03 May 2019"
 output: 
-  html_document: 
+  slidy_presentation: 
     keep_md: yes
 ---
 
@@ -27,6 +27,9 @@ Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/
 - Choice of Metrics/Evaluation Criteria
 
 - Testing
+
+
+## [Feature selection](https://en.wikipedia.org/wiki/Feature_selection)
 
 
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
@@ -127,7 +130,7 @@ stopCluster(cl)
 ```
 
 
-```{r}
+```{r,eval=F}
 ?parallel::makeCluster
 ```
 
@@ -163,3 +166,5 @@ company quantide
 -->
 
 - Google`s [Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course/)
+
+- [A prelude to machine learning](https://eight2late.wordpress.com/2017/02/23/a-prelude-to-machine-learning/)
