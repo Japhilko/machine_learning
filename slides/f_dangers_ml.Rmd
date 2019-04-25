@@ -233,7 +233,8 @@ glove.df.final <- as.matrix(glove.df[, -1])
 gc()
 
 ```
-Now for the Racism
+
+## Now for the Racism
 
 
 ```{r, echo=TRUE}
@@ -250,7 +251,7 @@ calc.sentiment("Let's go out for Mexican food.", glove.df=glove.df.final)
 So "Mexican" is rated lower than the other two.
 
 
-What about names?
+## What about names?
 
 ```{r, echo=TRUE}
 calc.sentiment("My name is Emily", glove.df=glove.df.final)
@@ -297,6 +298,8 @@ leading to more patrol assignments in that area, etc.
   credit system in China](https://en.wikipedia.org/wiki/Social_Credit_System)).
 
 
+- TODO: Add bit on adversarial neural networks. : https://towardsdatascience.com/breaking-neural-networks-with-adversarial-attacks-f4290a9a45aa?gi=c4e5bf7acb50
+
 ## There is no magic to machine learning
 
 
@@ -325,5 +328,40 @@ to enslave them.” Frank Herbert, Dune, 1965.
 
 # Further reading
 
- - Weapons of Math Destruction by Cathy O’Neil (non-technical, with more examples)
+## Nontechnical
+
+ - Weapons of Math Destruction by Cathy O’Neil.
  
+## Specific and/or technical
+
+### General introductions
+
+ - Pattern Recognition and Machine Learning. Bishop, Christopher, 2011. https://www.amazon.com/Pattern-Recognition-Learning-Information-Statistics/dp/0387310738
+
+
+ - Computer Age Statistical Inference:Algorithms, Evidence and Data Science. Efron et al, 2016. https://web.stanford.edu/~hastie/CASI_files/PDF/casi.pdf
+
+ - An Introduction to Statistical Learning with Applications in R. James et al, 2013. http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Sixth%20Printing.pdf
+
+ - The Elements of Statistical Learning: Data Mining, Inference, and Prediction. 2009 http://www.stanford.edu/~hastie/ElemStatLearn/printings/ESLII_print12.pdf
+
+## Deep learning
+
+ - Deep Learning with Python. Chollet, Francois, 2017 https://www.amazon.com/Deep-Learning-Python-Francois-Chollet/dp/1617294438
+
+ - Deep Learning. Goodfellow et al, 2016. https://www.amazon.com/Deep-Learning-Adaptive-Computation-Machine/dp/0262035618/
+
+
+
+
+### Adversarial neural networks
+ - Explaining and Harnessing Adversarial Examples. Goodfellow et al, 2015 https://arxiv.org/abs/1412.6572
+
+ - Adversarial Examples in the Physical World. Kurakin et al, 2017 https://arxiv.org/pdf/1607.02533.pdf- 
+
+ - Adversarial Patch. Brown et al, 2018 https://arxiv.org/pdf/1712.09665.pdf
+
+ -  (Note: A non-technical summary of these papers is avalible here: https://towardsdatascience.com/breaking-neural-networks-with-adversarial-attacks-f4290a9a45aa?gi=c4e5bf7acb50)
+ 
+ 
+

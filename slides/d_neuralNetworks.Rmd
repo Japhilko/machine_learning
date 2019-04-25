@@ -9,6 +9,19 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+# Neural networks
+
+## Example
+
+## Exercise
+
+
+## Cross-validation 
+
+As you may recall from our discussion of lasso regresion...
+
+## Exercise -- time to implement your own.
+
 ## Additional resources and further reading
 
 - [Neural networks with R](https://edu.kpfu.ru/pluginfile.php/419285/mod_resource/content/2/neural-networks-r.pdf)
