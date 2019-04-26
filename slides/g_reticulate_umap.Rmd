@@ -5,6 +5,9 @@ date: "April 9, 2019"
 output: beamer_presentation
 ---
 
+TODO: NEED TO ADD EXERCISES
+
+
 # Why Python? Isn't this an R course?
 
 It'd be great if you only had to use a single programming language,
@@ -34,6 +37,7 @@ Load the `reticulate` package.
 
 ```{r}
 library(reticulate)
+library(ggplot2)
 
 ```
 
@@ -191,6 +195,80 @@ dim.reduct <- umap(fake.data, n_neighbors = 15, min_dist = 0, metric = "euclidea
 head(dim.reduct)
 
 ```
+
+### A more interesting example involving cars
+
+Using the built in `mtcars` dataset, we can see how the method performs (in contrast to say, PCA).
+
+     A data frame with 32 observations on 11 (numeric) variables.
+
+       1  mpg   Miles/(US) gallon
+       2  cyl   Number of cylinders
+       3  disp  Displacement (cu.in.)
+       4  hp    Gross horsepower
+       5  drat  Rear axle ratio
+       6  wt    Weight (1000 lbs)
+       7  qsec  1/4 mile time
+       8  vs    Engine (0 = V-shaped, 1 = straight)
+       9  am    Transmission (0 = automatic, 1 = manual)
+       10  gear  Number of forward gears
+       11  carb  Number of carburetors
+
+
+
+```{r}
+
+## Performing reduction.                                                                                                                                                                     
+dim.reduct <- umap(mtcars[,-c(8,9)], n_neighbors = 15, min_dist = 0, metric = "euclidean", n_components = 2)
+dim.reduct <-data.frame(dim.reduct, mtcars)
+
+plot(prcomp(mtcars[,-c(8,9)], 2), main="PCA for comparison")
+
+biplot(prcomp(mtcars[,-c(8,9)], 2), main="PCA for comparison")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=as.factor(gear))) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=as.factor(cyl))) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=as.factor(vs))) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=as.factor(am))) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=as.factor(carb))) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=disp)) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=hp)) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+ggplot(dim.reduct) +
+  aes(x=X1, y=X2) +
+  geom_point(aes(color=drat)) +
+  labs(title="", x="Dimension 1", y = "Dimension 2")
+
+```
+
+
 
 # Additional resources and further reading
 
