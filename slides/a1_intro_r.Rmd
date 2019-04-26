@@ -1,0 +1,25 @@
+---
+title: "Introduction to R"
+author: "Jan-Philipp Kolb"
+date: "26 April 2019"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Import data 
+
+```{r,eval=F}
+?read.csv
+?read.csv2
+```
+
+```{r,eval=F}
+?scan
+```
+
+
+
+## How to deal with missing values
