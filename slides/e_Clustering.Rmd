@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Resources
 
 
-```{r,echo=F}
+```{r,echo=F, eval=FALSE}
 slides_path <- getwd()
 git_path <- gsub("slides","",slides_path)
 if (Sys.info()$nodename=="MAC14077"){
@@ -38,7 +38,17 @@ library("kknn")
 
 ## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
 
-```{r}
+
+
+## hdbscan
+
+A fairly new alternative to kmeans, hdbscan does not require the
+number of categories to be assigned before it is run. It only requires
+a decision as to the minimum number of points needed to be included in
+a cluster. This minimum number acts as a smoothing paramter (such as a
+density bandwidth parameter or a histograms bin/bar width) . 
+
+```{r, eval=FALSE}
 install.packages("dbscan")
 ```
 
@@ -49,12 +59,29 @@ library(ggplot2)
 library(dplyr)
 library(maps)
 library(dbscan)
+
+
+data(moons)                                                                                                                                                                                   
+res <- dbscan::hdbscan(moons, minPts = 5)                                                                                                                                                     
+                                                                                                                                                                                              
+res
+
+str(res)
+
+                                                                                                                                                                                              
+plot(moons, col = res$cluster + 1, main="R implementation")                                                                                                                                   
+                                                                                                                                                                                              
+
+
+
 ```
 
 
 
 
-```{r}
+
+
+```{r, eval=FALSE}
 load(paste0(git_path,"/data/osmsa_PLZ_14.RData"))
 ```
 
