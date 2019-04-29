@@ -42,11 +42,12 @@ library("kknn")
 
 ## hdbscan
 
-A fairly new alternative to kmeans, hdbscan does not require the
-number of categories to be assigned before it is run. It only requires
-a decision as to the minimum number of points needed to be included in
-a cluster. This minimum number acts as a smoothing paramter (such as a
-density bandwidth parameter or a histograms bin/bar width) . 
+A fairly new alternative to kmeans, hdbscan does not require you to
+specify the number of categories to be assigned. It only requires a
+decision as to the minimum number of points needed to be included in a
+cluster. This minimum number acts as a smoothing paramter (such as a
+density bandwidth parameter or a histograms bin/bar width), with lower
+values finding more clusters. Other advantages of hdbscan include .
 
 ```{r, eval=FALSE}
 install.packages("dbscan")
@@ -61,7 +62,9 @@ library(maps)
 library(dbscan)
 
 
-data(moons)                                                                                                                                                                                   
+data(moons)
+
+## Running HDBscan with the minimum number of points set to 5.
 res <- dbscan::hdbscan(moons, minPts = 5)                                                                                                                                                     
                                                                                                                                                                                               
 res
