@@ -1,13 +1,32 @@
 ---
-title: "Decission Trees"
+title: "Supervised Learning - Bagging, Boosting, Trees"
 author: "Jan-Philipp Kolb"
-date: "25 September 2018"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: beamer_presentation
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+<!--
+https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html#random-forest
+-->
+
+## What is supervised learning
+
+- Example data are used to train a model.
+- With this model the classification can be realized automatically. 
+
+<!--
+http://www.datenbanken-verstehen.de/lexikon/supervised-learning/
+
+Daten einer Gruppierung zuzuordnen, die durch den Nutzenden vorgegeben sind, aber nicht jeder Datensatz manuell bewertet werden kann (z. B. Kreditbewilligung abhängig von Kredithöhe und Bonität). 
+
+Die Aufgabe besteht darin, 
+
+Ein Modell wird mit Beispieldaten aufgebaut, das die Zuordnung anschließend selbstständig übernimmt.
+-->
 
 
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)

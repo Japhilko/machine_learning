@@ -9,6 +9,65 @@ output: slidy_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## Introduction round
+
+- Where are you from? What are you studying/working?
+- What are your expectations of this course?
+- Where do you think you can use Machine Learning in the future?
+
+## Preliminaries
+
+- This topic is huge - we concentrate on presenting the application in R
+- Usually we have big differences in knowledge and abilities of the participants - please tell, if it is too fast or slow.
+- We have many [**exercises**](http://web.math.ku.dk/~helle/R-intro/exercises.pdf) because at the end you can only learn on your own
+- We have many [**examples**](https://www.showmeshiny.com/) - try them out 
+- If there are questions - always ask
+- R is more fun together - ask your neighbor
+
+## Why R is a good choice ...
+
+- ... because it is an [**open source language**](https://stackoverflow.com/questions/1546583/what-is-the-definition-of-an-open-source-programming-language)
+- ... outstanding graphs - [**graphics**](http://matthewlincoln.net/2014/12/20/adjacency-matrix-plots-with-r-and-ggplot2.html), [**graphics**](https://www.r-bloggers.com/3d-plots-with-ggplot2-and-plotly /), [**graphics**](https://procomun.wordpress.com/2011/03/18/splomr/)
+- ... relates to other languages - [**R can be used in combination with other programs**](https://github.com/Japhilko/RInterfaces) - e.g. [**data linking**](https://github.com/Japhilko/RInterfaces/blob/master/slides/Datenimport.md)
+- ...R can be used [**for automation**](https://cran.r-project.org/web/packages/MplusAutomation/index.html)
+ - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/)
+- ...
+
+- Because of the large comunity
+- New statistical methodologies are implemented quite fast 
+- Because R can be combined with other programs like Postgresql or Python
+
+## Constraints
+
+<!--
+Why R might not be the best choice in every situation
+-->
+
+### Newer modules in Python
+
+- Machine learning is a field that changes rapidly.  
+- Some new tools are first developed in Python. 
+- The package reticulate offers the possibility to use these modules from an R environment. 
+- Good news - Python is also Open Source
+
+### Big Data 
+
+- Especially if you work with web data, you quickly have to deal with large amounts of data. 
+- Therefore one must fall back on databases, which can be used in combination with R. 
+
+## Content of this part
+
+- Introduction to programming in R 
+
+### what is relevant for this course.
+
+- How to import data?
+- What to do with missing values?
+- Parallelization
+
+
+
+
 ## Import data 
 
 ```{r,eval=F}
@@ -23,3 +82,50 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 ## How to deal with missing values
+
+
+
+
+## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+
+## How many cores are available
+
+
+```{r}
+library(doParallel)
+detectCores()
+```
+
+## Make cluster
+
+```{r}
+cl <- makeCluster(detectCores())
+registerDoParallel(cl)
+```
+
+```{r}
+start_time <- Sys.time()
+ab <- runif(10000000)
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+```{r}
+stopCluster(cl)
+```
+
+
+```{r,eval=F}
+?parallel::makeCluster
+```
+
