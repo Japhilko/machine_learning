@@ -1,0 +1,48 @@
+---
+title: "Overfitting"
+author: "Jan-Philipp Kolb"
+date: "1 5 2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Basic regression
+
+```{r}
+library(keras)
+```
+
+```{r}
+boston_housing <- dataset_boston_housing()
+```
+
+
+
+## Overfitting 
+
+```{r,eval=F}
+install.packages("keras")
+```
+
+```{r}
+library(keras)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(tibble)
+```
+
+```{r}
+num_words <- 10000
+imdb <- dataset_imdb(num_words = num_words)
+```
+
+
+<!--
+https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_text_classification.html
+-->
+

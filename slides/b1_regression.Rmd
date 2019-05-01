@@ -434,6 +434,20 @@ stargazer(m3, type="html")
 
 ![](figure/stargazertabex.PNG)
 
+
+<!--
+https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regression.html
+-->
+
+
+
+
+
+<!--
+https://cran.r-project.org/web/packages/keras/vignettes/tutorial_overfit_underfit.html
+-->
+
+
 ## [Overfitting](https://en.wikipedia.org/wiki/Overfitting).
 
 ![](figure/450px-Overfitting.svg.png)

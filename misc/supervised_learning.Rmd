@@ -1,0 +1,84 @@
+---
+title: "Part 1 - Intro Supervised Learning"
+author: "Jan-Philipp Kolb"
+date: "2 4 2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message = F)
+```
+
+## [Supervised Learning](https://www.datasciencecentral.com/profiles/blogs/supervised-learning-everything-you-need-to-know)
+
+![](figure/SMLProcess.png)
+
+## R-packages for machine learning
+
+![](figure/top-20-r-packages-machine-learning-downloads.jpg)
+
+
+## [k-nearest neighbour](https://www.r-bloggers.com/k-nearest-neighbor-step-by-step-tutorial/)
+
+```{r}
+library(caret)
+library(e1071)
+```
+
+
+```{r}
+data1 <- read.csv("../data/US Presidential Data.csv")
+```
+
+```{r}
+#Partitioning the data into training and validation data
+set.seed(101)
+index = createDataPartition(data1$Win.Loss, p = 0.7, list = F )
+train = data1[index,]
+validation = data1[-index,]
+```
+
+```{r}
+# Explore data
+dim(train)
+dim(validation)
+names(train)
+head(train)
+head(validation)
+```
+
+
+```{r}
+# Setting levels for both training and validation data
+levels(train$Win.Loss) <- make.names(levels(factor(train$Win.Loss)))
+levels(validation$Win.Loss) <- make.names(levels(factor(validation$Win.Loss)))
+```
+
+## [](https://www.dataiku.com/learn/guide/academy/machine-learning/identify_clusters.html)
+
+![How to identify clusters and name them](figure/nyc_map.png)
+
+
+## Links
+
+- [Your First Machine Learning Project in R Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
+
+- [Top 20 R Machine Learning and Data Science packages](https://www.kdnuggets.com/2015/06/top-20-r-machine-learning-packages.html)
+
+- [Statistical NLP on OpenStreetMap](https://machinelearnings.co/statistical-nlp-on-openstreetmap-b9d573e6cc86)
+
+- [How to identify clusters and name them](https://www.dataiku.com/learn/guide/academy/machine-learning/identify_clusters.html)
+
+- [Setting the course for Machine Learning](https://blog.arup.io/setting-the-course-for-machine-learning-760133aa334d)
+
+- [The provision of urban green space and its accessibility: Spatial data effects in Brussels](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204684)
+
+- [Residential scene classification for gridded population sampling in developing countries using deep convolutional neural networks on satellite imagery](https://ij-healthgeographics.biomedcentral.com/articles/10.1186/s12942-018-0132-1)
+
+
+- [Using Convolutional Neural Networks to detect features in satellite images](http://ataspinar.com/2017/12/04/using-convolutional-neural-networks-to-detect-features-in-sattelite-images/)
+
+
+<!--
+http://www.informatik.tuwien.ac.at/master-abschluss/epilog/ausstellungen/26#thesis-3103
+-->
