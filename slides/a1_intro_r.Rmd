@@ -79,11 +79,38 @@ Why R might not be the best choice in every situation
 ?scan
 ```
 
+## The R-package `data.table`
+
+### Get an overview
+
+```{r}
+data(airquality)
+head(airquality)
+```
+
+### Overview with `data.table`
+
+```{r}
+library(data.table)
+airq <- data.table(airquality)
+airq
+```
+
 
 
 ## How to deal with missing values
 
+```{r,eval=F}
+?na.omit
+```
 
+```{r}
+airq
+```
+
+```{r}
+na.omit(airq)
+```
 
 
 ## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)

@@ -16,10 +16,42 @@ knitr::opts_chunk$set(echo = FALSE)
 library(keras)
 ```
 
+## [The Boston Housing Prices dataset](https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regression.html)
+
+
+
+
 ```{r}
 boston_housing <- dataset_boston_housing()
 ```
 
+```{r}
+library(keras)
+boston_housing <- dataset_boston_housing()
+```
+
+```{r}
+c(train_data, train_labels) %<-% boston_housing$train
+c(test_data, test_labels) %<-% boston_housing$test
+```
+
+
+
+```{r}
+library(tibble)
+
+column_names <- c('CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 
+                  'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT')
+train_df <- as_tibble(train_data)
+colnames(train_df) <- column_names
+train_df
+
+train_data <- scale(train_data) 
+col_means_train <- attr(train_data, "scaled:center") 
+col_stddevs_train <- attr(train_data, "scaled:scale")
+test_data <- scale(test_data, center = col_means_train, scale = col_stddevs_train)
+
+```
 
 
 ## Overfitting 

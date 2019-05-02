@@ -435,6 +435,9 @@ stargazer(m3, type="html")
 ![](figure/stargazertabex.PNG)
 
 
+
+
+
 <!--
 https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regression.html
 -->

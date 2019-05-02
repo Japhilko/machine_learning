@@ -1,5 +1,5 @@
 ---
-title: "Supervised Learning - Bagging, Boosting, Trees"
+title: "Supervised Learning - Trees, Bagging, Boosting"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: beamer_presentation
@@ -29,9 +29,218 @@ Ein Modell wird mit Beispieldaten aufgebaut, das die Zuordnung anschließend sel
 -->
 
 
+
+## [Tree-Based Models](https://www.statmethods.net/advstats/cart.html)
+
+- Trees are good for interpretation because they are simple
+
+- Tree based methods involve stratifying or segmenting the predictor space
+into a number of simple regions. ([Hastie and Tibshirani](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/trees.pdf))
+
+- These methods do not deliver the best results concerning prediction accuracy. 
+
+<!--
+https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/about
+
+https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/trees.pdf
+-->
+
+<!--
+
+https://en.wikipedia.org/wiki/Decision_tree_learning
+
+https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf
+
+https://www.analyticsvidhya.com/blog/2016/04/complete-tutorial-tree-based-modeling-scratch-in-python/
+https://www.analyticsvidhya.com/blog/2016/02/complete-tutorial-learn-data-science-scratch/
+-->
+
+
+## Explanation: [**decision tree**](https://en.wikipedia.org/wiki/Decision_tree)
+
+
+### [**Decision trees used in data mining are of two main types:**](https://en.wikipedia.org/wiki/Decision_tree_learning)
+
+- Classification tree
+
+- Regression tree
+
+## 
+
+<!--
+https://www.statmethods.net/advstats/cart.html
+-->
+
+```{r}
+library(rpart)
+fit <- rpart(Kyphosis ~ Age + Number + Start,
+   method="class", data=kyphosis)
+```
+
+```{r}
+printcp(fit) # display the results 
+```
+
+
+```{r}
+plotcp(fit) 
+```
+
+
+```{r}
+summary(fit)
+```
+
+```{r}
+# plot tree 
+plot(fit, uniform=TRUE, 
+   main="Classification Tree for Kyphosis")
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+
+# create attractive postscript plot of tree 
+post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps", 
+   title = "Classification Tree for Kyphosis")
+```
+
+
+
+
+## Conditional inference tree
+
+```{r}
+library(party)
+```
+
+```{r,eval=F}
+?ctree
+```
+
+- performs recursively univariate split recursively
+
+
+- [**Vignette**](https://cran.r-project.org/web/packages/party/vignettes/party.pdf) package `party`
+
+
+## [ctree example](https://datawookie.netlify.com/blog/2013/05/package-party-conditional-inference-trees/)
+
+```{r,eval=F}
+install.packages("party")
+```
+
+## The data behind
+
+```{r}
+airq <- subset(airquality, !is.na(Ozone))
+summary(airq$Temp)
+```
+
+## A first model
+
+```{r}
+library(party)
+```
+
+
+```{r}
+air.ct <- ctree(Ozone ~ ., data = airq, controls = ctree_control(maxsurrogate = 3))
+```
+
+
+## The plot for `ctree`
+
+```{r}
+plot(air.ct)
+```
+
+
+
+
+## Recursive partitioning algorithms are special cases of a
+simple two-stage algorithm
+
+- First partition the observations by univariate splits in a recursive way and 
+- second fit a constant model in each cell of the resulting partition.
+
+
+## [`ctree` - Regression](https://stats.stackexchange.com/questions/171301/interpreting-ctree-partykit-output-in-r)
+
+```{r}
+library(partykit)
+```
+
+```{r,eval=F}
+?ctree
+```
+
+```{r}
+airq <- subset(airquality, !is.na(Ozone))
+airct <- ctree(Ozone ~ ., data = airq)
+plot(airct, type = "simple")
+```
+
+
+
+## [Decision Trees](http://www.statmethods.net/advstats/cart.html)
+
+[Regression tree vs. classification tree](http://www.statmethods.net/advstats/cart.html)
+
+
+```{r}
+library(rpart)
+```
+
+Grow a tree
+
+```{r}
+fit <- rpart(Kyphosis ~ Age + Number + Start,
+   method="class", data=kyphosis)
+
+printcp(fit) # display the results
+plotcp(fit) # visualize cross-validation results
+summary(fit) # detailed summary of splits
+```
+
+```{r}
+# plot tree
+plot(fit, uniform=TRUE,
+   main="Classification Tree for Kyphosis")
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+```
+
+[Decision Trees and Random Forest](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
+
+
+
+## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
+
+> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
+
+## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
+
+- Ensemble learning method - multitude of decision trees 
+- Random forests correct for decision trees' habit of overfitting to their training set.
+
+
+![](figure/expl_rf.png)
+
+
+
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
 
-- Bagging is also known as bootstrap aggregation
+- Bagging is also known as bootstrap aggregation.
+- Bagging is a method for combining predictions from different regression or classification models and was developed by Leo Breiman.
+- The results of the models are then averaged in the simplest case.
+- The result of each model prediction is included in the prediction with the same weight.
+- The weights could depend on the quality of the model prediction, i.e. "good" models are more important than "bad" models.
+- Bagging leads to significantly improved predictions in the case of unstable models.
+
+<!--
+https://en.wikipedia.org/wiki/Bootstrap_aggregating
+https://de.wikipedia.org/wiki/Bagging
+http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
+-->
+
+
 
 ## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
 
@@ -117,94 +326,6 @@ https://www.researchgate.net/figure/A-simple-example-of-visualizing-gradient-boo
 -->
 
 
-## 
-
-- trees are good for interpretation because they are simple
-
-## Explanation: [**decision tree**](https://en.wikipedia.org/wiki/Decision_tree)
-
-
-### [**Decision trees used in data mining are of two main types:**](https://en.wikipedia.org/wiki/Decision_tree_learning)
-
-- Classification tree
-
-- Regression tree
-
-
-
-## Conditional inference tree
-
-```{r}
-library(party)
-```
-
-```{r,eval=F}
-?ctree
-```
-
-- performs recursively univariate split recursively
-
-
-- [**Vignette**](https://cran.r-project.org/web/packages/party/vignettes/party.pdf) package `party`
-
-
-## [ctree example](https://datawookie.netlify.com/blog/2013/05/package-party-conditional-inference-trees/)
-
-```{r,eval=F}
-install.packages("party")
-```
-
-## The data behind
-
-```{r}
-airq <- subset(airquality, !is.na(Ozone))
-summary(airq$Temp)
-```
-
-## A first model
-
-```{r}
-library(party)
-```
-
-
-```{r}
-air.ct <- ctree(Ozone ~ ., data = airq, controls = ctree_control(maxsurrogate = 3))
-```
-
-
-## The plot for `ctree`
-
-```{r}
-plot(air.ct)
-```
-
-
-
-
-## Recursive partitioning algorithms are special cases of a
-simple two-stage algorithm
-
-- First partition the observations by univariate splits in a recursive way and 
-- second fit a constant model in each cell of the resulting partition.
-
-
-## [`ctree` - Regression](https://stats.stackexchange.com/questions/171301/interpreting-ctree-partykit-output-in-r)
-
-```{r}
-library(partykit)
-```
-
-```{r,eval=F}
-?ctree
-```
-
-```{r}
-airq <- subset(airquality, !is.na(Ozone))
-airct <- ctree(Ozone ~ ., data = airq)
-plot(airct, type = "simple")
-```
-
 ## Links
 
 - [**Vignette**](https://cran.r-project.org/web/packages/partykit/vignettes/ctree.pdf) for package `partykit` 
@@ -217,45 +338,5 @@ plot(airct, type = "simple")
 - [Video on tree based methods](https://www.youtube.com/watch?v=6ENTbK3yQUQ)
 
 
-## [Decision Trees](http://www.statmethods.net/advstats/cart.html)
-
-[Regression tree vs. classification tree](http://www.statmethods.net/advstats/cart.html)
 
 
-```{r}
-library(rpart)
-```
-
-Grow a tree
-
-```{r}
-fit <- rpart(Kyphosis ~ Age + Number + Start,
-   method="class", data=kyphosis)
-
-printcp(fit) # display the results
-plotcp(fit) # visualize cross-validation results
-summary(fit) # detailed summary of splits
-```
-
-```{r}
-# plot tree
-plot(fit, uniform=TRUE,
-   main="Classification Tree for Kyphosis")
-text(fit, use.n=TRUE, all=TRUE, cex=.8)
-```
-
-[Decision Trees and Random Forest](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
-
-
-
-## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
-
-> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
-
-## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
-
-- Ensemble learning method - multitude of decision trees 
-- Random forests correct for decision trees' habit of overfitting to their training set.
-
-
-![](figure/expl_rf.png)
