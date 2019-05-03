@@ -215,6 +215,13 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
 > Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
 
+## [What are the advantages and disadvantages of decision trees?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+
+Advantages: Decision trees are easy to interpret, nonparametric (which means they are robust to outliers), and there are relatively few parameters to tune.
+
+Disadvantages: Decision trees are prone to be overfit. However, this can be addressed by ensemble methods like random forests or boosted trees.
+
+
 ## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
 
 - Ensemble learning method - multitude of decision trees 

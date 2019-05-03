@@ -6,7 +6,7 @@ output: slidy_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,cache=T)
 ```
 
 ## Introduction round
@@ -96,6 +96,34 @@ airq <- data.table(airquality)
 airq
 ```
 
+## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+
+```{r}
+x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 0.829, 0.907)
+```
+
+- Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+- compute the exponential function and round the result
+
+```{r,echo=F}
+round(exp(diff(log(x))), 1)
+```
+
+
+
+
+## [The pipe operator](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+
+
+```{r}
+library(magrittr)
+
+# Perform the same computations on `x` as above
+x %>% log() %>%
+    diff() %>%
+    exp() %>%
+    round(1)
+```
 
 
 ## How to deal with missing values
@@ -156,3 +184,17 @@ stopCluster(cl)
 ?parallel::makeCluster
 ```
 
+## [The `swirl` package](https://swirlstats.com/)
+
+```{r,eval=F}
+install.packages("swirl")
+```
+
+```{r,eval=F}
+library("swirl")
+swirl()
+```
+
+## Resources
+
+- [Course materials for the Data Science Specialization](https://github.com/DataScienceSpecialization/courses)

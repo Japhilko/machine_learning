@@ -25,3 +25,16 @@ As you may recall from our discussion of lasso regresion...
 ## Additional resources and further reading
 
 - [Neural networks with R](https://edu.kpfu.ru/pluginfile.php/419285/mod_resource/content/2/neural-networks-r.pdf)
+
+## [What are the advantages and disadvantages of neural networks?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+
+Advantages: Neural networks (specifically deep NNs) have led to performance breakthroughs for unstructured datasets such as images, audio, and video. Their incredible flexibility allows them to learn patterns that no other ML algorithm can learn.
+
+Disadvantages: However, they require a large amount of training data to converge. It's also difficult to pick the right architecture, and the internal "hidden" layers are incomprehensible.
+
+
+## Further Links
+
+- [How to handle inbalanced classes](https://elitedatascience.com/imbalanced-classes)
+
+- [Free data science resources](https://elitedatascience.com/data-science-resources#foundational-skills)
