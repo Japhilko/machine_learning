@@ -12,5 +12,6 @@ plot(cars)
 
 ```{python}
 import pandas
+usp =pandas.read_csv("../data/US Presidential Data.csv")
 ```
 
