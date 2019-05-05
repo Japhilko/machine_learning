@@ -92,6 +92,14 @@ m3 <- lm(mpg ~ wt + cyl,data=mtcars)
 summary(m3)$coefficients
 ```
 
+## The command `as.formula`
+
+```{r,eval=F}
+?as.formula
+```
+
+
+
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 
 ### Interaction effect
@@ -337,6 +345,14 @@ visreg(m4, "cyl", type = "conditional",fill=list(col=c("#00FFFF")),points=list(c
 
 ![](figure/visregcat.PNG)
 
+## The command `model.matrix`
+
+```{r,eval=F}
+?model.matrix
+```
+
+
+
 ## The package `visreg` - Interactions
 
 ```{r}
@@ -495,9 +511,10 @@ data("swiss")
 
 ```{r}
 training.samples <- swiss$Fertility %>%
-  createDataPartition(p = 0.8, list = FALSE)
+createDataPartition(p = 0.8, list = FALSE)
 train.data  <- swiss[training.samples, ]
 test.data <- swiss[-training.samples, ]
+
 # Build the model
 model <- lm(Fertility ~., data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
@@ -512,6 +529,11 @@ model <- train(Fertility ~., data = swiss, method = "lm",
 # Summarize the results
 print(model)
 ```
+
+## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
+
+
+
 ## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
 ![](figure/bias_variance_tradeoff.PNG)

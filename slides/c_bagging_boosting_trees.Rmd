@@ -2,23 +2,45 @@
 title: "Supervised Learning - Trees, Bagging, Boosting"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: beamer_presentation
+output: 
+  beamer_presentation: 
+    colortheme: rose
+    fonttheme: structurebold
+    highlight: pygments
+    theme: Darmstadt
+  slidy_presentation: 
+    keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setupbaggingboosting, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message=F,warning=F)
+library(knitr)
 ```
+
+
+## [What is supervised learning?](https://elitedatascience.com/birds-eye-view)
+
 
 <!--
 https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html#random-forest
 -->
 
-## What is supervised learning
 
+Supervised learning includes tasks for "labeled" data (i.e. you have a target variable).
+
+- In practice, it's often used as an advanced form of predictive modeling.
+ -  Each observation must be labeled with a "correct answer."
+ -   Only then can you build a predictive model because you must tell the algorithm what's "correct" while training it (hence, "supervising" it).
+ -   Regression is the task for modeling continuous target variables.
+ -   Classification is the task for modeling categorical (a.k.a. "class") target variables.
+
+
+
+<!--
 - Example data are used to train a model.
 - With this model the classification can be realized automatically. 
 
-<!--
+
 http://www.datenbanken-verstehen.de/lexikon/supervised-learning/
 
 Daten einer Gruppierung zuzuordnen, die durch den Nutzenden vorgegeben sind, aber nicht jeder Datensatz manuell bewertet werden kann (z. B. Kreditbewilligung abhängig von Kredithöhe und Bonität). 
@@ -27,7 +49,6 @@ Die Aufgabe besteht darin,
 
 Ein Modell wird mit Beispieldaten aufgebaut, das die Zuordnung anschließend selbstständig übernimmt.
 -->
-
 
 
 ## [Tree-Based Models](https://www.statmethods.net/advstats/cart.html)
@@ -58,49 +79,61 @@ https://www.analyticsvidhya.com/blog/2016/02/complete-tutorial-learn-data-scienc
 
 ## Explanation: [**decision tree**](https://en.wikipedia.org/wiki/Decision_tree)
 
+<!--
+https://elitedatascience.com/algorithm-selection
+-->
 
-### [**Decision trees used in data mining are of two main types:**](https://en.wikipedia.org/wiki/Decision_tree_learning)
+Decision trees model data as a "tree" of hierarchical branches. They make branches until they reach "leaves" that represent predictions.
+
+![ [Decission tree on ElitedataScience](https://elitedatascience.com/algorithm-selection)](figure/Decision-Tree-Example.jpg)
+
+## Summary decission trees
+
+Due to their branching structure, decision trees can easily model nonlinear relationships.
+
+- For example, let's say for Single Family homes, larger lots command higher prices.
+ -  However, let's say for Apartments, smaller lots command higher prices (i.e. it's a proxy for urban / rural).
+ -   This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term (i.e. you can anticipate it ahead of time).
+ -  On the other hand, decision trees can capture this relationship naturally.
+
+
+```{r}
+library(rpart)
+```
+
+
+
+<!--
+https://www.guru99.com/r-decision-trees.html
+-->
+
+## [Classification Tree example](https://www.guru99.com/r-decision-trees.html)
+
+The purpose of this dataset is to predict which people are more likely to survive after the collision with the iceberg. The dataset contains 13 variables and 1309 observations. The dataset is ordered by the variable X. 
+
+
+```{r}
+path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/titanic_csv.csv'
+titanic <-read.csv(path)
+shuffle_index <- sample(1:nrow(titanic))
+kable(head(titanic))
+```
+
+
+
+<!--
+## [**Decision trees used in data mining are of two main types:**](https://en.wikipedia.org/wiki/Decision_tree_learning)
 
 - Classification tree
 
 - Regression tree
-
-## 
-
-<!--
-https://www.statmethods.net/advstats/cart.html
 -->
 
-```{r}
-library(rpart)
-fit <- rpart(Kyphosis ~ Age + Number + Start,
-   method="class", data=kyphosis)
-```
+## [](https://elitedatascience.com/algorithm-selection)
 
-```{r}
-printcp(fit) # display the results 
-```
+Unfortunately, decision trees suffer from a major flaw as well. If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
 
-
-```{r}
-plotcp(fit) 
-```
-
-
-```{r}
-summary(fit)
-```
-
-```{r}
-# plot tree 
-plot(fit, uniform=TRUE, 
-   main="Classification Tree for Kyphosis")
-text(fit, use.n=TRUE, all=TRUE, cex=.8)
-
-# create attractive postscript plot of tree 
-post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps", 
-   title = "Classification Tree for Kyphosis")
-```
+As a result, individual unconstrained decision trees are very prone to being overfit.
 
 
 
@@ -209,6 +242,38 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
 [Decision Trees and Random Forest](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
 
+
+## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
+
+Ensembles are machine learning methods for combining predictions from multiple separate models. 
+
+<!--
+There are a few different methods for ensembling, but the two most common are:
+-->
+
+### Bagging 
+
+attempts to reduce the chance overfitting complex models.
+
+
+- It trains a large number of "strong" learners in parallel.
+-  A strong learner is a model that's relatively unconstrained.
+-  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
+
+### Boosting 
+
+attempts to improve the predictive flexibility of simple models.
+
+-    It trains a large number of "weak" learners in sequence.
+-    A weak learner is a constrained model (i.e. you could limit the max depth of each decision tree).
+-    Each one in the sequence focuses on learning from the mistakes of the one before it.
+-    Boosting then combines all the weak learners into a single strong learner.
+
+### Bagging and boosting
+
+While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
+
+Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
 
 
 ## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)

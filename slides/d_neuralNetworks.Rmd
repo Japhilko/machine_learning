@@ -32,6 +32,57 @@ Advantages: Neural networks (specifically deep NNs) have led to performance brea
 
 Disadvantages: However, they require a large amount of training data to converge. It's also difficult to pick the right architecture, and the internal "hidden" layers are incomprehensible.
 
+## [](https://datascienceplus.com/fitting-neural-network-in-r/)
+
+```{r}
+set.seed(500)
+library(MASS)
+data <- Boston
+```
+
+```{r}
+index <- sample(1:nrow(data),round(0.75*nrow(data)))
+train <- data[index,]
+test <- data[-index,]
+lm.fit <- glm(medv~., data=train)
+summary(lm.fit)
+pr.lm <- predict(lm.fit,test)
+MSE.lm <- sum((pr.lm - test$medv)^2)/nrow(test)
+```
+
+
+## Preparing to fit the neural network
+
+- It is good practice to normalize your data before training a neural network.
+
+```{r}
+maxs <- apply(data, 2, max) 
+mins <- apply(data, 2, min)
+scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+train_ <- scaled[index,]
+test_ <- scaled[-index,]
+```
+
+## [Parameters](https://datascienceplus.com/fitting-neural-network-in-r/)
+
+```{r,eval=F}
+install.packages("neuralnet")
+```
+
+
+```{r}
+library(neuralnet)
+n <- names(train_)
+f <- as.formula(paste("medv ~", paste(n[!n %in% "medv"], collapse = " + ")))
+nn <- neuralnet(f,data=train_,hidden=c(5,3),linear.output=T)
+```
+
+## A plot
+
+```{r}
+plot(nn)
+```
+
 
 ## Further Links
 

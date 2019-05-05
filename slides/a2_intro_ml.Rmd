@@ -139,3 +139,12 @@ https://medium.freecodecamp.org/every-single-machine-learning-course-on-the-inte
 - [A prelude to machine learning](https://eight2late.wordpress.com/2017/02/23/a-prelude-to-machine-learning/)
 
 - [caret webinar by Max Kuhn - on youtube](https://www.youtube.com/watch?v=7Jbb2ItbTC4)
+
+- [learn-math-for-data-science](https://elitedatascience.com/learn-math-for-data-science)
+- [learn-statistics-for-data-science](https://elitedatascience.com/learn-statistics-for-data-science)
+
+- [machine-learning-projects-for-beginners](https://elitedatascience.com/machine-learning-projects-for-beginners)
+
+
+- [An Introduction to machine learning](http://www-bcf.usc.edu/~gareth/ISL/)
+- [ISLR book](http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf)

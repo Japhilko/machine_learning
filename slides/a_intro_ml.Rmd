@@ -1,16 +1,28 @@
 ---
 title: "Introducing Machine Learning "
 author: "Jan-Philipp Kolb"
-date: "03 May 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
+  beamer_presentation: 
+    colortheme: rose
+    fonttheme: structurebold
+    highlight: pygments
+    theme: Darmstadt
   slidy_presentation: 
     keep_md: yes
 ---
 
 ```{r setupMlintro, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache=T)
+knitr::opts_chunk$set(echo = TRUE,cache=T,warning=F)
 ```
 
+## Intro Machine Learning
+
+Categorizing machine learning algorithms is tricky
+
+- ... they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
+
+-  Scikit-Learn’s documentation page groups algorithms by their learning mechanism. This produces categories such as: Generalized linear models,     Support vector machines, nearest neighbors, decision trees, neural networks, ...
 
 
 ## [Machine Learning - Components](https://www.linkedin.com/pulse/20140822073217-180198720-6-components-of-a-machine-learning-algorithm)
