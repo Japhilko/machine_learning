@@ -8,6 +8,8 @@ output:
     fonttheme: structurebold
     highlight: pygments
     theme: Darmstadt
+    fig_width: 8 
+    fig_height: 4 
   slidy_presentation: 
     keep_md: yes
 ---
@@ -17,6 +19,10 @@ knitr::opts_chunk$set(echo = TRUE,cache=T,warning=F)
 ```
 
 ## Intro Machine Learning
+
+<!--
+https://elitedatascience.com/learn-machine-learning#what
+-->
 
 Categorizing machine learning algorithms is tricky
 
@@ -31,9 +37,7 @@ Categorizing machine learning algorithms is tricky
 
 - Feature Selection
 
-- Choice of Algorithm
-
-Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/blob/master/Machine%20Learning/SupportVectorMachines.md), Decision Trees, k-Means Clustering, ...
+- Choice of Algorithm - e.g. Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/blob/master/Machine%20Learning/SupportVectorMachines.md), Decision Trees, k-Means Clustering, ...
 
 - Training
 
@@ -42,7 +46,17 @@ Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/
 - Testing
 
 
-## [Feature selection](https://en.wikipedia.org/wiki/Feature_selection)
+## [Feature selection](https://elitedatascience.com/dimensionality-reduction-algorithms#feature-selection)
+
+<!--
+https://en.wikipedia.org/wiki/Feature_selection
+-->
+
+Feature selection is for filtering irrelevant or redundant features from your dataset. The key difference between feature selection and extraction is that feature selection keeps a subset of the original features while feature extraction creates brand new ones.
+
+To be clear, some supervised algorithms already have built-in feature selection, such as Regularized Regression and Random Forests. Typically, we recommend starting with these algorithms if they fit your task.
+
+As a stand-alone task, feature selection can be unsupervised (e.g. Variance Thresholds) or supervised (e.g. Genetic Algorithms). You can also combine multiple methods if needed.
 
 
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
@@ -50,6 +64,12 @@ Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/
 ### Supervised Learning 
 
 - we have prior knowledge of what the output values for our samples should be. 
+
+### [Unsupervised Learning](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/unsupervised.pdf)
+
+- In unsupervised learning we observe only the features $X_1, X_2,...,X_p$
+.  We are not interested in prediction, because we do not have an
+associated response variable $Y$.
 
 
 ## Task: Find R-packages
@@ -68,8 +88,7 @@ https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 ![](figure/taskviewmachinelearning.PNG)
 
 
-
-## Install all packages of a task view
+### Install all packages of a task view
 
 ```{r,eval=F}
 install.packages("ctv")
@@ -78,9 +97,32 @@ ctv::install.views("MachineLearning")
 
 ## [Prediction vs. Causation in Regression Analysis](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
 
+## R-packages needed for machine learning
+
+- caret: Classification and Regression Training
+-  ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics
+-    mlbench
+-   class
+-    caTools
+-    randomForest
+-    impute
+-    ranger
+-    kernlab
+ -   class
+  -  glmnet
+   - naivebayes
+    -rpart
+    -rpart.plot
+
+
+
+<!--
 ## Literature for machine learning
 
 ![](figure/book_ml1.jpg)
+-->
+
+
 
 
 <!--
