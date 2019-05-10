@@ -65,14 +65,9 @@ library(dbscan)
 data(moons)
 
 ## Running HDBscan with the minimum number of points set to 5.
-res <- dbscan::hdbscan(moons, minPts = 5)                                                                                                                                                     
-                                                                                                                                                                                              
-res
+res <- dbscan::hdbscan(moons, minPts = 3)
 
-str(res)
-
-                                                                                                                                                                                              
-plot(moons, col = res$cluster + 1, main="R implementation")                                                                                                                                   
+plot(moons, col = res$cluster + 1, main="R implementation")
                                                                                                                                                                                               
 
 
