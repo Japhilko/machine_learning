@@ -1,12 +1,20 @@
 ---
 title: "Introduction to R"
 author: "Jan-Philipp Kolb"
-date: "26 April 2019"
-output: slidy_presentation
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  beamer_presentation: 
+    colortheme: rose
+    fonttheme: structurebold
+    highlight: pygments
+    theme: Darmstadt
+  slidy_presentation: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,cache=T)
+library(knitr)
 ```
 
 ## Introduction round
@@ -43,7 +51,11 @@ knitr::opts_chunk$set(echo = FALSE)
 Why R might not be the best choice in every situation
 -->
 
-### Newer modules in Python
+<!--
+https://elitedatascience.com/r-vs-python-for-data-science
+-->
+
+### [Newer modules in Python](https://blog.dominodatalab.com/video-huge-debate-r-vs-python-data-science/)
 
 - Machine learning is a field that changes rapidly.  
 - Some new tools are first developed in Python. 
@@ -75,6 +87,26 @@ Why R might not be the best choice in every situation
 ?read.csv2
 ```
 
+### Using a path to import data
+
+<!--
+https://www.guru99.com/r-decision-trees.html
+-->
+
+```{r}
+path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/titanic_csv.csv'
+titanic <-read.csv(path)
+```
+
+## The titanic dataset
+
+```{r}
+kable(head(titanic))
+```
+
+
+## The function `scan` to import data 
+
 ```{r,eval=F}
 ?scan
 ```
@@ -96,6 +128,34 @@ airq <- data.table(airquality)
 airq
 ```
 
+## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+
+```{r}
+x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 0.829, 0.907)
+```
+
+- Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+- compute the exponential function and round the result
+
+```{r,echo=F}
+round(exp(diff(log(x))), 1)
+```
+
+
+
+
+## [The pipe operator](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+
+
+```{r}
+library(magrittr)
+
+# Perform the same computations on `x` as above
+x %>% log() %>%
+    diff() %>%
+    exp() %>%
+    round(1)
+```
 
 
 ## How to deal with missing values
@@ -112,6 +172,57 @@ airq
 na.omit(airq)
 ```
 
+
+## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
+
+```{r}
+library(dplyr)
+library(magrittr)
+# Drop variables
+clean_titanic <- titanic %>% 	mutate(pclass = factor(pclass, levels = c(1, 2, 3), labels = c('Upper', 'Middle', 'Lower')),
+	survived = factor(survived, levels = c(0, 1), labels = c('No', 'Yes'))) %>%
+na.omit()
+```
+
+-   `pclass = factor(pclass, levels = c(1,2,3), labels= c('Upper', 'Middle', 'Lower'))`: Add label to the variable pclass. 1 becomes Upper, 2 becomes MIddle and 3 becomes lower
+ -    `factor(survived, levels = c(0,1), labels = c('No', 'Yes'))`: Add label to the variable survived. 1 Becomes No and 2 becomes Yes
+-    `na.omit()`: Remove the NA observations 
+
+
+## Get an overview of the data
+
+```{r}
+glimpse(clean_titanic)
+```
+
+
+## [Example Data - Housing Values in Suburbs of Boston](https://datascienceplus.com/fitting-neural-network-in-r/)
+
+```{r}
+library(MASS)
+data <- Boston
+```
+
+```{r}
+kable(head(data))
+```
+
+## Normalize your data
+
+```{r}
+maxs <- apply(data, 2, max) 
+mins <- apply(data, 2, min)
+scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+```
+
+
+
+
+## Set a seed
+
+```{r}
+set.seed(234)
+```
 
 ## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)
 
@@ -156,3 +267,17 @@ stopCluster(cl)
 ?parallel::makeCluster
 ```
 
+## [The `swirl` package](https://swirlstats.com/)
+
+```{r,eval=F}
+install.packages("swirl")
+```
+
+```{r,eval=F}
+library("swirl")
+swirl()
+```
+
+## Resources
+
+- [Course materials for the Data Science Specialization](https://github.com/DataScienceSpecialization/courses)

@@ -1,8 +1,8 @@
 ---
 title: "Regression in R"
 author: "Jan-Philipp Kolb"
-date: "26 April 2019"
-output: slidy_presentation
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -10,21 +10,13 @@ knitr::opts_chunk$set(echo = FALSE,warning = F,message = F)
 pres=T
 ```
 
-## Good literature for linear regression in R
+## Why a part on simple regression
 
-### Useful PDF document:
+- some machine learning concepts are based on regression
+- I would like to remind you how simple regression in R works. 
+- I also want to show the constraints
+- In a next step we will learn, how to coop with that
 
-J H Maindonald - [**Using R for Data Analysis and Graphics
-Introduction, Code and Commentary**](https://cran.r-project.org/doc/contrib/usingR.pdf)
-
--  Introduction to R 
--  Data analysis
--  Statistical models
--  Inference concepts
--  Regression with one predictor
--  Multiple linear regression
--  Extending the linear model
--  ...
 
 
 ## Variables of the `mtcars` dataset
@@ -99,6 +91,14 @@ summary(m2)$coefficients
 m3 <- lm(mpg ~ wt + cyl,data=mtcars)
 summary(m3)$coefficients
 ```
+
+## The command `as.formula`
+
+```{r,eval=F}
+?as.formula
+```
+
+
 
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 
@@ -345,6 +345,14 @@ visreg(m4, "cyl", type = "conditional",fill=list(col=c("#00FFFF")),points=list(c
 
 ![](figure/visregcat.PNG)
 
+## The command `model.matrix`
+
+```{r,eval=F}
+?model.matrix
+```
+
+
+
 ## The package `visreg` - Interactions
 
 ```{r}
@@ -437,13 +445,27 @@ stargazer(m3, type="html")
 
 
 
+## The problem - [Overfitting](https://elitedatascience.com/overfitting-in-machine-learning#examples)
+
+- Our model doesn’t generalize well from our training data to unseen data.
+
+
+![](figure/Overfitting_fig1.PNG)
+
+
+![](figure/electoral_precedent.png)
+
+
+## [The Signal and the Noise](https://en.wikipedia.org/wiki/The_Signal_and_the_Noise)
+
+- In predictive modeling, you can think of the “signal” as the true underlying pattern that you wish to learn from the data.
+- “Noise,” on the other hand, refers to the irrelevant information or randomness in a dataset.
+
+![](figure/The_Signal_and_the_Noise.jpg)
 
 <!--
 https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regression.html
 -->
-
-
-
 
 
 <!--
@@ -461,18 +483,79 @@ The green line represents an overfitted model and the black line represents a re
 https://en.wikipedia.org/wiki/Overfitting
 -->
 
+## What can be done against overvitting
+
+- Cross Validation 
+- Train with more data
+- Remove features
+
+- Regularization - e.g. ridge and lasso regression
+- Ensembling - e.g. bagging and boosting
+
+
+## [Cross-validation](https://elitedatascience.com/overfitting-in-machine-learning#examples)
+
+- Cross-validation is a powerful preventative measure against overfitting.
+- Use your initial training data to generate multiple mini train-test splits. Use these splits to tune your model.
+
+### [Cross Validation in R](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
+
+```{r}
+library(tidyverse)
+library(caret)
+```
+
+```{r}
+data("swiss")
+```
+
+```{r}
+training.samples <- swiss$Fertility %>%
+createDataPartition(p = 0.8, list = FALSE)
+train.data  <- swiss[training.samples, ]
+test.data <- swiss[-training.samples, ]
+
+# Build the model
+model <- lm(Fertility ~., data = train.data)
+# Make predictions and compute the R2, RMSE and MAE
+predictions <- model %>% predict(test.data)
+```
+
+```{r}
+train.control <- trainControl(method = "LOOCV")
+# Train the model
+model <- train(Fertility ~., data = swiss, method = "lm",
+               trControl = train.control)
+# Summarize the results
+print(model)
+```
+
+## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
 
 
 
-## Shiny App - Diagnostics for simple linear regression
+## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
-https://gallery.shinyapps.io/slr_diag/
+![](figure/bias_variance_tradeoff.PNG)
 
-![](figure/Diagslr.PNG)
 
-- Shiny App - [Simple Linear Regression](https://gallery.shinyapps.io/simple_regression/)
+## Good literature for linear regression in R
 
-- Shiny App - [Multicollinearity in multiple regression](figure/https://gallery.shinyapps.io/collinearity/)
+### Useful PDF document:
+
+J H Maindonald - [**Using R for Data Analysis and Graphics
+Introduction, Code and Commentary**](https://cran.r-project.org/doc/contrib/usingR.pdf)
+
+-  Introduction to R 
+-  Data analysis
+-  Statistical models
+-  Inference concepts
+-  Regression with one predictor
+-  Multiple linear regression
+-  Extending the linear model
+-  ...
+
+
 
 ## Links - linear regression
 
@@ -489,6 +572,18 @@ https://gallery.shinyapps.io/slr_diag/
 - [**`ggeffects` - Create Tidy Data Frames of Marginal Effects for ‘ggplot’ from Model Outputs**](https://strengejacke.github.io/ggeffects/)
 
 
+## Shiny App - Diagnostics for simple linear regression
+
+https://gallery.shinyapps.io/slr_diag/
+
+![](figure/Diagslr.PNG)
+
+- Shiny App - [Simple Linear Regression](https://gallery.shinyapps.io/simple_regression/)
+
+- Shiny App - [Multicollinearity in multiple regression](figure/https://gallery.shinyapps.io/collinearity/)
+
+
+
 <!--
 https://www.r-bloggers.com/elegant-regression-results-tables-and-plots-in-r-the-finalfit-package/
 https://www.r-bloggers.com/regression-analysis-essentials-for-machine-learning/
@@ -496,3 +591,8 @@ https://www.r-bloggers.com/15-types-of-regression-you-should-know/
 https://www.r-bloggers.com/marginal-effects-for-regression-models-in-r-rstats-dataviz/
 http://pbreheny.github.io/visreg/contrast.html
 -->
+
+## Resources
+
+- [machine learning iteration](https://elitedatascience.com/machine-learning-iteration)
+

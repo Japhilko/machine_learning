@@ -85,6 +85,11 @@ load(paste0(git_path,"/data/osmsa_PLZ_14.RData"))
 
 
 
+## [US Census Data](https://elitedatascience.com/datasets)
+
+- [US Census Data (Clustering)](https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29) – Clustering based on demographics is a tried and true way to perform market research and segmentation.
+
+
 
 ## Links
 

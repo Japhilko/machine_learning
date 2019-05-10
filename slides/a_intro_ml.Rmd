@@ -1,48 +1,28 @@
 ---
 title: "Introducing Machine Learning "
 author: "Jan-Philipp Kolb"
-date: "03 May 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
+  beamer_presentation: 
+    colortheme: rose
+    fonttheme: structurebold
+    highlight: pygments
+    theme: Darmstadt
   slidy_presentation: 
     keep_md: yes
 ---
 
 ```{r setupMlintro, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache=T)
+knitr::opts_chunk$set(echo = TRUE,cache=T,warning=F)
 ```
 
+## Intro Machine Learning
 
-## Introduction round
+Categorizing machine learning algorithms is tricky
 
+- ... they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
 
-- Where are you from? What are you studying/working?
-- What are your expectations of this course?
-- Where do you think you can use Machine Learning in the future?
-
-## Preliminaries
-
-- Usually we have big differences in knowledge and abilities of the participants - please tell, if it is too fast or slow.
-- We have many [**exercises**](http://web.math.ku.dk/~helle/R-intro/exercises.pdf) because at the end you can only learn on your own
-- We have many [**examples**](https://www.showmeshiny.com/) - try them out 
-- If there are questions - always ask
-- R is more fun together - ask your neighbor
-
-## Why R is a good choice ...
-
-- ... because it is an [**open source language**](https://stackoverflow.com/questions/1546583/what-is-the-definition-of-an-open-source-programming-language)
-- ... outstanding graphs - [**graphics**](http://matthewlincoln.net/2014/12/20/adjacency-matrix-plots-with-r-and-ggplot2.html), [**graphics**](https://www.r-bloggers.com/3d-plots-with-ggplot2-and-plotly /), [**graphics**](https://procomun.wordpress.com/2011/03/18/splomr/)
-- ... relates to other languages - [**R can be used in combination with other programs**](https://github.com/Japhilko/RInterfaces) - e.g. [**data linking**](https://github.com/Japhilko/RInterfaces/blob/master/slides/Datenimport.md)
-- ...R can be used [**for automation**](https://cran.r-project.org/web/packages/MplusAutomation/index.html)
- - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/)
-- ...
-
-- Because of the large comunity
-- New statistical methodologies are implemented quite fast 
-- Because R can be combined with other programs like Postgresql or Python
-
-## Why R might not be the best choice in every situation
-
-- Because Python is also Open Source
+-  Scikit-Learn’s documentation page groups algorithms by their learning mechanism. This produces categories such as: Generalized linear models,     Support vector machines, nearest neighbors, decision trees, neural networks, ...
 
 
 ## [Machine Learning - Components](https://www.linkedin.com/pulse/20140822073217-180198720-6-components-of-a-machine-learning-algorithm)
@@ -201,3 +181,7 @@ company quantide
 - Google`s [Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course/)
 
 - [A prelude to machine learning](https://eight2late.wordpress.com/2017/02/23/a-prelude-to-machine-learning/)
+
+- [caret webinar on youtube](https://www.youtube.com/watch?v=7Jbb2ItbTC4)
+
+- [beginner-mistakes](https://elitedatascience.com/beginner-mistakes)

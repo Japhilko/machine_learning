@@ -14,4 +14,67 @@ knitr::opts_chunk$set(echo = TRUE)
 - The datasets we use for this course
 - What to do with missing data?
 
+## The package `rpart` 
+
+- `rpart` - recursive partitioning and regression trees
+
+### The `kyphosis` dataset 
+
+- Data on Children who have had Corrective Spinal Surgery
+- The German word is Rundrücken
+
+```{r,eval=F}
+?kyphosis
+```
+
+<!--
+vertebrae - Wirbel
+-->
+
+
+- Number - the number of vertebrae involved
+- Start - the number of the first (topmost) vertebra operated on.
+
+```{r}
+kable(head(kyphosis))
+```
+
+
+## [Classification Tree example](https://www.statmethods.net/advstats/cart.html)
+
+<!--
+https://www.statmethods.net/advstats/cart.html
+-->
+
+```{r}
+fit <- rpart(Kyphosis ~ Age + Number + Start,
+   method="class", data=kyphosis)
+```
+
+```{r}
+printcp(fit) # display the results 
+```
+
+
+```{r}
+plotcp(fit) 
+```
+
+
+```{r}
+summary(fit)
+```
+
+```{r}
+# plot tree 
+plot(fit, uniform=TRUE, 
+   main="Classification Tree for Kyphosis")
+text(fit, use.n=TRUE, all=TRUE, cex=.8)
+```
+
+```{r,eval=F}
+# create attractive postscript plot of tree 
+post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps", 
+   title = "Classification Tree for Kyphosis")
+```
 
