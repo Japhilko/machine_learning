@@ -227,3 +227,8 @@ company quantide
 - [caret webinar on youtube](https://www.youtube.com/watch?v=7Jbb2ItbTC4)
 
 - [beginner-mistakes](https://elitedatascience.com/beginner-mistakes)
+
+
+<!--
+https://www.r-bloggers.com/visualising-bias-and-unbiasedness/
+-->

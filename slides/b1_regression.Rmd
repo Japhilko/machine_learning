@@ -470,6 +470,8 @@ https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regressio
 
 <!--
 https://cran.r-project.org/web/packages/keras/vignettes/tutorial_overfit_underfit.html
+
+https://www.r-bloggers.com/machine-learning-explained-overfitting/
 -->
 
 
@@ -596,3 +598,9 @@ http://pbreheny.github.io/visreg/contrast.html
 
 - [machine learning iteration](https://elitedatascience.com/machine-learning-iteration)
 
+
+<!--
+https://www.dataquest.io/blog/statistical-learning-for-predictive-modeling-r/
+
+https://www.r-bloggers.com/example-of-overfitting/
+-->
