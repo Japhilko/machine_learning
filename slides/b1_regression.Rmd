@@ -17,11 +17,13 @@ pres=T
 - I also want to show the constraints
 - In a next step we will learn, how to coop with that
 
-
+<!--
+http://enhancedatascience.com/2017/06/29/machine-learning-explained-overfitting/
+-->
 
 ## Variables of the `mtcars` dataset
 
-Help for the `roller` dataset:
+Help for the `mtcars` dataset:
 
 ```{r,eval=F}
 ?mtcars
@@ -578,4 +580,19 @@ http://pbreheny.github.io/visreg/contrast.html
 https://www.dataquest.io/blog/statistical-learning-for-predictive-modeling-r/
 
 https://www.r-bloggers.com/example-of-overfitting/
+
+https://blog.minitab.com/blog/adventures-in-statistics-2/the-danger-of-overfitting-regression-models
+
+
+https://statisticsbyjim.com/regression/overfitting-regression-models/
+
+https://towardsdatascience.com/overfitting-vs-underfitting-a-complete-example-d05dd7e19765
+
+https://www.analyticsvidhya.com/blog/2016/12/practical-guide-to-implement-machine-learning-with-caret-package-in-r-with-practice-problem/
+
+
+https://statisticsbyjim.com/regression/overfitting-regression-models/
 -->
+
+
+
