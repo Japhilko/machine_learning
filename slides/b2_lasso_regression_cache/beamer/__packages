@@ -1,0 +1,13 @@
+base
+knitr
+tidyr
+rsample
+Matrix
+foreach
+glmnet
+dplyr
+ggplot2
+AmesHousing
+lattice
+caret
+h2o

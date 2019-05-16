@@ -18,7 +18,6 @@ pres=T
 - In a next step we will learn, how to coop with that
 
 
-
 ## Variables of the `mtcars` dataset
 
 Help for the `roller` dataset:
@@ -98,6 +97,17 @@ summary(m3)$coefficients
 ?as.formula
 ```
 
+```{r}
+class(fo <- mpg ~ wt + cyl)
+m3 <- lm(fo,data=mtcars)
+```
+
+## The command `model.matrix`
+
+
+```{r,eval=F}
+?model.matrix
+```
 
 
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
@@ -532,7 +542,10 @@ Introduction, Code and Commentary**](https://cran.r-project.org/doc/contrib/usin
 -  Extending the linear model
 -  ...
 
-
+<!--
+Anwendung log Transformation
+wann wird dies gemacht
+-->
 
 ## Links - linear regression
 
