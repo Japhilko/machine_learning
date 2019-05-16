@@ -7,9 +7,7 @@ output:
     keep_md: yes
 ---
 
-```{r setupMlintro, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache=T)
-```
+
 
 ## [Modern Machine Learning Algorithms](https://elitedatascience.com/machine-learning-algorithms)
 
@@ -39,14 +37,6 @@ Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/
 
 ## [Feature selection](https://en.wikipedia.org/wiki/Feature_selection)
 
-In machine learning, feature selection is the process of selecting a subset of relevant features (variables, predictors) for use in model construction.
-
-Feature selection techniques are used for four reasons:
-
-- simplification of models to make them easier to interpret by researchers/users,
-- shorter training times,
-- to avoid the curse of dimensionality,
-- enhanced generalization by reducing overfitting (formally, reduction of variance)
 
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
 
@@ -74,7 +64,8 @@ https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 
 ## Install all packages of a task view
 
-```{r,eval=F}
+
+```r
 install.packages("ctv")
 ctv::install.views("MachineLearning")
 ```

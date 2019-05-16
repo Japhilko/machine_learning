@@ -176,31 +176,6 @@ interact_plot(fitiris, pred = "Petal.Width", modx = "Species")
 ```
 
 
-## The package `interplot`
-
-
-
-```{r}
-library(interplot)
-```
-
-```{r,eval=F,echo=F}
-interplot(m = m3d, var1 = "disp", var2 = "wt", hist = TRUE) +
-  aes(color = "pink") + theme(legend.position="none") +   
-  geom_hline(yintercept = 0, linetype = "dashed")
-```
-
-- effect plotted on the y axis - `wt` plotted on the x-axis
-
-```{r,eval=F}
-interplot(m = m3a, var1 = "wt", var2 = "disp", hist = TRUE)  
-```
-
-![](figure/interplot_wt_disp.PNG)
-
-- A more detailed explanation is available in the [**`interplot` vignette**](https://cran.r-project.org/web/packages/interplot/vignettes/interplot-vignette.html)
-
-
 ## Example: object orientation
 
 - `m3` is now a special regression object
