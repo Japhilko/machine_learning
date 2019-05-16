@@ -2,13 +2,21 @@
 title: "Introduction to R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: 
+fontsize: 10pt
+output:
   beamer_presentation: 
-    colortheme: rose
-    fonttheme: structurebold
-    highlight: pygments
-    theme: Darmstadt
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
   slidy_presentation: 
+    css: mycss.css
     keep_md: yes
 ---
 
@@ -31,6 +39,13 @@ library(knitr)
 - We have many [**examples**](https://www.showmeshiny.com/) - try them out 
 - If there are questions - always ask
 - R is more fun together - ask your neighbor
+
+
+## Content of the course
+
+- The first section is about laying the foundations in R. 
+- The second section is an introduction to the field of machine learning.
+
 
 ## Why R is a good choice ...
 
@@ -98,11 +113,44 @@ path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/t
 titanic <-read.csv(path)
 ```
 
+## Built in datasets
+
+- A sample dataset is often provided to demonstrate the functionality of a package.
+- These records can be loaded using the `data` command.
+
+```{r}
+data(iris)
+```
+
+- There is also a [**RStudio Add-In**](https://github.com/bquast/datasets.load) that helps to find a built-in dataset.
+
+```{r,eval=F}
+install.packages("datasets.load")
+```
+
+
+## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+
+- Oben rechts befindet sich ein Button Addins 
+
+![](figure/addins.PNG)
+
+![](figure/datasetsload.PNG)
+
 ## The titanic dataset
 
 ```{r}
 kable(head(titanic))
 ```
+
+## Exercise
+
+Load the the built-in dataset `swiss` and answer the following questions:
+
+- How many observations and variables are available?
+- What is the scale level of the variables?
+
+Create an interactive data table
 
 
 ## The function `scan` to import data 
@@ -140,8 +188,6 @@ x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 0.829, 0.907)
 ```{r,echo=F}
 round(exp(diff(log(x))), 1)
 ```
-
-
 
 
 ## [The pipe operator](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
@@ -215,13 +261,28 @@ mins <- apply(data, 2, min)
 scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
 ```
 
+## The command `sample`
 
+- We can use this command to draw a sample. 
+- We need the command later to split our dataset into a test and a training dataset. 
+
+```{r}
+sample(1:10,3,replace=T)
+sample(1:10,3,replace=T)
+```
 
 
 ## Set a seed
 
+- `set.seed` is the recommended way to specify seeds.
+- If we set a seed, we get the same result for random events.
+- This function is mainly required for simulations. 
+
 ```{r}
 set.seed(234)
+sample(1:10,3,replace=T)
+set.seed(234)
+sample(1:10,3,replace=T)
 ```
 
 ## [Time measurement](https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/)
