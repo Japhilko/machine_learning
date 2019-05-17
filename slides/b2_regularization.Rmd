@@ -135,49 +135,6 @@ ames_test  <- rsample::testing(ames_split)
 ```
 
 
-## Multicollinearity
-
-- As p increases we are more likely to capture multiple features that have some multicollinearity. 
-- When multicollinearity exists, we often see high variability in our coefficient terms. 
-- E.g. we have a correlation of 0.801 between `Gr_Liv_Area` and `TotRms_AbvGrd` 
-- Both variables are strongly correlated to the response variable (`Sale_Price`).
-
-```{r}
-cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
-```
-
-
-## Multicollinearity
-
-```{r}
-lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
-```
-
-- When we fit a model with both these variables we get a positive coefficient for `Gr_Liv_Area` but a negative coefficient for `TotRms_AbvGrd`, suggesting one has a positive impact to Sale_Price and the other a negative impact.
-
-## Seperated models
-
-- If we refit the model with each variable independently, they both show a positive impact. 
-- The `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
-
-```{r}
-lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)$coefficients
-```
-
-```{r}
-lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
-```
-
-- This is a common result when collinearity exists. 
-- Coefficients for correlated features become over-inflated and can fluctuate significantly. 
-
-
-## Consequences
-
-- One consequence of these large fluctuations in the coefficient terms is [**overfitting**](https://en.wikipedia.org/wiki/Overfitting), which means we have high variance in the bias-variance tradeoff space. 
-- We can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, but it is not always clear which variable(s) to remove. 
-- Nor do we always wish to remove variables as this may be removing signal in our data.
-
 ## Insufficient Solution
 
 - When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
@@ -583,7 +540,7 @@ coef(ames_lasso, s = "lambda.1se") %>%
 - Typically we do not see large differences in the minimum errors between the two.
 - So practically, this may not be significant but if you are purely competing on minimizing error (i.e. Kaggle competitions) this may make all the difference!
 
-##
+## MSE for Ridge and Lasso
 
 ```{r}
 # minimum Ridge MSE
@@ -631,8 +588,7 @@ plot(ridge, xvar = "lambda", main = "Ridge (Alpha = 0)")
 
 ## Tuning the elastic net model
 
-- In ridge and lasso models $\lambda$
- is our primary tuning parameter. 
+- In ridge and lasso models $\lambda$  is our primary tuning parameter. 
 - With elastic nets, we want to tune the $\lambda$ and the alpha parameters. 
 - To set up our tuning, we create a common `fold_id`, which just allows us to apply the same CV folds to each model. 
 
@@ -642,10 +598,9 @@ fold_id <- sample(1:10, size = length(ames_train_y),
                   replace=TRUE)
 ```
 
+## Creation of a tuning grid
 
 - We then create a tuning grid that searches across a range of alphas from 0-1, and empty columns where we’ll dump our model results into.
-
-##
 
 ```{r}
 # search across a range of alphas
@@ -658,27 +613,25 @@ tuning_grid <- tibble::tibble(
 )
 ```
 
-##
+## Iteration over $\alpha$ values - elastic net
 
-Now we can iterate over each alpha value, apply a CV elastic net, and extract the minimum and one standard error MSE values and their respective $\lambda$ values.
+Now we can iterate over each $\alpha$ value, apply a CV elastic net, and extract the minimum and one standard error MSE values and their respective $\lambda$ values.
 
 ```{r}
 for(i in seq_along(tuning_grid$alpha)) {
-  
   # fit CV model for each alpha value
   fit <- cv.glmnet(ames_train_x, ames_train_y, 
                    alpha = tuning_grid$alpha[i], 
                    foldid = fold_id)
-  
   # extract MSE and lambda values
-  tuning_grid$mse_min[i]    <- fit$cvm[fit$lambda == fit$lambda.min]
-  tuning_grid$mse_1se[i]    <- fit$cvm[fit$lambda == fit$lambda.1se]
-  tuning_grid$lambda_min[i] <- fit$lambda.min
-  tuning_grid$lambda_1se[i] <- fit$lambda.1se
+tuning_grid$mse_min[i]<-fit$cvm[fit$lambda==fit$lambda.min]
+tuning_grid$mse_1se[i]<-fit$cvm[fit$lambda==fit$lambda.1se]
+tuning_grid$lambda_min[i]<-fit$lambda.min
+tuning_grid$lambda_1se[i]<-fit$lambda.1se
 }
 ```
 
-##
+## The resulting tuning grid
 
 ```{r}
 tuning_grid
@@ -686,9 +639,10 @@ tuning_grid
 
 
 
-##
+## Plot the MSE
 
-If we plot the MSE $\pm$  one standard error for the optimal $\lambda$ value for each alpha setting, we see that they all fall within the same level of accuracy. Consequently, we could select a full lasso model with $\lambda=0.02062776$, gain the benefits of its feature selection capability and reasonably assume no loss in accuracy.
+- If we plot the MSE $\pm$  one standard error for the optimal $\lambda$ value for each alpha setting, we see that they all fall within the same level of accuracy. 
+- Consequently, we could select a full lasso model with $\lambda=0.02062776$, gain the benefits of its feature selection capability and reasonably assume no loss in accuracy.
 
 ```{r,eval=F}
 tuning_grid %>%
@@ -714,23 +668,32 @@ tuning_grid %>%
 
 ## Advantages and Disadvantages
 
-As previously stated, the advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty. Effectively, elastic nets allow us to control multicollinearity concerns, perform regression when $p>n$, and reduce excessive noise in our data so that we can isolate the most influential variables while balancing prediction accuracy.
+- The advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty. 
+- Elastic nets allow us to control multicollinearity concerns, perform regression when $p>n$, and reduce excessive noise in our data so that we can isolate the most influential variables while balancing prediction accuracy.
 
-However, elastic nets, and regularization models in general, still assume linear relationships between the features and the target variable. And although we can incorporate non-additive models with interactions, doing this when the number of features is large is extremely tedious and difficult. When non-linear relationships exist, its beneficial to start exploring non-linear regression approaches.
+- Elastic nets, and regularization models in general, still assume linear relationships between the features and the target variable. 
+- We can incorporate non-additive models with interactions, but it is tedious and difficult for a large number of features. 
+- When non-linear relationships exist, its beneficial to start exploring non-linear regression approaches.
 
 ## Predicting
 
-Once you have identified your preferred model, you can simply use predict to predict the same model on a new data set. The only caveat is you need to supply predict an s parameter with the preferred models $\lambda$  value. For example, here we create a lasso model, which provides me a minimum MSE of 0.022. I use the minimum $\lambda$ value to predict on the unseen test set and obtain a slightly lower MSE of 0.015.
-
+- With the preferred model, you can `predict` the same model on a new data set. 
+- The only caveat is you need to supply predict an s parameter with the preferred models $\lambda$  value. 
+- E.g., here we create a lasso model, with a minimum MSE of 0.022. 
 ```{r}
 # some best model
 cv_lasso   <- cv.glmnet(ames_train_x, ames_train_y, alpha = 1.0)
 min(cv_lasso$cvm)
+```
 
+- I use the minimum $\lambda$ value to predict on the unseen test set and obtain a slightly lower MSE of 0.015.
+
+```{r}
 # predict
 pred <- predict(cv_lasso, s = cv_lasso$lambda.min, ames_test_x)
 mean((ames_test_y - pred)^2)
 ```
+
 
 ## The package `caret` - Classification and Regression Training
 
@@ -748,86 +711,13 @@ caret_mod <- train(x = ames_train_x,y = ames_train_y,
                    tuneLength = 10)
 ```
 
-- [**Vignette `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
+- [**Vignette for the `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
 
 
 ## Output for `caret` model 
 
 ```{r}
 caret_mod
-```
-
-
-
-## `h2o` package
-
-```{r,eval=F,echo=F}
-install.packages("h2o")
-```
-
-
-
-```{r,eval=F}
-library(h2o)
-h2o.init()
-
-# convert data to h2o object
-ames_h2o <- ames_train %>%
-  mutate(Sale_Price_log = log(Sale_Price)) %>%
-  as.h2o()
-
-# set the response column to Sale_Price_log
-response <- "Sale_Price_log"
-
-# set the predictor names
-predictors <- setdiff(colnames(ames_train), "Sale_Price")
-
-
-# try using the `alpha` parameter:
-# train your model, where you specify alpha
-ames_glm <- h2o.glm(
-  x = predictors, 
-  y = response, 
-  training_frame = ames_h2o,
-  nfolds = 10,
-  keep_cross_validation_predictions = TRUE,
-  alpha = .25
-  )
-
-# print the mse for the validation data
-print(h2o.mse(ames_glm, xval = TRUE))
-
-# grid over `alpha`
-# select the values for `alpha` to grid over
-hyper_params <- list(
-  alpha = seq(0, 1, by = .1),
-  lambda = seq(0.0001, 10, length.out = 10)
-  )
-
-# this example uses cartesian grid search because the search space is small
-# and we want to see the performance of all models. For a larger search space use
-# random grid search instead: {'strategy': "RandomDiscrete"}
-
-# build grid search with previously selected hyperparameters
-grid <- h2o.grid(
-  x = predictors, 
-  y = response, 
-  training_frame = ames_h2o, 
-  nfolds = 10,
-  keep_cross_validation_predictions = TRUE,
-  algorithm = "glm",
-  grid_id = "ames_grid", 
-  hyper_params = hyper_params,
-  search_criteria = list(strategy = "Cartesian")
-  )
-
-# Sort the grid models by mse
-sorted_grid <- h2o.getGrid("ames_grid", sort_by = "mse", decreasing = FALSE)
-sorted_grid
-
-# grab top model id
-best_h2o_model <- sorted_grid@model_ids[[1]]
-best_model <- h2o.getModel(best_h2o_model)
 ```
 
 <!--

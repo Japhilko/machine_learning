@@ -346,5 +346,9 @@ swirl()
 <!--
 Further possible topics of this section:
 
-regular expressions
+- regular expressions
+- the reticulate package
+- how to install python modules
+
+
 -->

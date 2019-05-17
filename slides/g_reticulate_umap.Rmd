@@ -30,7 +30,6 @@ Install the `reticulate` package so that you can call python from R.
 
 ```{r, eval=FALSE}
 install.packages("reticulate")
-
 ```
 
 Load the `reticulate` package.

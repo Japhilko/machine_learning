@@ -79,6 +79,76 @@ post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps",
 ```
 
 
+## `h2o` package
+
+```{r,eval=F,echo=F}
+install.packages("h2o")
+```
+
+
+
+```{r,eval=F}
+# http://uc-r.github.io/regularized_regression
+library(h2o)
+h2o.init()
+
+# convert data to h2o object
+ames_h2o <- ames_train %>%
+  mutate(Sale_Price_log = log(Sale_Price)) %>%
+  as.h2o()
+
+# set the response column to Sale_Price_log
+response <- "Sale_Price_log"
+
+# set the predictor names
+predictors <- setdiff(colnames(ames_train), "Sale_Price")
+
+# try using the `alpha` parameter:
+# train your model, where you specify alpha
+ames_glm <- h2o.glm(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o,
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  alpha = .25
+  )
+
+# print the mse for the validation data
+print(h2o.mse(ames_glm, xval = TRUE))
+
+# grid over `alpha`
+# select the values for `alpha` to grid over
+hyper_params <- list(
+  alpha = seq(0, 1, by = .1),
+  lambda = seq(0.0001, 10, length.out = 10)
+  )
+
+# this example uses cartesian grid search because the search space is small
+# and we want to see the performance of all models. For a larger search space use
+# random grid search instead: {'strategy': "RandomDiscrete"}
+
+# build grid search with previously selected hyperparameters
+grid <- h2o.grid(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o, 
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  algorithm = "glm",
+  grid_id = "ames_grid", 
+  hyper_params = hyper_params,
+  search_criteria = list(strategy = "Cartesian")
+  )
+
+# Sort the grid models by mse
+sorted_grid <- h2o.getGrid("ames_grid", sort_by = "mse", decreasing = FALSE)
+sorted_grid
+
+# grab top model id
+best_h2o_model <- sorted_grid@model_ids[[1]]
+best_model <- h2o.getModel(best_h2o_model)
+```
 
 <!--
 ames_lasso, s

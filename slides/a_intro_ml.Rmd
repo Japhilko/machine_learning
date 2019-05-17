@@ -236,5 +236,5 @@ https://www.r-bloggers.com/visualising-bias-and-unbiasedness/
 <!--
 Further possible topics of this section:
 
-MSE explained
+MSE
 -->
