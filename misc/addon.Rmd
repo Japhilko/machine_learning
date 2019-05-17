@@ -78,3 +78,8 @@ post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps",
    title = "Classification Tree for Kyphosis")
 ```
 
+
+
+<!--
+ames_lasso, s
+-->

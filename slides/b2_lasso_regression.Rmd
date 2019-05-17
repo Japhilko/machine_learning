@@ -103,7 +103,7 @@ library(rsample)  # data splitting
 library(glmnet)   # implementing regularized regression approaches
 library(dplyr)    # basic data manipulation procedures
 library(ggplot2)  # plotting
-library(AmesHousing) # dataset
+library(knitr)    # for tables
 ```
 
 <!--
@@ -114,24 +114,26 @@ http://jse.amstat.org/v19n3/decock.pdf
 ## The example dataset
 
 ```{r}
+library(AmesHousing) 
 ames_data <- AmesHousing::make_ames()
 ```
 
-```{r,eval=F,echo=F}
-kable(head(ames_data))
+```{r,eval=T,echo=F}
+kable(head(ames_data[,1:4]))
 ```
 
 
 ## Create training (70%) and test (30%) sets 
 
-- Use `set.seed` for reproducibility
+- `set.seed` is used for reproducibility
+- `initial_split` is used to split data in training and test data
 
 ```{r}
 set.seed(123)
-ames_split <- initial_split(ames_data, prop = .7, 
+ames_split <- rsample::initial_split(ames_data, prop = .7, 
                             strata = "Sale_Price")
-ames_train <- training(ames_split)
-ames_test  <- testing(ames_split)
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
 ```
 
 
@@ -158,7 +160,7 @@ lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
 ## Seperated models
 
 - If we refit the model with each variable independently, they both show a positive impact. 
-- However, the `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
+- The `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
 
 ```{r}
 lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)$coefficients
@@ -195,7 +197,7 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 
 - With a large number of features, we often would like to identify a smaller subset of these features that exhibit the strongest effects. 
 - In essence, we sometimes prefer techniques that provide feature selection. One approach to this is called hard threshholding feature selection, which can be performed with linear model selection approaches. 
-- However, model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
+- Model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
 - We may wish to use a soft threshholding approach that slowly pushes a feature’s effect towards zero. As will be demonstrated, this can provide additional understanding regarding predictive signals.
 
 
@@ -208,7 +210,8 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 
 ## The objective function of regularized regression methods...
 
-... is very similar to OLS regression; however, we add a penalty parameter (P).
+- is very similar to OLS regression; 
+- And a penalty parameter (P) is added.
 
 $$
 \text{minimize}\{SSE+P\}
@@ -258,12 +261,12 @@ Siehe hier: https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
 
 - This is indicitive of multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
 
-- However, the question remains - how do we find the amount of shrinkage (or $\lambda$) that minimizes our error? 
+- But how do we find the amount of shrinkage (or $\lambda$) that minimizes our error? 
 
 ## Implementation in `glmnet`
 
 - `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
-- The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables (see `Matrix::sparse.model.matrix` for increased efficiency on large dimension data). 
+- The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
 - We also log transform our response variable due to its skeweness.
 
 
@@ -317,7 +320,7 @@ plot(ames_ridge, xvar = "lambda")
 - Normally you will have little need to adjust the default $\lambda$ values.
 
 ```{r}
-ames_ridge$lambda %>% head()
+head(ames_ridge$lambda)
 ```
 
 ## Coefficients in `glmnet`
@@ -334,16 +337,19 @@ coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 100]
 - In the following, the coefficients for the `Gr_Liv_Area` and `TotRms_AbvGrd` features for the largest $\lambda$ (279.1035) and smallest $\lambda$ (0.02791035) are visible. 
 - You can see how the largest $\lambda$ value has pushed these coefficients to nearly 0.
 
+
+## Coefficients of the `ames_ridge` model 
+
 ```{r}
 coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 1] 
 ```
 
-- However, at this point, we do not understand how much improvement we are experiencing in our model.
+- But how much improvement we are experiencing in our model.
 
 ## Tuning
 
 - Recall that $\lambda$ is a tuning parameter that helps to control our model from over-fitting to the training data. 
-- However, to identify the optimal $\lambda$ value we need to perform cross-validation (CV). 
+- To identify the optimal $\lambda$ value we need to perform cross-validation (CV). 
 - `cv.glmnet` provides a built-in option to perform k-fold CV, and by default, performs 10-fold CV.
  
 ```{r}
@@ -357,10 +363,12 @@ ames_ridge <- cv.glmnet(x = ames_train_x,y = ames_train_y,
 plot(ames_ridge)
 ```
 
+- The plot illustrates the 10-fold CV mean squared error (MSE) across the $\lambda$ values. 
+- We see no substantial improvement; 
+
 ## The plot explained
 
-- The plot output illustrates the 10-fold CV mean squared error (MSE) across the $\lambda$ values. 
-- It illustrates that we do not see substantial improvement; however, as we constrain our coefficients with $log(\lambda)\leq 0$ penalty, the MSE rises considerably. 
+- As we constrain our coefficients with $log(\lambda)\leq 0$ penalty, the MSE rises considerably. 
 - The numbers at the top of the plot (299) just refer to the number of variables in the model. 
 - Ridge regression does not force any variables to exactly zero so all features will remain in the model.
 - The first and second vertical dashed lines represent the $\lambda$  value with the minimum MSE and the largest $\lambda$ value within one standard error of the minimum MSE.
@@ -377,7 +385,7 @@ ames_ridge$lambda.1se  # lambda for this MSE
 ## The plot explained (II)
 
 - The advantage of identifying the $\lambda$ with an MSE within one standard error becomes more obvious with the lasso and elastic net models. 
-- However, for now we can assess this visually. Here we plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
+- For now we can assess this visually. Here we plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
 - This shows you how much we can constrain the coefficients while still maximizing predictive accuracy.
 
 
@@ -474,14 +482,13 @@ ames_lasso <- glmnet(x = ames_train_x,y = ames_train_y,
 
 ## A quick drop in nr. of features
 
-```{r}
-plot(ames_lasso, xvar = "lambda")
-```
-
 - Very large coefficients for ols (highly correlated)
 - As model is constraines - these noisy features are pushed to 0.
 - CV is necessary to determine right value for $\lambda$
 
+```{r,fig.height=2}
+plot(ames_lasso, xvar = "lambda")
+```
 
 ## Tuning
 
@@ -536,22 +543,26 @@ abline(v = log(ames_lasso$lambda.1se), col = "red",
 
 ## Advantages and Disadvantages
 
-Similar to ridge, the lasso pushes many of the collinear features towards each other rather than allowing for one to be wildly positive and the other wildly negative. However, unlike ridge, the lasso will actually push coefficients to zero and perform feature selection. This simplifies and automates the process of identifying those feature most influential to predictive accuracy.
+- Similar to ridge, the lasso pushes many of the collinear features towards each other rather than allowing for one to be wildly positive and the other wildly negative. 
+- Unlike ridge, the lasso will actually push coefficients to zero and perform feature selection. 
+- This simplifies and automates the process of identifying those feature most influential to predictive accuracy.
 
 ##
 
 ```{r,eval=F}
-coef(ames_lasso, s = "lambda.1se") %>%
-  tidy() %>%
-  filter(row != "(Intercept)") %>%
-  ggplot(aes(value, reorder(row, value), color = value > 0)) +
+datcoef <- coef(ames_lasso, s = "lambda.1se")
+dfcoef <- data.frame(value=as.vector(datcoef[,1]))
+  ggplot(aes(value, reorder(row, value), color = value > 0,data=dfcoef)) +
   geom_point(show.legend = FALSE) +
   ggtitle("Influential variables") +
   xlab("Coefficient") +
   ylab(NULL)
 ```
 
-However, often when we remove features we sacrifice accuracy. Consequently, to gain the refined clarity and simplicity that lasso provides, we sometimes reduce the level of accuracy. Typically we do not see large differences in the minimum errors between the two. So practically, this may not be significant but if you are purely competing on minimizing error (i.e. Kaggle competitions) this may make all the difference!
+- Often when we remove features we sacrifice accuracy. 
+- To gain the refined clarity and simplicity that lasso provides, we sometimes reduce the level of accuracy. 
+- Typically we do not see large differences in the minimum errors between the two.
+- So practically, this may not be significant but if you are purely competing on minimizing error (i.e. Kaggle competitions) this may make all the difference!
 
 ##
 
@@ -570,9 +581,12 @@ $$
 minimize \{SSE+\lambda \sum^p_{j=1} \beta^2_j+\lambda_2\sum_{j=1}^p |\beta_j|\}
 $$
 
-## 
+## Summary overview 
 
-Although lasso models perform feature selection, a result of their penalty parameter is that typically when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically reducing correlated features together. Consequently, the advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+- Although lasso models perform feature selection, a result of their penalty parameter is that typically when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. 
+- The process of one being in and one being out is not very systematic. 
+- In contrast, the ridge regression penalty is a little more effective in systematically reducing correlated features together. 
+- Consequently, the advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
 
 ## Implementation
 
@@ -585,11 +599,11 @@ elastic2 <- glmnet(ames_train_x, ames_train_y, alpha = 0.75)
 ridge    <- glmnet(ames_train_x, ames_train_y, alpha = 0.0)
 ```
 
-##
+## The four model results plottet
 
-```{r,eval=F}
-plot(lasso, xvar = "lambda", main = "Lasso (Alpha = 1)\n\n\n")
-plot(elastic1, xvar = "lambda", main = "Elastic Net (Alpha = .25)")
+```{r,eval=F,echo=F}
+plot(lasso, xvar = "lambda",main="Lasso (Alpha = 1)\n\n\n")
+plot(elastic1,xvar="lambda",main="Elastic Net (Alpha = .25)")
 plot(elastic2, xvar = "lambda", main = "Elastic Net (Alpha = .75)")
 plot(ridge, xvar = "lambda", main = "Ridge (Alpha = 0)")
 ```
@@ -605,7 +619,8 @@ In ridge and lasso models $\lambda$
 
 ```{r}
 # maintain the same folds across all models
-fold_id <- sample(1:10, size = length(ames_train_y), replace=TRUE)
+fold_id <- sample(1:10, size = length(ames_train_y), 
+                  replace=TRUE)
 
 # search across a range of alphas
 tuning_grid <- tibble::tibble(
@@ -625,7 +640,9 @@ Now we can iterate over each alpha value, apply a CV elastic net, and extract th
 for(i in seq_along(tuning_grid$alpha)) {
   
   # fit CV model for each alpha value
-  fit <- cv.glmnet(ames_train_x, ames_train_y, alpha = tuning_grid$alpha[i], foldid = fold_id)
+  fit <- cv.glmnet(ames_train_x, ames_train_y, 
+                   alpha = tuning_grid$alpha[i], 
+                   foldid = fold_id)
   
   # extract MSE and lambda values
   tuning_grid$mse_min[i]    <- fit$cvm[fit$lambda == fit$lambda.min]
@@ -724,7 +741,7 @@ install.packages("h2o")
 
 
 
-```{r}
+```{r,eval=F}
 library(h2o)
 h2o.init()
 

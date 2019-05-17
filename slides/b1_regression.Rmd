@@ -2,7 +2,22 @@
 title: "Regression in R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -17,12 +32,9 @@ pres=T
 - I also want to show the constraints
 - In a next step we will learn, how to coop with that
 
-<<<<<<< HEAD
 <!--
 http://enhancedatascience.com/2017/06/29/machine-learning-explained-overfitting/
 -->
-=======
->>>>>>> origin/master
 
 ## Variables of the `mtcars` dataset
 
@@ -115,6 +127,7 @@ m3 <- lm(fo,data=mtcars)
 ?model.matrix
 ```
 
+- See `Matrix::sparse.model.matrix` for increased efficiency on large dimension data. 
 
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 
@@ -396,27 +409,6 @@ visreg2d(m6, "wt", "hp", plot.type = "persp")
 ```
 
 
-## B3A Exercise linear regression
-
-It describes the route of three toy cars that descended ramps at different angles.
-
-- angle: ramp angle
-- distance: distance covered by the toy car
-- car: type of car (1, 2 or 3)
-
-(a) Read the data set `toycars` into a dataframe `data` and convert the variable `car` of the data set into a factor (`as.factor`).
-(b) Create three box plots that display the distance traveled separately by the factor car.
-
-## B3A Exercise linear regression II
-
-
-(c) For the cars, estimate the parameters of the following linear model using the `lm()` function
-
-$$ distance_i= \beta_0 + \beta_1 \cdot angle_i + \epsilon_i$$
-
-(d) Check the adjustment of the three models by inserting the regression line into a plot of `distance` against `angle`. Does the $$ R^2 $$ each for a good model adjustment?
-
-
 ## Producing nice table output with Package [stargazer](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
 
 
@@ -433,8 +425,14 @@ stargazer(m3, type="html")
 
 ![](figure/stargazertabex.PNG)
 
+## Exercise
 
+- Install the package `AmesHousing` and create a processed Version of the Ames housing data with the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
+- Create a suitable regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. What do you think?
 
+<!--
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
+-->
 
 ## The problem - [Overfitting](https://elitedatascience.com/overfitting-in-machine-learning#examples)
 
@@ -444,8 +442,9 @@ stargazer(m3, type="html")
 ![](figure/Overfitting_fig1.PNG)
 
 
+<!--
 ![](figure/electoral_precedent.png)
-
+-->
 
 ## [The Signal and the Noise](https://en.wikipedia.org/wiki/The_Signal_and_the_Noise)
 
@@ -529,7 +528,7 @@ print(model)
 
 ## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
-![](figure/bias_variance_tradeoff.PNG)
+![](figure/bias_variance_tradeoff.PNG){ height=70% }
 
 
 ## Good literature for linear regression in R
