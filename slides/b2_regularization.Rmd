@@ -1,0 +1,988 @@
+---
+title: "Regularization methods"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output: 
+  beamer_presentation: 
+    theme: Dresden
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## [Regularization](https://elitedatascience.com/algorithm-selection)
+
+### elitedatascience.com definition
+
+Regularization is a technique used to prevent overfitting by artificially penalizing model coefficients.
+
+- It can discourage large coefficients (by dampening them).
+-  It can also remove features entirely (by setting their coefficients to 0).
+-  The "strength" of the penalty is tunable. 
+
+### Wikipedia definition of [Regularization](https://en.wikipedia.org/wiki/Regularization_(mathematics)) 
+Regularization is the process of adding information in order to solve an ill-posed problem or to prevent overfitting. 
+
+
+<!--
+Rmarkdown tipps and tricks
+no figure caption
+https://stackoverflow.com/questions/38514954/removing-figure-text-in-rmarkdown
+syntax highlighting
+https://eranraviv.com/syntax-highlighting-style-in-rmarkdown/
+https://latex-kurs.blogspot.com/2012/09/latex-plusminus.html
+-->
+
+
+## Strenghts and weaknesses of [regularization](https://elitedatascience.com/machine-learning-algorithms)
+
+<!--
+Regularization is a technique for penalizing large coefficients in order to avoid overfitting, and the strength of the penalty should be tuned.
+-->
+
+### Strengths: 
+
+Linear regression is straightforward to understand and explain, and can be regularized to avoid overfitting. In addition, linear models can be updated easily with new data
+
+### Weaknesses: 
+
+Linear regression in general performs poorly when there are non-linear relationships. They are not naturally flexible enough to capture more complex patterns, and adding the right interaction terms or polynomials can be tricky and time-consuming.
+
+
+## [Three regularized regression algorithms](https://elitedatascience.com/algorithm-selection)
+
+![](figure/reg_3algos.PNG){ height=40% }
+
+### Lasso regression
+
+- Absolute size of coefficients is penalized. 
+- Coefficients can be exactly 0.
+
+### Ridge regression
+
+- Squared size of coefficients is penalized.
+- Smaller coefficients, but it doesn't force them to 0.
+
+### Elastic-net
+
+- A mix of both absolute and squared size is penalzied.
+<!--
+- The ratio of the two penalty types should be tuned.
+-->
+
+
+## Preparations
+
+- Most of the following slides are based on the [**UC Business Analytics R Programming Guide**](http://uc-r.github.io/regularized_regression)
+
+```{r,eval=F,echo=F}
+install.packages("rsample")
+```
+
+### Necessary packages
+
+```{r}
+library(rsample)  # data splitting 
+library(glmnet)   # implementing regularized regression approaches
+library(dplyr)    # basic data manipulation procedures
+library(ggplot2)  # plotting
+library(knitr)    # for tables
+```
+
+<!--
+http://jse.amstat.org/v19n3/decock/DataDocumentation.txt
+http://jse.amstat.org/v19n3/decock.pdf
+-->
+
+## The example dataset
+
+```{r}
+library(AmesHousing) 
+ames_data <- AmesHousing::make_ames()
+```
+
+```{r,eval=T,echo=F}
+kable(head(ames_data[,1:4]))
+```
+
+
+## Create training (70%) and test (30%) sets 
+
+- `set.seed` is used for reproducibility
+- `initial_split` is used to split data in training and test data
+
+```{r}
+set.seed(123)
+ames_split <- rsample::initial_split(ames_data, prop = .7, 
+                            strata = "Sale_Price")
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
+```
+
+
+## Multicollinearity
+
+- As p increases we are more likely to capture multiple features that have some multicollinearity. 
+- When multicollinearity exists, we often see high variability in our coefficient terms. 
+- E.g. we have a correlation of 0.801 between `Gr_Liv_Area` and `TotRms_AbvGrd` 
+- Both variables are strongly correlated to the response variable (`Sale_Price`).
+
+```{r}
+cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
+```
+
+
+## Multicollinearity
+
+```{r}
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
+```
+
+- When we fit a model with both these variables we get a positive coefficient for `Gr_Liv_Area` but a negative coefficient for `TotRms_AbvGrd`, suggesting one has a positive impact to Sale_Price and the other a negative impact.
+
+## Seperated models
+
+- If we refit the model with each variable independently, they both show a positive impact. 
+- The `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
+
+```{r}
+lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)$coefficients
+```
+
+```{r}
+lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
+```
+
+- This is a common result when collinearity exists. 
+- Coefficients for correlated features become over-inflated and can fluctuate significantly. 
+
+
+## Consequences
+
+- One consequence of these large fluctuations in the coefficient terms is overfitting, which means we have high variance in the bias-variance tradeoff space. 
+- Although an analyst can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, it is not always clear which variable(s) to remove. 
+- Nor do we always wish to remove variables as this may be removing signal in our data.
+
+## Insufficient Solution
+
+- When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
+- This causes significant issues because it means: 
+
+(1) The least-squares estimates are not unique. There are an infinite set of solutions available and most of these solutions overfit the data. 
+
+(2) In many instances the result will be computationally infeasible.
+
+- Consequently, to resolve this issue an analyst can remove variables until $p<n$ and then fit an OLS regression model. 
+- Although an analyst can use pre-processing tools to guide this manual approach (Kuhn and Johnson, 2013, pp. 43-47), it can be cumbersome and prone to errors.
+
+
+## Interpretability
+
+- With a large number of features, we often would like to identify a smaller subset of these features that exhibit the strongest effects. 
+- In essence, we sometimes prefer techniques that provide feature selection. One approach to this is called hard threshholding feature selection, which can be performed with linear model selection approaches. 
+- Model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
+- We may wish to use a soft threshholding approach that slowly pushes a feature’s effect towards zero. As will be demonstrated, this can provide additional understanding regarding predictive signals.
+
+
+## Regularized Regression
+
+- When we experience these concerns, one alternative to OLS regression is to use regularized regression (also commonly referred to as penalized models or shrinkage methods) to control the parameter estimates. 
+
+- Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
+
+
+## The objective function of regularized regression methods...
+
+- is very similar to OLS regression; 
+- And a penalty parameter (P) is added.
+
+$$
+\text{minimize}\{SSE+P\}
+$$
+ 
+- There are two main penalty parameters, which have a similar effect. 
+- They constrain the size of the coefficients such that the only way the coefficients can increase is if we experience a comparable decrease in the sum of squared errors (SSE). 
+
+## Ridge Regression
+
+- Ridge regression (Hoerl, 1970) controls the coefficients by adding
+$\lambda\sum_{j=1}^p\beta_j^2$ to the objective function. 
+
+- This penalty parameter is referred to as "$L_2$" as it signifies a second-order penalty being used on the coefficients.
+
+$$
+\text{minimize}\{\text{SSE}+\lambda\sum_{j=1}^p\beta_j^2 \}
+$$
+
+- This penalty parameter can take on a wide range of values, which is controlled by the tuning parameter $\lambda$. 
+
+- When $\lambda=0$, there is no effect and our objective function equals the normal OLS regression objective function of simply minimizing SSE. 
+
+- As $\lambda \rightarrow \infty$, the penalty becomes large and forces our coefficients to zero. 
+
+
+## Exemplar coefficients
+
+This is illustrated in the following figure where exemplar coefficients have been regularized with $\lambda$ ranging from 0 to over 8,000 (log(8103)=9).
+
+![](figure/ridge_coef.png)
+
+<!--
+Für was stehen die unterschiedlichen Linien
+
+Jede Linie müsste für einen Koeffizienten im Regressionsmodell stehen.
+
+Siehe hier: https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
+-->
+
+
+## How to choose the right $\lambda$ 
+
+- Although these coefficients were scaled and centered prior to the analysis, you will notice that some are extremely large when $\lambda\rightarrow 0$. 
+
+- Furthermore, you’ll notice the large negative parameter that fluctuates until $log(\lambda)\approx 2$ where it then continuously skrinks to zero. 
+
+- This is indicitive of multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
+
+- But how do we find the amount of shrinkage (or $\lambda$) that minimizes our error? 
+
+## Implementation in `glmnet`
+
+- `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
+- The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
+- We also log transform our response variable due to its skeweness.
+
+
+<!--
+infinity symbol in LateX
+https://praxistipps.chip.de/latex-unendlich-zeichen-eingeben-so-gehts_92332
+-->
+
+## Training and testing feature model matrices and response vectors.
+
+- We use `model.matrix(...)[, -1]` to discard the intercept
+
+```{r}
+ames_train_x <- model.matrix(Sale_Price ~ ., ames_train)[, -1]
+ames_train_y <- log(ames_train$Sale_Price)
+
+ames_test_x <- model.matrix(Sale_Price ~ ., ames_test)[, -1]
+ames_test_y <- log(ames_test$Sale_Price)
+
+# What is the dimension of of your feature matrix?
+dim(ames_train_x)
+```
+
+
+## Behind the scenes 
+
+- The alpha parameter tells `glmnet` to perform a ridge ($\alpha = 0$), lasso ($\alpha = 1$), or elastic net $(0\leq \alpha \leq 1)$ model. 
+- Behind the scenes, `glmnet` is doing two things that you should be aware of:
+
+(1.) It is essential that predictor variables are standardized when performing regularized regression. `glmnet` performs this for you. If you standardize your predictors prior to `glmnet` you can turn this argument off with `standardize=FALSE`.
+
+(2.) `glmnet` will perform ridge models across a wide range of $\lambda$ parameters, which are illustrated in the figure on the next slide.
+
+```{r}
+ames_ridge <- glmnet(x = ames_train_x,y = ames_train_y,
+  alpha = 0)
+```
+
+
+## A wide range of $\lambda$ parameters
+
+```{r}
+plot(ames_ridge, xvar = "lambda")
+```
+
+
+## $\lambda$ values in `glmnet`
+
+- We can see the exact $\lambda$ values applied with `ames_ridge$lambda`. 
+- Although you can specify your own $\lambda$ values, by default `glmnet` applies 100 $\lambda$ values that are data derived. 
+- Normally you will have little need to adjust the default $\lambda$ values.
+
+```{r}
+head(ames_ridge$lambda)
+```
+
+## Coefficients in `glmnet`
+
+- We can access the coefficients for a model using `coef`.
+
+```{r}
+# coefficients for the largest and smallest lambda parameters
+coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 100]
+```
+
+
+- `glmnet` stores all the coefficients for each model in order of largest to smallest $\lambda$. 
+- In the following, the coefficients for the `Gr_Liv_Area` and `TotRms_AbvGrd` features for the largest $\lambda$ (279.1035) and smallest $\lambda$ (0.02791035) are visible. 
+- You can see how the largest $\lambda$ value has pushed these coefficients to nearly 0.
+
+
+## Coefficients of the `ames_ridge` model 
+
+```{r}
+coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 1] 
+```
+
+- But how much improvement we are experiencing in our model.
+
+## Tuning
+
+- Recall that $\lambda$ is a tuning parameter that helps to control our model from over-fitting to the training data. 
+- To identify the optimal $\lambda$ value we need to perform cross-validation (CV). 
+- `cv.glmnet` provides a built-in option to perform k-fold CV, and by default, performs 10-fold CV.
+ 
+```{r}
+ames_ridge <- cv.glmnet(x = ames_train_x,y = ames_train_y,
+  alpha = 0)
+```
+
+## Results of cv ridge regression
+
+```{r}
+plot(ames_ridge)
+```
+
+- The plot illustrates the 10-fold CV mean squared error (MSE) across the $\lambda$ values. 
+- We see no substantial improvement; 
+
+## The plot explained
+
+- As we constrain our coefficients with $log(\lambda)\leq 0$ penalty, the MSE rises considerably. 
+- The numbers at the top of the plot (299) just refer to the number of variables in the model. 
+- Ridge regression does not force any variables to exactly zero so all features will remain in the model.
+- The first and second vertical dashed lines represent the $\lambda$  value with the minimum MSE and the largest $\lambda$ value within one standard error of the minimum MSE.
+
+```{r}
+min(ames_ridge$cvm)       # minimum MSE
+ames_ridge$lambda.min     # lambda for this min MSE
+# 1 st.error of min MSE
+ames_ridge$cvm[ames_ridge$lambda == ames_ridge$lambda.1se]  
+ames_ridge$lambda.1se  # lambda for this MSE
+```
+
+
+## The plot explained (II)
+
+- The advantage of identifying the $\lambda$ with an MSE within one standard error becomes more obvious with the lasso and elastic net models. 
+- For now we can assess this visually. Here we plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
+- This shows you how much we can constrain the coefficients while still maximizing predictive accuracy.
+
+
+
+```{r}
+ames_ridge_min <- glmnet(x = ames_train_x,y = ames_train_y,
+  alpha = 0)
+```
+
+## Coefficients across the $\lambda$ values
+
+```{r}
+plot(ames_ridge_min, xvar = "lambda")
+abline(v = log(ames_ridge$lambda.1se), col = "red", 
+       lty = "dashed")
+```
+
+
+
+## Advantages and Disadvantages
+
+- In essence, the ridge regression model has pushed many of the correlated features towards each other rather than allowing for one to be wildly positive and the other wildly negative. 
+- Furthermore, many of the non-important features have been pushed closer to zero. This means we have reduced the noise in our data, which provides us more clarity in identifying the true signals in our model.
+
+
+```{r,eval=F}
+coef(ames_ridge, s = "lambda.1se") %>%
+  filter(row != "(Intercept)") %>%
+  top_n(25, wt = abs(value)) %>%
+  ggplot(aes(value, reorder(row, value))) +
+  geom_point() +
+  ggtitle("Top 25 influential variables") +
+  xlab("Coefficient") +
+  ylab(NULL)
+```
+
+
+## Top 25 influential variables
+
+![](figure/ridgeTop25influentalVars.PNG)
+
+
+## Ridge and lasso
+
+- A ridge model will retain all variables. Therefore, a ridge model is good if you believe there is a need to retain all features in your model yet reduce the noise that less influential variables may create and minimize multicollinearity. 
+- A ridge model does not perform feature selection. If greater interpretation is necessary where you need to reduce the signal in your data to a smaller subset then a lasso model may be preferable.
+
+
+
+<!--
+- LASSO is a feature selection method.
+
+https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
+
+- LASSO regression has inbuilt penalization functions to reduce overfitting.
+
+https://www.analyticsvidhya.com/blog/2016/12/introduction-to-feature-selection-methods-with-an-example-or-how-to-select-the-right-variables/
+-->
+
+
+## Lasso Regression
+
+- The least absolute shrinkage and selection operator (lasso) model (Tibshirani, 1996) is an alternative to ridge regression that has a small modification to the penalty in the objective function.
+- Rather than the $L_2$ penalty we use the following $L_1$ penalty $\lambda\sum_{j=1}^p |\beta_j|$ in the objective function.
+
+$$
+\text{minimize} \{\text{SSE}+\lambda\sum_{j=1}^p |\beta_j|\}
+$$
+
+
+## Lasso penalty pushes coefficients to zero
+
+![Lasso regression coefficients as $\lambda$ grows from $0 \rightarrow \infty$.](figure/fig3_loglambda.PNG){ heigth=60% }
+
+Lasso model improves the model with regularization and it conducts automated feature selection.
+
+## The reduction of coefficients
+
+- 15 variables for $\text{log}(\lambda)=-5$
+- 12 variables for $\text{log}(\lambda)=-1$
+- 3 variables for $\text{log}(\lambda)=1$
+
+Consequently, when a data set has many features lasso can be used to identify and extract those features with the largest (and most consistent) signal.
+
+
+## Implementation Lasso regression to ames data
+
+Implementing lasso follows the same logic as implementing the ridge model, we just need to switch $\alpha = 1$ within `glmnet`.
+
+```{r}
+ames_lasso <- glmnet(x = ames_train_x,y = ames_train_y,
+  alpha = 1)
+```
+
+## A quick drop in nr. of features
+
+- Very large coefficients for ols (highly correlated)
+- As model is constraines - these noisy features are pushed to 0.
+- CV is necessary to determine right value for $\lambda$
+
+```{r,fig.height=2}
+plot(ames_lasso, xvar = "lambda")
+```
+
+## Tuning
+
+- `cv.glmnet` with `alpha=1` is used to perform cv.
+
+```{r}
+ames_lasso <- cv.glmnet(x = ames_train_x,y = ames_train_y,
+                        alpha = 1)
+```
+
+## MSE for cross validation
+
+- MSE can be minimized with $-6\leq log (\lambda) \leq -4$
+- Also the number of features can be reduced ($156 \leq p \leq 58$)
+
+```{r}
+plot(ames_lasso)
+```
+
+## Minimum and one standard error MSE and $\lambda$ values.
+
+```{r}
+min(ames_lasso$cvm) # minimum MSE
+ames_lasso$lambda.min # lambda for this min MSE
+
+# 1 st.error of min MSE
+ames_lasso$cvm[ames_lasso$lambda == ames_lasso$lambda.1se]  
+ames_lasso$lambda.1se  # lambda for this MSE
+```
+
+
+## The advantage of identifying the $\lambda$...
+
+- ... with an MSE within one standard error becomes more obvious. 
+- If we use the $\lambda$ that drives the minimum MSE we can reduce our feature set from 307 down to less than 160. 
+- There will be some variability with this MSE and we can reasonably assume that we can achieve a similar MSE with a slightly more constrained model that uses only 63 features. 
+- If describing and interpreting the predictors is an important outcome of your analysis, this may significantly aid your endeavor.
+
+
+## Model with minimum MSE
+
+```{r}
+ames_lasso_min <- glmnet(x = ames_train_x,y = ames_train_y,
+  alpha = 1)
+
+plot(ames_lasso_min, xvar = "lambda")
+abline(v = log(ames_lasso$lambda.min), col = "red", 
+       lty = "dashed")
+abline(v = log(ames_lasso$lambda.1se), col = "red", 
+       lty = "dashed")
+```
+
+## Advantages and Disadvantages
+
+- Similar to ridge, the lasso pushes many of the collinear features towards each other rather than allowing for one to be wildly positive and the other wildly negative. 
+- Unlike ridge, the lasso will actually push coefficients to zero and perform feature selection. 
+- This simplifies and automates the process of identifying those feature most influential to predictive accuracy.
+
+##
+
+```{r,eval=F}
+datcoef <- coef(ames_lasso, s = "lambda.1se")
+dfcoef <- data.frame(value=as.vector(datcoef[,1]))
+  ggplot(aes(value, reorder(row, value), color = value > 0,data=dfcoef)) +
+  geom_point(show.legend = FALSE) +
+  ggtitle("Influential variables") +
+  xlab("Coefficient") +
+  ylab(NULL)
+```
+
+- Often when we remove features we sacrifice accuracy. 
+- To gain the refined clarity and simplicity that lasso provides, we sometimes reduce the level of accuracy. 
+- Typically we do not see large differences in the minimum errors between the two.
+- So practically, this may not be significant but if you are purely competing on minimizing error (i.e. Kaggle competitions) this may make all the difference!
+
+##
+
+```{r}
+# minimum Ridge MSE
+min(ames_ridge$cvm)
+# minimum Lasso MSE
+min(ames_lasso$cvm)
+```
+
+## Elastic Nets
+
+A generalization of the ridge and lasso models is the elastic net (Zou and Hastie, 2005), which combines the two penalties.
+
+$$
+minimize \{SSE+\lambda \sum^p_{j=1} \beta^2_j+\lambda_2\sum_{j=1}^p |\beta_j|\}
+$$
+
+## Summary overview 
+
+- Although lasso models perform feature selection, a result of their penalty parameter is that typically when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. 
+- The process of one being in and one being out is not very systematic. 
+- In contrast, the ridge regression penalty is a little more effective in systematically reducing correlated features together. 
+- Consequently, the advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
+## Implementation
+
+- `alpha=.5` performs an equal combination of penalties
+
+```{r}
+lasso    <- glmnet(ames_train_x, ames_train_y, alpha = 1.0) 
+elastic1 <- glmnet(ames_train_x, ames_train_y, alpha = 0.25) 
+elastic2 <- glmnet(ames_train_x, ames_train_y, alpha = 0.75) 
+ridge    <- glmnet(ames_train_x, ames_train_y, alpha = 0.0)
+```
+
+## The four model results plottet
+
+```{r,eval=F,echo=F}
+plot(lasso, xvar = "lambda",main="Lasso (Alpha = 1)\n\n\n")
+plot(elastic1,xvar="lambda",main="Elastic Net (Alpha = .25)")
+plot(elastic2, xvar = "lambda", main = "Elastic Net (Alpha = .75)")
+plot(ridge, xvar = "lambda", main = "Ridge (Alpha = 0)")
+```
+
+![](figure/four_regmods.PNG)
+
+## Tuning
+
+In ridge and lasso models $\lambda$
+ is our primary tuning parameter. However, with elastic nets, we want to tune the $\lambda$ and the alpha parameters. To set up our tuning, we create a common fold_id, which just allows us to apply the same CV folds to each model. We then create a tuning grid that searches across a range of alphas from 0-1, and empty columns where we’ll dump our model results into.
+
+##
+
+```{r}
+# maintain the same folds across all models
+fold_id <- sample(1:10, size = length(ames_train_y), 
+                  replace=TRUE)
+
+# search across a range of alphas
+tuning_grid <- tibble::tibble(
+  alpha      = seq(0, 1, by = .1),
+  mse_min    = NA,
+  mse_1se    = NA,
+  lambda_min = NA,
+  lambda_1se = NA
+)
+```
+
+##
+
+Now we can iterate over each alpha value, apply a CV elastic net, and extract the minimum and one standard error MSE values and their respective $\lambda$ values.
+
+```{r}
+for(i in seq_along(tuning_grid$alpha)) {
+  
+  # fit CV model for each alpha value
+  fit <- cv.glmnet(ames_train_x, ames_train_y, 
+                   alpha = tuning_grid$alpha[i], 
+                   foldid = fold_id)
+  
+  # extract MSE and lambda values
+  tuning_grid$mse_min[i]    <- fit$cvm[fit$lambda == fit$lambda.min]
+  tuning_grid$mse_1se[i]    <- fit$cvm[fit$lambda == fit$lambda.1se]
+  tuning_grid$lambda_min[i] <- fit$lambda.min
+  tuning_grid$lambda_1se[i] <- fit$lambda.1se
+}
+```
+
+##
+
+```{r}
+tuning_grid
+```
+
+
+
+##
+
+If we plot the MSE $\pm$  one standard error for the optimal $\lambda$ value for each alpha setting, we see that they all fall within the same level of accuracy. Consequently, we could select a full lasso model with $\lambda=0.02062776$, gain the benefits of its feature selection capability and reasonably assume no loss in accuracy.
+
+```{r,eval=F}
+tuning_grid %>%
+  mutate(se = mse_1se - mse_min) %>%
+  ggplot(aes(alpha, mse_min)) +
+  geom_line(size = 2) +
+  geom_ribbon(aes(ymax = mse_min + se, ymin = mse_min - se), 
+              alpha = .25) +
+  ggtitle("MSE +/- one standard error")
+```
+
+
+## MSE +/- one standard error
+
+```{r,echo=F}
+tuning_grid %>%
+  mutate(se = mse_1se - mse_min) %>%
+  ggplot(aes(alpha, mse_min)) +
+  geom_line(size = 2) +
+  geom_ribbon(aes(ymax = mse_min + se, ymin = mse_min - se), alpha = .25)
+```
+
+
+## Advantages and Disadvantages
+
+As previously stated, the advantage of the elastic net model is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty. Effectively, elastic nets allow us to control multicollinearity concerns, perform regression when $p>n$, and reduce excessive noise in our data so that we can isolate the most influential variables while balancing prediction accuracy.
+
+However, elastic nets, and regularization models in general, still assume linear relationships between the features and the target variable. And although we can incorporate non-additive models with interactions, doing this when the number of features is large is extremely tedious and difficult. When non-linear relationships exist, its beneficial to start exploring non-linear regression approaches.
+
+## Predicting
+
+Once you have identified your preferred model, you can simply use predict to predict the same model on a new data set. The only caveat is you need to supply predict an s parameter with the preferred models $\lambda$  value. For example, here we create a lasso model, which provides me a minimum MSE of 0.022. I use the minimum $\lambda$ value to predict on the unseen test set and obtain a slightly lower MSE of 0.015.
+
+```{r}
+# some best model
+cv_lasso   <- cv.glmnet(ames_train_x, ames_train_y, alpha = 1.0)
+min(cv_lasso$cvm)
+
+# predict
+pred <- predict(cv_lasso, s = cv_lasso$lambda.min, ames_test_x)
+mean((ames_test_y - pred)^2)
+```
+
+## The package `caret` - Classification and Regression Training
+
+```{r,eval=F,echo=F}
+install.packages("caret")
+```
+
+```{r}
+library(caret)
+train_control <- trainControl(method = "cv", number = 10)
+caret_mod <- train(x = ames_train_x,y = ames_train_y,
+                   method = "glmnet",
+                   preProc = c("center", "scale", "zv", "nzv"),
+                   trControl = train_control,
+                   tuneLength = 10)
+```
+
+- [**Vignette `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
+
+
+## Output for `caret` model 
+
+```{r}
+caret_mod
+```
+
+
+
+## `h2o` package
+
+```{r,eval=F,echo=F}
+install.packages("h2o")
+```
+
+
+
+```{r,eval=F}
+library(h2o)
+h2o.init()
+
+# convert data to h2o object
+ames_h2o <- ames_train %>%
+  mutate(Sale_Price_log = log(Sale_Price)) %>%
+  as.h2o()
+
+# set the response column to Sale_Price_log
+response <- "Sale_Price_log"
+
+# set the predictor names
+predictors <- setdiff(colnames(ames_train), "Sale_Price")
+
+
+# try using the `alpha` parameter:
+# train your model, where you specify alpha
+ames_glm <- h2o.glm(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o,
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  alpha = .25
+  )
+
+# print the mse for the validation data
+print(h2o.mse(ames_glm, xval = TRUE))
+
+# grid over `alpha`
+# select the values for `alpha` to grid over
+hyper_params <- list(
+  alpha = seq(0, 1, by = .1),
+  lambda = seq(0.0001, 10, length.out = 10)
+  )
+
+# this example uses cartesian grid search because the search space is small
+# and we want to see the performance of all models. For a larger search space use
+# random grid search instead: {'strategy': "RandomDiscrete"}
+
+# build grid search with previously selected hyperparameters
+grid <- h2o.grid(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o, 
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  algorithm = "glm",
+  grid_id = "ames_grid", 
+  hyper_params = hyper_params,
+  search_criteria = list(strategy = "Cartesian")
+  )
+
+# Sort the grid models by mse
+sorted_grid <- h2o.getGrid("ames_grid", sort_by = "mse", decreasing = FALSE)
+sorted_grid
+
+# grab top model id
+best_h2o_model <- sorted_grid@model_ids[[1]]
+best_model <- h2o.getModel(best_h2o_model)
+```
+
+<!--
+https://www.amazon.com/Applied-Predictive-Modeling-Max-Kuhn/dp/1461468485/ref=sr_1_1?ie=UTF8&qid=1522246635&sr=8-1&keywords=applied+predictive+modelling
+
+
+
+-->
+
+## [Lasso regression](https://elitedatascience.com/algorithm-selection)
+
+### LASSO, stands for least absolute shrinkage and selection operator 
+
+-  Lasso regression penalizes the absolute size of coefficients.
+-   Practically, this leads to coefficients that can be exactly 0.
+-   Thus, Lasso offers automatic feature selection because it can completely remove some features.
+-   The "strength" of the penalty should be tuned.
+-  A stronger penalty leads to more coefficients pushed to zero.
+
+
+## [Lasso](https://en.wikipedia.org/wiki/Lasso_(statistics)) regression overview
+
+- Lasso is a regression analysis method that performs variable selection and regularization (reduce overfitting)
+- We want to enhance prediction accuracy and interpretability of the statistical model.
+
+<!--
+https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
+-->
+
+- We could remove less important variables, after checking that they are not important.
+- We can do that manually by examining p-values of coefficients and discarding those variables whose coefficients are not significant.
+- This can become tedious for classification problems with many independent variables
+
+
+
+
+## History of Lasso
+
+- Originally introduced in geophysics literature in 1986
+- Independently rediscovered and popularized in 1996 by Robert Tibshirani, who coined the term and provided further insights into the observed performance.
+
+
+
+Lasso was originally formulated for least squares models and this simple case reveals a substantial amount about the behavior of the estimator, including its relationship to ridge regression and best subset selection and the connections between lasso coefficient estimates and so-called soft thresholding. It also reveals that (like standard linear regression) the coefficient estimates need not be unique if covariates are collinear.
+
+## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
+
+- Lasso regression uses shrinkage
+- data values are shrunk towards a central point
+
+- [Ridge and lasso regularization work by adding a penalty term to the log likelihood function.](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
+
+- A tuning parameter, $\lambda$ controls the strength of the L1 penalty.
+
+$$
+\sum\limits_{i=1}^n \big( y_i -\beta_0 - \sum\limits_{j=1}^p \beta_jx_{ij} \big)^2 + \lambda \sum\limits_{j=1}^p |\beta_j| = RSS + \lambda\sum\limits_{j=1}^p |\beta_j|.
+$$
+<!--
+wir haben einen penalty term, der hoch ist, wenn die Parameterschätzwerte hoch sind.
+
+Youtube Video zu Lasso
+https://www.youtube.com/watch?v=A5I1G1MfUmA
+-->
+
+
+## [The L1 norm explained](https://stats.stackexchange.com/questions/347257/geometrical-interpretation-of-l1-regression)
+
+![](figure/BBRXC.png)
+
+
+
+## [Ridge regression](https://elitedatascience.com/algorithm-selection)
+
+
+-    Ridge regression penalizes the squared size of coefficients.
+-    Practically, this leads to smaller coefficients, but it doesn't force them to 0.
+-    In other words, Ridge offers feature shrinkage.
+-    Again, the "strength" of the penalty should be tuned.
+-    A stronger penalty leads to coefficients pushed closer to zero.
+
+
+## [Elastic net](https://elitedatascience.com/algorithm-selection)
+
+- Elastic-Net is a compromise between Lasso and Ridge.
+
+- Elastic-Net penalizes a mix of both absolute and squared size.
+  - The ratio of the two penalty types should be tuned.
+  - The overall strength should also be tuned.
+
+
+### Which regularization method should we choose?
+
+- There’s no "best" type of penalty. It depends on the dataset and the problem. 
+- We recommend trying different algorithms that use a range of penalty strengths as part of the tuning process
+
+
+
+## Lasso regression with package `glmnet`
+
+```{r,eval=F}
+install.packages("glmnet")
+```
+
+```{r}
+library(glmnet)
+```
+
+```{r}
+x=matrix(rnorm(100*20),100,20)
+g2=sample(1:2,100,replace=TRUE)
+fit2=glmnet(x,g2,family="binomial")
+```
+
+```{r,eval=T}
+caret::varImp(fit2,lambda=0.0007567)
+```
+
+
+
+## 
+
+- The logarithmic function is used for the link between probability and logits
+
+- The Logit function is used to [linearize sigmoid curves](https://de.wikipedia.org/wiki/Logit).
+
+<!--
+Die Logit-Funktion wird zur Linearisierung von sigmoiden Kurven verwendet.
+-->
+
+
+## Further packages 
+
+```{r,eval=F}
+# https://cran.rstudio.com/web/packages/biglasso/biglasso.pdf
+install.packages("biglasso")
+```
+
+## Lasso for other models than least squares
+
+- Though originally defined for least squares, lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
+
+- Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
+
+- The LASSO is closely related to basis pursuit denoising.
+
+
+
+## Links
+
+
+[A comprehensive beginners guide for Linear, Ridge and Lasso Regression](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/)
+
+<!--
+Sehr ausführlich aber mit Python
+-->
+
+- Course for statistical learning - [Youtube - Videos](https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/)
+
+- [pcLasso: a new method for sparse regression](https://www.r-bloggers.com/pclasso-a-new-method-for-sparse-regression/)
+
+- [Youtube - lasso regression - clearly explained](https://www.youtube.com/watch?v=NGf0voTMlcs) 
+
+- [Glmnet Vignette](https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html)
+
+- [Regularization Methods in R](https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/multiple-regression/Regularization-Methods/Regularization-Methods-in-R/index.html)
+
+- [A gentle introduction to logistic regression and lasso regularisation using R](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
+
+- [Penalized Regression in R](https://machinelearningmastery.com/penalized-regression-in-r/)
+
+- [Penalized Logistic Regression Essentials in R](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/)
+
+- [All you need to know about Regularization](https://towardsdatascience.com/all-you-need-to-know-about-regularization-b04fc4300369)
+
+<!--
+Evtl könnte ich hier noch eine Aufgabe draus machen:
+https://www.r-bloggers.com/ridge-regression-and-the-lasso/
+-->
+
+<!--
+http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/
+
+https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
+
+https://www.r-bloggers.com/ridge-regression-and-the-lasso/
+
+http://www.science.smith.edu/~jcrouser/SDS293/labs/lab10-r.html
+
+https://gigadom.in/2017/10/20/practical-machine-learning-with-r-and-python-part-3/
+
+https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
+-->
