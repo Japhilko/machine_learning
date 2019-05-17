@@ -16,7 +16,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = T,warning=F,message=F)
 ```
 
 ## [Regularization](https://elitedatascience.com/algorithm-selection)
@@ -110,10 +110,16 @@ library(AmesHousing)
 ames_data <- AmesHousing::make_ames()
 ```
 
-```{r,eval=T,echo=F}
+```{r,eval=F,echo=F}
 kable(head(ames_data[,1:4]))
 ```
 
+```{r,eval=F,echo=F}
+library(DT)
+DT::datatable(ames_data)
+```
+
+![](figure/dt_amesdata.PNG)
 
 ## Create training (70%) and test (30%) sets 
 
@@ -168,8 +174,8 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 
 ## Consequences
 
-- One consequence of these large fluctuations in the coefficient terms is overfitting, which means we have high variance in the bias-variance tradeoff space. 
-- Although an analyst can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, it is not always clear which variable(s) to remove. 
+- One consequence of these large fluctuations in the coefficient terms is [**overfitting**](https://en.wikipedia.org/wiki/Overfitting), which means we have high variance in the bias-variance tradeoff space. 
+- We can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, but it is not always clear which variable(s) to remove. 
 - Nor do we always wish to remove variables as this may be removing signal in our data.
 
 ## Insufficient Solution
@@ -358,11 +364,14 @@ plot(ames_ridge)
 - The plot illustrates the 10-fold CV mean squared error (MSE) across the $\lambda$ values. 
 - We see no substantial improvement; 
 
-## The plot explained
+## The plot explained (I)
 
 - As we constrain our coefficients with $log(\lambda)\leq 0$ penalty, the MSE rises considerably. 
 - The numbers at the top of the plot (299) just refer to the number of variables in the model. 
 - Ridge regression does not force any variables to exactly zero so all features will remain in the model.
+
+## The plot explained (II)
+
 - The first and second vertical dashed lines represent the $\lambda$  value with the minimum MSE and the largest $\lambda$ value within one standard error of the minimum MSE.
 
 ```{r}
@@ -374,7 +383,7 @@ ames_ridge$lambda.1se  # lambda for this MSE
 ```
 
 
-## The plot explained (II)
+## The plot explained (III)
 
 - The advantage of identifying the $\lambda$ with an MSE within one standard error becomes more obvious with the lasso and elastic net models. 
 - For now we can assess this visually. Here we plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
@@ -472,13 +481,13 @@ ames_lasso <- glmnet(x = ames_train_x,y = ames_train_y,
   alpha = 1)
 ```
 
-## A quick drop in nr. of features
+## A quick drop in number of features
 
 - Very large coefficients for ols (highly correlated)
 - As model is constraines - these noisy features are pushed to 0.
 - CV is necessary to determine right value for $\lambda$
 
-```{r,fig.height=2}
+```{r,fig.height=3}
 plot(ames_lasso, xvar = "lambda")
 ```
 
@@ -525,12 +534,9 @@ ames_lasso$lambda.1se  # lambda for this MSE
 ```{r}
 ames_lasso_min <- glmnet(x = ames_train_x,y = ames_train_y,
   alpha = 1)
-
 plot(ames_lasso_min, xvar = "lambda")
-abline(v = log(ames_lasso$lambda.min), col = "red", 
-       lty = "dashed")
-abline(v = log(ames_lasso$lambda.1se), col = "red", 
-       lty = "dashed")
+abline(v=log(ames_lasso$lambda.min),col="red",lty="dashed")
+abline(v=log(ames_lasso$lambda.1se),col="red",lty="dashed")
 ```
 
 ## Advantages and Disadvantages
@@ -539,17 +545,38 @@ abline(v = log(ames_lasso$lambda.1se), col = "red",
 - Unlike ridge, the lasso will actually push coefficients to zero and perform feature selection. 
 - This simplifies and automates the process of identifying those feature most influential to predictive accuracy.
 
-##
+## Rcode for plotting influential variables
 
-```{r,eval=F}
+```{r,eval=F,echo=F}
 datcoef <- coef(ames_lasso, s = "lambda.1se")
-dfcoef <- data.frame(value=as.vector(datcoef[,1]))
-  ggplot(aes(value, reorder(row, value), color = value > 0,data=dfcoef)) +
+dfcoef <- data.frame(coefficient=names(datcoef[,1]),
+                     value=as.vector(datcoef[,1]))
+dfcoef <- dfcoef[order(dfcoef[,2]),]
+ggplot(aes(value, color = value > 0,data=dfcoef)) +
   geom_point(show.legend = FALSE) +
   ggtitle("Influential variables") +
   xlab("Coefficient") +
   ylab(NULL)
 ```
+
+
+```{r,eval=F}
+coef(ames_lasso, s = "lambda.1se") %>%
+  tidy() %>%
+  filter(row != "(Intercept)") %>%
+  ggplot(aes(value, reorder(row, value), color = value > 0)) +
+  geom_point(show.legend = FALSE) +
+  ggtitle("Influential variables") +
+  xlab("Coefficient") +
+  ylab(NULL)
+```
+
+## Plot Influential variables
+
+![](figure/influentalValues_lasso.PNG)
+
+
+## Plot Influential variables explained
 
 - Often when we remove features we sacrifice accuracy. 
 - To gain the refined clarity and simplicity that lasso provides, we sometimes reduce the level of accuracy. 
@@ -602,18 +629,25 @@ plot(ridge, xvar = "lambda", main = "Ridge (Alpha = 0)")
 
 ![](figure/four_regmods.PNG)
 
-## Tuning
+## Tuning the elastic net model
 
-In ridge and lasso models $\lambda$
- is our primary tuning parameter. However, with elastic nets, we want to tune the $\lambda$ and the alpha parameters. To set up our tuning, we create a common fold_id, which just allows us to apply the same CV folds to each model. We then create a tuning grid that searches across a range of alphas from 0-1, and empty columns where we’ll dump our model results into.
-
-##
+- In ridge and lasso models $\lambda$
+ is our primary tuning parameter. 
+- With elastic nets, we want to tune the $\lambda$ and the alpha parameters. 
+- To set up our tuning, we create a common `fold_id`, which just allows us to apply the same CV folds to each model. 
 
 ```{r}
 # maintain the same folds across all models
 fold_id <- sample(1:10, size = length(ames_train_y), 
                   replace=TRUE)
+```
 
+
+- We then create a tuning grid that searches across a range of alphas from 0-1, and empty columns where we’ll dump our model results into.
+
+##
+
+```{r}
 # search across a range of alphas
 tuning_grid <- tibble::tibble(
   alpha      = seq(0, 1, by = .1),

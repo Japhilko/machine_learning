@@ -342,3 +342,9 @@ swirl()
 ## Resources
 
 - [Course materials for the Data Science Specialization](https://github.com/DataScienceSpecialization/courses)
+
+<!--
+Further possible topics of this section:
+
+regular expressions
+-->
