@@ -134,6 +134,50 @@ ames_train <- rsample::training(ames_split)
 ames_test  <- rsample::testing(ames_split)
 ```
 
+<!--
+## Multicollinearity
+
+- As p increases we are more likely to capture multiple features that have some multicollinearity. 
+- When multicollinearity exists, we often see high variability in our coefficient terms. 
+- E.g. we have a correlation of 0.801 between `Gr_Liv_Area` and `TotRms_AbvGrd` 
+- Both variables are strongly correlated to the response variable (`Sale_Price`).
+
+```{r}
+cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
+```
+
+
+## Multicollinearity
+
+```{r}
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
+```
+
+- When we fit a model with both these variables we get a positive coefficient for `Gr_Liv_Area` but a negative coefficient for `TotRms_AbvGrd`, suggesting one has a positive impact to Sale_Price and the other a negative impact.
+
+## Seperated models
+
+- If we refit the model with each variable independently, they both show a positive impact. 
+- The `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
+
+```{r}
+lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)$coefficients
+```
+
+```{r}
+lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
+```
+
+- This is a common result when collinearity exists. 
+- Coefficients for correlated features become over-inflated and can fluctuate significantly. 
+
+
+## Consequences
+
+- One consequence of these large fluctuations in the coefficient terms is [**overfitting**](https://en.wikipedia.org/wiki/Overfitting), which means we have high variance in the bias-variance tradeoff space. 
+- We can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, but it is not always clear which variable(s) to remove. 
+- Nor do we always wish to remove variables as this may be removing signal in our data.
+-->
 
 ## Insufficient Solution
 
