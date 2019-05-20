@@ -195,26 +195,24 @@ sqrt(m1$mse[which.min(m1$mse)])
 ```{r}
 set.seed(123)
 valid_split <- initial_split(ames_train, .8)
-
 # training data
 ames_train_v2 <- analysis(valid_split)
-
 # validation data
 ames_valid <- assessment(valid_split)
 x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
 y_test <- ames_valid$Sale_Price
+```
 
-rf_oob_comp <- randomForest(
-  formula = Sale_Price ~ .,
-  data    = ames_train_v2,
-  xtest   = x_test,
-  ytest   = y_test
-)
+## Extract OOB & validation errors
 
-# extract OOB & validation errors
-oob <- sqrt(rf_oob_comp$mse)
+```{r}
+rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
+  data=ames_train_v2,xtest = x_test,ytest=y_test)
+oob <- sqrt(rf_oob_comp$mse) # extract OOB & validation errors
 validation <- sqrt(rf_oob_comp$test$mse)
+```
 
+```{r,eval=F}
 # compare error rates
 tibble::tibble(
   `Out of Bag Error` = oob,
@@ -228,3 +226,123 @@ tibble::tibble(
   xlab("Number of trees")
 ```
 
+## Compare error rates
+
+```{r,echo=F}
+tibble::tibble(
+  `Out of Bag Error` = oob,
+  `Test error` = validation,
+  ntrees = 1:rf_oob_comp$ntree
+) %>%
+  gather(Metric, RMSE, -ntrees) %>%
+  ggplot(aes(ntrees, RMSE, color = Metric)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  xlab("Number of trees")
+```
+
+## Random forests - out-of-the-box algorithm
+
+- Random forests are one of the best “out-of-the-box” machine learning algorithms. 
+- They typically perform remarkably well with very little tuning required. - - E.g., we were able to get an RMSE of less than 30K Dollar without any tuning which is over a 6K Dollar reduction to the RMSE achieved with a fully-tuned bagging model and $4K reduction to to a fully-tuned elastic net model. 
+- We can still seek improvement by tuning our random forest model.
+
+## Tuning
+
+- Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
+- Typically, the primary concern at the beginning is tuning the number of candidate variables to select from at each split. 
+- There are a few additional hyperparameters that we should be aware of. 
+- The argument names may differ across packages, but these hyperparameters should be present:
+
+## Tuning parameters
+
+- `ntree`: number of trees. We want enough trees to stabalize the error but using too many trees is unncessarily inefficient, especially when using large data sets.
+- `mtry`: the number of variables to randomly sample as candidates at each split. When `mtry` =p the model equates to bagging. When `mtry=1` the split variable is completely random, so all variables get a chance but can lead to overly biased results. A common suggestion is to start with 5 values evenly spaced across the range from 2 to p.
+- `sampsize`: the number of samples to train on. The default value is 63.25% of the training set since this is the expected value of unique observations in the bootstrap sample. Lower sample sizes can reduce the training time but may introduce more bias than necessary. Increasing the sample size can increase performance but at the risk of overfitting because it introduces more variance. Typically, when tuning this parameter we stay near the 60-80% range.
+- `nodesize`: minimum number of samples within the terminal nodes. Controls the complexity of the trees. Smaller node size allows for deeper, more complex trees and smaller node results in shallower trees. This is another bias-variance tradeoff where deeper trees introduce more variance (risk of overfitting) and shallower trees introduce more bias (risk of not fully capturing unique patters and relatonships in the data).
+- `maxnodes`: maximum number of terminal nodes. Another way to control the complexity of the trees. More nodes equates to deeper, more complex trees and less nodes result in shallower trees.
+
+## Initial tuning with `randomForest`
+
+- If we are interested with just starting out and tuning the mtry parameter we can use `randomForest::tuneRF` for a quick and easy tuning assessment.
+- `tuneRf` will start at a value of mtry that you supply and increase by a certain step factor until the OOB error stops improving be a specified amount. 
+- For example, the below starts with mtry = 5 and increases by a factor of 1.5 until the OOB error stops improving by 1 per cent. 
+- Note that `tuneRF` requires a separate x y specification. 
+- We see that the optimal `mtry` value in this sequence is very close to the default mtry value of $\dfrac{\text{features}{3}=26$.
+
+## Names of features
+
+```{r}
+features <- setdiff(names(ames_train), "Sale_Price")
+
+set.seed(123)
+
+m2 <- tuneRF(
+  x          = ames_train[features],
+  y          = ames_train$Sale_Price,
+  ntreeTry   = 500,
+  mtryStart  = 5,
+  stepFactor = 1.5,
+  improve    = 0.01,
+  trace      = FALSE      # to not show real-time progress 
+)
+```
+
+## Full grid search with `ranger`
+
+- To perform a larger grid search across several hyperparameters we’ll need to create a grid and loop through each hyperparameter combination and evaluate the model. 
+- Unfortunately, this is where `randomForest` becomes quite inefficient since it does not scale well. 
+- Instead, we can use `ranger` which is a C++ implementation of Brieman’s random forest algorithm and, as the following illustrates, is over 6 times faster than `randomForest`.
+
+## Assessing the speed
+
+### `randomForest` speed
+
+```{r}
+system.time(
+  ames_randomForest <- randomForest(
+    formula = Sale_Price ~ ., 
+    data    = ames_train, 
+    ntree   = 500,
+    mtry    = floor(length(features) / 3)
+  )
+)
+```
+
+### ranger speed
+
+```{r}
+system.time(
+  ames_ranger <- ranger(
+    formula   = Sale_Price ~ ., 
+    data      = ames_train, 
+    num.trees = 500,
+    mtry      = floor(length(features) / 3)
+  )
+)
+```
+
+## The grid search
+
+- To perform the grid search, first we want to construct our grid of hyperparameters. 
+- We’re going to search across 96 different models with varying `mtry`, minimum node size, and sample size.
+
+```{r}
+# hyperparameter grid search
+hyper_grid <- expand.grid(
+  mtry       = seq(20, 30, by = 2),
+  node_size  = seq(3, 9, by = 2),
+  sampe_size = c(.55, .632, .70, .80),
+  OOB_RMSE   = 0
+)
+
+nrow(hyper_grid) # total number of combinations
+```
+
+##
+
+- We loop through each hyperparameter combination and apply 500 trees since our previous examples illustrated that 500 was plenty to achieve a stable error rate. 
+- We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make it more clear the impact that each change makes. 
+- Our OOB RMSE ranges between $\tilde$ 26,000-27,000. 
+- Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80%) and deeper trees (3-5 observations in an terminal node) perform best. 
+- We get a full range of mtry values showing up in our top 10 so is does not look like that is over influential.
