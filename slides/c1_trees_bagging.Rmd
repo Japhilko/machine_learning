@@ -1,5 +1,5 @@
 ---
-title: "Supervised Learning - Trees, Bagging, Boosting"
+title: "Supervised Learning - Regression Trees and Bagging"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
