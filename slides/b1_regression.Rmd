@@ -21,7 +21,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,warning = F,message = F)
+knitr::opts_chunk$set(echo = T,warning = F,message = F)
 pres=T
 ```
 
@@ -431,7 +431,7 @@ stargazer(m3, type="html")
 - Create a suitable regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. What do you think?
 
 <!--
-lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
 -->
 
 ## Multicollinearity
@@ -440,6 +440,12 @@ lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
 - When multicollinearity exists, we often see high variability in our coefficient terms. 
 - E.g. we have a correlation of 0.801 between `Gr_Liv_Area` and `TotRms_AbvGrd` 
 - Both variables are strongly correlated to the response variable (`Sale_Price`).
+
+```{r,echo=F}
+library(AmesHousing) 
+ames_data <- AmesHousing::make_ames()
+```
+
 
 ```{r}
 cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
@@ -454,7 +460,7 @@ ames_data <- AmesHousing::make_ames()
 
 
 ```{r}
-lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
 ```
 
 - When we fit a model with both these variables we get a positive coefficient for `Gr_Liv_Area` but a negative coefficient for `TotRms_AbvGrd`, suggesting one has a positive impact to Sale_Price and the other a negative impact.
@@ -465,11 +471,11 @@ lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_train)
 - The `Gr_Liv_Area` effect is now smaller and the `TotRms_AbvGrd` is positive with a much larger magnitude.
 
 ```{r}
-lm(Sale_Price ~ Gr_Liv_Area, data = ames_train)$coefficients
+lm(Sale_Price ~ Gr_Liv_Area, data = ames_data)$coefficients
 ```
 
 ```{r}
-lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
+lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 ```
 
 - This is a common result when collinearity exists. 

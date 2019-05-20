@@ -21,11 +21,13 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,cache=T)
+knitr::opts_chunk$set(echo = T,cache=T,message=F,warning=F)
 library(knitr)
 ```
 
 ## Introduction round
+
+### Please tell us shortly...
 
 - Where are you from? What are you studying/working?
 - What are your expectations of this course?
@@ -33,18 +35,19 @@ library(knitr)
 
 ## Preliminaries
 
-- This topic is huge - we concentrate on presenting the application in R
+- This topic is huge - we concentrate on presenting the applications in R
 - Usually we have big differences in knowledge and abilities of the participants - please tell, if it is too fast or slow.
 - We have many [**exercises**](http://web.math.ku.dk/~helle/R-intro/exercises.pdf) because at the end you can only learn on your own
-- We have many [**examples**](https://www.showmeshiny.com/) - try them out 
+- We have many [**examples**](https://www.showmeshiny.com/) - try them!
 - If there are questions - always ask
 - R is more fun together - ask your neighbor
 
 
-## Content of the course
+## Content of the course - day 1
 
-- The first section is about laying the foundations in R. 
+- The first section is about laying the foundations in R. We will need all things covered later on.
 - The second section is an introduction to the field of machine learning.
+- The third part is on regression and classification.
 
 
 ## Why R is a good choice ...
@@ -53,12 +56,8 @@ library(knitr)
 - ... outstanding graphs - [**graphics**](http://matthewlincoln.net/2014/12/20/adjacency-matrix-plots-with-r-and-ggplot2.html), [**graphics**](https://www.r-bloggers.com/3d-plots-with-ggplot2-and-plotly /), [**graphics**](https://procomun.wordpress.com/2011/03/18/splomr/)
 - ... relates to other languages - [**R can be used in combination with other programs**](https://github.com/Japhilko/RInterfaces) - e.g. [**data linking**](https://github.com/Japhilko/RInterfaces/blob/master/slides/Datenimport.md)
 - ...R can be used [**for automation**](https://cran.r-project.org/web/packages/MplusAutomation/index.html)
- - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/)
-- ...
-
-- Because of the large comunity
-- New statistical methodologies are implemented quite fast 
-- Because R can be combined with other programs like Postgresql or Python
+ - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/) and new statistical methodologies are implemented quite fast 
+- Because R can be combined with other programs like `PostgreSQL` or `Python`
 
 ## Constraints
 
@@ -74,14 +73,15 @@ https://elitedatascience.com/r-vs-python-for-data-science
 
 - Machine learning is a field that changes rapidly.  
 - Some new tools are first developed in Python. 
-- The package reticulate offers the possibility to use these modules from an R environment. 
+- The package `reticulate` offers the possibility to use these modules from an R environment. 
 - Good news - Python is also Open Source
 
 ### Big Data 
 
 - Especially if you work with web data, you quickly have to deal with large amounts of data. 
-- Therefore one must fall back on databases, which can be used in combination with R. 
+- Therefore one must fall back on databases and parallelization strategies, which can be used in R. 
 
+<!--
 ## Content of this part
 
 - Introduction to programming in R 
@@ -90,9 +90,8 @@ https://elitedatascience.com/r-vs-python-for-data-science
 
 - How to import data?
 - What to do with missing values?
-- Parallelization
-
-
+- 
+-->
 
 
 ## Import data 
@@ -110,7 +109,7 @@ https://www.guru99.com/r-decision-trees.html
 
 ```{r}
 path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/titanic_csv.csv'
-titanic <-read.csv(path)
+titanic <- read.csv(path)
 ```
 
 ## Built in datasets
@@ -350,5 +349,8 @@ Further possible topics of this section:
 - the reticulate package
 - how to install python modules
 
-
+- mutate function in dplyr package
+- the rescale package
 -->
+
+

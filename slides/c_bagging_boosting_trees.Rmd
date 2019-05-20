@@ -133,6 +133,7 @@ install.packages("rpart.plot")
 
 ## The Ames Housing data 
 
+- Split the dataset in a test and training dataset
 ```{r}
 set.seed(123)
 ames_split <- initial_split(AmesHousing::make_ames(), prop = .7)
@@ -143,8 +144,8 @@ ames_test  <- testing(ames_split)
 
 ## Introduction bagging
 
-- Basic regression trees partition a data set into smaller groups and then fit a simple model (constant) for each subgroup. 
-- Unfortunately, a single tree model tends to be highly unstable and a poor predictor. 
+- Basic regression trees divide a data set into smaller groups and then fit a simple model (constant) for each subgroup. 
+- But a single tree model tends to be highly unstable and a poor predictor. 
 - By bootstrap aggregating (bagging) regression trees, this technique can become quite powerful and effective. 
 - This provides the fundamental basis of more complex tree-based models such as random forests and gradient boosting machines. 
 
@@ -266,45 +267,75 @@ m1 <- rpart(formula = Sale_Price ~ .,
   data    = ames_train,method  = "anova")
 ```
 
-## 
+## Steps of the splits explained
 
-- Once we’ve fit our model we can take a peak at the `m1` output. 
+- Once we’ve fit our model we can look at the `m1` output. 
+
+<!--
 - This just explains steps of the splits. 
-- E.g., we start with 2051 observations at the root node (very beginning) and the first variable we split on (the first variable that optimizes a reduction in SSE) is `Overall_Qual`. 
+-->
+
+- E.g., we start with 2051 observations at the root node (very beginning) and the first variable we split on (that optimizes a reduction in SSE) is `Overall_Qual`. 
 - We see that at the first node all observations with 
 
 ```
-Overall_Qual=Very_Poor,Poor,Fair,Below_Average,Average,Above_Average,Good
+Overall_Qual=Very_Poor,Poor,Fair,Below_Average,Average,
+Above_Average,Good
 ```
 
-go to the 2nd (2)) branch. 
+go to the 2nd branch. 
 
-## 
+## The 3rd branch
 
-- The total number of observations that follow this branch (1699), their average sales price (156147.10) and SSE (4.001092e+12) are listed. If you look for the 3rd branch (3)) you will see that 352 observations with `Overall_Qual=Very_Good,Excellent,Very_Excellent` follow this branch and their average sales prices is 304571.10 and the SEE in this region is 2.874510e+12. Basically, this is telling us the most important variable that has the largest reduction in SEE initially is Overall_Qual with those homes on the upper end of the quality spectrum having almost double the average sales price.
+- The total number of observations that follow this branch (1699), their average sales price (156147.10) and SSE (4.001092e+12) are listed. 
+- If you look for the 3rd branch you will see that 352 observations with
 
-##
+`Overall_Qual=Very_Good,Excellent,Very_Excellent` 
+
+follow this branch and their average sales prices is 304571.10 and the SEE in this region is 2.874510e+12. 
+- `Overall_Qual` is the most important variable that has the largest reduction in SEE initially 
+- With those homes on the upper end of the quality spectrum having almost double the average sales price.
+
+## `m1` model
+
+![](figure/tree_m1.PNG)
+
 
 ```{r}
 m1
 ```
 
-##
+## Visualization with `rpart.plot`
 
-We can visualize our model with rpart.plot. rpart.plot has many plotting options, which we’ll leave to the reader to explore. However, in the default print it will show the percentage of data that fall to that node and the average sales price for that branch. One thing you may notice is that this tree contains 11 internal nodes resulting in 12 terminal nodes. Basically, this tree is partitioning on 11 variables to produce its model. 
-- There are 80 variables in ames_train. So what happened?
+<!--
+We can visualize our model with `rpart.plot`. 
+-->
 
-##
+
+- `rpart.plot` has many plotting options
+<!--
+, which we’ll leave to the reader to explore. 
+-->
+- In the default print it will show the percentage of data that fall to that node and the average sales price for that branch. 
+- This tree contains 11 internal nodes resulting in 12 terminal nodes. 
+- This tree is partitioning on 11 variables to produce its model. 
+- There are 80 variables in `ames_train`. So what happened?
+
+## The `rpart.plot`
 
 ```{r}
 rpart.plot(m1)
 ```
 
 
-##
+## Behind the scenes
 
-Behind the scenes rpart is automatically applying a range of cost complexity ($\alpha$ values to prune the tree. To compare the error for each $\alpha$ value, rpart performs a 10-fold cross validation so that the error associated with a given $\alpha$
-value is computed on the hold-out validation data. In this example we find diminishing returns after 12 terminal nodes as illustrated below (y-axis is cross validation error, lower x-axis is cost complexity ($\alpha$) value, upper x-axis is the number of terminal nodes (tree size = $|T|$). You may also notice the dashed line which goes through the point $|T|=9$. Breiman et al. (1984) suggested that in actual practice, its common to instead use the smallest tree within 1 standard deviation of the minimum cross validation error (aka the 1-SE rule). Thus, we could use a tree with 9 terminal nodes and reasonably expect to experience similar results within a small margin of error.
+- `rpart` is automatically applying a range of cost complexity $\alpha$ values to prune the tree. 
+- To compare the error for each $\alpha$ value, `rpart` performs a 10-fold cross validation so that the error associated with a given $\alpha$ value is computed on the hold-out validation data. 
+- In this example we find diminishing returns after 12 terminal nodes as illustrated below (y-axis is cross validation error, lower x-axis is cost complexity ($\alpha$) value, upper x-axis is the number of terminal nodes (tree size = $|T|$). 
+- The dashed line which goes through the point $|T|=9$. 
+- Breiman et al. (1984) suggested that in actual practice, its common to instead use the smallest tree within 1 standard deviation of the minimum cross validation error (aka the 1-SE rule). 
+- Thus, we could use a tree with 9 terminal nodes and reasonably expect to experience similar results within a small margin of error.
 
 ##
 
@@ -478,7 +509,8 @@ Bagging combines and averages multiple models. Averaging across multiple trees r
 
 ##
 
-This process can actually be applied to any regression or classification model; however, it provides the greatest improvement for models that have high variance. For example, more stable parametric models such as linear regression and multi-adaptive regression splines tend to experience less improvement in predictive performance.
+- This process can be applied to any regression or classification model; 
+- It provides the greatest improvement for models that have high variance. For example, more stable parametric models such as linear regression and multi-adaptive regression splines tend to experience less improvement in predictive performance.
 
 One benefit of bagging is that, on average, a bootstrap sample will contain 63 per cent (23) of the training data. This leaves about 33 per cent ($\dfrac{1}{3}$) of the data out of the bootstrapped sample. We call this the out-of-bag (OOB) sample. We can use the OOB observations to estimate the model’s accuracy, creating a natural cross-validation process.
 
@@ -600,7 +632,7 @@ RMSE(pred, ames_test$Sale_Price)
 ```
 
 
-
+<!--
 ## [Classification Tree example](https://www.guru99.com/r-decision-trees.html)
 
 The purpose of this dataset is to predict which people are more likely to survive after the collision with the iceberg. The dataset contains 13 variables and 1309 observations. The dataset is ordered by the variable X. 
@@ -612,7 +644,7 @@ titanic <-read.csv(path)
 shuffle_index <- sample(1:nrow(titanic))
 kable(head(titanic))
 ```
-
+-->
 
 
 <!--
@@ -623,12 +655,14 @@ kable(head(titanic))
 - Regression tree
 -->
 
-## [](https://elitedatascience.com/algorithm-selection)
+<!--
 
-Unfortunately, decision trees suffer from a major flaw as well. If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
+## The data behind
 
-As a result, individual unconstrained decision trees are very prone to being overfit.
-
+```{r}
+airq <- subset(airquality, !is.na(Ozone))
+summary(airq$Temp)
+```
 
 
 
@@ -648,17 +682,10 @@ library(party)
 - [**Vignette**](https://cran.r-project.org/web/packages/party/vignettes/party.pdf) package `party`
 
 
-## [ctree example](https://datawookie.netlify.com/blog/2013/05/package-party-conditional-inference-trees/)
+### [ctree example](https://datawookie.netlify.com/blog/2013/05/package-party-conditional-inference-trees/)
 
 ```{r,eval=F}
 install.packages("party")
-```
-
-## The data behind
-
-```{r}
-airq <- subset(airquality, !is.na(Ozone))
-summary(airq$Temp)
 ```
 
 ## A first model
@@ -736,38 +763,7 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
 [Decision Trees and Random Forest](https://cran.r-project.org/doc/contrib/Zhao_R_and_data_mining.pdf)
 
-
-## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
-
-Ensembles are machine learning methods for combining predictions from multiple separate models. 
-
-<!--
-There are a few different methods for ensembling, but the two most common are:
 -->
-
-### Bagging 
-
-attempts to reduce the chance overfitting complex models.
-
-
-- It trains a large number of "strong" learners in parallel.
--  A strong learner is a model that's relatively unconstrained.
--  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
-
-### Boosting 
-
-attempts to improve the predictive flexibility of simple models.
-
--    It trains a large number of "weak" learners in sequence.
--    A weak learner is a constrained model (i.e. you could limit the max depth of each decision tree).
--    Each one in the sequence focuses on learning from the mistakes of the one before it.
--    Boosting then combines all the weak learners into a single strong learner.
-
-### Bagging and boosting
-
-While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
-
-Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
 
 
 ## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
@@ -778,7 +774,9 @@ Bagging uses complex base models and tries to "smooth out" their predictions, wh
 
 Advantages: Decision trees are easy to interpret, nonparametric (which means they are robust to outliers), and there are relatively few parameters to tune.
 
-Disadvantages: Decision trees are prone to be overfit. However, this can be addressed by ensemble methods like random forests or boosted trees.
+Disadvantages: Decision trees are prone to be overfit. 
+
+- This can be addressed by ensemble methods like random forests or boosted trees.
 
 
 ## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
@@ -821,13 +819,15 @@ Breiman, L. (1997). "Arcing The Edge". Technical Report 486. Statistics Departme
 <!--
 -->
 
+
+<!--
 ## Explicit algorithms
 
-Explicit regression gradient boosting algorithms were subsequently developed by Jerome H. Friedman,[2][3] simultaneously with the more general functional gradient boosting perspective of Llew Mason, Jonathan Baxter, Peter Bartlett and Marcus Frean.[4][5] 
+Explicit regression gradient boosting algorithms were subsequently developed by Jerome H. Friedman, simultaneously with the more general functional gradient boosting perspective of Llew Mason, Jonathan Baxter, Peter Bartlett and Marcus Frean.
 
 
 The latter two papers introduced the view of boosting algorithms as iterative functional gradient descent algorithms. That is, algorithms that optimize a cost function over function space by iteratively choosing a function (weak hypothesis) that points in the negative gradient direction. This functional gradient view of boosting has led to the development of boosting algorithms in many areas of machine learning and statistics beyond regression and classification.
-
+-->
 
 ## [**Advantages of gradient boosting**](http://uc-r.github.io/gbm_regression)
 
@@ -866,17 +866,21 @@ Residual is a gradient of single observation error contribution in one of the mo
 -->
 
 
-
+<!--
 ## [Gradient Boosting for Linear Regression - why does it not work?](https://stats.stackexchange.com/questions/186966/gradient-boosting-for-linear-regression-why-does-it-not-work)
 
-While learning about Gradient Boosting, I haven't heard about any constraints regarding the properties of a "weak classifier" that the method uses to build and ensemble model. However, I could not imagine an application of a GB that uses linear regression, and in fact when I've performed some tests - it doesn't work. I was testing the most standard approach with a gradient of sum of squared residuals and adding the subsequent models together.
+
+While learning about Gradient Boosting, I haven't heard about any constraints regarding the properties of a "weak classifier" that the method uses to build and ensemble model. 
+
+
+- I could not imagine an application of a GB that uses linear regression, and in fact when I've performed some tests - it doesn't work. I was testing the most standard approach with a gradient of sum of squared residuals and adding the subsequent models together.
 
 The obvious problem is that the residuals from the first model are populated in such manner that there is really no regression line to fit anymore. My another observation is that a sum of subsequent linear regression models can be represented as a single regression model as well (adding all intercepts and corresponding coefficients) so I cannot imagine how that could ever improve the model. The last observation is that a linear regression (the most typical approach) is using sum of squared residuals as a loss function - the same one that GB is using.
 
 I also thought about lowering the learning rate or using only a subset of predictors for each iteration, but that could still be summed up to a single model representation eventually, so I guess it would bring no improvement.
 
 What am I missing here? Is linear regression somehow inappropriate to use with Gradient Boosting? Is it because the linear regression uses the sum of squared residuals as a loss function? Are there any particular constraints on the weak predictors so they can be applied to Gradient Boosting?
-
+-->
 
 
 ## Links
@@ -896,7 +900,7 @@ What am I missing here? Is linear regression somehow inappropriate to use with G
 - [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
 
 
-- [How to Visualize Gradient Boosting Decision Trees With XGBoost in Python](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
+- [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
 
 
 <!--

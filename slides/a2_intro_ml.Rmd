@@ -111,6 +111,40 @@ https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-
 ![](figure/3d-coordinate-plane.png)
 
 
+## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
+
+Ensembles are machine learning methods for combining predictions from multiple separate models. 
+
+<!--
+There are a few different methods for ensembling, but the two most common are:
+-->
+
+### Bagging 
+
+attempts to reduce the chance overfitting complex models.
+
+
+- It trains a large number of "strong" learners in parallel.
+-  A strong learner is a model that's relatively unconstrained.
+-  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
+
+### Boosting 
+
+attempts to improve the predictive flexibility of simple models.
+
+-    It trains a large number of "weak" learners in sequence.
+-    A weak learner is a constrained model (i.e. you could limit the max depth of each decision tree).
+-    Each one in the sequence focuses on learning from the mistakes of the one before it.
+-    Boosting then combines all the weak learners into a single strong learner.
+
+### Bagging and boosting
+
+While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
+
+Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
+
+
+
 ## Links
 
 - [Presentations on ‘Elements of Neural Networks & Deep Learning’ ](https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-45/)

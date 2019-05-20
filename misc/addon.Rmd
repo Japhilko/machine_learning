@@ -153,3 +153,13 @@ best_model <- h2o.getModel(best_h2o_model)
 <!--
 ames_lasso, s
 -->
+
+
+
+
+## [Algorithm selection](https://elitedatascience.com/algorithm-selection)
+
+- Unfortunately, decision trees suffer from a major flaw. 
+- If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
+- As a result, individual unconstrained decision trees are very prone to being overfit.
+
