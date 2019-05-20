@@ -192,3 +192,39 @@ sqrt(m1$mse[which.min(m1$mse)])
 - Here we split our training set further to create a training and validation set. 
 - We then supply the validation data in the `xtest` and `ytest` arguments.
 
+```{r}
+set.seed(123)
+valid_split <- initial_split(ames_train, .8)
+
+# training data
+ames_train_v2 <- analysis(valid_split)
+
+# validation data
+ames_valid <- assessment(valid_split)
+x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
+y_test <- ames_valid$Sale_Price
+
+rf_oob_comp <- randomForest(
+  formula = Sale_Price ~ .,
+  data    = ames_train_v2,
+  xtest   = x_test,
+  ytest   = y_test
+)
+
+# extract OOB & validation errors
+oob <- sqrt(rf_oob_comp$mse)
+validation <- sqrt(rf_oob_comp$test$mse)
+
+# compare error rates
+tibble::tibble(
+  `Out of Bag Error` = oob,
+  `Test error` = validation,
+  ntrees = 1:rf_oob_comp$ntree
+) %>%
+  gather(Metric, RMSE, -ntrees) %>%
+  ggplot(aes(ntrees, RMSE, color = Metric)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  xlab("Number of trees")
+```
+
