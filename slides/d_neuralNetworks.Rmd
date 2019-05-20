@@ -189,12 +189,11 @@ install.packages("GGally")
 
 ```{r}
 url <- 'http://archive.ics.uci.edu/ml/machine-learning-databases/00243/yacht_hydrodynamics.data'
-
+colnam <- c('LongPos_COB', 'Prismatic_Coeff','Len_Disp_Ratio',
+            'Beam_Draut_Ratio','Length_Beam_Ratio','Froude_Num',
+            'Residuary_Resist')
 Yacht_Data <- read_table(file = url,
-                         col_names = c('LongPos_COB', 'Prismatic_Coeff',
-                                       'Len_Disp_Ratio', 'Beam_Draut_Ratio', 
-                                       'Length_Beam_Ratio','Froude_Num', 
-                                       'Residuary_Resist')) %>%
+                         col_names = colnam) %>%
   na.omit()
 ```
 
@@ -232,10 +231,10 @@ scale01 <- function(x){
 
 Yacht_Data <- Yacht_Data %>%
   mutate_all(scale01)
-
 # Split into test and train sets
 set.seed(12345)
-Yacht_Data_Train <- sample_frac(tbl = Yacht_Data, replace = FALSE, size = 0.80)
+Yacht_Data_Train <- sample_frac(tbl = Yacht_Data, 
+                                replace = FALSE, size = 0.80)
 Yacht_Data_Test <- anti_join(Yacht_Data, Yacht_Data_Train)
 ```
 
@@ -254,9 +253,10 @@ Yacht_Data_Test <- anti_join(Yacht_Data, Yacht_Data_Train)
 
 ```{r}
 set.seed(12321)
-Yacht_NN1 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + 
-                         Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio +
-                         Froude_Num, data = Yacht_Data_Train)
+Yacht_NN1<-neuralnet(Residuary_Resist~LongPos_COB + Prismatic_Coeff + 
+                         Len_Disp_Ratio + Beam_Draut_Ratio+
+                       Length_Beam_Ratio +Froude_Num, 
+                     data = Yacht_Data_Train)
 ```
 
 
@@ -276,7 +276,8 @@ plot(Yacht_NN1, rep = 'best')
 - To manually compute the SSE you can use the following:
 
 ```{r}
-NN1_Train_SSE <- sum((Yacht_NN1$net.result - Yacht_Data_Train[, 7])^2)/2
+NN1_Train_SSE <- sum((Yacht_NN1$net.result-
+                        Yacht_Data_Train[, 7])^2)/2
 paste("SSE: ", round(NN1_Train_SSE, 4))
 ```
 
@@ -286,13 +287,14 @@ paste("SSE: ", round(NN1_Train_SSE, 4))
 
 - This SSE is the error associated with the training data set. 
 - A superior metric for estimating the generalization capability of the ANN would be the SSE of the test data set. 
-- Recall, the test data set contains observations not used to train the Yacht_NN1 ANN. 
-- To calculate the test error, we first must run our test observations through the Yacht_NN1 ANN. 
+- The test data set contains observations not used to train `Yacht_NN1 ANN`.
+- To calculate the test error, we first run our test observations through the Yacht_NN1 ANN. 
 - This is accomplished with the neuralnet package compute() function, which takes as its first input the desired neural network object created by the neuralnet() function, and the second argument the test data set feature (independent variable(s)) values.
 
 ```{r}
-Test_NN1_Output <- compute(Yacht_NN1, Yacht_Data_Test[, 1:6])$net.result
-NN1_Test_SSE <- sum((Test_NN1_Output - Yacht_Data_Test[, 7])^2)/2
+Test_NN1_Output <- compute(Yacht_NN1, 
+                           Yacht_Data_Test[, 1:6])$net.result
+NN1_Test_SSE<-sum((Test_NN1_Output-Yacht_Data_Test[,7])^2)/2
 NN1_Test_SSE
 ```
 
@@ -309,14 +311,18 @@ NN1_Test_SSE
 - We have constructed the most basic of regression ANNs without modifying any of the default hyperparameters associated with the `neuralnet()` function. 
 
 ```{r}
-# 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, logistic activation
-# function
+# 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, 
+# logistic activation function
 set.seed(12321)
 Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num, 
                        data = Yacht_Data_Train, 
                        hidden = c(4, 1), 
                        act.fct = "logistic")
+```
 
+##
+
+```{r}
 ## Training Error
 NN2_Train_SSE <- sum((Yacht_NN2$net.result - Yacht_Data_Train[, 7])^2)/2
 
@@ -324,6 +330,8 @@ NN2_Train_SSE <- sum((Yacht_NN2$net.result - Yacht_Data_Train[, 7])^2)/2
 Test_NN2_Output <- compute(Yacht_NN2, Yacht_Data_Test[, 1:6])$net.result
 NN2_Test_SSE <- sum((Test_NN2_Output - Yacht_Data_Test[, 7])^2)/2
 ```
+
+
 
 - We should try and improve the network by modifying its basic structure and hyperparameter modification. 
 - To begin we will add depth to the hidden layer of the network, then we will change the activation function from the logistic to the tangent hyperbolicus (tanh) to determine if these modifications can improve the test data set SSE. 
@@ -413,7 +421,11 @@ Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Di
                        hidden = c(4, 1), 
                        act.fct = "logistic", 
                        rep = 10)
+```
 
+##
+
+```{r}
 plot(Yacht_NN2, rep = "best")
 ```
 

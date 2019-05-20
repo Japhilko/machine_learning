@@ -106,11 +106,21 @@ https://elitedatascience.com/r-vs-python-for-data-science
 <!--
 https://www.guru99.com/r-decision-trees.html
 -->
+## The download the data from UCI.
 
 ```{r}
-path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/titanic_csv.csv'
-titanic <- read.csv(path)
+url<-'http://archive.ics.uci.edu/ml/machine-learning-databases/00243/yacht_hydrodynamics.data'
+Yacht_Data <- read_table(file = url)
 ```
+
+```{r,eval=F,echo=F}
+colnam <- c('LongPos_COB', 'Prismatic_Coeff','Len_Disp_Ratio',
+            'Beam_Draut_Ratio','Length_Beam_Ratio','Froude_Num',
+            'Residuary_Resist')
+Yacht_Data <- read_table(file = url,col_names = colnam)
+```
+
+
 
 ## Built in datasets
 
