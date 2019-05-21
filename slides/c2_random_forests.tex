@@ -1,40 +1,89 @@
-\documentclass[10pt,ignorenonframetext,]{beamer}
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  10pt,
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
 \setbeamercolor{caption name}{fg=normal text.fg}
 \beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph:
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usetheme[]{Dresden}
 \usecolortheme{dolphin}
 \usefonttheme{structuresmallcapsserif}
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\newif\ifbibliography
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-            pdftitle={Random Forests},
-            pdfauthor={Jan-Philipp Kolb},
-            pdfborder={0 0 0},
-            breaklinks=true}
+  pdftitle={Random Forests},
+  pdfauthor={Jan-Philipp Kolb},
+  pdfborder={0 0 0},
+  breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
+\newif\ifbibliography
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -42,76 +91,56 @@
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
 % Add ',fontsize=\small' for more characters per line
 \newenvironment{Shaded}{}{}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{#1}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{#1}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
 \newcommand{\DataTypeTok}[1]{#1}
 \newcommand{\DecValTok}[1]{#1}
-\newcommand{\BaseNTok}[1]{#1}
-\newcommand{\FloatTok}[1]{#1}
-\newcommand{\ConstantTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
 \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
-\newcommand{\FunctionTok}[1]{#1}
-\newcommand{\VariableTok}[1]{#1}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
-\newcommand{\OperatorTok}[1]{#1}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
-\newcommand{\AttributeTok}[1]{#1}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{#1}
+\newcommand{\FunctionTok}[1]{#1}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
 \newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{#1}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\VariableTok}[1]{#1}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight0.8\textheight\else\Gin@nat@height\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-
-% Prevent slide breaks in the middle of a paragraph:
-\widowpenalties 1 10000
-\raggedbottom
-
-\AtBeginPart{
-  \let\insertpartnumber\relax
-  \let\partname\relax
-  \frame{\partpage}
-}
-\AtBeginSection{
-  \ifbibliography
-  \else
-    \let\insertsectionnumber\relax
-    \let\sectionname\relax
-    \frame{\sectionpage}
-  \fi
-}
-\AtBeginSubsection{
-  \let\insertsubsectionnumber\relax
-  \let\subsectionname\relax
-  \frame{\subsectionpage}
-}
-
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{-2}
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
 
 \title{Random Forests}
 \author{Jan-Philipp Kolb}
@@ -121,6 +150,7 @@
 \frame{\titlepage}
 
 \begin{frame}{Random Forests}
+\protect\hypertarget{random-forests}{}
 
 \begin{itemize}
 \tightlist
@@ -141,6 +171,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Preparation - random forests}
+\protect\hypertarget{preparation---random-forests}{}
 
 \begin{itemize}
 \tightlist
@@ -162,11 +193,12 @@
 \end{frame}
 
 \begin{frame}[fragile]{The Ames housing data}
+\protect\hypertarget{the-ames-housing-data}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{ames_split <-}\StringTok{ }\KeywordTok{initial_split}\NormalTok{(AmesHousing}\OperatorTok{::}\KeywordTok{make_ames}\NormalTok{(), }\DataTypeTok{prop =}\NormalTok{ .}\DecValTok{7}\NormalTok{)}
+\NormalTok{ames_split <-}\StringTok{ }\KeywordTok{initial_split}\NormalTok{(AmesHousing}\OperatorTok{::}\KeywordTok{make_ames}\NormalTok{(), }\DataTypeTok{prop =} \FloatTok{.7}\NormalTok{)}
 \NormalTok{ames_train <-}\StringTok{ }\KeywordTok{training}\NormalTok{(ames_split)}
 \NormalTok{ames_test  <-}\StringTok{ }\KeywordTok{testing}\NormalTok{(ames_split)}
 \end{Highlighting}
@@ -175,6 +207,7 @@
 \end{frame}
 
 \begin{frame}{The idea of random forests}
+\protect\hypertarget{the-idea-of-random-forests}{}
 
 \begin{itemize}
 \tightlist
@@ -198,6 +231,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Similar trees}
+\protect\hypertarget{similar-trees}{}
 
 \begin{itemize}
 \tightlist
@@ -216,6 +250,7 @@
 \end{frame}
 
 \begin{frame}{Tree correlation}
+\protect\hypertarget{tree-correlation}{}
 
 \begin{itemize}
 \tightlist
@@ -261,6 +296,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Basic algorithm}
+\protect\hypertarget{basic-algorithm}{}
 
 The basic algorithm for a regression random forest can be generalized to
 the following:
@@ -291,6 +327,7 @@ the following:
 \end{frame}
 
 \begin{frame}{OOB error vs.~test set error}
+\protect\hypertarget{oob-error-vs.-test-set-error}{}
 
 \begin{itemize}
 \tightlist
@@ -313,12 +350,14 @@ the following:
 \end{frame}
 
 \begin{frame}{Random forest out-of-bag error versus validation error}
+\protect\hypertarget{random-forest-out-of-bag-error-versus-validation-error}{}
 
 \includegraphics{figure/random_trees_fig1.PNG}
 
 \end{frame}
 
 \begin{frame}{Scoring models - metrics}
+\protect\hypertarget{scoring-models---metrics}{}
 
 \begin{itemize}
 \tightlist
@@ -341,6 +380,7 @@ the following:
 \end{frame}
 
 \begin{frame}{Advantages \& Disadvantages}
+\protect\hypertarget{advantages-disadvantages}{}
 
 \begin{block}{Advantages - random forrests}
 
@@ -379,6 +419,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Basic implementation}
+\protect\hypertarget{basic-implementation}{}
 
 \begin{itemize}
 \tightlist
@@ -402,6 +443,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{randomForest::randomForest}}
+\protect\hypertarget{randomforestrandomforest}{}
 
 \begin{itemize}
 \tightlist
@@ -444,6 +486,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Plotting the model}
+\protect\hypertarget{plotting-the-model}{}
 
 \begin{itemize}
 \tightlist
@@ -464,6 +507,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{The plotted error rate}
+\protect\hypertarget{the-plotted-error-rate}{}
 
 \begin{itemize}
 \tightlist
@@ -499,6 +543,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{A validation set to measure predictive accuracy}
+\protect\hypertarget{a-validation-set-to-measure-predictive-accuracy}{}
 
 \begin{itemize}
 \tightlist
@@ -516,7 +561,7 @@ the following:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{valid_split <-}\StringTok{ }\KeywordTok{initial_split}\NormalTok{(ames_train, .}\DecValTok{8}\NormalTok{)}
+\NormalTok{valid_split <-}\StringTok{ }\KeywordTok{initial_split}\NormalTok{(ames_train, }\FloatTok{.8}\NormalTok{)}
 \CommentTok{# training data}
 \NormalTok{ames_train_v2 <-}\StringTok{ }\KeywordTok{analysis}\NormalTok{(valid_split)}
 \CommentTok{# validation data}
@@ -529,6 +574,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Extract OOB \& validation errors}
+\protect\hypertarget{extract-oob-validation-errors}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -558,12 +604,14 @@ the following:
 \end{frame}
 
 \begin{frame}{Compare error rates}
+\protect\hypertarget{compare-error-rates}{}
 
 \includegraphics{c2_random_forests_files/figure-beamer/unnamed-chunk-10-1.pdf}
 
 \end{frame}
 
 \begin{frame}{Random forests - out-of-the-box algorithm}
+\protect\hypertarget{random-forests---out-of-the-box-algorithm}{}
 
 \begin{itemize}
 \tightlist
@@ -583,6 +631,7 @@ the following:
 \end{frame}
 
 \begin{frame}{Tuning}
+\protect\hypertarget{tuning}{}
 
 \begin{itemize}
 \tightlist
@@ -602,6 +651,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Tuning parameters}
+\protect\hypertarget{tuning-parameters}{}
 
 \begin{itemize}
 \tightlist
@@ -641,6 +691,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Initial tuning with \texttt{randomForest}}
+\protect\hypertarget{initial-tuning-with-randomforest}{}
 
 \begin{itemize}
 \tightlist
@@ -665,6 +716,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Names of features}
+\protect\hypertarget{names-of-features}{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -698,6 +750,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Full grid search with \texttt{ranger}}
+\protect\hypertarget{full-grid-search-with-ranger}{}
 
 \begin{itemize}
 \tightlist
@@ -717,6 +770,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{Assessing the speed}
+\protect\hypertarget{assessing-the-speed}{}
 
 \begin{block}{\texttt{randomForest} speed}
 
@@ -765,6 +819,7 @@ the following:
 \end{frame}
 
 \begin{frame}[fragile]{The grid search}
+\protect\hypertarget{the-grid-search}{}
 
 \begin{itemize}
 \tightlist
@@ -782,7 +837,7 @@ the following:
 \NormalTok{hyper_grid <-}\StringTok{ }\KeywordTok{expand.grid}\NormalTok{(}
   \DataTypeTok{mtry       =} \KeywordTok{seq}\NormalTok{(}\DecValTok{20}\NormalTok{, }\DecValTok{30}\NormalTok{, }\DataTypeTok{by =} \DecValTok{2}\NormalTok{),}
   \DataTypeTok{node_size  =} \KeywordTok{seq}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DataTypeTok{by =} \DecValTok{2}\NormalTok{),}
-  \DataTypeTok{sampe_size =} \KeywordTok{c}\NormalTok{(.}\DecValTok{55}\NormalTok{, .}\DecValTok{632}\NormalTok{, .}\DecValTok{70}\NormalTok{, .}\DecValTok{80}\NormalTok{),}
+  \DataTypeTok{sampe_size =} \KeywordTok{c}\NormalTok{(.}\DecValTok{55}\NormalTok{, }\FloatTok{.632}\NormalTok{, }\FloatTok{.70}\NormalTok{, }\FloatTok{.80}\NormalTok{),}
   \DataTypeTok{OOB_RMSE   =} \DecValTok{0}
 \NormalTok{)}
 
@@ -793,32 +848,6 @@ the following:
 \begin{verbatim}
 ## [1] 96
 \end{verbatim}
-
-\end{frame}
-
-\begin{frame}{}
-
-\begin{itemize}
-\tightlist
-\item
-  We loop through each hyperparameter combination and apply 500 trees
-  since our previous examples illustrated that 500 was plenty to achieve
-  a stable error rate.
-\item
-  We set the random number generator seed. This allows us to
-  consistently sample the same observations for each sample size and
-  make it more clear the impact that each change makes.
-\item
-  Our OOB RMSE ranges between \(\tilde\) 26,000-27,000.
-\item
-  Our top 10 performing models all have RMSE values right around 26,000
-  and the results show that models with slighly larger sample sizes
-  (70-80\%) and deeper trees (3-5 observations in an terminal node)
-  perform best.
-\item
-  We get a full range of mtry values showing up in our top 10 so is does
-  not look like that is over influential.
-\end{itemize}
 
 \end{frame}
 

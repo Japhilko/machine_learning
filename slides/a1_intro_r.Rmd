@@ -101,6 +101,14 @@ https://elitedatascience.com/r-vs-python-for-data-science
 ?read.csv2
 ```
 
+```{r}
+path <- "https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/"
+dname <- "titanic_csv.csv"
+titanic <- read.csv(paste0(path,dname))
+```
+
+
+
 ### Using a path to import data
 
 <!--
@@ -108,9 +116,15 @@ https://www.guru99.com/r-decision-trees.html
 -->
 ## The download the data from UCI.
 
+```{r,eval=F,echo=F}
+install.packages("bindrcpp")
+```
+
+
+
 ```{r}
 url<-'http://archive.ics.uci.edu/ml/machine-learning-databases/00243/yacht_hydrodynamics.data'
-Yacht_Data <- read_table(file = url)
+Yacht_Data <- readr::read_table(file = url)
 ```
 
 ```{r,eval=F,echo=F}
@@ -146,11 +160,13 @@ install.packages("datasets.load")
 
 ![](figure/datasetsload.PNG)
 
+
 ## The titanic dataset
 
-```{r}
+```{r,eval=F}
 kable(head(titanic))
 ```
+
 
 ## Exercise
 
