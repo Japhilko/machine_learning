@@ -94,22 +94,25 @@ https://elitedatascience.com/r-vs-python-for-data-science
 -->
 
 
-## Import data 
+## Import `.csv` data 
+
+### The `read.csv` command
+
+- Use `read.csv2` for German data 
 
 ```{r,eval=F}
 ?read.csv
 ?read.csv2
 ```
 
-```{r}
-path <- "https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/"
-dname <- "titanic_csv.csv"
-titanic <- read.csv(paste0(path,dname))
-```
-
-
-
 ### Using a path to import data
+
+```{r}
+path1<-"https://raw.githubusercontent.com/"
+path2<- "thomaspernet/data_csv_r/master/data/"
+dname <- "titanic_csv.csv"
+titanic <- read.csv(paste0(path1,path2,dname))
+```
 
 <!--
 https://www.guru99.com/r-decision-trees.html
@@ -120,10 +123,14 @@ https://www.guru99.com/r-decision-trees.html
 install.packages("bindrcpp")
 ```
 
+```{r}
+path1 <- "http://archive.ics.uci.edu/ml/machine-learning-databases/00243/"
+dname <- 'yacht_hydrodynamics.data'
+```
 
 
 ```{r}
-url<-'http://archive.ics.uci.edu/ml/machine-learning-databases/00243/yacht_hydrodynamics.data'
+url<- paste0(path1,dname)
 Yacht_Data <- readr::read_table(file = url)
 ```
 

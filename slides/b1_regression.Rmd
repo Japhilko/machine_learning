@@ -20,7 +20,7 @@ output:
     keep_md: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setupregression, include=FALSE}
 knitr::opts_chunk$set(echo = T,warning = F,message = F)
 pres=T
 ```
@@ -520,12 +520,13 @@ https://cran.r-project.org/web/packages/keras/vignettes/tutorial_overfit_underfi
 https://www.r-bloggers.com/machine-learning-explained-overfitting/
 -->
 
-
+<!--
 ## [Overfitting](https://en.wikipedia.org/wiki/Overfitting).
 
 ![](figure/450px-Overfitting.svg.png)
 
 The green line represents an overfitted model and the black line represents a regularized model. While the green line best follows the training data, it is too dependent on that data and it is likely to have a higher error rate on new unseen data, compared to the black line.
+-->
 
 <!--
 https://en.wikipedia.org/wiki/Overfitting
@@ -562,7 +563,6 @@ training.samples <- swiss$Fertility %>%
 createDataPartition(p = 0.8, list = FALSE)
 train.data  <- swiss[training.samples, ]
 test.data <- swiss[-training.samples, ]
-
 # Build the model
 model <- lm(Fertility ~., data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
@@ -578,15 +578,16 @@ model <- train(Fertility ~., data = swiss, method = "lm",
 print(model)
 ```
 
+<!--
 ## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
-
+-->
 
 
 ## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
 ![](figure/bias_variance_tradeoff.PNG){ height=70% }
 
-
+<!--
 ## Good literature for linear regression in R
 
 ### Useful PDF document:
@@ -602,6 +603,8 @@ Introduction, Code and Commentary**](https://cran.r-project.org/doc/contrib/usin
 -  Multiple linear regression
 -  Extending the linear model
 -  ...
+-->
+
 
 <!--
 Anwendung log Transformation
@@ -623,29 +626,7 @@ wann wird dies gemacht
 - [**`ggeffects` - Create Tidy Data Frames of Marginal Effects for ‘ggplot’ from Model Outputs**](https://strengejacke.github.io/ggeffects/)
 
 
-## Shiny App - Diagnostics for simple linear regression
-
-https://gallery.shinyapps.io/slr_diag/
-
-![](figure/Diagslr.PNG)
-
-- Shiny App - [Simple Linear Regression](https://gallery.shinyapps.io/simple_regression/)
-
-- Shiny App - [Multicollinearity in multiple regression](figure/https://gallery.shinyapps.io/collinearity/)
-
-
-
-<!--
-https://www.r-bloggers.com/elegant-regression-results-tables-and-plots-in-r-the-finalfit-package/
-https://www.r-bloggers.com/regression-analysis-essentials-for-machine-learning/
-https://www.r-bloggers.com/15-types-of-regression-you-should-know/
-https://www.r-bloggers.com/marginal-effects-for-regression-models-in-r-rstats-dataviz/
-http://pbreheny.github.io/visreg/contrast.html
--->
-
-## Resources
-
-- [machine learning iteration](https://elitedatascience.com/machine-learning-iteration)
+- [**Machine learning iteration**](https://elitedatascience.com/machine-learning-iteration)
 
 
 <!--
@@ -668,3 +649,25 @@ https://statisticsbyjim.com/regression/overfitting-regression-models/
 
 
 
+
+
+## Shiny App - Diagnostics for linear regression
+
+<!--
+https://gallery.shinyapps.io/slr_diag/
+-->
+
+- Shiny App - [**Simple Linear Regression**](https://gallery.shinyapps.io/simple_regression/)
+
+- Shiny App - [**Multicollinearity in multiple regression**](figure/https://gallery.shinyapps.io/collinearity/)
+
+
+[![](figure/Diagslr.PNG)](https://gallery.shinyapps.io/slr_diag/)
+
+<!--
+https://www.r-bloggers.com/elegant-regression-results-tables-and-plots-in-r-the-finalfit-package/
+https://www.r-bloggers.com/regression-analysis-essentials-for-machine-learning/
+https://www.r-bloggers.com/15-types-of-regression-you-should-know/
+https://www.r-bloggers.com/marginal-effects-for-regression-models-in-r-rstats-dataviz/
+http://pbreheny.github.io/visreg/contrast.html
+-->

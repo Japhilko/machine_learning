@@ -448,6 +448,64 @@ https://www.analyticsvidhya.com/blog/2016/12/introduction-to-feature-selection-m
 -->
 
 
+<!--
+## [Lasso regression](https://elitedatascience.com/algorithm-selection)
+
+### LASSO, stands for least absolute shrinkage and selection operator 
+
+-  Lasso regression penalizes the absolute size of coefficients.
+-   Practically, this leads to coefficients that can be exactly 0.
+-   Thus, Lasso offers automatic feature selection because it can completely remove some features.
+-   The "strength" of the penalty should be tuned.
+-  A stronger penalty leads to more coefficients pushed to zero.
+
+
+## [Lasso](https://en.wikipedia.org/wiki/Lasso_(statistics)) regression overview
+
+- Lasso is a regression analysis method that performs variable selection and regularization (reduce overfitting)
+- We want to enhance prediction accuracy and interpretability of the statistical model.
+
+<!--
+https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
+-->
+
+- We could remove less important variables, after checking that they are not important.
+- We can do that manually by examining p-values of coefficients and discarding those variables whose coefficients are not significant.
+- This can become tedious for classification problems with many independent variables
+
+
+
+
+## History of Lasso
+
+- Originally introduced in geophysics literature in 1986
+- Independently rediscovered and popularized in 1996 by Robert Tibshirani, who coined the term and provided further insights into the observed performance.
+
+
+
+Lasso was originally formulated for least squares models and this simple case reveals a substantial amount about the behavior of the estimator, including its relationship to ridge regression and best subset selection and the connections between lasso coefficient estimates and so-called soft thresholding. It also reveals that (like standard linear regression) the coefficient estimates need not be unique if covariates are collinear.
+
+## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
+
+- Lasso regression uses shrinkage
+- data values are shrunk towards a central point
+
+- [Ridge and lasso regularization work by adding a penalty term to the log likelihood function.](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
+
+- A tuning parameter, $\lambda$ controls the strength of the L1 penalty.
+
+$$
+\sum\limits_{i=1}^n \big( y_i -\beta_0 - \sum\limits_{j=1}^p \beta_jx_{ij} \big)^2 + \lambda \sum\limits_{j=1}^p |\beta_j| = RSS + \lambda\sum\limits_{j=1}^p |\beta_j|.
+$$
+<!--
+wir haben einen penalty term, der hoch ist, wenn die Parameterschätzwerte hoch sind.
+
+Youtube Video zu Lasso
+https://www.youtube.com/watch?v=A5I1G1MfUmA
+-->
+
+-->
+
 ## Lasso Regression
 
 - The least absolute shrinkage and selection operator (lasso) model (Tibshirani, 1996) is an alternative to ridge regression that has a small modification to the penalty in the objective function.
@@ -592,6 +650,15 @@ min(ames_ridge$cvm)
 # minimum Lasso MSE
 min(ames_lasso$cvm)
 ```
+
+## [Elastic net](https://elitedatascience.com/algorithm-selection)
+
+- Elastic-Net is a compromise between Lasso and Ridge.
+
+- Elastic-Net penalizes a mix of both absolute and squared size.
+  - The ratio of the two penalty types should be tuned.
+  - The overall strength should also be tuned.
+
 
 ## Elastic Nets
 
@@ -771,68 +838,14 @@ https://www.amazon.com/Applied-Predictive-Modeling-Max-Kuhn/dp/1461468485/ref=sr
 
 -->
 
-## [Lasso regression](https://elitedatascience.com/algorithm-selection)
-
-### LASSO, stands for least absolute shrinkage and selection operator 
-
--  Lasso regression penalizes the absolute size of coefficients.
--   Practically, this leads to coefficients that can be exactly 0.
--   Thus, Lasso offers automatic feature selection because it can completely remove some features.
--   The "strength" of the penalty should be tuned.
--  A stronger penalty leads to more coefficients pushed to zero.
-
-
-## [Lasso](https://en.wikipedia.org/wiki/Lasso_(statistics)) regression overview
-
-- Lasso is a regression analysis method that performs variable selection and regularization (reduce overfitting)
-- We want to enhance prediction accuracy and interpretability of the statistical model.
 
 <!--
-https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/
--->
-
-- We could remove less important variables, after checking that they are not important.
-- We can do that manually by examining p-values of coefficients and discarding those variables whose coefficients are not significant.
-- This can become tedious for classification problems with many independent variables
-
-
-
-
-## History of Lasso
-
-- Originally introduced in geophysics literature in 1986
-- Independently rediscovered and popularized in 1996 by Robert Tibshirani, who coined the term and provided further insights into the observed performance.
-
-
-
-Lasso was originally formulated for least squares models and this simple case reveals a substantial amount about the behavior of the estimator, including its relationship to ridge regression and best subset selection and the connections between lasso coefficient estimates and so-called soft thresholding. It also reveals that (like standard linear regression) the coefficient estimates need not be unique if covariates are collinear.
-
-## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
-
-- Lasso regression uses shrinkage
-- data values are shrunk towards a central point
-
-- [Ridge and lasso regularization work by adding a penalty term to the log likelihood function.](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
-
-- A tuning parameter, $\lambda$ controls the strength of the L1 penalty.
-
-$$
-\sum\limits_{i=1}^n \big( y_i -\beta_0 - \sum\limits_{j=1}^p \beta_jx_{ij} \big)^2 + \lambda \sum\limits_{j=1}^p |\beta_j| = RSS + \lambda\sum\limits_{j=1}^p |\beta_j|.
-$$
-<!--
-wir haben einen penalty term, der hoch ist, wenn die Parameterschätzwerte hoch sind.
-
-Youtube Video zu Lasso
-https://www.youtube.com/watch?v=A5I1G1MfUmA
--->
-
-
 ## [The L1 norm explained](https://stats.stackexchange.com/questions/347257/geometrical-interpretation-of-l1-regression)
 
 ![](figure/BBRXC.png)
+-->
 
-
-
+<!--
 ## [Ridge regression](https://elitedatascience.com/algorithm-selection)
 
 
@@ -841,24 +854,15 @@ https://www.youtube.com/watch?v=A5I1G1MfUmA
 -    In other words, Ridge offers feature shrinkage.
 -    Again, the "strength" of the penalty should be tuned.
 -    A stronger penalty leads to coefficients pushed closer to zero.
+-->
 
-
-## [Elastic net](https://elitedatascience.com/algorithm-selection)
-
-- Elastic-Net is a compromise between Lasso and Ridge.
-
-- Elastic-Net penalizes a mix of both absolute and squared size.
-  - The ratio of the two penalty types should be tuned.
-  - The overall strength should also be tuned.
-
-
-### Which regularization method should we choose?
+## Which regularization method should we choose?
 
 - There’s no "best" type of penalty. It depends on the dataset and the problem. 
 - We recommend trying different algorithms that use a range of penalty strengths as part of the tuning process
 
 
-
+<!--
 ## Lasso regression with package `glmnet`
 
 ```{r,eval=F}
@@ -886,11 +890,11 @@ caret::varImp(fit2,lambda=0.0007567)
 - The logarithmic function is used for the link between probability and logits
 
 - The Logit function is used to [linearize sigmoid curves](https://de.wikipedia.org/wiki/Logit).
+-->
 
 <!--
 Die Logit-Funktion wird zur Linearisierung von sigmoiden Kurven verwendet.
 -->
-
 
 ## Further packages 
 
@@ -898,6 +902,8 @@ Die Logit-Funktion wird zur Linearisierung von sigmoiden Kurven verwendet.
 # https://cran.rstudio.com/web/packages/biglasso/biglasso.pdf
 install.packages("biglasso")
 ```
+
+![](figure/biglasso.PNG)
 
 ## Lasso for other models than least squares
 

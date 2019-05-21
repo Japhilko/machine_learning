@@ -7,3 +7,15 @@ MASS
 foreach
 iterators
 doParallel
+visreg
+AmesHousing
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+stringr
+forcats
+lattice
+caret
