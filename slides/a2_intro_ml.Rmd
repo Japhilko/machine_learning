@@ -78,7 +78,7 @@ Go to https://cran.r-project.org/ and search for packages that,...
 https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 -->
 
-## Task View Machine Learning
+## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
 
 
 ![](figure/taskviewmachinelearning.PNG)
@@ -335,3 +335,5 @@ https://medium.freecodecamp.org/every-single-machine-learning-course-on-the-inte
 
 - [An Introduction to machine learning](http://www-bcf.usc.edu/~gareth/ISL/)
 - [ISLR book](http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf)
+
+- [**useR! Machine Learning Tutorial**](https://koalaverse.github.io/machine-learning-in-R/)
