@@ -137,4 +137,44 @@ ames_test  <- testing(ames_split)
 
 Continue this process until some mechanism (i.e. cross validation) tells us to stop.
 
-## 
+## Basic algorithm for boosted regression trees
+
+The basic algorithm for boosted regression trees can be generalized to the following where the final model is simply a stagewise additive model of $b$ individual regression trees:
+
+$$
+f(x)=B\sum\limits_{b=1}^B f^b(x)
+$$
+
+<!--
+## Illustration behavior
+
+- To illustrate the behavior, assume the following x and y observations. 
+- The blue sine wave represents the true underlying function and the points represent observations that include some irriducible error (noise). 
+- The boosted prediction illustrates the adjusted predictions after each additional sequential tree is added to the algorithm. 
+- Initially, there are large errors which the boosted algorithm improves upon immediately but as the predictions get closer to the true underlying function you see each additional tree make small improvements in different areas across the feature space where errors remain. 
+- Towards the end of the gif, the predicted values nearly converge to the true underlying function.
+-->
+
+## Gradient descent
+
+- Many algorithms, including decision trees, focus on minimizing the residuals and, therefore, emphasize the MSE loss function. 
+- This algorithm outlines the approach of sequentially fitting regression trees to minimize the errors. 
+- This specific approach is how gradient boosting minimizes the mean squared error (MSE) loss function. 
+- Often we wish to focus on other loss functions such as mean absolute error (MAE) or to be able to apply the method to a classification problem with a loss function such as deviance. 
+- The name gradient boosting machines come from the fact that this procedure can be generalized to loss functions other than MSE.
+
+## A gradient descent algorithm
+
+- Gradient boosting is considered a gradient descent algorithm. 
+- Gradient descent is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. 
+- The general idea of gradient descent is to tweak parameters iteratively in order to minimize a cost function. 
+- Suppose you are a downhill skier racing your friend. 
+- A good strategy to beat your friend to the bottom is to take the path with the steepest slope. 
+- This is exactly what gradient descent does - it measures the local gradient of the loss (cost) function for a given set of parameters ($\Phi$) and takes steps in the direction of the descending gradient. 
+- Once the gradient is zero, we have reached the minimum.
+
+## Gradient descent (Geron, 2017).
+
+![](figure/gradient_descent.png)
+
+

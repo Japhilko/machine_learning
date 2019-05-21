@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Machine Learning with R - part 1"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -32,4 +32,9 @@ knitr::opts_chunk$set(echo = FALSE,message = F,warning=F)
 # Introduction to machine learning
 
 ```{r child = 'a2_intro_ml.Rmd'}
+```
+
+# Simple regression
+
+```{r child = 'b1_regression.Rmd'}
 ```
