@@ -20,7 +20,7 @@ output:
     keep_md: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setupintror, include=FALSE}
 knitr::opts_chunk$set(echo = T,cache=T,message=F,warning=F)
 library(knitr)
 ```
@@ -180,9 +180,30 @@ Create an interactive data table
 
 ## The function `scan` to import data 
 
+- `scan` has an easy way to distinguish comments from data
+
 ```{r,eval=F}
 ?scan
 ```
+
+### Example dataset
+
+```{r}
+cat("TITLE extra line", "# a comment","2 3 5 7", "11 13 17", 
+    file = "../data/ex.data", sep = "\n")
+```
+
+### Import data and skip the first line
+
+```{r,eval=F}
+pp <- scan("../data/ex.data", skip = 1, quiet = TRUE)
+```
+
+```{r}
+pp <- scan("../data/ex.data", comment.char="#", skip = 1, quiet = TRUE)
+```
+
+
 
 ## The R-package `data.table`
 

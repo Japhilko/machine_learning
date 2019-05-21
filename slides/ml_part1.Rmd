@@ -1,0 +1,35 @@
+---
+title: "Untitled"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message = F,warning=F)
+```
+
+# Introduction to R
+
+```{r child = 'a1_intro_r.Rmd'}
+```
+
+# Introduction to machine learning
+
+```{r child = 'a2_intro_ml.Rmd'}
+```

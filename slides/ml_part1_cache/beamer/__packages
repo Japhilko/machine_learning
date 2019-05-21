@@ -1,0 +1,9 @@
+base
+knitr
+data.table
+magrittr
+dplyr
+MASS
+foreach
+iterators
+doParallel
