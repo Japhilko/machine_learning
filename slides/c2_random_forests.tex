@@ -144,7 +144,7 @@
 
 \title{Random Forests}
 \author{Jan-Philipp Kolb}
-\date{20 Mai, 2019}
+\date{22 Mai, 2019}
 
 \begin{document}
 \frame{\titlepage}
@@ -848,6 +848,183 @@ the following:
 \begin{verbatim}
 ## [1] 96
 \end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Loop through each hyperparameter combination}
+\protect\hypertarget{loop-through-each-hyperparameter-combination}{}
+
+\begin{itemize}
+\tightlist
+\item
+  We apply 500 trees since our previous examples illustrated that 500
+  was plenty to achieve a stable error rate.
+\item
+  We set the random number generator seed. This allows us to
+  consistently sample the same observations for each sample size and
+  make the impact of each change clearer.
+\item
+  Our OOB RMSE ranges between \(\tilde\) 26,000-27,000.
+\item
+  Our top 10 performing models all have RMSE values right around 26,000
+  and the results show that models with slighly larger sample sizes
+  (70-80 per cent) and deeper trees (3-5 observations in an terminal
+  node) perform best.
+\item
+  We get a full range of \texttt{mtry} values showing up in our top 10 -
+  not over influential.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(hyper_grid)) \{}
+  \CommentTok{# train model}
+\NormalTok{  model <-}\StringTok{ }\KeywordTok{ranger}\NormalTok{(}
+    \DataTypeTok{formula         =}\NormalTok{ Sale_Price }\OperatorTok{~}\StringTok{ }\NormalTok{., }
+    \DataTypeTok{data            =}\NormalTok{ ames_train, }
+    \DataTypeTok{num.trees       =} \DecValTok{500}\NormalTok{,}
+    \DataTypeTok{mtry            =}\NormalTok{ hyper_grid}\OperatorTok{$}\NormalTok{mtry[i],}
+    \DataTypeTok{min.node.size   =}\NormalTok{ hyper_grid}\OperatorTok{$}\NormalTok{node_size[i],}
+    \DataTypeTok{sample.fraction =}\NormalTok{ hyper_grid}\OperatorTok{$}\NormalTok{sampe_size[i],}
+    \DataTypeTok{seed            =} \DecValTok{123}
+\NormalTok{  )}
+    \CommentTok{# add OOB error to grid}
+\NormalTok{  hyper_grid}\OperatorTok{$}\NormalTok{OOB_RMSE[i] <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(model}\OperatorTok{$}\NormalTok{prediction.error)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hyper_grid }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{arrange}\NormalTok{(OOB_RMSE) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    mtry node_size sampe_size OOB_RMSE
+## 1    22         3        0.8 25821.22
+## 2    22         5        0.8 25891.58
+## 3    24         3        0.8 25921.65
+## 4    26         3        0.8 25960.49
+## 5    24         5        0.8 25979.05
+## 6    30         5        0.8 25994.36
+## 7    24         3        0.7 26000.44
+## 8    26         3        0.7 26005.52
+## 9    24         7        0.8 26010.13
+## 10   26         5        0.8 26042.21
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Random forests perform quite well with categorical variables in their
+  original columnar form, it is worth checking to see if alternative
+  encodings can increase performance.
+\item
+  E.g., the following one-hot encodes our categorical variables which
+  produces 353 predictor variables versus the 80 we were using above.
+\item
+  We adjust our \texttt{mtry} parameter to search from 50-200 random
+  predictor variables at each split and re-perform our grid search.
+\item
+  The results suggest that one-hot encoding does not improve
+  performance.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-1}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# one-hot encode our categorical variables}
+\NormalTok{one_hot <-}\StringTok{ }\KeywordTok{dummyVars}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{., ames_train, }\DataTypeTok{fullRank =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{ames_train_hot <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(one_hot, ames_train) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{()}
+
+\CommentTok{# make ranger compatible names}
+\KeywordTok{names}\NormalTok{(ames_train_hot) <-}\StringTok{ }\KeywordTok{make.names}\NormalTok{(}\KeywordTok{names}\NormalTok{(ames_train_hot), }\DataTypeTok{allow_ =} \OtherTok{FALSE}\NormalTok{)}
+
+\CommentTok{# hyperparameter grid search --> same as above but with increased mtry values}
+\NormalTok{hyper_grid_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{expand.grid}\NormalTok{(}
+  \DataTypeTok{mtry       =} \KeywordTok{seq}\NormalTok{(}\DecValTok{50}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DataTypeTok{by =} \DecValTok{25}\NormalTok{),}
+  \DataTypeTok{node_size  =} \KeywordTok{seq}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DataTypeTok{by =} \DecValTok{2}\NormalTok{),}
+  \DataTypeTok{sampe_size =} \KeywordTok{c}\NormalTok{(.}\DecValTok{55}\NormalTok{, }\FloatTok{.632}\NormalTok{, }\FloatTok{.70}\NormalTok{, }\FloatTok{.80}\NormalTok{),}
+  \DataTypeTok{OOB_RMSE  =} \DecValTok{0}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\end{frame}
+
+\begin{frame}[fragile]{The best model}
+\protect\hypertarget{the-best-model}{}
+
+\begin{block}{The best random forest model:}
+
+\begin{itemize}
+\tightlist
+\item
+  retains columnar categorical variables
+\item
+  \texttt{mtry} = 24,
+\item
+  terminal node size of 5 observations
+\item
+  sample size of 80\%.
+\end{itemize}
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}{How to proceed}
+\protect\hypertarget{how-to-proceed}{}
+
+\begin{itemize}
+\tightlist
+\item
+  repeat the model to get a better expectation of error rate.
+\item
+  as expected error ranges between \textasciitilde{}25,800-26,400
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{}
+\protect\hypertarget{section-2}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{OOB_RMSE <-}\StringTok{ }\KeywordTok{vector}\NormalTok{(}\DataTypeTok{mode =} \StringTok{"numeric"}\NormalTok{, }\DataTypeTok{length =} \DecValTok{100}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \KeywordTok{seq_along}\NormalTok{(OOB_RMSE)) \{}
+
+\NormalTok{  optimal_ranger <-}\StringTok{ }\KeywordTok{ranger}\NormalTok{(}
+    \DataTypeTok{formula         =}\NormalTok{ Sale_Price }\OperatorTok{~}\StringTok{ }\NormalTok{., }
+    \DataTypeTok{data            =}\NormalTok{ ames_train, }
+    \DataTypeTok{num.trees       =} \DecValTok{500}\NormalTok{,}
+    \DataTypeTok{mtry            =} \DecValTok{24}\NormalTok{,}
+    \DataTypeTok{min.node.size   =} \DecValTok{5}\NormalTok{,}
+    \DataTypeTok{sample.fraction =} \FloatTok{.8}\NormalTok{,}
+    \DataTypeTok{importance      =} \StringTok{'impurity'}
+\NormalTok{  )}
+  
+\NormalTok{  OOB_RMSE[i] <-}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(optimal_ranger}\OperatorTok{$}\NormalTok{prediction.error)}
+\NormalTok{\}}
+
+\KeywordTok{hist}\NormalTok{(OOB_RMSE, }\DataTypeTok{breaks =} \DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{c2_random_forests_files/figure-beamer/unnamed-chunk-18-1.pdf}
 
 \end{frame}
 

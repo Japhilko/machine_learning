@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  20 MAY 2019 19:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  22 MAY 2019 06:54
 entering extended mode
 **./c2_random_forests.tex
 (c2_random_forests.tex
@@ -1755,7 +1755,7 @@ l.23
 Here is how much of TeX's memory you used:
  23500 strings out of 493337
  428357 string characters out of 3139439
- 502631 words of memory out of 3000000
+ 502630 words of memory out of 3000000
  26386 multiletter control sequences out of 15000+200000
  56379 words of font info for 75 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191

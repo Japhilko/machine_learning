@@ -22,6 +22,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,message=F,warning=F,cache=T)
+timeconsuming <- F
 ```
 
 ## Gradient Boosting Machines (GBMs)
@@ -282,7 +283,7 @@ When working with many variables it is more efficient to use the matrix rather t
 
 ## Train GBM model
 
-```{r}
+```{r,eval=timeconsuming}
 set.seed(123)
 gbm.fit <- gbm(formula = Sale_Price ~ .,distribution = "gaussian",
   data = ames_train,n.trees = 10000,interaction.depth = 1,
@@ -293,13 +294,18 @@ gbm.fit <- gbm(formula = Sale_Price ~ .,distribution = "gaussian",
 print(gbm.fit)
 ```
 
+```{r,echo=F,eval=F}
+# das dauert recht lange
+```
+
+
 ## The output object...
 
 ... is a list containing several modelling and results information. We can access this information with regular indexing; I recommend you take some time to dig around in the object to get comfortable with its components. Here, we see that the minimum CV RMSE is 29133 (this means on average our model is about $29,133 off from the actual sales price) but the plot also illustrates that the CV error is still decreasing at 10,000 trees.
 
 ## Get MSE and compute RMSE
 
-```{r}
+```{r,eval=timeconsuming}
 sqrt(min(gbm.fit$cv.error))
 # plot loss function as a result of n trees added to the ensemble
 gbm.perf(gbm.fit, method = "cv")

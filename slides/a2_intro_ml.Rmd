@@ -24,24 +24,20 @@ output:
 knitr::opts_chunk$set(echo = TRUE,cache=T)
 ```
 
-## [Modern Machine Learning Algorithms](https://elitedatascience.com/machine-learning-algorithms)
-
-Categorizing machine learning algorithms is tricky, and there are several reasonable approaches; they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
-
-
-<!--
-https://lgatto.github.io/IntroMachineLearningWithR/an-introduction-to-machine-learning-with-r.html
--->
 
 ## [Machine Learning - Components](https://www.linkedin.com/pulse/20140822073217-180198720-6-components-of-a-machine-learning-algorithm)
 
-- Feature Extraction + Domain knowledge
+- Feature Extraction + Domain knowledge (Import and Data Wrangling)
 
 - Feature Selection
 
-- Choice of Algorithm
+- Choice of Algorithm (Regression or classification, regularization, decision trees, k-Means clustering, ...)
 
-Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/blob/master/Machine%20Learning/SupportVectorMachines.md), Decision Trees, k-Means Clustering, ...
+<!--
+Naive Bayes
+
+[Support Vector Machines](https://github.com/Japhilko/DataAnalysis/blob/master/Machine%20Learning/SupportVectorMachines.md)
+-->
 
 - Training
 
@@ -50,16 +46,35 @@ Naive Bayes, [Support Vector Machines](https://github.com/Japhilko/DataAnalysis/
 - Testing
 
 
-## [Feature selection](https://en.wikipedia.org/wiki/Feature_selection)
+## [Feature selection in machine learning, ](https://en.wikipedia.org/wiki/Feature_selection)
 
-In machine learning, feature selection is the process of selecting a subset of relevant features (variables, predictors) for use in model construction.
+- feature selection is the process of selecting a subset of relevant features (variables, predictors) for use in model construction.
 
-Feature selection techniques are used for four reasons:
+### four reasons for feature selection:
 
-- simplification of models to make them easier to interpret by researchers/users,
-- shorter training times,
-- to avoid the curse of dimensionality,
-- enhanced generalization by reducing overfitting (formally, reduction of variance)
+1.) simplification of models to make them easier to interpret by researchers/users,
+
+2.) shorter training times,
+
+3.) to avoid the curse of dimensionality,
+
+4.) enhanced generalization by reducing overfitting (formally, reduction of variance)
+
+
+
+## [The Curse of Dimensionality](https://elitedatascience.com/dimensionality-reduction-algorithms)
+
+In machine learning, “dimensionality” simply refers to the number of features (i.e. input variables) in your dataset.
+
+When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
+Dimensionality Reduciton
+
+![](figure/3d-coordinate-plane.png){ height=40% }
+
+
+
+
+
 
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
 
@@ -70,9 +85,14 @@ Feature selection techniques are used for four reasons:
 
 ## Task: Find R-packages
 
-Go to https://cran.r-project.org/ and search for packages that,...
+Go to https://cran.r-project.org/ and search for packages that can be used for:
 
-- can be used for lasso regression
+- lasso regression
+- random forests
+- gradient boosting
+- neural networks
+- clustering
+
 
 <!--
 https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
@@ -81,7 +101,7 @@ https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 ## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
 
 
-![](figure/taskviewmachinelearning.PNG)
+![](figure/taskviewmachinelearning.PNG){ width=110% }
 
 
 
@@ -94,11 +114,16 @@ ctv::install.views("MachineLearning")
 
 ## [Prediction vs. Causation in Regression Analysis](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
 
+### [**Paul Allison**](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
+
+> There are two main uses of multiple regression: prediction and causal analysis. In a prediction study, the goal is to develop a formula for making predictions about the dependent variable, based on the observed values of the independent variables….In a causal analysis, the independent variables are regarded as causes of the dependent variable. The aim of the study is to determine whether a particular independent variable really affects the dependent variable, and to estimate the magnitude of that effect, if any
+
+<!--
 ## Literature for machine learning
 
 ![](figure/book_ml1.jpg)
 
-
+-->
 <!--
 https://lgatto.github.io/IntroMachineLearningWithR/index.html
 https://www.kaggle.com/camnugent/introduction-to-machine-learning-in-r-tutorial
@@ -108,20 +133,6 @@ https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours
 https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-678/
 -->
 
-## Introduction to machine learning with R
-
-- [Your First Machine Learning Project in R Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
-
-
-- chapter about machine learning in [awesome R](https://awesome-r.com/)
-
-
-- [Shiny App for machine learning](https://www.showmeshiny.com/machlearn/)
-
-
-## [The Curse of Dimensionality](https://elitedatascience.com/dimensionality-reduction-algorithms)
-
-![](figure/3d-coordinate-plane.png)
 
 
 ## [What is supervised learning?](https://elitedatascience.com/birds-eye-view)
@@ -288,6 +299,14 @@ I also thought about lowering the learning rate or using only a subset of predic
 What am I missing here? Is linear regression somehow inappropriate to use with Gradient Boosting? Is it because the linear regression uses the sum of squared residuals as a loss function? Are there any particular constraints on the weak predictors so they can be applied to Gradient Boosting?
 -->
 
+## [Modern Machine Learning Algorithms](https://elitedatascience.com/machine-learning-algorithms)
+
+Categorizing machine learning algorithms is tricky, and there are several reasonable approaches; they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
+
+
+<!--
+https://lgatto.github.io/IntroMachineLearningWithR/an-introduction-to-machine-learning-with-r.html
+-->
 
 
 ## Links
@@ -337,3 +356,13 @@ https://medium.freecodecamp.org/every-single-machine-learning-course-on-the-inte
 - [ISLR book](http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf)
 
 - [**useR! Machine Learning Tutorial**](https://koalaverse.github.io/machine-learning-in-R/)
+
+### Introduction to machine learning with R
+
+- [Your First Machine Learning Project in R Step-By-Step](https://machinelearningmastery.com/machine-learning-in-r-step-by-step/)
+
+
+- chapter about machine learning in [awesome R](https://awesome-r.com/)
+
+
+- [Shiny App for machine learning](https://www.showmeshiny.com/machlearn/)

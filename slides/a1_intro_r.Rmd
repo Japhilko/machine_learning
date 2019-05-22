@@ -93,6 +93,44 @@ https://elitedatascience.com/r-vs-python-for-data-science
 - 
 -->
 
+## R is modular
+
+### Install packages from CRAN Server
+
+```{r,eval=F}
+install.packages("lme4")
+```
+
+### Install packages from Bioconductor Server
+
+```{r,eval=F}
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("GenomicFeatures", "AnnotationDbi"))
+```
+
+
+
+### Install packages from Github
+
+```{r,eval=F}
+install.packages("devtools")
+library(devtools)
+
+devtools::install_github("koalaverse/vip")
+```
+
+<!--
+https://github.com/koalaverse/vip
+-->
+
+## Preparation - packages
+
+```{r}
+library(dplyr)
+library(magrittr)
+```
+
+
 
 ## Import `.csv` data 
 
@@ -114,6 +152,21 @@ dname <- "titanic_csv.csv"
 titanic <- read.csv(paste0(path1,path2,dname))
 ```
 
+### Save the dataset
+
+```{r,eval=F}
+save(titanic,file="../data/titanic.RData")
+```
+
+
+
+## The titanic dataset
+
+```{r}
+kable(head(titanic))
+```
+
+
 <!--
 https://www.guru99.com/r-decision-trees.html
 -->
@@ -124,13 +177,14 @@ install.packages("bindrcpp")
 ```
 
 ```{r}
-path1 <- "http://archive.ics.uci.edu/ml/machine-learning-databases/00243/"
+path1 <- "http://archive.ics.uci.edu/ml/"
+path2 <- "machine-learning-databases/00243/"
 dname <- 'yacht_hydrodynamics.data'
 ```
 
 
 ```{r}
-url<- paste0(path1,dname)
+url<- paste0(path1,path2,dname)
 Yacht_Data <- readr::read_table(file = url)
 ```
 
@@ -168,11 +222,6 @@ install.packages("datasets.load")
 ![](figure/datasetsload.PNG)
 
 
-## The titanic dataset
-
-```{r,eval=F}
-kable(head(titanic))
-```
 
 
 ## Exercise
@@ -207,7 +256,8 @@ pp <- scan("../data/ex.data", skip = 1, quiet = TRUE)
 ```
 
 ```{r}
-pp <- scan("../data/ex.data", comment.char="#", skip = 1, quiet = TRUE)
+pp <- scan("../data/ex.data", comment.char="#", skip = 1, 
+           quiet = TRUE)
 ```
 
 
@@ -221,20 +271,36 @@ data(airquality)
 head(airquality)
 ```
 
-### Overview with `data.table`
+## Overview with `data.table`
 
 ```{r}
 library(data.table)
-airq <- data.table(airquality)
-airq
+(airq <- data.table(airquality))
 ```
+
+
+## How to get help
+
+-  I use [**duckduckgo:**](figure/duckduckgo.PNG)
+
+```
+R-project + "what I want to know" 
+```
+-  this works of course for all search engines!
+
+
+![](figure/duckduckgo.PNG)
+
 
 ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
 
-```{r}
-x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 0.829, 0.907)
+```{r,echo=F}
+x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 
+       0.829, 0.907)
+x <- runif(8)
 ```
 
+- Draw 8 rabdom numbers from the uniform distribution and save them in a vector `x`
 - Compute the logarithm of `x`, return suitably lagged and iterated differences, 
 - compute the exponential function and round the result
 
@@ -267,6 +333,9 @@ x %>% log() %>%
 airq
 ```
 
+
+## The command `na.omit`
+
 ```{r}
 na.omit(airq)
 ```
@@ -275,17 +344,25 @@ na.omit(airq)
 ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
 
 ```{r}
-library(dplyr)
-library(magrittr)
-# Drop variables
-clean_titanic <- titanic %>% 	mutate(pclass = factor(pclass, levels = c(1, 2, 3), labels = c('Upper', 'Middle', 'Lower')),
-	survived = factor(survived, levels = c(0, 1), labels = c('No', 'Yes'))) %>%
+clean_titanic <- titanic %>% 	
+  mutate(pclass=factor(pclass,levels = c(1, 2, 3),
+                       labels=c('Upper','Middle','Lower')),
+	survived = factor(survived,levels = c(0, 1), 
+	                  labels=c('No', 'Yes'))) %>%
 na.omit()
 ```
 
--   `pclass = factor(pclass, levels = c(1,2,3), labels= c('Upper', 'Middle', 'Lower'))`: Add label to the variable pclass. 1 becomes Upper, 2 becomes MIddle and 3 becomes lower
- -    `factor(survived, levels = c(0,1), labels = c('No', 'Yes'))`: Add label to the variable survived. 1 Becomes No and 2 becomes Yes
--    `na.omit()`: Remove the NA observations 
+###   `mutate(pclass = factor(...`: 
+
+- Add label to the variable pclass. 
+- 1 becomes Upper, 2 becomes MIddle and 3 becomes lower
+
+###  `factor(survived,...`:
+
+- Add label to the variable survived. 
+- 1 Becomes No and 2 becomes Yes
+
+- `na.omit()`: Remove the NA observations 
 
 
 ## Get an overview of the data
@@ -299,20 +376,28 @@ glimpse(clean_titanic)
 
 ```{r}
 library(MASS)
-data <- Boston
+bdat <- Boston
 ```
 
-```{r}
-kable(head(data))
+```{r,echo=F,eval=F}
+kable(head(bdat))
 ```
+
+![](figure/bostondata.PNG)
 
 ## Normalize your data
 
 ```{r}
-maxs <- apply(data, 2, max) 
-mins <- apply(data, 2, min)
-scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+maxs <- apply(bdat, 2, max) 
+mins <- apply(bdat, 2, min)
+scaled <- as.data.frame(scale(bdat, center = mins, 
+                              scale = maxs - mins))
 ```
+
+
+## The scaled data
+
+![](figure/bostonscaled.PNG)
 
 ## The command `sample`
 
@@ -381,6 +466,7 @@ stopCluster(cl)
 ?parallel::makeCluster
 ```
 
+<!--
 ## [The `swirl` package](https://swirlstats.com/)
 
 ```{r,eval=F}
@@ -391,6 +477,7 @@ install.packages("swirl")
 library("swirl")
 swirl()
 ```
+-->
 
 ## Resources
 

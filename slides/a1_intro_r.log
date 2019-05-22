@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  21 MAY 2019 06:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  22 MAY 2019 07:20
 entering extended mode
 **./a1_intro_r.tex
 (a1_intro_r.tex
@@ -1669,11 +1669,7 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ]
 \openout4 = `a1_intro_r.vrb'.
 
-(a1_intro_r.vrb
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 6.
-("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ts1lmtt.fd"
-File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)) [8
+(a1_intro_r.vrb) [8
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1681,22 +1677,32 @@ File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 (a1_intro_r.vrb) [9
 
 ]
-<figure/addins.PNG, id=97, 551.05875pt x 40.35075pt>
-File: figure/addins.PNG Graphic file (type png)
-<use figure/addins.PNG>
-Package pdftex.def Info: figure/addins.PNG  used on input line 378.
-(pdftex.def)             Requested size: 307.30429pt x 22.50206pt.
-<figure/datasetsload.PNG, id=99, 522.753pt x 241.50224pt>
-File: figure/datasetsload.PNG Graphic file (type png)
-<use figure/datasetsload.PNG>
-Package pdftex.def Info: figure/datasetsload.PNG  used on input line 378.
-(pdftex.def)             Requested size: 307.28893pt x 141.96179pt.
-[10
-
- <./figure/addins.PNG> <./figure/datasetsload.PNG>]
 \openout4 = `a1_intro_r.vrb'.
 
-(a1_intro_r.vrb) [11
+(a1_intro_r.vrb
+Overfull \hbox (137.01686pt too wide) in alignment at lines 10--15
+ [] [] [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (490.96193pt too wide) in alignment at lines 15--33
+ [] [] [] [] [] [] [] [] [] [] [] [] [] 
+ []
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 1 on input line 33.
+
+) [10
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 8.
+("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ts1lmtt.fd"
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)) [11
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1704,18 +1710,22 @@ Package pdftex.def Info: figure/datasetsload.PNG  used on input line 378.
 (a1_intro_r.vrb) [12
 
 ]
+<figure/addins.PNG, id=119, 551.05875pt x 40.35075pt>
+File: figure/addins.PNG Graphic file (type png)
+<use figure/addins.PNG>
+Package pdftex.def Info: figure/addins.PNG  used on input line 494.
+(pdftex.def)             Requested size: 307.30429pt x 22.50206pt.
+<figure/datasetsload.PNG, id=121, 522.753pt x 241.50224pt>
+File: figure/datasetsload.PNG Graphic file (type png)
+<use figure/datasetsload.PNG>
+Package pdftex.def Info: figure/datasetsload.PNG  used on input line 494.
+(pdftex.def)             Requested size: 307.28893pt x 141.96179pt.
+[13
+
+ <./figure/addins.PNG> <./figure/datasetsload.PNG>]
 \openout4 = `a1_intro_r.vrb'.
 
-(a1_intro_r.vrb) [13
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb)
-Overfull \vbox (135.26225pt too high) detected at line 471
- []
-
-[14
+(a1_intro_r.vrb) [14
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1730,16 +1740,43 @@ Overfull \vbox (135.26225pt too high) detected at line 471
 ]
 \openout4 = `a1_intro_r.vrb'.
 
-(a1_intro_r.vrb)
-Overfull \vbox (134.95149pt too high) detected at line 570
- []
-
-[17
+(a1_intro_r.vrb) [17
 
 ]
 \openout4 = `a1_intro_r.vrb'.
 
-(a1_intro_r.vrb) [18
+(a1_intro_r.vrb
+<figure/duckduckgo.PNG, id=162, 484.209pt x 216.81pt>
+File: figure/duckduckgo.PNG Graphic file (type png)
+<use figure/duckduckgo.PNG>
+Package pdftex.def Info: figure/duckduckgo.PNG  used on input line 20.
+(pdftex.def)             Requested size: 307.29936pt x 137.59673pt.
+) [18
+
+ <./figure/duckduckgo.PNG>]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [19
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [20
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [21
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [22
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [23
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1822,7 +1859,7 @@ Overfull \hbox (91.70897pt too wide) in paragraph at lines 26--26
 ille, ON", "...[] 
  []
 
-) [19
+) [24
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1839,34 +1876,9 @@ Overfull \hbox (147.15439pt too wide) in alignment at lines 22--36
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 1 on input line 36.
+(longtable)                in table 2 on input line 36.
 
-) [20
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb) [21
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb) [22
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb) [23
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb) [24
-
-]
-\openout4 = `a1_intro_r.vrb'.
-
-(a1_intro_r.vrb) [25
+) [25
 
 ]
 \openout4 = `a1_intro_r.vrb'.
@@ -1878,7 +1890,32 @@ Package longtable Warning: Column widths have changed
 
 (a1_intro_r.vrb) [27
 
-] [28
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [28
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [29
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [30
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [31
+
+]
+\openout4 = `a1_intro_r.vrb'.
+
+(a1_intro_r.vrb) [32
+
+] [33
 
 ]
 \tf@nav=\write6
@@ -1893,31 +1930,31 @@ Package longtable Warning: Column widths have changed
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 860.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 860.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1036.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1036.
 (a1_intro_r.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 860.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 860.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 860.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1036.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1036.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1036.
  ) 
 Here is how much of TeX's memory you used:
- 24667 strings out of 493337
- 448337 string characters out of 3139439
- 528566 words of memory out of 3000000
- 27538 multiletter control sequences out of 15000+200000
+ 24697 strings out of 493337
+ 448951 string characters out of 3139439
+ 527566 words of memory out of 3000000
+ 27543 multiletter control sequences out of 15000+200000
  50827 words of font info for 52 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191
- 56i,15n,55p,528b,560s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
-iKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type
+ 56i,15n,55p,414b,560s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}{C:/Program Files/
+MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}<C:/Program Files/MiKTeX 2.9/fonts/type
 1/public/lm/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmss
 10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/public/lm/lmtcsc10.pfb><C:/Program Files/MiKTe
 X 2.9/fonts/type1/public/lm/lmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /public/amsfonts/symbols/msam7.pfb>
-Output written on a1_intro_r.pdf (28 pages, 220526 bytes).
+Output written on a1_intro_r.pdf (33 pages, 251962 bytes).
 PDF statistics:
- 290 PDF objects out of 1000 (max. 8388607)
- 84 named destinations out of 1000 (max. 500000)
- 6197 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 332 PDF objects out of 1000 (max. 8388607)
+ 99 named destinations out of 1000 (max. 500000)
+ 6202 words of extra memory for PDF output out of 10000 (max. 10000000)
 

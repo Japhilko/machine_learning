@@ -396,3 +396,45 @@ hyper_grid_2 <- expand.grid(
 )
 ```
 
+## The best model
+
+### The best random forest model:
+
+- retains columnar categorical variables
+- `mtry` = 24, 
+- terminal node size of 5 observations
+- sample size of 80%. 
+
+## How to proceed
+
+- repeat the model to get a better expectation of error rate. 
+- as expected error ranges between ~25,800-26,400 
+
+<!--
+with a most likely just shy of 26,200.
+-->
+
+
+## 
+
+```{r}
+OOB_RMSE <- vector(mode = "numeric", length = 100)
+
+for(i in seq_along(OOB_RMSE)) {
+
+  optimal_ranger <- ranger(
+    formula         = Sale_Price ~ ., 
+    data            = ames_train, 
+    num.trees       = 500,
+    mtry            = 24,
+    min.node.size   = 5,
+    sample.fraction = .8,
+    importance      = 'impurity'
+  )
+  
+  OOB_RMSE[i] <- sqrt(optimal_ranger$prediction.error)
+}
+
+hist(OOB_RMSE, breaks = 20)
+```
+
