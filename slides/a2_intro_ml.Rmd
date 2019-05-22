@@ -169,7 +169,11 @@ Go to https://cran.r-project.org/ and search for packages that can be used:
 https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 -->
 
+## Outline for today
 
+- We start with supervised learning - we want to predict sale prices of flats/houses in Iowa using linear regression (part b1).
+- In a next step we try to reduce overfitting using regularization methods (b2).
+- 
 
 ## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
 

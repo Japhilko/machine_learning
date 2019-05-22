@@ -112,23 +112,6 @@ library(caret)       # bagging
 install.packages("rpart.plot")
 ```
 
-
-## `mtcars` example
-
-- Target: predict the miles per gallon a car will drive in average 
-- Independent variables: cylinders (`cyl`) and horsepower (`hp`). 
-- All observations go through the tree, are assessed at a node, and proceed to the left if the answer is "yes"" or to the right if the answer is "no". 
-- E.g., all observations that have 6 or 8 cylinders go to the left branch, all other proceed to the right branch. 
-- Next, the left branch is further partitioned by horsepower. 
-- Those 6 or 8 cylinder observations with horsepower equal to or greater than 192 proceed to the left branch; those with less than 192 hp proceed to the right. 
-- These branches lead to terminal nodes or leafs which contain our predicted response value. 
-- All cars that do not have 6 or 8 cylinders (far right branch) average 27 mpg. 
-- All cars that have 6 or 8 cylinders and have more than 192 hp (far left branch) average 13 mpg.
-
-## Predicting `mpg` based on `cyl` and `hp`.
-
-![](figure/ex_regression_tree.png)
-
 ## Model foundations 
 
 - This simple example can be generalized 
@@ -160,6 +143,7 @@ $$
 - Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. 
 - This process is continued until some stopping criterion is reached. 
 - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
+
 ## The Ames Housing data 
 
 - Again we use the Ames dataset and split it in a test and training dataset
@@ -345,7 +329,7 @@ m2 <- rpart(formula = Sale_Price ~ .,data=ames_train,
 ```
 
 
-### Plot the result
+## Plot the result
 
 ```{r}
 plotcp(m2);abline(v = 12, lty = "dashed")
@@ -561,22 +545,17 @@ http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
 set.seed(123)
 
 # train bagged model
-bagged_m1 <- bagging(formula = Sale_Price ~ .,
-  data    = ames_train,coob= TRUE)
+(bagged_m1 <- bagging(formula = Sale_Price ~ .,
+  data    = ames_train,coob= TRUE))
 ```
-
-## The result
-
-```{r}
-bagged_m1
-```
-
 
 ## One thing to note typically
 
-- The more trees the better. 
-- As we add more trees we are averaging over more high variance single trees. 
-- We see a dramatic reduction in variance (and hence our error) and eventually the reduction in error will flatline signaling an appropriate number of trees to create a stable model. 
+- The more trees the better - we are averaging over more high variance single trees. 
+- We see a dramatic reduction in variance (and hence our error) and eventually the reduction in error will flatline 
+<!--
+- signaling an appropriate number of trees to create a stable model. 
+-->
 - You need less than 50 trees to stabilize the error.
 
 ## Number of bootstrap samples
@@ -585,7 +564,6 @@ bagged_m1
 <!--
 - We can assess the error versus number of trees as below. 
 -->
-- We see that the error is stabilizing at about 25 trees so we will likely not gain much improvement by simply bagging more trees.
 
 ```{r}
 ntree <- 10:50 # assess 10-50 bagged trees
@@ -607,6 +585,9 @@ for (i in seq_along(ntree)) {
 
 ## Plot the result
 
+- We see that the error is stabilizing at about 25 trees so we will likely not gain much improvement by simply bagging more trees.
+
+
 ```{r}
 plot(ntree, rmse, type = 'l', lwd = 2)
 abline(v = 25, col = "red", lty = "dashed")
@@ -616,8 +597,7 @@ abline(v = 25, col = "red", lty = "dashed")
 
 ## Bagging with `caret`
 
-- Bagging with `ipred` is quite simple; 
-But there are some additional benefits of bagging with `caret`.
+- Bagging with `ipred` is simple but there are some additional benefits of bagging with `caret`.
 
 1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will also provide a more robust understanding of the true expected test error.
 
