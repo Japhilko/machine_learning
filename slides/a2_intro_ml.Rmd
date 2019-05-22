@@ -24,15 +24,98 @@ output:
 knitr::opts_chunk$set(echo = TRUE,cache=T)
 ```
 
+## [What Is Machine Learning?](https://www.netapp.com/us/info/what-is-machine-learning-ml.aspx)
+
+- Machine learning allows the user to feed a computer algorithm an immense amount of data and have the computer analyze and make data-driven recommendations and decisions based on only the input data. 
+
+- If any corrections are identified, the algorithm can incorporate that information to improve its future decision making.
+
+<!--
+
+## Outline for today
+
+- We start with supervised learning - we want to predict sale prices of flats/houses in Iowa using linear regression (part b1).
+- In a next step we try to reduce overfitting using regularization methods (b2).
+- 
+
+-->
+
+
+<!--
+## [Modern Machine Learning Algorithms](https://elitedatascience.com/machine-learning-algorithms)
+-->
+
+### Categorizing machine learning algorithms...
+
+- ... is tricky, and there are several approaches; 
+- they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
+
+
+<!--
+https://lgatto.github.io/IntroMachineLearningWithR/an-introduction-to-machine-learning-with-r.html
+-->
+
+
+## [What is supervised learning?](https://elitedatascience.com/birds-eye-view)
+
+
+<!--
+https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html#random-forest
+-->
+
+
+Supervised learning includes tasks for "labeled" data (i.e. you have a target variable).
+
+<<<<<<< HEAD
+- dimensionality refers to the number of features (i.e. input variables) 
+
+- When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
+Dimensionality Reduciton
+=======
+- In practice, it's often used as an advanced form of predictive modeling.
+ -  Each observation must be labeled with a "correct answer."
+ -   Only then can you build a predictive model because you must tell the algorithm what's "correct" while training it (hence, "supervising" it).
+ -   Regression is the task for modeling continuous target variables.
+ -   Classification is the task for modeling categorical (a.k.a. "class") target variables.
+
+>>>>>>> 88182c1f93446f7b0fa7a9c785df6515443ddecb
+
+
+## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
+
+### Supervised learning 
+
+- Prior knowledge of what output values for samples should be. 
+
+![](figure/classification_regression.png){ height=20% }
+
+### Unsupervised learning
+
+- Here the most common tasks are clustering, representation learning, and density estimation - we wish to learn the inherent structure of our data without using explicitly-provided labels. 
+
+![](figure/unsupervisedLearning.png){ height=20% }
+
+<!--
+https://medium.com/@danil.s.mikhailov/ai-and-the-social-sciences-part-i-5f172492d61d
+-->
+
+<!--
+[Classification vs. regression ](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
+-->
+
+
 
 ## [Machine Learning - Components](https://www.linkedin.com/pulse/20140822073217-180198720-6-components-of-a-machine-learning-algorithm)
 
-- Feature Extraction + Domain knowledge (Import and Data Wrangling)
+- Feature Extraction + Domain knowledge 
+
+<!--
+(Import and Data Wrangling)
+-->
 
 - Feature Selection
 
 - Choice of Algorithm (Regression or classification, regularization, decision trees, k-Means clustering, ...)
-
 <!--
 Naive Bayes
 
@@ -46,11 +129,11 @@ Naive Bayes
 - Testing
 
 
-## [Feature selection in machine learning, ](https://en.wikipedia.org/wiki/Feature_selection)
+## [Feature selection in machine learning,... ](https://en.wikipedia.org/wiki/Feature_selection)
 
-- feature selection is the process of selecting a subset of relevant features (variables, predictors) for use in model construction.
+- ... is the process of selecting a subset of relevant features (variables, predictors) for use in model construction.
 
-### four reasons for feature selection:
+### Four reasons for feature selection:
 
 1.) simplification of models to make them easier to interpret by researchers/users,
 
@@ -64,97 +147,15 @@ Naive Bayes
 
 ## [The Curse of Dimensionality](https://elitedatascience.com/dimensionality-reduction-algorithms)
 
-- dimensionality refers to the number of features (i.e. input variables) 
-
-- When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
-Dimensionality Reduciton
-
 ![](figure/3d-coordinate-plane.png){ height=40% }
 
+In machine learning, “dimensionality” simply refers to the number of features (i.e. input variables) in your dataset.
+
+- When the number of features is very large relative to the number of observations, certain algorithms struggle to train effective models. 
+
+- This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
 
 
-
-
-
-## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
-
-### Supervised Learning 
-
-- we have prior knowledge of what the output values for our samples should be. 
-
-
-## Task: Find R-packages
-
-Go to https://cran.r-project.org/ and search for packages that can be used for:
-
-- lasso regression
-- random forests
-- gradient boosting
-- neural networks
-- clustering
-
-
-<!--
-https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
--->
-
-## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
-
-
-![](figure/taskviewmachinelearning.PNG){ width=110% }
-
-
-
-## Install all packages of a task view
-
-```{r,eval=F}
-install.packages("ctv")
-ctv::install.views("MachineLearning")
-```
-
-## [Prediction vs. Causation in Regression Analysis](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
-
-### [**Paul Allison**](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
-
-> There are two main uses of multiple regression: prediction and causal analysis. In a prediction study, the goal is to develop a formula for making predictions about the dependent variable, based on the observed values of the independent variables….In a causal analysis, the independent variables are regarded as causes of the dependent variable. The aim of the study is to determine whether a particular independent variable really affects the dependent variable, and to estimate the magnitude of that effect, if any
-
-<!--
-## Literature for machine learning
-
-![](figure/book_ml1.jpg)
-
--->
-<!--
-https://lgatto.github.io/IntroMachineLearningWithR/index.html
-https://www.kaggle.com/camnugent/introduction-to-machine-learning-in-r-tutorial
-
-https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/
-
-https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-678/
--->
-
-
-
-## [What is supervised learning?](https://elitedatascience.com/birds-eye-view)
-
-
-<!--
-https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html#random-forest
--->
-
-
-Supervised learning includes tasks for "labeled" data (i.e. you have a target variable).
-
-- In practice, it's often used as an advanced form of predictive modeling.
- -  Each observation must be labeled with a "correct answer."
- -   Only then can you build a predictive model because you must tell the algorithm what's "correct" while training it (hence, "supervising" it).
- -   Regression is the task for modeling continuous target variables.
- -   Classification is the task for modeling categorical (a.k.a. "class") target variables.
-
-
-## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
-
-> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
 
 ## [What are the advantages and disadvantages of decision trees?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
 
@@ -181,6 +182,20 @@ Ein Modell wird mit Beispieldaten aufgebaut, das die Zuordnung anschließend sel
 -->
 
 
+
+## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
+
+> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
+
+
+## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
+
+- Ensemble learning method - multitude of decision trees 
+- Random forests correct for decision trees' habit of overfitting to their training set.
+
+![](figure/expl_rf.png)
+
+
 ## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
 
 Ensembles are machine learning methods for combining predictions from multiple separate models. 
@@ -202,25 +217,19 @@ attempts to reduce the chance overfitting complex models.
 
 attempts to improve the predictive flexibility of simple models.
 
--    It trains a large number of "weak" learners in sequence.
--    A weak learner is a constrained model (i.e. you could limit the max depth of each decision tree).
+- It trains a large number of "weak" learners in sequence.
+- A weak learner is a constrained model (limit for max depth of tree).
 -    Each one in the sequence focuses on learning from the mistakes of the one before it.
--    Boosting then combines all the weak learners into a single strong learner.
+- Boosting combines all the weak learners into a single strong learner.
 
-### Bagging and boosting
+## Bagging and boosting
 
 While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
 
 Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
 
 
-## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
 
-- Ensemble learning method - multitude of decision trees 
-- Random forests correct for decision trees' habit of overfitting to their training set.
-
-
-![](figure/expl_rf.png)
 
 
 ## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
@@ -299,23 +308,16 @@ I also thought about lowering the learning rate or using only a subset of predic
 What am I missing here? Is linear regression somehow inappropriate to use with Gradient Boosting? Is it because the linear regression uses the sum of squared residuals as a loss function? Are there any particular constraints on the weak predictors so they can be applied to Gradient Boosting?
 -->
 
-## [Modern Machine Learning Algorithms](https://elitedatascience.com/machine-learning-algorithms)
 
-Categorizing machine learning algorithms is tricky, and there are several reasonable approaches; they can be grouped into generative/discriminative, parametric/non-parametric, supervised/unsupervised, and so on.
-
-
-<!--
-https://lgatto.github.io/IntroMachineLearningWithR/an-introduction-to-machine-learning-with-r.html
--->
-
-
-## Links
+## Links and resources
 
 - [Presentations on ‘Elements of Neural Networks & Deep Learning’ ](https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-45/)
 
 - [Understanding the Magic of Neural Networks](https://www.r-bloggers.com/understanding-the-magic-of-neural-networks/)
 
+<!--
 - [Neural Text Modelling with R package ruimtehol](https://www.r-bloggers.com/neural-text-modelling-with-r-package-ruimtehol/)
+-->
 
 - [Feature Selection using Genetic Algorithms in R](https://www.r-bloggers.com/feature-selection-using-genetic-algorithms-in-r/)
 
@@ -344,13 +346,14 @@ https://medium.freecodecamp.org/every-single-machine-learning-course-on-the-inte
 
 - [A prelude to machine learning](https://eight2late.wordpress.com/2017/02/23/a-prelude-to-machine-learning/)
 
-- [caret webinar by Max Kuhn - on youtube](https://www.youtube.com/watch?v=7Jbb2ItbTC4)
+- [`caret` webinar by Max Kuhn - on youtube](https://www.youtube.com/watch?v=7Jbb2ItbTC4)
 
-- [learn-math-for-data-science](https://elitedatascience.com/learn-math-for-data-science)
-- [learn-statistics-for-data-science](https://elitedatascience.com/learn-statistics-for-data-science)
+- [Learn math for data science](https://elitedatascience.com/learn-math-for-data-science)
+- [Learn statistics for data science](https://elitedatascience.com/learn-statistics-for-data-science)
 
-- [machine-learning-projects-for-beginners](https://elitedatascience.com/machine-learning-projects-for-beginners)
+- [Aachine learning projects for beginners](https://elitedatascience.com/machine-learning-projects-for-beginners)
 
+## Links and resources (II)
 
 - [An Introduction to machine learning](http://www-bcf.usc.edu/~gareth/ISL/)
 - [ISLR book](http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf)
@@ -366,3 +369,26 @@ https://medium.freecodecamp.org/every-single-machine-learning-course-on-the-inte
 
 
 - [Shiny App for machine learning](https://www.showmeshiny.com/machlearn/)
+
+
+
+## Annex - [Prediction vs. Causation in Regression Analysis](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
+
+### [**Paul Allison**](https://statisticalhorizons.com/prediction-vs-causation-in-regression-analysis)
+
+> There are two main uses of multiple regression: prediction and causal analysis. In a prediction study, the goal is to develop a formula for making predictions about the dependent variable, based on the observed values of the independent variables….In a causal analysis, the independent variables are regarded as causes of the dependent variable. The aim of the study is to determine whether a particular independent variable really affects the dependent variable, and to estimate the magnitude of that effect, if any
+
+<!--
+## Literature for machine learning
+
+![](figure/book_ml1.jpg)
+
+-->
+<!--
+https://lgatto.github.io/IntroMachineLearningWithR/index.html
+https://www.kaggle.com/camnugent/introduction-to-machine-learning-in-r-tutorial
+
+https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/
+
+https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-678/
+-->

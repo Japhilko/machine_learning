@@ -27,10 +27,10 @@ pres=T
 
 ## Why a part on simple regression
 
-- some machine learning concepts are based on regression
-- I would like to remind you how simple regression in R works. 
+- Some machine learning concepts are based on regression
+- I would like to remind you how simple regression works in R. 
 - I also want to show the constraints
-- In a next step we will learn, how to coop with that
+- In a next step we will learn, how to coop with these constraints
 
 <!--
 http://enhancedatascience.com/2017/06/29/machine-learning-explained-overfitting/
@@ -120,15 +120,6 @@ class(fo <- mpg ~ wt + cyl)
 m3 <- lm(fo,data=mtcars)
 ```
 
-## The command `model.matrix`
-
-
-```{r,eval=F}
-?model.matrix
-```
-
-- See `Matrix::sparse.model.matrix` for increased efficiency on large dimension data. 
-
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 
 ### Interaction effect
@@ -155,7 +146,7 @@ summary(m3c)
 
 ### Take the logarithm
 
-```{r,eval=F}
+```{r}
 m3d<-lm(mpg~log(wt),data=mtcars) 
 ```
 
@@ -165,6 +156,46 @@ https://www.r-bloggers.com/r-tutorial-series-regression-with-interaction-variabl
 
 https://www.r-bloggers.com/interpreting-interaction-coefficient-in-r-part1-lm/
 -->
+
+## The command `model.matrix`
+
+<!--
+- Construct Design Matrices
+
+https://genomicsclass.github.io/book/pages/expressing_design_formula.html
+-->
+
+```{r,eval=F}
+?model.matrix
+```
+
+
+```{r}
+model.matrix(m3d)
+```
+
+
+## Model matrix (II)
+
+- [We can also create a model matrix directly from the formula and data arguments](http://pages.stat.wisc.edu/~st849-1/Rnotes/ModelMatrices.html)
+- See `Matrix::sparse.model.matrix` for increased efficiency on large dimension data.
+
+```{r}
+ff <- mpg ~ log(wt):cyl
+m <- model.frame(ff, mtcars)
+```
+
+```{r}
+(mat <- model.matrix(ff, m))
+```
+
+
+<!--
+m3c <- lm(y = mtcars$mpg,x=mat[,-1])
+-->
+
+ 
+
 
 ## A model with interaction effect
 
@@ -182,7 +213,7 @@ m3dsum$coefficients
 ```
 
 
-
+<!--
 ## [Exploring interactions](https://cran.r-project.org/web/packages/jtools/vignettes/interactions.html)
 
 ```{r,eval=F}
@@ -203,6 +234,26 @@ library(jtools)
 fitiris <- lm(Petal.Length ~ Petal.Width * Species, data = iris)
 interact_plot(fitiris, pred = "Petal.Width", modx = "Species")
 ```
+-->
+
+## Residual plot - model assumptions violated? 
+
+
+- the case if a deviation pattern from line 
+
+```{r,eval=pres}
+plot(m3,1)
+```
+
+![](figure/resid_fitted.PNG)
+
+## Residual plot
+
+```{r}
+plot(m3,2)
+```
+
+- If the residuals are normally distributed, they should be on the same line.
 
 
 ## Example: object orientation
@@ -228,28 +279,6 @@ pre <- predict(m1)
 head(mtcars$mpg)
 head(pre)
 ```
-
-
-
-## Residual plot - model assumptions violated? 
-
-
-- the case if a deviation pattern from line 
-
-```{r,eval=pres}
-plot(m3,1)
-```
-
-![](figure/resid_fitted.PNG)
-
-## Residual plot
-
-```{r}
-plot(m3,2)
-```
-
-- If the residuals are normally distributed, they should be on the same line.
-
 
 
 ## Regression diagnostic with base-R
@@ -298,6 +327,8 @@ visreg(m1, "wt", type = "conditional",
 
 ![](figure/visregplot1.PNG)
 
+
+<!--
 ## [Visualisation with `visreg` ](http://myweb.uiowa.edu/pbreheny/publications/visreg.pdf)
 
 - [Second argument](http://pbreheny.github.io/visreg) -  Specification covariate for visualisation
@@ -315,6 +346,8 @@ visreg(m1, "wt", type = "contrast",alpha=.01,
 ```
 
 ![](figure/visreg2.PNG)
+-->
+
 
 ## Regression with factors
 
@@ -349,12 +382,13 @@ visreg(m4, "cyl", type = "conditional",fill=list(col=c("#00FFFF")),points=list(c
 
 ![](figure/visregcat.PNG)
 
+<!--
 ## The command `model.matrix`
 
 ```{r,eval=F}
 ?model.matrix
 ```
-
+-->
 
 
 ## The package `visreg` - Interactions
@@ -402,12 +436,13 @@ visreg(m6, "wt", by="cyl", overlay=TRUE, partial=FALSE)
 visreg2d(m6, "wt", "hp", plot.type = "image")
 ```
 
+<!--
 ## The package `visreg` - `surface`
 
 ```{r}
 visreg2d(m6, "wt", "hp", plot.type = "persp")
 ```
-
+-->
 
 ## Producing nice table output with Package [stargazer](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
 
@@ -547,45 +582,63 @@ https://en.wikipedia.org/wiki/Overfitting
 - Cross-validation is a powerful preventative measure against overfitting.
 - Use your initial training data to generate multiple mini train-test splits. Use these splits to tune your model.
 
-### [Cross Validation in R](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
+### Necessary packages
 
 ```{r}
 library(tidyverse)
 library(caret)
 ```
 
+### Swiss Fertility and Socioeconomic Indicators
+
 ```{r}
 data("swiss")
 ```
+
+## [Cross Validation in R](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
+
+
+### Split data into training and testing dataset
 
 ```{r}
 training.samples <- swiss$Fertility %>%
 createDataPartition(p = 0.8, list = FALSE)
 train.data  <- swiss[training.samples, ]
 test.data <- swiss[-training.samples, ]
+```
+
+```{r}
 # Build the model
 model <- lm(Fertility ~., data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
 predictions <- model %>% predict(test.data)
 ```
 
+
+
 ```{r}
 train.control <- trainControl(method = "LOOCV")
 # Train the model
 model <- train(Fertility ~., data = swiss, method = "lm",
                trControl = train.control)
-# Summarize the results
-print(model)
 ```
 
 <!--
 ## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
 -->
 
+## Summarize the results
 
+```{r}
+print(model)
+```
+
+
+<!--
 ## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
 ![](figure/bias_variance_tradeoff.PNG){ height=70% }
+-->
 
 <!--
 ## Good literature for linear regression in R

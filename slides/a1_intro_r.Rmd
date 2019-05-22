@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R"
+title: "Machine Learning - the basics in R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -30,6 +30,7 @@ library(knitr)
 ### Please tell us shortly...
 
 - Where are you from? What are you studying/working?
+- What is your experience level in R/other programming languages?
 - What are your expectations of this course?
 - Where do you think you can use Machine Learning in the future?
 
@@ -43,12 +44,21 @@ library(knitr)
 - R is more fun together - ask your neighbor
 
 
-## Content of the course - day 1
+## Content of this section
 
 - The first section is about laying the foundations in R. We will need all things covered later on.
+
+### Topics section:
+
+- Why R is a good choice
+- Constraints of R-usage
+- R is modular 
+- Import and export of data
+
+<!--
 - The second section is an introduction to the field of machine learning.
 - The third part is on regression and classification.
-
+-->
 
 ## Why R is a good choice ...
 
@@ -123,6 +133,38 @@ devtools::install_github("koalaverse/vip")
 https://github.com/koalaverse/vip
 -->
 
+
+## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
+
+
+![](figure/taskviewmachinelearning.PNG){ width=110% }
+
+
+
+## Install all packages of a task view
+
+```{r,eval=F}
+install.packages("ctv")
+ctv::install.views("MachineLearning")
+```
+
+
+## Task: Find R-packages
+
+Go to https://cran.r-project.org/ and search for packages that can be used:
+
+- to reduce overfitting
+- for random forests
+- for gradient boosting
+- for neural networks
+- for clustering
+
+
+<!--
+https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
+-->
+
+
 ## Preparation - packages
 
 ```{r}
@@ -145,7 +187,7 @@ library(magrittr)
 
 ### Using a path to import data
 
-```{r}
+```{r,eval=F}
 path1<-"https://raw.githubusercontent.com/"
 path2<- "thomaspernet/data_csv_r/master/data/"
 dname <- "titanic_csv.csv"
@@ -158,18 +200,51 @@ titanic <- read.csv(paste0(path1,path2,dname))
 save(titanic,file="../data/titanic.RData")
 ```
 
+```{r,echo=F}
+load("../data/titanic.RData")
+```
 
 
 ## The titanic dataset
 
-```{r}
+```{r,eval=F,echo=F}
 kable(head(titanic))
 ```
 
-
+![](figure/titanicdata.PNG)
 <!--
 https://www.guru99.com/r-decision-trees.html
 -->
+
+
+## The function `scan` to import data 
+
+- `scan` has an easy way to distinguish comments from data
+
+```{r,eval=F}
+?scan
+```
+
+### Example dataset
+
+```{r}
+cat("TITLE extra line", "# a comment","2 3 5 7", "11 13 17", 
+    file = "../data/ex.data", sep = "\n")
+```
+
+### Import data and skip the first line
+
+```{r,eval=F}
+pp<-scan("../data/ex.data",skip=1,quiet=TRUE)
+```
+
+```{r}
+pp <- scan("../data/ex.data",comment.char="#", skip = 1,quiet = TRUE)
+```
+
+
+
+
 ## The download the data from UCI.
 
 ```{r,eval=F,echo=F}
@@ -234,33 +309,6 @@ Load the the built-in dataset `swiss` and answer the following questions:
 Create an interactive data table
 
 
-## The function `scan` to import data 
-
-- `scan` has an easy way to distinguish comments from data
-
-```{r,eval=F}
-?scan
-```
-
-### Example dataset
-
-```{r}
-cat("TITLE extra line", "# a comment","2 3 5 7", "11 13 17", 
-    file = "../data/ex.data", sep = "\n")
-```
-
-### Import data and skip the first line
-
-```{r,eval=F}
-pp <- scan("../data/ex.data", skip = 1, quiet = TRUE)
-```
-
-```{r}
-pp <- scan("../data/ex.data", comment.char="#", skip = 1, 
-           quiet = TRUE)
-```
-
-
 
 ## The R-package `data.table`
 
@@ -300,7 +348,7 @@ x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017,
 x <- runif(8)
 ```
 
-- Draw 8 rabdom numbers from the uniform distribution and save them in a vector `x`
+- Draw 8 random numbers from the uniform distribution and save them in a vector `x`
 - Compute the logarithm of `x`, return suitably lagged and iterated differences, 
 - compute the exponential function and round the result
 
@@ -387,11 +435,18 @@ kable(head(bdat))
 
 ## Normalize your data
 
+### Compute maximum and minimum per column
+
 ```{r}
 maxs <- apply(bdat, 2, max) 
 mins <- apply(bdat, 2, min)
+```
+
+### `scale` - Scaling and Centering of Matrix-like Objects
+```{r}
 scaled <- as.data.frame(scale(bdat, center = mins, 
                               scale = maxs - mins))
+
 ```
 
 
@@ -481,8 +536,9 @@ swirl()
 
 ## Resources
 
-- [Course materials for the Data Science Specialization](https://github.com/DataScienceSpecialization/courses)
-
+- [**Course materials for the Data Science Specialization**](https://github.com/DataScienceSpecialization/courses)
+- Data wrangling - [**`dplyr` vignette**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
+- The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 <!--
 Further possible topics of this section:
 
