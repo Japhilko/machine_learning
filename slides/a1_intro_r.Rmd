@@ -133,6 +133,38 @@ devtools::install_github("koalaverse/vip")
 https://github.com/koalaverse/vip
 -->
 
+
+## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
+
+
+![](figure/taskviewmachinelearning.PNG){ width=110% }
+
+
+
+## Install all packages of a task view
+
+```{r,eval=F}
+install.packages("ctv")
+ctv::install.views("MachineLearning")
+```
+
+
+## Task: Find R-packages
+
+Go to https://cran.r-project.org/ and search for packages that can be used:
+
+- to reduce overfitting
+- for random forests
+- for gradient boosting
+- for neural networks
+- for clustering
+
+
+<!--
+https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
+-->
+
+
 ## Preparation - packages
 
 ```{r}
@@ -505,7 +537,7 @@ swirl()
 ## Resources
 
 - [**Course materials for the Data Science Specialization**](https://github.com/DataScienceSpecialization/courses)
-- Data wrangling - [** vignette `dplyr`**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
+- Data wrangling - [**`dplyr` vignette**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
 - The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 <!--
 Further possible topics of this section:
