@@ -64,9 +64,9 @@ Naive Bayes
 
 ## [The Curse of Dimensionality](https://elitedatascience.com/dimensionality-reduction-algorithms)
 
-In machine learning, “dimensionality” simply refers to the number of features (i.e. input variables) in your dataset.
+- dimensionality refers to the number of features (i.e. input variables) 
 
-When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
+- When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
 Dimensionality Reduciton
 
 ![](figure/3d-coordinate-plane.png){ height=40% }
