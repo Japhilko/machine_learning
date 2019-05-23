@@ -561,4 +561,7 @@ Further possible topics of this section:
 - the rescale package
 -->
 
-
+<!--
+https://www.r-exercises.com/start-here-to-learn-r/
+https://www.r-exercises.com/category/exercises/exercises-intermediate/
+-->

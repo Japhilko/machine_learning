@@ -792,3 +792,10 @@ http://r-statistics.co/Linear-Regression.html
 Colinearity
 https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
 -->
+
+<!--
+http://r-statistics.co/Linear-Regression.html
+https://machinelearningmastery.com/linear-regression-in-r/
+https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
+https://cran.r-project.org/web/packages/Metrics/Metrics.pdf
+-->
