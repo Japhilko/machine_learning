@@ -28,8 +28,8 @@ pres=T
 ## Why a part on simple regression
 
 - Some machine learning concepts are based on regression
-- I would like to remind you how simple regression works in R. 
-- I also want to show the constraints
+- We would like to remind you how simple regression works in R. 
+- We also want to show the constraints
 - In a next step we will learn, how to coop with these constraints
 
 <!--
@@ -115,10 +115,16 @@ summary(m3)$coefficients
 ?as.formula
 ```
 
+
 ```{r}
 class(fo <- mpg ~ wt + cyl)
+```
+
+```{r}
+# The formula object can be used in the regression:
 m3 <- lm(fo,data=mtcars)
 ```
+
 
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 
@@ -199,14 +205,13 @@ m3c <- lm(y = mtcars$mpg,x=mat[,-1])
 
 ## A model with interaction effect
 
--`disp`	-  Displacement (cu.in.)
-
 <!--
 drat - Hinterachsenübersetzung
 disp - Hubraum
 -->
 
 ```{r}
+# disp	-  Displacement (cu.in.)
 m3d<-lm(mpg~wt*disp,data=mtcars) 
 m3dsum <- summary(m3d)
 m3dsum$coefficients
@@ -239,7 +244,7 @@ interact_plot(fitiris, pred = "Petal.Width", modx = "Species")
 ## Residual plot - model assumptions violated? 
 
 
-- the case if a deviation pattern from line 
+- We have model assumptions violated if points deviate with a pattern from the line 
 
 ```{r,eval=pres}
 plot(m3,1)
@@ -444,7 +449,7 @@ visreg2d(m6, "wt", "hp", plot.type = "persp")
 ```
 -->
 
-## Producing nice table output with Package [stargazer](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
+## Nice table output with [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
 
 
 ```{r,eval=F,echo=F}
@@ -462,8 +467,8 @@ stargazer(m3, type="html")
 
 ## Exercise
 
-- Install the package `AmesHousing` and create a processed Version of the Ames housing data with the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
-- Create a suitable regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. What do you think?
+- Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
+- Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
 
 <!--
 lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
@@ -483,16 +488,12 @@ ames_data <- AmesHousing::make_ames()
 
 
 ```{r}
+ames_data <- AmesHousing::make_ames()
 cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
 ```
 
 
 ## Multicollinearity
-
-```{r}
-ames_data <- AmesHousing::make_ames()
-```
-
 
 ```{r}
 lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)

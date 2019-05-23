@@ -169,11 +169,15 @@ https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
 
 ```{r}
 library(dplyr)
+```
+
+![](figure/dplyr_vignette.PNG)
+
+```{r}
 library(magrittr)
 ```
 
-
-
+![](figure/magrittr_vignette.jpg)
 ## Import `.csv` data 
 
 ### The `read.csv` command
