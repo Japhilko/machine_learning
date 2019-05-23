@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  23 MAY 2019 06:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  23 MAY 2019 06:56
 entering extended mode
 **./b1_regression.tex
 (b1_regression.tex
@@ -2075,43 +2075,35 @@ Overfull \vbox (77.40764pt too high) detected at line 905
 ]
 \openout4 = `b1_regression.vrb'.
 
+(b1_regression.vrb) [30
+
+]
+\openout4 = `b1_regression.vrb'.
+
 (b1_regression.vrb
 Overfull \hbox (86.45898pt too wide) in paragraph at lines 18--18
 []\T1/lmtt/m/n/10 ## lm(formula = Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, dat
 a = ames_data)[] 
  []
 
-) [30
+) [31
 
 ]
 \openout4 = `b1_regression.vrb'.
 
-(b1_regression.vrb) [31
+(b1_regression.vrb) [32
 
-] [32
+] [33
 
 ]
-<figure/Overfitting_fig1.PNG, id=323, 674.52pt x 274.02374pt>
+<figure/Overfitting_fig1.PNG, id=332, 674.52pt x 274.02374pt>
 File: figure/Overfitting_fig1.PNG Graphic file (type png)
 <use figure/Overfitting_fig1.PNG>
-Package pdftex.def Info: figure/Overfitting_fig1.PNG  used on input line 1072.
+Package pdftex.def Info: figure/Overfitting_fig1.PNG  used on input line 1117.
 (pdftex.def)             Requested size: 307.29819pt x 124.83987pt.
-[33
-
- <./figure/Overfitting_fig1.PNG>]
-<figure/The_Signal_and_the_Noise.jpg, id=333, 128.27925pt x 193.6836pt>
-File: figure/The_Signal_and_the_Noise.jpg Graphic file (type jpg)
-<use figure/The_Signal_and_the_Noise.jpg>
-Package pdftex.def Info: figure/The_Signal_and_the_Noise.jpg  used on input lin
-e 1090.
-(pdftex.def)             Requested size: 128.28479pt x 193.69197pt.
-
-Overfull \vbox (35.64346pt too high) detected at line 1090
- []
-
 [34
 
- <./figure/The_Signal_and_the_Noise.jpg>] [35
+ <./figure/Overfitting_fig1.PNG>] [35
 
 ]
 \openout4 = `b1_regression.vrb'.
@@ -2121,7 +2113,36 @@ Overfull \vbox (35.64346pt too high) detected at line 1090
 ]
 \openout4 = `b1_regression.vrb'.
 
-(b1_regression.vrb) [37
+(b1_regression.vrb
+Overfull \hbox (49.70909pt too wide) in paragraph at lines 32--32
+[]\T1/lmtt/m/n/10 ## Neuveville    Veveyse   Cossonay       Orbe  Entremont St 
+Maurice[] 
+ []
+
+
+Overfull \hbox (49.70909pt too wide) in paragraph at lines 32--32
+[]\T1/lmtt/m/n/10 ##   63.73179   84.26114   66.71358   64.70943   77.09379   7
+3.25012[] 
+ []
+
+) [37
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (49.70909pt too wide) in paragraph at lines 27--27
+[]\T1/lmtt/m/n/10 ## Neuveville    Veveyse   Cossonay       Orbe  Entremont St 
+Maurice[] 
+ []
+
+
+Overfull \hbox (49.70909pt too wide) in paragraph at lines 27--27
+[]\T1/lmtt/m/n/10 ##   64.70241   83.63057   65.39121   64.13413   76.97478   7
+3.17632[] 
+ []
+
+) [38
 
 ]
 \openout4 = `b1_regression.vrb'.
@@ -2132,7 +2153,7 @@ Overfull \hbox (49.70909pt too wide) in paragraph at lines 25--25
 pt\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 was held constant at a value of TRUE[] 
  []
 
-) [38
+) [39
 
 ]
 \openout4 = `b1_regression.vrb'.
@@ -2140,15 +2161,15 @@ pt\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 was held constant at a value of TRUE[]
 (b1_regression.vrb
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 24.
-) [39
+) [40
 
 ]
-<figure/Diagslr.PNG, id=392, 1132.23pt x 591.4095pt>
+<figure/Diagslr.PNG, id=400, 1132.23pt x 591.4095pt>
 File: figure/Diagslr.PNG Graphic file (type png)
 <use figure/Diagslr.PNG>
-Package pdftex.def Info: figure/Diagslr.PNG  used on input line 1258.
+Package pdftex.def Info: figure/Diagslr.PNG  used on input line 1316.
 (pdftex.def)             Requested size: 307.27834pt x 160.50389pt.
-[40
+[41
 
  <./figure/Diagslr.PNG>]
 \tf@nav=\write6
@@ -2163,21 +2184,21 @@ Package pdftex.def Info: figure/Diagslr.PNG  used on input line 1258.
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1260.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1260.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1318.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1318.
 (b1_regression.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1260.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1260.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1260.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1318.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1318.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1318.
  ) 
 Here is how much of TeX's memory you used:
- 24791 strings out of 493337
- 452875 string characters out of 3139439
+ 24792 strings out of 493337
+ 452874 string characters out of 3139439
  551771 words of memory out of 3000000
- 27601 multiletter control sequences out of 15000+200000
- 51025 words of font info for 54 fonts, out of 3000000 for 9000
+ 27597 multiletter control sequences out of 15000+200000
+ 50924 words of font info for 53 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191
- 56i,15n,55p,417b,471s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 56i,15n,55p,417b,478s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type
 1/public/lm/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmss
@@ -2186,9 +2207,9 @@ ram Files/MiKTeX 2.9/fonts/type1/public/lm/lmtcsc10.pfb><C:/Program Files/MiKTe
 X 2.9/fonts/type1/public/lm/lmtk10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /public/lm/lmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
 symbols/msam7.pfb>
-Output written on b1_regression.pdf (40 pages, 1226697 bytes).
+Output written on b1_regression.pdf (41 pages, 1113891 bytes).
 PDF statistics:
- 455 PDF objects out of 1000 (max. 8388607)
- 120 named destinations out of 1000 (max. 500000)
- 6277 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 464 PDF objects out of 1000 (max. 8388607)
+ 123 named destinations out of 1000 (max. 500000)
+ 6272 words of extra memory for PDF output out of 10000 (max. 10000000)
 

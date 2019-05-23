@@ -474,6 +474,26 @@ stargazer(m3, type="html")
 lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
 -->
 
+## [The Ames Iowa Housing Data](http://ww2.amstat.org/publications/jse)
+
+```{r}
+ames_data <- AmesHousing::make_ames()
+```
+
+### Some Variables
+
+- `Gr_Liv_Area`: Above grade (ground) living area square feet
+- `TotRms_AbvGrd`: Total rooms above grade (does not include bathrooms
+- `MS_SubClass`: Identifies the type of dwelling involved in the sale.
+- `MS_Zoning`: Identifies the general zoning classification of the sale.
+- `Lot_Frontage`: Linear feet of street connected to property
+- `Lot_Area`: Lot size in square feet
+- `Street`: Type of road access to property
+- `Alley`: Type of alley access to property
+- `Lot_Shape`: General shape of property
+- `Land_Contour`: Flatness of the propert
+
+
 ## Multicollinearity
 
 - As p increases we are more likely to capture multiple features that have some multicollinearity. 
@@ -521,7 +541,7 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 ## Consequences
 
 - One consequence of these large fluctuations in the coefficient terms is [**overfitting**](https://en.wikipedia.org/wiki/Overfitting), which means we have high variance in the bias-variance tradeoff space. 
-- We can use tools such as variance inflaction factors (Myers, 1994) to identify and remove those strongly correlated variables, but it is not always clear which variable(s) to remove. 
+- We can use tools such as [**variance inflaction factors**](https://en.wikipedia.org/wiki/Variance_inflation_factor) (Myers, 1994) to identify and remove those strongly correlated variables, but it is not always clear which variable(s) to remove. 
 - Nor do we always wish to remove variables as this may be removing signal in our data.
 
 
@@ -533,17 +553,15 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 
 ![](figure/Overfitting_fig1.PNG)
 
-
 <!--
-![](figure/electoral_precedent.png)
--->
-
 ## [The Signal and the Noise](https://en.wikipedia.org/wiki/The_Signal_and_the_Noise)
 
 - In predictive modeling, you can think of the “signal” as the true underlying pattern that you wish to learn from the data.
 - “Noise,” on the other hand, refers to the irrelevant information or randomness in a dataset.
 
 ![](figure/The_Signal_and_the_Noise.jpg)
+-->
+
 
 <!--
 https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regression.html
@@ -554,6 +572,11 @@ https://cran.r-project.org/web/packages/keras/vignettes/tutorial_basic_regressio
 https://cran.r-project.org/web/packages/keras/vignettes/tutorial_overfit_underfit.html
 
 https://www.r-bloggers.com/machine-learning-explained-overfitting/
+-->
+
+
+<!--
+![](figure/electoral_precedent.png)
 -->
 
 <!--
@@ -608,20 +631,24 @@ train.data  <- swiss[training.samples, ]
 test.data <- swiss[-training.samples, ]
 ```
 
+### Build the model and make predictions
+
 ```{r}
-# Build the model
 model <- lm(Fertility ~., data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
-predictions <- model %>% predict(test.data)
+(predictions <- model %>% predict(test.data))
 ```
 
+## Model with cross validation
 
+- Loocv: [**leave one out cross validation**](https://machinelearningmastery.com/how-to-estimate-model-accuracy-in-r-using-the-caret-package/)
 
 ```{r}
-train.control <- trainControl(method = "LOOCV")
+train.control <- caret::trainControl(method = "LOOCV")
 # Train the model
 model <- train(Fertility ~., data = swiss, method = "lm",
                trControl = train.control)
+model %>% predict(test.data)
 ```
 
 <!--

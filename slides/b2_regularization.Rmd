@@ -913,9 +913,11 @@ install.packages("biglasso")
 
 - The LASSO is closely related to basis pursuit denoising.
 
+## Resources and Links  
 
+- Myers (1994) [**Classical and Modern Regression with Applications**](https://www.amazon.com/Classical-Regression-Applications-Duxbury-Classic/dp/0534380166)
 
-## Links
+### Links
 
 
 [A comprehensive beginners guide for Linear, Ridge and Lasso Regression](https://www.analyticsvidhya.com/blog/2017/06/a-comprehensive-guide-for-linear-ridge-and-lasso-regression/)
