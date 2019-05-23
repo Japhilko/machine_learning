@@ -291,6 +291,13 @@ data(iris)
 install.packages("datasets.load")
 ```
 
+## Help page for built in datasets
+
+```{r,eval=F}
+?kyphosis
+```
+
+![](figure/kyphosis_helppage.PNG)
 
 ## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
 

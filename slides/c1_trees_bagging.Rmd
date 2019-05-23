@@ -475,25 +475,50 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 ```
 
 
-## Exercise - rpart Kyphosis
+## [Exercise - `rpart` Kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-exercises/)
 
-Consider the Kyphosis data frame(type `help("kyphosis")` for more details), that contains:
+### Consider the Kyphosis data frame
 
-- Kyphosis: a factor with levels absent present indicating if a kyphosis (a type of deformation) was present after the operation.
-- Age: in months.
-- Number: the number of vertebrae involved.
-- Start: the number of the first (topmost) vertebra operated on.
+<!--
+(type `help("kyphosis")` for more details)
+-->
 
+1) Which variables are in the `kyphosis` dataset
+2) Build a tree to classify Kyphosis from Age, Number and Start.
 
-1) Build a tree to classify Kyphosis from Age, Number and Start.
+### Consider the tree build above.
 
+3) Which variables are used to explain Kyphosis presence?
+4) How many observations contain the terminal nodes.
 
+### Consider the Kyphosis data frame.
+
+5) Build a tree using the first 60 observations of kyphosis.
+6) Predict the kyphosis presence for the other 21 observations.
+7) Which is the misclassification rate (prediction error)
+
+## Exercise `rpart` -  `iris`
+
+### Consider the `iris` data frame
+
+1) Build a tree to classify Species from the other variables.
+2) Plot the trees, add nodes information.
+
+### Consider the tree build before
+
+3) Prune the the using median complexity parameter (cp) associated to the tree.
+4) Plot in the same window, the pruned and the original tree.
+5) In which terminal nodes is clasified each oobservations of `iris`?
+6) Which Specie has a flower of `Petal.Length` greater than 2.45 and `Petal.Width` less than 1.75.
+
+<!--
 ## What is bagging?
 
 - Basic regression trees divide a data set into smaller groups and then fit a simple model (constant) for each subgroup. 
 - But a single tree model tends to be highly unstable and a poor predictor. 
 - Bootstrap aggregating (bagging) regression trees is quite powerful and effective. 
 - This provides the fundamental basis of more complex tree-based models such as random forests and gradient boosting machines. 
+-->
 
 <!--
 - This tutorial will get you started with regression trees and bagging.
@@ -504,12 +529,11 @@ Consider the Kyphosis data frame(type `help("kyphosis")` for more details), that
 
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
 
-- Single tree models suffer from high variance.
--  Pruning helps, but there are alternative methods that exploite the variability of single trees in a way that can significantly improve performance. 
+- Single tree models suffer from high variance, they are highly unstable and poor predictors.
+-  [**Pruning**](https://en.wikipedia.org/wiki/Decision_tree_pruning) helps, but there are alternative methods that exploite the variability of single trees in a way that can significantly improve performance. 
 - Bootstrap aggregating (bagging) is one such approach (originally proposed by Breiman, 1996).
-- Bagging is a method for combining predictions from different regression or classification models and was developed by Leo Breiman.
-- The results of the models are then averaged 
-- Model predictions are included in the prediction with the same weight (simplest case).
+- Bagging is a method for combining predictions from different regression or classification models.
+- The results of the models are then averaged - in the simplest case model predictions are included with the same weight.
 - The weights could depend on the quality of the model prediction, i.e. "good" models are more important than "bad" models.
 - Bagging leads to significantly improved predictions in the case of unstable models.
 
@@ -527,7 +551,7 @@ http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
 
 ## Bagging follows three simple steps:
 
-- 1.) Create m bootstrap samples from the training data. Bootstrapped samples allow us to create many slightly different data sets but with the same distribution as the overall training set.
+- 1.) Create $m$ bootstrap samples from the training data. Bootstrapped samples allow us to create many slightly different data sets but with the same distribution as the overall training set.
 
 - 2.) For each bootstrap sample train a single, unpruned regression tree.
 
