@@ -567,7 +567,7 @@ http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
 - This process can be applied to any regression or classification model; 
 - It provides the greatest improvement for models that have high variance. 
 - More stable parametric models such as linear regression and multi-adaptive regression splines tend to experience less improvement in predictive performance.
-- On average, a bootstrap sample will contain 63 per cent (23) of the training data. 
+- On average, a bootstrap sample will contain 63 per cent of the training data. 
 - This leaves about 33 per cent ($\dfrac{1}{3}$) of the data out of the bootstrapped sample. We call this the out-of-bag (OOB) sample. 
 - We can use the OOB observations to estimate the model’s accuracy, creating a natural cross-validation process.
 
@@ -576,15 +576,13 @@ http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
 - Fitting a bagged tree model is quite simple. 
 - Instead of using `rpart` we use `ipred::bagging`. 
 - We use `coob = TRUE` to use the OOB sample to estimate the test error. 
-- We see that our initial estimate error is close to $3K less than the test error we achieved with our single optimal tree (36543 vs. 39145)
 
-## Bagging with `ipred` (II)
+## Train bagged model
+
+- We see that our initial estimate error is close to 3000 Dollar less than the test error we achieved with our single optimal tree (36543 vs. 39145)
 
 ```{r}
-# make bootstrapping reproducible
 set.seed(123)
-
-# train bagged model
 (bagged_m1 <- bagging(formula = Sale_Price ~ .,
   data    = ames_train,coob= TRUE))
 ```
@@ -612,11 +610,8 @@ rmse <- vector(mode = "numeric", length = length(ntree))
 for (i in seq_along(ntree)) {
   set.seed(123)   # reproducibility
   # perform bagged model
-  model <- bagging(
-  formula = Sale_Price ~ .,
-  data    = ames_train,
-  coob    = TRUE,
-  nbagg   = ntree[i]
+  model <- bagging(formula = Sale_Price ~ .,
+  data=ames_train,coob= TRUE,nbagg=ntree[i]
 )
   rmse[i] <- model$err   # get OOB error
 }
@@ -625,7 +620,7 @@ for (i in seq_along(ntree)) {
 
 ## Plot the result
 
-- We see that the error is stabilizing at about 25 trees so we will likely not gain much improvement by simply bagging more trees.
+- We see that the error is stabilizing at about 25 trees - we will improve by bagging more trees.
 
 
 ```{r}
@@ -639,26 +634,27 @@ abline(v = 25, col = "red", lty = "dashed")
 
 - Bagging with `ipred` is simple but there are some additional benefits of bagging with `caret`.
 
-1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will also provide a more robust understanding of the true expected test error.
+1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will provide a more robust understanding of the true expected test error.
 
 2.) We can assess variable importance across the bagged trees.
 
-## A 10-fold cross-validated model.  
 
+
+<!--
 - We see that the cross-validated RMSE is 36,477 dollar. 
-- We also assess the top 20 variables from our model. 
-- Variable importance for regression trees is measured by assessing the total amount SSE is decreased by splits over a given predictor, averaged over all m trees. 
-- The predictors with the largest average impact to SSE are considered most important. - The importance value is simply the relative mean decrease in SSE compared to the most important variable (provides a 0-100 scale).
+-->
 
+
+## A 10-fold cross-validated model.  
+<!--
 ## CV bagged model 
-
+-->
 ```{r}
 # Specify 10-fold cross validation
 ctrl <- trainControl(method = "cv",  number = 10) 
 
 bagged_cv <- train(Sale_Price ~ .,data = ames_train,
-  method = "treebag",trControl = ctrl,importance = TRUE
-  )
+  method = "treebag",trControl = ctrl,importance = TRUE)
 ```
 
 ## Assess results
@@ -667,8 +663,18 @@ bagged_cv <- train(Sale_Price ~ .,data = ames_train,
 bagged_cv
 ```
 
-## Assess results with a plot
+## Assess results with a plot (top 20 variables)
 
+<!--
+- We also assess the top 20 variables from our model. 
+-->
+
+- Here, variable importance is measured by assessing the total amount SSE is decreased by splits over a given predictor, averaged over all $m$ trees. 
+
+<!--
+- The predictors with the largest average impact to SSE are considered most important. 
+- The importance value is simply the relative mean decrease in SSE compared to the most important variable (provides a 0-100 scale).
+-->
 ```{r}
 plot(varImp(bagged_cv), 20) 
 ```
@@ -826,20 +832,13 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
 - [**Vignette**](https://cran.r-project.org/web/packages/partykit/vignettes/ctree.pdf) for package `partykit` 
 
-- [Conditional Inference Trees](https://rpubs.com/awanindra01/ctree)
+- [**Conditional Inference Trees**](https://rpubs.com/awanindra01/ctree)
 
 
-- [Conditional inference trees vs traditional decision trees](https://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees)
+- [**Conditional inference trees vs traditional decision trees**](https://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees)
 
 - [Video on tree based methods](https://www.youtube.com/watch?v=6ENTbK3yQUQ)
 
-
-### Links - Boosting
-
-- [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
-
-
-- [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
 
 
 <!--

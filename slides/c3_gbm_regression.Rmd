@@ -519,3 +519,10 @@ the change in the predicted response variable is plotted as we vary each predict
 - the centered ICE plot highlights a few observations that deviate from the common trend.
 
 
+### Links - Boosting
+
+- [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
+
+
+- [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
+
