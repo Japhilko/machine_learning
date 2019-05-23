@@ -171,6 +171,8 @@ https://www.r-bloggers.com/interpreting-interaction-coefficient-in-r-part1-lm/
 https://genomicsclass.github.io/book/pages/expressing_design_formula.html
 -->
 
+- With `model.matrix`the qualitative variables are automatically dummy encoded 
+
 ```{r,eval=F}
 ?model.matrix
 ```
@@ -751,4 +753,11 @@ https://www.r-bloggers.com/regression-analysis-essentials-for-machine-learning/
 https://www.r-bloggers.com/15-types-of-regression-you-should-know/
 https://www.r-bloggers.com/marginal-effects-for-regression-models-in-r-rstats-dataviz/
 http://pbreheny.github.io/visreg/contrast.html
+-->
+
+<!--
+ToDo:
+
+How to compute the mean squared error:
+https://stats.stackexchange.com/questions/107643/how-to-get-the-value-of-mean-squared-error-in-a-linear-regression-in-r
 -->

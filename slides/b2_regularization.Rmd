@@ -188,17 +188,17 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 
 (2) In many instances the result will be computationally infeasible.
 
-- Consequently, to resolve this issue an analyst can remove variables until $p<n$ and then fit an OLS regression model. 
-- Although an analyst can use pre-processing tools to guide this manual approach (Kuhn and Johnson, 2013, pp. 43-47), it can be cumbersome and prone to errors.
+- To resolve this issue we can remove variables until $p<n$ and then fit an OLS regression model. 
+- Although we can use pre-processing tools to apply this manual approach ([**Kuhn and Johnson**](http://appliedpredictivemodeling.com/), 2013, pp. 43-47), it can be cumbersome and prone to errors.
 
-
+<!--
 ## Interpretability
 
-- With a large number of features, we often would like to identify a smaller subset of these features that exhibit the strongest effects. 
-- In essence, we sometimes prefer techniques that provide feature selection. One approach to this is called hard threshholding feature selection, which can be performed with linear model selection approaches. 
+- With a large number of features, we often would like to identify a smaller subset that has the strongest effects. 
+- We sometimes prefer techniques that provide feature selection. One approach to this is called hard threshholding feature selection, which can be performed with linear model selection approaches. 
 - Model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
 - We may wish to use a soft threshholding approach that slowly pushes a feature’s effect towards zero. As will be demonstrated, this can provide additional understanding regarding predictive signals.
-
+-->
 
 ## Regularized Regression
 
@@ -239,7 +239,7 @@ $$
 
 ## Exemplar coefficients
 
-This is illustrated in the following figure where exemplar coefficients have been regularized with $\lambda$ ranging from 0 to over 8,000 (log(8103)=9).
+Exemplar coefficients have been regularized with $\lambda$ ranging from 0 to over 8,000 (log(8103)=9).
 
 ![](figure/ridge_coef.png)
 
@@ -256,7 +256,7 @@ Siehe hier: https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
 
 - Although these coefficients were scaled and centered prior to the analysis, you will notice that some are extremely large when $\lambda\rightarrow 0$. 
 
-- Furthermore, you’ll notice the large negative parameter that fluctuates until $log(\lambda)\approx 2$ where it then continuously skrinks to zero. 
+- We have a large negative parameter that fluctuates until $log(\lambda)\approx 2$ where it then continuously shrinks to zero. 
 
 - This is indicitive of multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
 
@@ -267,6 +267,11 @@ Siehe hier: https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
 - `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
 - The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
 - We also log transform our response variable due to its skeweness.
+
+```{r,fig.height=3}
+plot(density(ames_data$Sale_Price))
+```
+
 
 
 <!--
@@ -315,29 +320,28 @@ plot(ames_ridge, xvar = "lambda")
 ## $\lambda$ values in `glmnet`
 
 - We can see the exact $\lambda$ values applied with `ames_ridge$lambda`. 
-- Although you can specify your own $\lambda$ values, by default `glmnet` applies 100 $\lambda$ values that are data derived. 
+- You can specify your own $\lambda$ values, 
+- By default `glmnet` applies 100 $\lambda$ values that are data derived. 
 - Normally you will have little need to adjust the default $\lambda$ values.
 
 ```{r}
 head(ames_ridge$lambda)
 ```
 
-## Coefficients in `glmnet`
+## Access the coefficients with `coef`.
 
-- We can access the coefficients for a model using `coef`.
+- The coefficients are stored for each model in order of largest to smallest $\lambda$. 
+- The coefficients for the `Gr_Liv_Area` and `TotRms_AbvGrd` features for the largest $\lambda$ (279.1035) and smallest $\lambda$ (0.02791035) are visible. 
+- The largest $\lambda$ value has pushed these coefficients to nearly 0.
+
+<!--
+# coefficients for the largest and smallest lambda parameters
+## Coefficients of the `ames_ridge` model 
+-->
 
 ```{r}
-# coefficients for the largest and smallest lambda parameters
-coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 100]
+coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"),100]
 ```
-
-
-- `glmnet` stores all the coefficients for each model in order of largest to smallest $\lambda$. 
-- In the following, the coefficients for the `Gr_Liv_Area` and `TotRms_AbvGrd` features for the largest $\lambda$ (279.1035) and smallest $\lambda$ (0.02791035) are visible. 
-- You can see how the largest $\lambda$ value has pushed these coefficients to nearly 0.
-
-
-## Coefficients of the `ames_ridge` model 
 
 ```{r}
 coef(ames_ridge)[c("Gr_Liv_Area", "TotRms_AbvGrd"), 1] 
@@ -368,12 +372,15 @@ plot(ames_ridge)
 ## The plot explained (I)
 
 - As we constrain our coefficients with $log(\lambda)\leq 0$ penalty, the MSE rises considerably. 
-- The numbers at the top of the plot (299) just refer to the number of variables in the model. 
+- The numbers at the top of the plot (301) just refer to the number of variables in the model. 
 - Ridge regression does not force any variables to exactly zero so all features will remain in the model.
 
 ## The plot explained (II)
 
+<!--
 - The first and second vertical dashed lines represent the $\lambda$  value with the minimum MSE and the largest $\lambda$ value within one standard error of the minimum MSE.
+-->
+
 
 ```{r}
 min(ames_ridge$cvm)       # minimum MSE
@@ -387,7 +394,8 @@ ames_ridge$lambda.1se  # lambda for this MSE
 ## The plot explained (III)
 
 - The advantage of identifying the $\lambda$ with an MSE within one standard error becomes more obvious with the lasso and elastic net models. 
-- For now we can assess this visually. Here we plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
+- For now we can assess this visually. 
+- We plot the coefficients across the $\lambda$ values and the dashed red line represents the largest $\lambda$ that falls within one standard error of the minimum MSE. 
 - This shows you how much we can constrain the coefficients while still maximizing predictive accuracy.
 
 
@@ -432,7 +440,12 @@ coef(ames_ridge, s = "lambda.1se") %>%
 
 ## Ridge and lasso
 
-- A ridge model will retain all variables. Therefore, a ridge model is good if you believe there is a need to retain all features in your model yet reduce the noise that less influential variables may create and minimize multicollinearity. 
+<!--
+A ridge model will retain all variables.
+
+-->
+
+- A ridge model is good if you believe there is a need to retain all features in your model yet reduce the noise that less influential variables may create and minimize multicollinearity. 
 - A ridge model does not perform feature selection. If greater interpretation is necessary where you need to reduce the signal in your data to a smaller subset then a lasso model may be preferable.
 
 
@@ -475,20 +488,20 @@ https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-re
 
 
 
-
+<!--
 ## History of Lasso
 
 - Originally introduced in geophysics literature in 1986
 - Independently rediscovered and popularized in 1996 by Robert Tibshirani, who coined the term and provided further insights into the observed performance.
 
-
-
 Lasso was originally formulated for least squares models and this simple case reveals a substantial amount about the behavior of the estimator, including its relationship to ridge regression and best subset selection and the connections between lasso coefficient estimates and so-called soft thresholding. It also reveals that (like standard linear regression) the coefficient estimates need not be unique if covariates are collinear.
+-->
 
+<!--
 ## What is [lasso regression](http://www.statisticshowto.com/lasso-regression/)
 
 - Lasso regression uses shrinkage
-- data values are shrunk towards a central point
+- Data values are shrunk towards a central point
 
 - [Ridge and lasso regularization work by adding a penalty term to the log likelihood function.](https://eight2late.wordpress.com/2017/07/11/a-gentle-introduction-to-logistic-regression-and-lasso-regularisation-using-r/)
 
@@ -497,6 +510,8 @@ Lasso was originally formulated for least squares models and this simple case re
 $$
 \sum\limits_{i=1}^n \big( y_i -\beta_0 - \sum\limits_{j=1}^p \beta_jx_{ij} \big)^2 + \lambda \sum\limits_{j=1}^p |\beta_j| = RSS + \lambda\sum\limits_{j=1}^p |\beta_j|.
 $$
+
+-->
 <!--
 wir haben einen penalty term, der hoch ist, wenn die Parameterschätzwerte hoch sind.
 
@@ -504,11 +519,11 @@ Youtube Video zu Lasso
 https://www.youtube.com/watch?v=A5I1G1MfUmA
 -->
 
--->
-
 ## Lasso Regression
 
-- The least absolute shrinkage and selection operator (lasso) model (Tibshirani, 1996) is an alternative to ridge regression that has a small modification to the penalty in the objective function.
+- Originally introduced in geophysics literature in 1986
+- The least absolute shrinkage and selection operator (lasso) model was rediscovered and popularized in 1996 by Robert Tibshirani 
+-It is an alternative to ridge regression that has a small modification to the penalty in the objective function.
 - Rather than the $L_2$ penalty we use the following $L_1$ penalty $\lambda\sum_{j=1}^p |\beta_j|$ in the objective function.
 
 $$
@@ -528,16 +543,15 @@ Lasso model improves the model with regularization and it conducts automated fea
 - 12 variables for $\text{log}(\lambda)=-1$
 - 3 variables for $\text{log}(\lambda)=1$
 
-Consequently, when a data set has many features lasso can be used to identify and extract those features with the largest (and most consistent) signal.
+When a data set has many features, lasso can be used to identify and extract those features with the largest (and most consistent) signal.
 
 
-## Implementation Lasso regression to ames data
+### Implementation Lasso regression to ames data
 
-Implementing lasso follows the same logic as implementing the ridge model, we just need to switch $\alpha = 1$ within `glmnet`.
+- Implementing lasso follows the same logic as implementing the ridge model, we just need to switch $\alpha = 1$ within `glmnet`.
 
 ```{r}
-ames_lasso <- glmnet(x = ames_train_x,y = ames_train_y,
-  alpha = 1)
+ames_lasso<-glmnet(x=ames_train_x,y=ames_train_y,alpha=1)
 ```
 
 ## A quick drop in number of features
