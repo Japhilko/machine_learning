@@ -287,7 +287,6 @@ head(mtcars$mpg)
 head(pre)
 ```
 
-
 ## Regression diagnostic with base-R
 
 ```{r,eval=F}
@@ -303,6 +302,17 @@ segments(mtcars$wt, mtcars$mpg, mtcars$wt, pre, col="red")
 p <- ggpredict(m5, c("wt", "cyl"))
 plot(p)
 ```
+
+## The mean squared error
+
+- The [**MSE**](https://en.wikipedia.org/wiki/Mean_squared_error) measures the average of the squares of the errors
+- [**The lower the better**](http://r-statistics.co/Linear-Regression.html)
+
+```{r}
+(mse5 <- mean((mtcars$mpg -  pre)^2)) # model 5
+(mse4 <- mean((mtcars$mpg -  predict(m4))^2)) # model 4
+```
+
 
 
 ## The `visreg`-package
@@ -602,11 +612,27 @@ https://en.wikipedia.org/wiki/Overfitting
 - Regularization - e.g. ridge and lasso regression
 - Ensembling - e.g. bagging and boosting
 
-
+<!--
 ## [Cross-validation](https://elitedatascience.com/overfitting-in-machine-learning#examples)
 
+- [**3 fold cross validation**](https://www.statmethods.net/stats/regression.html)
+
+```{r,eval=F,echo=F}
+amod1 <- lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)
+# K-fold cross-validation
+library(DAAG)
+DAAG::cv.lm(data=ames_data,form.lm =  amod1, m=3) # 3 fold cross-validation
+```
+-->
+
+
+
+## Cross validation
+
 - Cross-validation is a powerful preventative measure against overfitting.
+
 - Use your initial training data to generate multiple mini train-test splits. Use these splits to tune your model.
+
 
 ### Necessary packages
 
@@ -760,4 +786,9 @@ ToDo:
 
 How to compute the mean squared error:
 https://stats.stackexchange.com/questions/107643/how-to-get-the-value-of-mean-squared-error-in-a-linear-regression-in-r
+
+http://r-statistics.co/Linear-Regression.html
+
+Colinearity
+https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
 -->

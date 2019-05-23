@@ -1,0 +1,14 @@
+base
+gpdataprocessing
+magrittr
+knitr
+rmarkdown
+Matrix
+lme4
+data.table
+dplyr
+bindrcpp
+MASS
+foreach
+iterators
+doParallel
