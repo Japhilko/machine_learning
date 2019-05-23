@@ -3,3 +3,12 @@ data.table
 foreach
 iterators
 doParallel
+gpdataprocessing
+magrittr
+knitr
+rmarkdown
+Matrix
+lme4
+dplyr
+bindrcpp
+MASS
