@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
-knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T)
+knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T,eval=F)
 library(knitr)
 ```
 
@@ -115,7 +115,10 @@ The basic algorithm for a regression random forest can be generalized:
 12. end
 ```
 
-- Since the algorithm randomly selects a bootstrap sample to train on and predictors to use at each split, tree correlation will be lessened beyond bagged trees.
+Since the algorithm randomly selects 
+
+- a bootstrap sample to train 
+- and predictors to use at each split, tree correlation will be lessened beyond bagged trees.
 
 ## OOB error vs. test set error
 
@@ -508,7 +511,7 @@ h2o.init(max_mem_size = "5g")
 ##
 
 - First, we can try a comprehensive (full cartesian) grid search, which means we will examine every combination of hyperparameter settings that we specify in hyper_grid.h2o. - Here, we search across 96 models but since we perform a full cartesian search this process is not any faster than that which we did above. 
-- However, note that the best performing model has an OOB RMSE of 24504 ($\sqrt{6.0046\hat{E}8}$), which is lower than what we achieved previously. 
+- However, note that the best performing model has an OOB RMSE of 24504, which is lower than what we achieved previously. 
 - This is because some of the default settings regarding minimum node size, tree depth, etc. are more “generous” than ranger and randomForest (i.e. h2o has a default minimum node size of one whereas ranger and randomForest default settings are 5).
 
 
@@ -558,7 +561,7 @@ print(grid_perf)
 - For example, the following code searches a large grid search of 2,025 hyperparameter combinations. 
 - We create a random grid search that will stop if none of the last 10 models have managed to have a 0.5% improvement in MSE compared to the best model before that. 
 - If we continue to find improvements then I cut the grid search off after 600 seconds (30 minutes). 
-- Our grid search assessed 190 models and the best model (max_depth = 30, min_rows = 1, mtries = 25, nbins = 30, ntrees = 200, sample_rate = .8) achived an RMSE of 24686 ($\sqrt{6.094\hat{E}8}
+- Our grid search assessed 190 models and the best model (max_depth = 30, min_rows = 1, mtries = 25, nbins = 30, ntrees = 200, sample_rate = .8) achived an RMSE of 24686 
 ).
 
 ##

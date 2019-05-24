@@ -12,7 +12,6 @@ output:
     fig_caption: no
     fonttheme: structuresmallcapsserif
     highlight: haddock
-
 ---
 
 ```{r setup, include=FALSE}
