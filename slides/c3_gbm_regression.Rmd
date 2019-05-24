@@ -1065,9 +1065,12 @@ plot_features(explanation)
 ```
 
 
-## Predicting
+## Predicting on new observations
 
-Lastly, we use predict to predict on new observations; however, unlike gbm we do not need to provide the number of trees. Our test set RMSE is only about $600 different than that produced by our gbm model.
+<!--
+- Lastly, we predict on new observations; 
+-->
+unlike GBM we do not need to provide the number of trees. Our test set RMSE is only about $600 different than that produced by our gbm model.
 
 ```{r}
 # predict values for test data
@@ -1085,3 +1088,11 @@ caret::RMSE(pred, response_test)
 
 - [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
 
+
+<!--
+ToDo:
+
+Have a look here:
+
+https://bradleyboehmke.github.io/HOML/deep-learning.html
+-->
