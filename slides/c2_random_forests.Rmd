@@ -224,8 +224,6 @@ y_test <- ames_valid$Sale_Price
 ```{r}
 rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
   data=ames_train_v2,xtest = x_test,ytest=y_test)
-oob <- sqrt(rf_oob_comp$mse) # extract OOB & validation errors
-validation <- sqrt(rf_oob_comp$test$mse)
 ```
 
 ```{r,eval=F}
