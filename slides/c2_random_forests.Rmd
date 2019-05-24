@@ -21,7 +21,7 @@ library(knitr)
 
 ## Random Forests
 
-- Bagging can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
+- [**Bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
 - But bagging typically suffers from tree correlation, which reduces the overall performance of the model. 
 - Random forests are a modification of bagging that builds a large collection of de-correlated trees 
 - It is a very popular "out-of-the-box" learning algorithm that enjoys good predictive performance. 
@@ -115,11 +115,10 @@ The basic algorithm for a regression random forest can be generalized:
 12. end
 ```
 
-Since the algorithm randomly selects 
-
-- a bootstrap sample to train 
-- and predictors to use at each split, tree correlation will be lessened beyond bagged trees.
-
+The algorithm randomly selects a bootstrap sample to train and predictors to use at each split.
+<!--
+, tree correlation will be lessened beyond bagged trees.
+-->
 ## OOB error vs. test set error
 
 - Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an out-of-bag (OOB) sample that provides an efficient and reasonable approximation of the test error. 
@@ -243,9 +242,10 @@ tibble::tibble(
   xlab("Number of trees")
 ```
 
-## Compare error rates
+
 
 ```{r,echo=F}
+## Compare error rates
 tibble::tibble(
   `Out of Bag Error` = oob,
   `Test error` = validation,
