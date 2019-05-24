@@ -642,6 +642,293 @@ dim(features_train)
 dim(features_test)
 ```
 
+##
+
+xgboost provides different training functions (i.e. xgb.train which is just a wrapper for xgboost). However, to train an XGBoost we typically want to use xgb.cv, which incorporates cross-validation. The following trains a basic 5-fold cross validated XGBoost model with 1,000 trees. There are many parameters available in xgb.cv but the ones you have become more familiar with in this tutorial include the following default values:
+
+- learning rate (eta): 0.3
+- tree depth (max_depth): 6
+- minimum node size (min_child_weight): 1
+- percent of training data to sample for each tree (subsample –> equivalent to gbm’s bag.fraction): 100%
+
+```{r}
+# reproducibility
+set.seed(123)
+
+xgb.fit1 <- xgb.cv(
+  data = features_train,
+  label = response_train,
+  nrounds = 1000,
+  nfold = 5,
+  objective = "reg:linear",  # for regression models
+  verbose = 0               # silent,
+)
+```
+
+## 
+
+The xgb.fit1 object contains lots of good information. In particular we can assess the `xgb.fit1$evaluation_log` to identify the minimum RMSE and the optimal number of trees for both the training data and the cross-validated error. We can see that the training error continues to decrease to 965 trees where the RMSE nearly reaches zero; however, the cross validated error reaches a minimum RMSE of 27,572 Dollar with only 60 trees.
+
+```{r}
+# get number of trees that minimize error
+xgb.fit1$evaluation_log %>%
+  dplyr::summarise(
+    ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
+    rmse.train   = min(train_rmse_mean),
+    ntrees.test  = which(test_rmse_mean == min(test_rmse_mean))[1],
+    rmse.test   = min(test_rmse_mean),
+  )
+##   ntrees.train rmse.train ntrees.test rmse.test
+## 1          965  0.5022836          60  27572.31
+
+# plot error vs number trees
+ggplot(xgb.fit1$evaluation_log) +
+  geom_line(aes(iter, train_rmse_mean), color = "red") +
+  geom_line(aes(iter, test_rmse_mean), color = "blue")
+```
+
+##
+
+A nice feature provided by xgb.cv is early stopping. This allows us to tell the function to stop running if the cross validated error does not improve for n continuous trees. For example, the above model could be re-run with the following where we tell it stop if we see no improvement for 10 consecutive trees. This feature will help us speed up the tuning process in the next section.
+
+```{r}
+# reproducibility
+set.seed(123)
+
+xgb.fit2 <- xgb.cv(
+  data = features_train,
+  label = response_train,
+  nrounds = 1000,
+  nfold = 5,
+  objective = "reg:linear",  # for regression models
+  verbose = 0,               # silent,
+  early_stopping_rounds = 10 # stop if no improvement for 10 consecutive trees
+)
+
+# plot error vs number trees
+ggplot(xgb.fit2$evaluation_log) +
+  geom_line(aes(iter, train_rmse_mean), color = "red") +
+  geom_line(aes(iter, test_rmse_mean), color = "blue")
+```
+
+## Tuning
+To tune the XGBoost model we pass parameters as a list object to the params argument. The most common parameters include:
+
+- eta:controls the learning rate
+- max_depth: tree depth
+- min_child_weight: minimum number of observations required in each terminal node
+- subsample: percent of training data to sample for each tree
+- colsample_bytrees: percent of columns to sample from for each tree
+For example, if we wanted to specify specific values for these parameters we would extend the above model with the following parameters.
+
+##
+
+```{r}
+# create parameter list
+  params <- list(
+    eta = .1,
+    max_depth = 5,
+    min_child_weight = 2,
+    subsample = .8,
+    colsample_bytree = .9
+  )
+
+# reproducibility
+set.seed(123)
+
+# train model
+xgb.fit3 <- xgb.cv(
+  params = params,
+  data = features_train,
+  label = response_train,
+  nrounds = 1000,
+  nfold = 5,
+  objective = "reg:linear",  # for regression models
+  verbose = 0,               # silent,
+  early_stopping_rounds = 10 # stop if no improvement for 10 consecutive trees
+)
+
+# assess results
+xgb.fit3$evaluation_log %>%
+  dplyr::summarise(
+    ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
+    rmse.train   = min(train_rmse_mean),
+    ntrees.test  = which(test_rmse_mean == min(test_rmse_mean))[1],
+    rmse.test   = min(test_rmse_mean),
+  )
+```
+
+##
+
+To perform a large search grid, we can follow the same procedure we did with gbm. We create our hyperparameter search grid along with columns to dump our results in. Here, I create a pretty large search grid consisting of 576 different hyperparameter combinations to model.
+
+```{r}
+# create hyperparameter grid
+hyper_grid <- expand.grid(
+  eta = c(.01, .05, .1, .3),
+  max_depth = c(1, 3, 5, 7),
+  min_child_weight = c(1, 3, 5, 7),
+  subsample = c(.65, .8, 1), 
+  colsample_bytree = c(.8, .9, 1),
+  optimal_trees = 0,               # a place to dump results
+  min_RMSE = 0                     # a place to dump results
+)
+
+nrow(hyper_grid)
+```
+
+##
+
+Now I apply the same for loop procedure to loop through and apply a XGBoost model for each hyperparameter combination and dump the results in the hyper_grid data frame. Important note: if you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
+
+```{r}
+# grid search 
+for(i in 1:nrow(hyper_grid)) {
+  
+  # create parameter list
+  params <- list(
+    eta = hyper_grid$eta[i],
+    max_depth = hyper_grid$max_depth[i],
+    min_child_weight = hyper_grid$min_child_weight[i],
+    subsample = hyper_grid$subsample[i],
+    colsample_bytree = hyper_grid$colsample_bytree[i]
+  )
+  
+  # reproducibility
+  set.seed(123)
+  
+  # train model
+  xgb.tune <- xgb.cv(
+    params = params,
+    data = features_train,
+    label = response_train,
+    nrounds = 5000,
+    nfold = 5,
+    objective = "reg:linear",  # for regression models
+    verbose = 0,               # silent,
+    early_stopping_rounds = 10 # stop if no improvement for 10 consecutive trees
+  )
+  
+  # add min training error and trees to grid
+  hyper_grid$optimal_trees[i] <- which.min(xgb.tune$evaluation_log$test_rmse_mean)
+  hyper_grid$min_RMSE[i] <- min(xgb.tune$evaluation_log$test_rmse_mean)
+}
+
+hyper_grid %>%
+  dplyr::arrange(min_RMSE) %>%
+  head(10)
+```
+
+##
+
+After assessing the results you would likely perform a few more grid searches to hone in on the parameters that appear to influence the model the most. In fact, here is a link to a great blog post that discusses a strategic approach to tuning with xgboost. However, for brevity, we’ll just assume the top model in the above search is the globally optimal model. Once you’ve found the optimal model, we can fit our final model with xgb.train.
+
+```{r}
+# parameter list
+params <- list(
+  eta = 0.01,
+  max_depth = 5,
+  min_child_weight = 5,
+  subsample = 0.65,
+  colsample_bytree = 1
+)
+
+# train final model
+xgb.fit.final <- xgboost(
+  params = params,
+  data = features_train,
+  label = response_train,
+  nrounds = 1576,
+  objective = "reg:linear",
+  verbose = 0
+)
+```
+
+## Visualizing
+Variable importance
+xgboost provides built-in variable importance plotting. First, you need to create the importance matrix with xgb.importance and then feed this matrix into xgb.plot.importance. There are 3 variable importance measure:
+
+- Gain: the relative contribution of the corresponding feature to the model calculated by taking each feature’s contribution for each tree in the model. This is synonymous with gbm’s relative.influence.
+- Cover: the relative number of observations related to this feature. For example, if you have 100 observations, 4 features and 3 trees, and suppose feature1 is used to decide the leaf node for 10, 5, and 2 observations in tree1, tree2 and tree3 respectively; then the metric will count cover for this feature as 10+5+2 = 17 observations. This will be calculated for all the 4 features and the cover will be 17 expressed as a percentage for all features’ cover metrics.
+- Frequency: the percentage representing the relative number of times a particular feature occurs in the trees of the model. In the above example, if feature1 occurred in 2 splits, 1 split and 3 splits in each of tree1, tree2 and tree3; then the weightage for feature1 will be 2+1+3 = 6. The frequency for feature1 is calculated as its percentage weight over weights of all features.
+
+```{r}
+# create importance matrix
+importance_matrix <- xgb.importance(model = xgb.fit.final)
+
+# variable importance plot
+xgb.plot.importance(importance_matrix, top_n = 10, measure = "Gain")
+```
+
+## Partial dependence plots
+PDP and ICE plots work similarly to how we implemented them with gbm. The only difference is you need to incorporate the training data within the partial function.
+
+```{r}
+pdp <- xgb.fit.final %>%
+  partial(pred.var = "Gr_Liv_Area_clean", n.trees = 1576, grid.resolution = 100, train = features_train) %>%
+  autoplot(rug = TRUE, train = features_train) +
+  scale_y_continuous(labels = scales::dollar) +
+  ggtitle("PDP")
+
+ice <- xgb.fit.final %>%
+  partial(pred.var = "Gr_Liv_Area_clean", n.trees = 1576, grid.resolution = 100, train = features_train, ice = TRUE) %>%
+  autoplot(rug = TRUE, train = features_train, alpha = .1, center = TRUE) +
+  scale_y_continuous(labels = scales::dollar) +
+  ggtitle("ICE")
+
+gridExtra::grid.arrange(pdp, ice, nrow = 1)
+```
+
+## LIME
+
+LIME provides built-in functionality for xgboost objects (see ?model_type). However, just keep in mind that the local observations being analyzed need to be one-hot encoded in the same manner as we prepared the training and test data. Also, when you feed the training data into the lime::lime function be sure that you coerce it from a matrix to a data frame.
+
+```{r}
+# one-hot encode the local observations to be assessed.
+local_obs_onehot <- vtreat::prepare(treatplan, local_obs, varRestriction = new_vars)
+
+# apply LIME
+explainer <- lime(data.frame(features_train), xgb.fit.final)
+explanation <- explain(local_obs_onehot, explainer, n_features = 5)
+plot_features(explanation)
+```
+
+## Predicting
+Lastly, we use predict to predict on new observations; however, unlike gbm we do not need to provide the number of trees. Our test set RMSE is only about $600 different than that produced by our gbm model.
+
+```{r}
+# predict values for test data
+pred <- predict(xgb.fit.final, features_test)
+
+# results
+caret::RMSE(pred, response_test)
+## [1] 21319.3
+```
+
+## h2o
+
+The h2o R package is a powerful and efficient java-based interface that allows for local and cluster-based deployment. It comes with a fairly comprehensive online resource that includes methodology and code documentation along with tutorials.
+
+## Features include:
+
+- Distributed and parallelized computation on either a single node or a multi-node cluster.
+- Automatic early stopping based on convergence of user-specified metrics to user-specified relative tolerance.
+- Stochastic GBM with column and row sampling (per split and per tree) for better generalization.
+- Support for exponential families (Poisson, Gamma, Tweedie) and loss functions in addition to binomial (Bernoulli), Gaussian and multinomial distributions, such as  Quantile regression (including Laplace).
+- Grid search for hyperparameter optimization and model selection.
+- Data-distributed, which means the entire dataset does not need to fit into memory on a single node, hence scales to any size training set.
+- Uses histogram approximations of continuous variables for speedup.
+- Uses dynamic binning - bin limits are reset at each tree level based on the split bins’ min and max values discovered during the last pass.
+- Uses squared error to determine optimal splits.
+<!--
+- Distributed implementation details outlined in a blog post by Cliff Click.
+-->
+- Unlimited factor levels.
+- Multiclass trees (one for each class) built in parallel with each other.
+- Apache 2.0 Licensed.
+- Model export in plain Java code for deployment in production environments.
+
+## 
 
 ### Links - Boosting
 

@@ -9,6 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## The Ames housing data
+
+```{r}
+set.seed(123)
+ames_split <- rsample::initial_split(AmesHousing::make_ames(), 
+                                     prop = .7)
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
+```
+
+
 
 ## Full grid search with H2O
 
