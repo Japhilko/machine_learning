@@ -38,12 +38,14 @@ library(ranger)       # a faster implementation of randomForest
 # an aggregator package for performing many 
 # machine learning models
 library(caret)        
-library(h2o)          # an extremely fast java-based platform
 ```
 
 
 ```{r,eval=F,echo=F}
 install.packages("ranger")
+install.packages("rsample")
+install.packages("ggplot2")
+install.packages("AmesHousing")
 ```
 
 
@@ -51,11 +53,21 @@ install.packages("ranger")
 
 ```{r}
 set.seed(123)
-ames_split <- rsample::initial_split(AmesHousing::make_ames(), 
+ames_data <- AmesHousing::ames_raw
+```
+
+```{r,echo=F,eval=F}
+ames_data$Sale_Price <- ames_data$SalePrice
+ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
+```
+
+```{r}
+ames_split <- rsample::initial_split(ames_data, 
                                      prop = .7)
 ames_train <- rsample::training(ames_split)
 ames_test  <- rsample::testing(ames_split)
 ```
+
 
 ## Extending the bagging technique
 
