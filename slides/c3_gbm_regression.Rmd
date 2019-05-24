@@ -518,6 +518,130 @@ the change in the predicted response variable is plotted as we vary each predict
 - The results show that most observations follow a common trend as `Gr_Liv_Area` increases; 
 - the centered ICE plot highlights a few observations that deviate from the common trend.
 
+## 
+
+```{r}
+ice1 <- gbm.fit.final %>%
+  partial(
+    pred.var = "Gr_Liv_Area", 
+    n.trees = gbm.fit.final$n.trees, 
+    grid.resolution = 100,
+    ice = TRUE
+    ) %>%
+  autoplot(rug = TRUE, train = ames_train, alpha = .1) +
+  ggtitle("Non-centered") +
+  scale_y_continuous(labels = scales::dollar)
+
+ice2 <- gbm.fit.final %>%
+  partial(
+    pred.var = "Gr_Liv_Area", 
+    n.trees = gbm.fit.final$n.trees, 
+    grid.resolution = 100,
+    ice = TRUE
+    ) %>%
+  autoplot(rug = TRUE, train = ames_train, alpha = .1, center = TRUE) +
+  ggtitle("Centered") +
+  scale_y_continuous(labels = scales::dollar)
+
+gridExtra::grid.arrange(ice1, ice2, nrow = 1)
+```
+
+## LIME
+
+LIME is a newer procedure for understanding why a prediction resulted in a given value for a single observation. You can read more about LIME here. To use the lime package on a gbm model we need to define model type and prediction methods.
+
+```{r}
+model_type.gbm <- function(x, ...) {
+  return("regression")
+}
+
+predict_model.gbm <- function(x, newdata, ...) {
+  pred <- predict(x, newdata, n.trees = x$n.trees)
+  return(as.data.frame(pred))
+}
+```
+
+##
+
+We can now apply to our two observations. The results show the predicted value (Case 1: 118K Dollar, Case 2: 161K Dollar), local model fit (both are relatively poor), and the most influential variables driving the predicted value for each observation.
+
+```{r}
+# get a few observations to perform local interpretation on
+local_obs <- ames_test[1:2, ]
+
+# apply LIME
+explainer <- lime(ames_train, gbm.fit.final)
+explanation <- explain(local_obs, explainer, n_features = 5)
+plot_features(explanation)
+```
+
+## Predicting
+
+Once you have decided on a final model you will likely want to use the model to predict on new observations. Like most models, we simply use the predict function; however, we also need to supply the number of trees to use (see ?predict.gbm for details). We see that our RMSE for our test set is very close to the RMSE we obtained on our best gbm model.
+
+```{r}
+# predict values for test data
+pred <- predict(gbm.fit.final, n.trees = gbm.fit.final$n.trees, ames_test)
+
+# results
+caret::RMSE(pred, ames_test$Sale_Price)
+```
+
+## `xgboost`
+
+The xgboost R package provides an R API to “Extreme Gradient Boosting”, which is an efficient implementation of gradient boosting framework (apprx 10x faster than gbm). The xgboost/demo repository provides a wealth of information. You can also find a fairly comprehensive parameter tuning guide here. The xgboost package has been quite popular and successful on Kaggle for data mining competitions.
+
+Features include:
+
+- Provides built-in k-fold cross-validation
+ -Stochastic GBM with column and row sampling (per split and per tree) for better generalization.
+- Includes efficient linear model solver and tree learning algorithms.
+- Parallel computation on a single machine.
+- Supports various objective functions, including regression, classification and ranking.
+- The package is made to be extensible, so that users are also allowed to define their own objectives easily.
+- Apache 2.0 License.
+
+## Basic implementation
+
+XGBoost only works with matrices that contain all numeric variables; consequently, we need to one hot encode our data. There are different ways to do this in R (i.e. Matrix::sparse.model.matrix, caret::dummyVars) but here we will use the vtreat package. vtreat is a robust package for data prep and helps to eliminate problems caused by missing values, novel categorical levels that appear in future data sets that were not in the training data, etc. However, vtreat is not very intuitive. I will not explain the functionalities but you can find more information here, here, and here.
+
+<!--
+https://arxiv.org/abs/1611.09477
+https://www.r-bloggers.com/a-demonstration-of-vtreat-data-preparation/
+https://github.com/WinVector/vtreat
+-->
+
+## 
+
+The following applies vtreat to one-hot encode the training and testing data sets.
+
+
+```{r}
+# variable names
+features <- setdiff(names(ames_train), "Sale_Price")
+
+# Create the treatment plan from the training data
+treatplan <- vtreat::designTreatmentsZ(ames_train, features, verbose = FALSE)
+
+# Get the "clean" variable names from the scoreFrame
+new_vars <- treatplan %>%
+  magrittr::use_series(scoreFrame) %>%        
+  dplyr::filter(code %in% c("clean", "lev")) %>% 
+  magrittr::use_series(varName)     
+
+# Prepare the training data
+features_train <- vtreat::prepare(treatplan, ames_train, varRestriction = new_vars) %>% as.matrix()
+response_train <- ames_train$Sale_Price
+
+# Prepare the test data
+features_test <- vtreat::prepare(treatplan, ames_test, varRestriction = new_vars) %>% as.matrix()
+response_test <- ames_test$Sale_Price
+
+# dimensions of one-hot encoded data
+dim(features_train)
+dim(features_test)
+```
+
 
 ### Links - Boosting
 

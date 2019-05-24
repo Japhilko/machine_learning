@@ -559,6 +559,8 @@ Further possible topics of this section:
 
 - mutate function in dplyr package
 - the rescale package
+
+- loops
 -->
 
 <!--
