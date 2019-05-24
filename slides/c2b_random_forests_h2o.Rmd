@@ -23,6 +23,11 @@ ames_test  <- rsample::testing(ames_split)
 
 ## Full grid search with H2O
 
+```{r}
+library(h2o)          # an extremely fast java-based platform
+```
+
+
 - If you ran the grid search code above you probably noticed the code took a while to run. 
 - `ranger` is computationally efficient, but as the grid search space expands, the manual for loop process becomes less efficient. 
 - `h2o` is a powerful and efficient java-based interface that provides parallel distributed algorithms. 

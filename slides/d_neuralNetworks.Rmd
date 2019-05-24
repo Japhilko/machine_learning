@@ -41,7 +41,7 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F)
 
 ### Biologic Neuron–Source: Bruce Blaus [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Blausen_0657_MultipolarNeuron.png)
 
-![](figure/Blausen_0657_MultipolarNeuron.png)
+![](figure/Blausen_0657_MultipolarNeuron.png){height=50%}
 
 ## ANN neurons
 
@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F)
 ### Artifical Neuron–Source: [Chrislb Wikipedia](https://commons.wikimedia.org/wiki/File:ArtificialNeuronModel_english.png)
 
 
-![](figure/ArtificialNeuronModel_english.png)
+![](figure/ArtificialNeuronModel_english.png){height=50%}
 
 ## The inputs to the artificial neuron
 
@@ -132,9 +132,12 @@ $$
 
 ## How ANNs Learn
 
-We have described the structure of ANNs, however, we have not touched on how these networks learn. 
-- For the purposes of this discussion we assume that we have a data set of labeled observations. 
-- Data sets in which we have some features $(X)$ describing an output ($y$) fall under machine learning techniques called Supervised Learning. 
+- We have described the structure of ANNs, we have not touched on how these networks learn. 
+- Assume that we have a data set of labeled observations. 
+- We have some features $(X)$ describing an output ($y$) 
+<!--
+fall under machine learning techniques called Supervised Learning. 
+-->
 - To begin training our notional single-layer one-neuron neural network we initially randomly assign weights. 
 - We then run the neural network with the random weights and record the outputs generated. 
 - This is called a forward pass. Output values, in our case called $y$, are a function of the input values ($X$), the random initial weights ($w$) and our choice of the threshold function ($T$).
@@ -262,8 +265,10 @@ Yacht_NN1<-neuralnet(Residuary_Resist~LongPos_COB + Prismatic_Coeff +
 
 ## The `Yacht_NN1`...
 
-- ... is a list containing all parameters of the regression ANN as well as the results of the neural network on the test data set. 
+- ... is a list containing all parameters of regression ANN and the results of the neural network on the test data set. 
+<!--
 - To view a diagram of the `Yacht_NN1` use the plot() function.
+-->
 
 ```{r}
 plot(Yacht_NN1, rep = 'best')
@@ -400,7 +405,9 @@ Regression_NN_Errors %>%
 ## The best regression ANN
 
 - We see that the best regression ANN we found was `Yacht_NN2` with a training and test SSE of 0.0188 and 0.0057. 
-- We make this determination by the value of the training and test SSEs only. Yacht_NN2’s structure is presented here:
+- We make this determination by the value of the training and test SSEs only. 
+
+## The structure of `Yacht_NN2` 
 
 ```{r}
 plot(Yacht_NN2, rep = "best")
