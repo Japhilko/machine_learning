@@ -49,9 +49,9 @@ install.packages("ranger")
 
 ```{r}
 set.seed(123)
-ames_split <- initial_split(AmesHousing::make_ames(), prop = .7)
-ames_train <- training(ames_split)
-ames_test  <- testing(ames_split)
+ames_split <- rsample::initial_split(AmesHousing::make_ames(), prop = .7)
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
 ```
 
 ## Extending the bagging technique
@@ -166,12 +166,23 @@ The basic algorithm for a regression random forest can be generalized:
 - The default random forest performs 500 trees and $\dfrac{\text{features}}{3}=26$ randomly selected predictor variables at each split. 
 - Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
 
-```{r}
+
+
+```{r,eval=F}
 set.seed(123)
 # default RF model
 m1 <- randomForest(formula = Sale_Price ~ .,data=ames_train)
 m1
 ```
+
+```{r,eval=F,echo=F}
+save(m1,file="../data/ml_randomforest_m1.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_randomforest_m1.RData")
+```
+
 
 ## Plotting the model
 
@@ -464,7 +475,11 @@ hist(OOB_RMSE, breaks = 20)
 
 ## 
 
-- You may have noticed we set importance = 'impurity' in the above modeling, which allows us to assess variable importance. Variable importance is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. The remaining error left in predictive accuracy after a node split is known as node impurity and a variable that reduces this impurity is considered more imporant than those variables that do not. Consequently, we accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important, or impactful. We see that Overall_Qual has the greatest impact in reducing MSE across our trees, followed by Gr_Liv_Area, Garage_Cars, etc.
+- You may have noticed we set `importance = 'impurity'` in the above modeling, which allows us to assess variable importance. 
+- Variable importance is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
+- The remaining error left in predictive accuracy after a node split is known as node impurity and a variable that reduces this impurity is considered more imporant than those variables that do not. 
+- We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important, or impactful. 
+- We see that `Overall_Qual` has the greatest impact in reducing MSE across our trees, followed by `Gr_Liv_Area`, `Garage_Cars`, etc.
 
 ##
 
@@ -481,7 +496,10 @@ optimal_ranger$variable.importance %>%
 
 ## Full grid search with H2O
 
-If you ran the grid search code above you probably noticed the code took a while to run. Although ranger is computationally efficient, as the grid search space expands, the manual for loop process becomes less efficient. h2o is a powerful and efficient java-based interface that provides parallel distributed algorithms. Moreover, h2o allows for different optimal search paths in our grid search. This allows us to be more efficient in tuning our models. Here, I demonstrate how to tune a random forest model with h2o. Lets go ahead and start up h2o:
+- If you ran the grid search code above you probably noticed the code took a while to run. 
+- Although `ranger` is computationally efficient, as the grid search space expands, the manual for loop process becomes less efficient. 
+- `h2o` is a powerful and efficient java-based interface that provides parallel distributed algorithms. 
+- `h2o` allows for different optimal search paths in our grid search. This allows us to be more efficient in tuning our models. Here, I demonstrate how to tune a random forest model with h2o. Lets go ahead and start up h2o:
 
 ```{r}
 # start up h2o (I turn off progress bars when creating reports/tutorials)
@@ -491,7 +509,9 @@ h2o.init(max_mem_size = "5g")
 
 ##
 
-First, we can try a comprehensive (full cartesian) grid search, which means we will examine every combination of hyperparameter settings that we specify in hyper_grid.h2o. Here, we search across 96 models but since we perform a full cartesian search this process is not any faster than that which we did above. However, note that the best performing model has an OOB RMSE of 24504 ($\sqrt{6.0046\hat{E}8}$), which is lower than what we achieved previously. This is because some of the default settings regarding minimum node size, tree depth, etc. are more “generous” than ranger and randomForest (i.e. h2o has a default minimum node size of one whereas ranger and randomForest default settings are 5).
+- First, we can try a comprehensive (full cartesian) grid search, which means we will examine every combination of hyperparameter settings that we specify in hyper_grid.h2o. - Here, we search across 96 models but since we perform a full cartesian search this process is not any faster than that which we did above. 
+- However, note that the best performing model has an OOB RMSE of 24504 ($\sqrt{6.0046\hat{E}8}$), which is lower than what we achieved previously. 
+- This is because some of the default settings regarding minimum node size, tree depth, etc. are more “generous” than ranger and randomForest (i.e. h2o has a default minimum node size of one whereas ranger and randomForest default settings are 5).
 
 
 ##
@@ -533,9 +553,14 @@ print(grid_perf)
 
 ##
 
-Because of the combinatorial explosion, each additional hyperparameter that gets added to our grid search has a huge effect on the time to complete. Consequently, h2o provides an additional grid search path called “RandomDiscrete”, which will jump from one random combination to another and stop once a certain level of improvement has been made, certain amount of time has been exceeded, or a certain amount of models have been ran (or a combination of these have been met). Although using a random discrete search path will likely not find the optimal model, it typically does a good job of finding a very good model.
+- Because of the combinatorial explosion, each additional hyperparameter that gets added to our grid search has a huge effect on the time to complete. 
+- `h2o` provides an additional grid search path called “RandomDiscrete”, which will jump from one random combination to another and stop once a certain level of improvement has been made, certain amount of time has been exceeded, or a certain amount of models have been ran (or a combination of these have been met). 
+- Although using a random discrete search path will likely not find the optimal model, it typically does a good job of finding a very good model.
 
-For example, the following code searches a large grid search of 2,025 hyperparameter combinations. We create a random grid search that will stop if none of the last 10 models have managed to have a 0.5% improvement in MSE compared to the best model before that. If we continue to find improvements then I cut the grid search off after 600 seconds (30 minutes). Our grid search assessed 190 models and the best model (max_depth = 30, min_rows = 1, mtries = 25, nbins = 30, ntrees = 200, sample_rate = .8) achived an RMSE of 24686 ($\sqrt{6.094\hat{E}8}
+- For example, the following code searches a large grid search of 2,025 hyperparameter combinations. 
+- We create a random grid search that will stop if none of the last 10 models have managed to have a 0.5% improvement in MSE compared to the best model before that. 
+- If we continue to find improvements then I cut the grid search off after 600 seconds (30 minutes). 
+- Our grid search assessed 190 models and the best model (max_depth = 30, min_rows = 1, mtries = 25, nbins = 30, ntrees = 200, sample_rate = .8) achived an RMSE of 24686 ($\sqrt{6.094\hat{E}8}
 ).
 
 ##
@@ -582,7 +607,8 @@ print(grid_perf2)
 
 ##
 
-Once we’ve identifed the best model we can get that model and apply it to our hold-out test set to compute our final test error. We see that we’ve been able to reduce our RMSE to near 23,000 dollar, which is a 10K dollar reduction compared to elastic nets and bagging.
+- Once we’ve identifed the best model we can get that model and apply it to our hold-out test set to compute our final test error. 
+- We see that we’ve been able to reduce our RMSE to near 23,000 dollar, which is a 10K dollar reduction compared to elastic nets and bagging.
 
 ##
 
@@ -601,20 +627,17 @@ h2o.mse(best_model_perf) %>% sqrt()
 
 ## Predicting
 
-Once we’ve identified our preferred model we can use the traditional predict function to make predictions on a new data set. We can use this for all our model types (randomForest, ranger, and h2o); although the outputs differ slightly. Also, not that the new data for the h2o model needs to be an h2o object.
+- Once we’ve identified our preferred model we can use the traditional predict function to make predictions on a new data set. 
+- We can use this for all our model types (`randomForest`, `ranger`, and `h2o`); although the outputs differ slightly. 
+- Also, not that the new data for the `h2o` model needs to be an `h2o` object.
 
 ```{r}
 # randomForest
 pred_randomForest <- predict(ames_randomForest, ames_test)
 head(pred_randomForest)
-##        1        2        3        4        5        6 
-## 128266.7 153888.0 264044.2 379186.5 212915.1 210611.4
-
 # ranger
 pred_ranger <- predict(ames_ranger, ames_test)
 head(pred_ranger$predictions)
-## [1] 128440.6 154160.1 266428.5 389959.6 225927.0 214493.1
-
 # h2o
 pred_h2o <- predict(best_model, ames_test.h2o)
 head(pred_h2o)
