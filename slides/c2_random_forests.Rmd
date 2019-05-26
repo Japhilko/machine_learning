@@ -35,13 +35,17 @@ library(knitr)
 library(rsample)      # data splitting 
 library(randomForest) # basic implementation
 library(ranger)       # a faster implementation of randomForest
-library(caret)        # an aggregator package for performing many machine learning models
-library(h2o)          # an extremely fast java-based platform
+# an aggregator package for performing many 
+# machine learning models
+library(caret)        
 ```
 
 
 ```{r,eval=F,echo=F}
 install.packages("ranger")
+install.packages("rsample")
+install.packages("ggplot2")
+install.packages("AmesHousing")
 ```
 
 
@@ -49,10 +53,21 @@ install.packages("ranger")
 
 ```{r}
 set.seed(123)
-ames_split <- rsample::initial_split(AmesHousing::make_ames(), prop = .7)
+ames_data <- AmesHousing::ames_raw
+```
+
+```{r,echo=F,eval=F}
+ames_data$Sale_Price <- ames_data$SalePrice
+ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
+```
+
+```{r}
+ames_split <- rsample::initial_split(ames_data, 
+                                     prop = .7)
 ames_train <- rsample::training(ames_split)
 ames_test  <- rsample::testing(ames_split)
 ```
+
 
 ## Extending the bagging technique
 
@@ -80,7 +95,7 @@ that reduces the variance of a single tree’s prediction.
 - To reduce variance further, we need to minimize the amount of correlation between the trees. 
 - This can be achieved by injecting more randomness into the tree-growing process. 
 
-Random forests achieve this in two ways:
+## Random forests achieve this in two ways:
 
 1) Bootstrap: 
 
@@ -88,11 +103,11 @@ Random forests achieve this in two ways:
 
 2) Split-variable randomization: 
 
-- Each time a split is to be performed, the search for the split variable is limited to a random subset of $m$ of the $p$ variables.
+- For every split, the search for the split variable is limited to a random subset of $m$ of the $p$ variables.
 <!--
 Für was steht m und p hier?
 -->
-- For regression trees, typical default values are $m=\dfrac{p}{3}$ but this should be considered a tuning parameter. 
+- For regression trees, typical default values are $m=p/3$ (tuning parameter). 
 - When $m=p$, the randomization is limited (only step 1) and is the same as bagging.
 
 
@@ -119,6 +134,7 @@ The algorithm randomly selects a bootstrap sample to train and predictors to use
 <!--
 , tree correlation will be lessened beyond bagged trees.
 -->
+
 ## OOB error vs. test set error
 
 - Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an out-of-bag (OOB) sample that provides an efficient and reasonable approximation of the test error. 
@@ -173,8 +189,7 @@ The algorithm randomly selects a bootstrap sample to train and predictors to use
 ```{r,eval=F}
 set.seed(123)
 # default RF model
-m1 <- randomForest(formula = Sale_Price ~ .,data=ames_train)
-m1
+(m1 <- randomForest(formula = Sale_Price ~ .,data=ames_train))
 ```
 
 ```{r,eval=F,echo=F}
@@ -191,8 +206,16 @@ load("../data/ml_randomforest_m1.RData")
 - Plotting the model will illustrate the error rate as we average across more trees and shows that our error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 or so trees.
 
 ```{r}
-plot(m1)
+plot(m1,main="Error rate")
 ```
+
+```{r,eval=F,echo=F}
+png("figure/ml_rf_errorrate_m1.png")
+  plot(m1,main="Error rate")
+dev.off()
+```
+
+![](figure/ml_rf_errorrate_m1.png){height=50%}
 
 ## The plotted error rate
 
@@ -268,7 +291,7 @@ tibble::tibble(
 
 - Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
 - Typically, the primary concern at the beginning is tuning the number of candidate variables to select from at each split. 
-- There are a few additional hyperparameters that we should be aware of. 
+- A few additional hyperparameters are important. 
 - The argument names may differ across packages, but these hyperparameters should be present:
 
 ## Tuning parameters (I)
@@ -308,6 +331,14 @@ m2 <- tuneRF(
   improve    = 0.01,
   trace      = FALSE      # to not show real-time progress 
 )
+```
+
+```{r,eval=F,echo=F}
+save(m2,file="../data/ml_rf_m2.RData")
+```
+
+```{r}
+load("../data/ml_rf_m2.RData")
 ```
 
 
@@ -373,7 +404,11 @@ nrow(hyper_grid) # total number of combinations
 - Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
 - We get a full range of `mtry` values showing up in our top 10 - not over influential.
 
+<<<<<<< HEAD
 ## Loop - hyperparameter combination (II)
+=======
+## Loop through hypergrid
+>>>>>>> 7504c05c2757475ac37f741f196a9851bc754fa3
 
 ```{r}
 for(i in 1:nrow(hyper_grid)) {
@@ -413,9 +448,17 @@ hyper_grid %>%
 ```{r}
 # one-hot encode our categorical variables
 one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
+<<<<<<< HEAD
 ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
 # make ranger compatible names
 names(ames_train_hot) <- make.names(names(ames_train_hot), allow_ = FALSE)
+=======
+ames_train_hot <- predict(one_hot, ames_train) %>% 
+  as.data.frame()
+# make ranger compatible names
+names(ames_train_hot)<-make.names(names(ames_train_hot), 
+                                  allow_ = FALSE)
+>>>>>>> 7504c05c2757475ac37f741f196a9851bc754fa3
 # hyperparameter grid search 
 # --> same as above but with increased mtry values
 hyper_grid_2 <- expand.grid(
@@ -445,7 +488,7 @@ with a most likely just shy of 26,200.
 -->
 
 
-## 
+## Random forests with `ranger`
 
 ```{r,eva=F}
 OOB_RMSE <- vector(mode = "numeric", length = 100)
@@ -466,163 +509,53 @@ for(i in seq_along(OOB_RMSE)) {
 }
 ```
 
-##
-
-```{r}
-hist(OOB_RMSE, breaks = 20)
+```{r,eval=F,echo=F}
+save(OOB_RMSE,file="../data/ml_rf_OOB_RMSE.RData")
 ```
 
-## 
+```{r,echo=F}
+load("../data/ml_rf_OOB_RMSE.RData")
+```
 
-- You may have noticed we set `importance = 'impurity'` in the above modeling, which allows us to assess variable importance. 
-- Variable importance is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
+
+## A histogram of OOB RMSE
+
+```{r,eval=F}
+hist(OOB_RMSE, breaks = 20,col="royalblue")
+```
+
+```{r,eval=F,echo=F}
+png("figure/ml_rf_hist_OOB_RMSE.png")
+  hist(OOB_RMSE, breaks = 20,col="royalblue")
+dev.off()
+```
+
+
+![](figure/ml_rf_hist_OOB_RMSE.png)
+
+## Variable importance
+
+- We set `importance = 'impurity'`, which allows us to assess variable importance. 
+- [**Variable importance**](https://topepo.github.io/caret/variable-importance.html) is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
 - The remaining error left in predictive accuracy after a node split is known as node impurity and a variable that reduces this impurity is considered more imporant than those variables that do not. 
 - We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important, or impactful. 
 - We see that `Overall_Qual` has the greatest impact in reducing MSE across our trees, followed by `Gr_Liv_Area`, `Garage_Cars`, etc.
 
-##
+## Plot the variable importance
 
 ```{r,eval=F}
-optimal_ranger$variable.importance %>% 
-  tidy() %>%
-  dplyr::arrange(desc(x)) %>%
-  dplyr::top_n(25) %>%
-  ggplot(aes(reorder(names, x), x)) +
-  geom_col() +
-  coord_flip() +
-  ggtitle("Top 25 important variables")
+varimp_ranger <- optimal_ranger$variable.importance 
+lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue")
 ```
 
-## Full grid search with H2O
-
-- If you ran the grid search code above you probably noticed the code took a while to run. 
-- Although `ranger` is computationally efficient, as the grid search space expands, the manual for loop process becomes less efficient. 
-- `h2o` is a powerful and efficient java-based interface that provides parallel distributed algorithms. 
-- `h2o` allows for different optimal search paths in our grid search. This allows us to be more efficient in tuning our models. Here, I demonstrate how to tune a random forest model with h2o. Lets go ahead and start up h2o:
-
-```{r}
-# start up h2o (I turn off progress bars when creating reports/tutorials)
-h2o.no_progress()
-h2o.init(max_mem_size = "5g")
+```{r,eval=F,echo=F}
+png("figure/ml_rf_varimp_ranger.png")
+  lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue",xlab="Variable importance")
+dev.off()
 ```
 
-##
+![](figure/ml_rf_varimp_ranger.png)
 
-- First, we can try a comprehensive (full cartesian) grid search, which means we will examine every combination of hyperparameter settings that we specify in hyper_grid.h2o. - Here, we search across 96 models but since we perform a full cartesian search this process is not any faster than that which we did above. 
-- However, note that the best performing model has an OOB RMSE of 24504, which is lower than what we achieved previously. 
-- This is because some of the default settings regarding minimum node size, tree depth, etc. are more “generous” than ranger and randomForest (i.e. h2o has a default minimum node size of one whereas ranger and randomForest default settings are 5).
-
-
-##
-
-```{r}
-# create feature names
-y <- "Sale_Price"
-x <- setdiff(names(ames_train), y)
-
-# turn training set into h2o object
-train.h2o <- as.h2o(ames_train)
-
-# hyperparameter grid
-hyper_grid.h2o <- list(
-  ntrees      = seq(200, 500, by = 100),
-  mtries      = seq(20, 30, by = 2),
-  sample_rate = c(.55, .632, .70, .80)
-)
-
-# build grid search 
-grid <- h2o.grid(
-  algorithm = "randomForest",
-  grid_id = "rf_grid",
-  x = x, 
-  y = y, 
-  training_frame = train.h2o,
-  hyper_params = hyper_grid.h2o,
-  search_criteria = list(strategy = "Cartesian")
-  )
-
-# collect the results and sort by our model performance metric of choice
-grid_perf <- h2o.getGrid(
-  grid_id = "rf_grid", 
-  sort_by = "mse", 
-  decreasing = FALSE
-  )
-print(grid_perf)
-```
-
-##
-
-- Because of the combinatorial explosion, each additional hyperparameter that gets added to our grid search has a huge effect on the time to complete. 
-- `h2o` provides an additional grid search path called “RandomDiscrete”, which will jump from one random combination to another and stop once a certain level of improvement has been made, certain amount of time has been exceeded, or a certain amount of models have been ran (or a combination of these have been met). 
-- Although using a random discrete search path will likely not find the optimal model, it typically does a good job of finding a very good model.
-
-- For example, the following code searches a large grid search of 2,025 hyperparameter combinations. 
-- We create a random grid search that will stop if none of the last 10 models have managed to have a 0.5% improvement in MSE compared to the best model before that. 
-- If we continue to find improvements then I cut the grid search off after 600 seconds (30 minutes). 
-- Our grid search assessed 190 models and the best model (max_depth = 30, min_rows = 1, mtries = 25, nbins = 30, ntrees = 200, sample_rate = .8) achived an RMSE of 24686 
-).
-
-##
-
-```{r}
-# hyperparameter grid
-hyper_grid.h2o <- list(
-  ntrees      = seq(200, 500, by = 150),
-  mtries      = seq(15, 35, by = 10),
-  max_depth   = seq(20, 40, by = 5),
-  min_rows    = seq(1, 5, by = 2),
-  nbins       = seq(10, 30, by = 5),
-  sample_rate = c(.55, .632, .75)
-)
-
-# random grid search criteria
-search_criteria <- list(
-  strategy = "RandomDiscrete",
-  stopping_metric = "mse",
-  stopping_tolerance = 0.005,
-  stopping_rounds = 10,
-  max_runtime_secs = 30*60
-  )
-
-# build grid search 
-random_grid <- h2o.grid(
-  algorithm = "randomForest",
-  grid_id = "rf_grid2",
-  x = x, 
-  y = y, 
-  training_frame = train.h2o,
-  hyper_params = hyper_grid.h2o,
-  search_criteria = search_criteria
-  )
-
-# collect the results and sort by our model performance metric of choice
-grid_perf2 <- h2o.getGrid(
-  grid_id = "rf_grid2", 
-  sort_by = "mse", 
-  decreasing = FALSE
-  )
-print(grid_perf2)
-```
-
-##
-
-- Once we’ve identifed the best model we can get that model and apply it to our hold-out test set to compute our final test error. 
-- We see that we’ve been able to reduce our RMSE to near 23,000 dollar, which is a 10K dollar reduction compared to elastic nets and bagging.
-
-##
-
-```{r}
-# Grab the model_id for the top model, chosen by validation error
-best_model_id <- grid_perf2@model_ids[[1]]
-best_model <- h2o.getModel(best_model_id)
-
-# Now let’s evaluate the model performance on a test set
-ames_test.h2o <- as.h2o(ames_test)
-best_model_perf <- h2o.performance(model = best_model, newdata = ames_test.h2o)
-
-# RMSE of best model
-h2o.mse(best_model_perf) %>% sqrt()
-```
 
 ## Predicting
 

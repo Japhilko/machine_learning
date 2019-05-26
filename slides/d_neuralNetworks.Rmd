@@ -41,7 +41,7 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F)
 
 ### Biologic Neuron–Source: Bruce Blaus [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Blausen_0657_MultipolarNeuron.png)
 
-![](figure/Blausen_0657_MultipolarNeuron.png)
+![](figure/Blausen_0657_MultipolarNeuron.png){height=50%}
 
 ## ANN neurons
 
@@ -68,7 +68,7 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F)
 ### Artifical Neuron–Source: [Chrislb Wikipedia](https://commons.wikimedia.org/wiki/File:ArtificialNeuronModel_english.png)
 
 
-![](figure/ArtificialNeuronModel_english.png)
+![](figure/ArtificialNeuronModel_english.png){height=50%}
 
 ## The inputs to the artificial neuron
 
@@ -132,9 +132,12 @@ $$
 
 ## How ANNs Learn
 
-We have described the structure of ANNs, however, we have not touched on how these networks learn. 
-- For the purposes of this discussion we assume that we have a data set of labeled observations. 
-- Data sets in which we have some features $(X)$ describing an output ($y$) fall under machine learning techniques called Supervised Learning. 
+- We have described the structure of ANNs, we have not touched on how these networks learn. 
+- Assume that we have a data set of labeled observations. 
+- We have some features $(X)$ describing an output ($y$) 
+<!--
+fall under machine learning techniques called Supervised Learning. 
+-->
 - To begin training our notional single-layer one-neuron neural network we initially randomly assign weights. 
 - We then run the neural network with the random weights and record the outputs generated. 
 - This is called a forward pass. Output values, in our case called $y$, are a function of the input values ($X$), the random initial weights ($w$) and our choice of the threshold function ($T$).
@@ -170,10 +173,19 @@ an dieser Stelle abgebrochen
 library(tidyverse)
 library(neuralnet)
 library(GGally)
+library(magrittr)
+library(readr)
+library(dplyr)
 ```
 
 ```{r,eval=F,echo=F}
 install.packages("GGally")
+install.packages("tidyverse")
+install.packages("neuralnet")
+install.packages("GGally")
+install.packages("readr")
+install.packages("dplyr")
+install.packages("rvest")
 ```
 
 
@@ -202,11 +214,17 @@ Yacht_Data <- read_table(file = url,
 ## Take a look at the data set.
 
 
-```{r}
+```{r,eval=F}
 ggpairs(Yacht_Data, title = "Scatterplot Matrix of the Features of the Yacht Data Set")
-
 ```
 
+```{r,echo=F,eval=F}
+png("figure/ggpairs_yacht.png")
+ggpairs(Yacht_Data, title = "Scatterplot Matrix of the Features of the Yacht Data Set")
+dev.off()
+```
+
+![](figure/ggpairs_yacht.png)
 
 ## An excellent summary of the variation of each feature
 <!--
@@ -262,8 +280,10 @@ Yacht_NN1<-neuralnet(Residuary_Resist~LongPos_COB + Prismatic_Coeff +
 
 ## The `Yacht_NN1`...
 
-- ... is a list containing all parameters of the regression ANN as well as the results of the neural network on the test data set. 
+- ... is a list containing all parameters of regression ANN and the results of the neural network on the test data set. 
+<!--
 - To view a diagram of the `Yacht_NN1` use the plot() function.
+-->
 
 ```{r}
 plot(Yacht_NN1, rep = 'best')
@@ -294,8 +314,7 @@ paste("SSE: ", round(NN1_Train_SSE, 4))
 ```{r}
 Test_NN1_Output <- compute(Yacht_NN1, 
                            Yacht_Data_Test[, 1:6])$net.result
-NN1_Test_SSE<-sum((Test_NN1_Output-Yacht_Data_Test[,7])^2)/2
-NN1_Test_SSE
+(NN1_Test_SSE<-sum((Test_NN1_Output-Yacht_Data_Test[,7])^2)/2)
 ```
 
 
@@ -325,7 +344,6 @@ Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Di
 ```{r}
 ## Training Error
 NN2_Train_SSE <- sum((Yacht_NN2$net.result - Yacht_Data_Train[, 7])^2)/2
-
 ## Test Error
 Test_NN2_Output <- compute(Yacht_NN2, Yacht_Data_Test[, 1:6])$net.result
 NN2_Test_SSE <- sum((Test_NN2_Output - Yacht_Data_Test[, 7])^2)/2
@@ -388,7 +406,11 @@ Regression_NN_Errors <- tibble(Network = rep(c("NN1", "NN2", "NN3", "NN4"), each
                                        NN2_Train_SSE, NN2_Test_SSE, 
                                        NN3_Train_SSE, NN3_Test_SSE, 
                                        NN4_Train_SSE, NN4_Test_SSE))
+```
 
+##
+
+```{r}
 Regression_NN_Errors %>% 
   ggplot(aes(Network, SSE, fill = DataSet)) + 
   geom_col(position = "dodge") + 
@@ -396,11 +418,12 @@ Regression_NN_Errors %>%
 ```
 
 
-
 ## The best regression ANN
 
 - We see that the best regression ANN we found was `Yacht_NN2` with a training and test SSE of 0.0188 and 0.0057. 
-- We make this determination by the value of the training and test SSEs only. Yacht_NN2’s structure is presented here:
+- We make this determination by the value of the training and test SSEs only. 
+
+## The structure of `Yacht_NN2` 
 
 ```{r}
 plot(Yacht_NN2, rep = "best")
@@ -414,14 +437,20 @@ plot(Yacht_NN2, rep = "best")
 - This capability is built into the `neuralnet` package using the rep argument in the neuralnet() function. 
 - Using the Yacht_NN2 hyperparameters we construct 10 different ANNs, and select the best of the 10.
 
-```{r}
+```{r,eval=F}
 set.seed(12321)
-Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num, 
-                       data = Yacht_Data_Train, 
-                       hidden = c(4, 1), 
-                       act.fct = "logistic", 
-                       rep = 10)
+Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num,data = Yacht_Data_Train,hidden = c(4, 1), 
+                       act.fct = "logistic",rep = 10)
 ```
+
+```{r,eval=F,echo=F}
+save(Yacht_NN2,file="../data/lm_nn_Yacht_NN2.RData")
+```
+
+```{r,echo=F}
+load("../data/lm_nn_Yacht_NN2.RData")
+```
+
 
 ##
 
@@ -448,11 +477,11 @@ plot(Yacht_NN2, rep = "best")
 
 ### Others include:
 
-- nnet
+- `nnet`
 - autoencoder
-- caret
+- `caret`
 - RSNNS
-- h2o
+- `h2o`
 
 
 ## Exercise
@@ -460,8 +489,10 @@ plot(Yacht_NN2, rep = "best")
 - Why do we split the yacht data into a training and test data sets?
 - Re-load the Yacht Data from the UCI Machine learning repository yacht data without scaling. Run any regression ANN. What happens? Why do you think this happens?
 - After completing exercise question 1, re-scale the yacht data. Perform a simple linear regression fitting Residuary_Resist as a function of all other features. Now run a regression neural network (see 1st Regression ANN section). Plot the regression ANN and compare the weights on the features in the ANN to the p-values for the regressors.
-- Build your own regression ANN using the scaled yacht data modifying one hyperparameter. Use ?neuralnet to see the function options. Plot your ANN.
-
+- Build your own regression ANN using the scaled yacht data modifying one hyperparameter. Use ?neuralnet to see the function options. 
+<!--
+Plot your ANN.
+-->
 
 ## [Classification Artificial Neural Network](http://uc-r.github.io/ann_classification)
 
@@ -567,7 +598,7 @@ Hab_NN1 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes,
                      likelihood = TRUE)
 ```
 
-## diagram of the `Hab_NN1`
+## Diagram of the `Hab_NN1`
 
 The `Hab_NN1` is a list containing all parameters of the classification ANN as well as the results of the neural network on the test data set. 
 - To view a diagram of the `Hab_NN1` use the `plot()` function.
@@ -633,12 +664,17 @@ Class_NN_ICs <- tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"), each = 3),
                                    Hab_NN3$result.matrix[4,1], Hab_NN3$result.matrix[5,1], 
                                    100*Hab_NN3$result.matrix[1,1], Hab_NN4$result.matrix[4,1], 
                                    Hab_NN4$result.matrix[5,1], 100*Hab_NN4$result.matrix[1,1]))
+```
 
+##
+
+```{r}
 Class_NN_ICs %>%
   ggplot(aes(Network, Value, fill = Metric)) +
   geom_col(position = 'dodge')  +
   ggtitle("AIC, BIC, and Cross-Entropy Error of the Classification ANNs", "Note: ce Error displayed is 100 times its true value")
 ```
+
 
 ## Occam’s razor
 
@@ -646,13 +682,14 @@ Class_NN_ICs %>%
 - The BIC appears to remain relatively constant across the designs. 
 - Here we have a case where Occam’s razor clearly applies, the ‘best’ classification ANN is the simplest. 
 
+<!--
 ## Wrapping Up
-
+-->
 <!--
 - We have briefly covered classification ANNs in this tutorial. 
 - In future tutorials we will cover more advanced applications of ANNs. 
 -->
-
+<!--
 - Keep in mind that the `neuralnet` package used in this tutorial is only one of many tools available for ANN implementation in R. Others include:
 
 - `nnet`
@@ -660,6 +697,8 @@ Class_NN_ICs %>%
 - `caret`
 - `RSNNS`
 - `h2o`
+-->
+
 
 ## Exercise
 
