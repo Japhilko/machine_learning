@@ -448,17 +448,11 @@ hyper_grid %>%
 ```{r}
 # one-hot encode our categorical variables
 one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
-<<<<<<< HEAD
 ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
 # make ranger compatible names
 names(ames_train_hot) <- make.names(names(ames_train_hot), allow_ = FALSE)
-=======
 ames_train_hot <- predict(one_hot, ames_train) %>% 
   as.data.frame()
-# make ranger compatible names
-names(ames_train_hot)<-make.names(names(ames_train_hot), 
-                                  allow_ = FALSE)
->>>>>>> 7504c05c2757475ac37f741f196a9851bc754fa3
 # hyperparameter grid search 
 # --> same as above but with increased mtry values
 hyper_grid_2 <- expand.grid(

@@ -66,20 +66,19 @@ https://lgatto.github.io/IntroMachineLearningWithR/supervised-learning.html#rand
 
 Supervised learning includes tasks for "labeled" data (i.e. you have a target variable).
 
-<<<<<<< HEAD
 - dimensionality refers to the number of features (i.e. input variables) 
 
 - When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
 Dimensionality Reduciton
-=======
-- In practice, it's often used as an advanced form of predictive modeling.
+- It's often used as an advanced form of predictive modeling.
  -  Each observation must be labeled with a "correct answer."
- -   Only then can you build a predictive model because you must tell the algorithm what's "correct" while training it (hence, "supervising" it).
+ -   This is necessary to build a predictive model 
+ - You must tell the algorithm what's "correct" while training it (hence, "supervising" it).
+ 
+ <!--
  -   Regression is the task for modeling continuous target variables.
  -   Classification is the task for modeling categorical (a.k.a. "class") target variables.
-
->>>>>>> 88182c1f93446f7b0fa7a9c785df6515443ddecb
-
+-->
 
 ## [Supervised vs unsupervised learning](https://towardsdatascience.com/supervised-vs-unsupervised-learning-14f68e32ea8d)
 
@@ -91,7 +90,11 @@ Dimensionality Reduciton
 
 ### Unsupervised learning
 
-- Here the most common tasks are clustering, representation learning, and density estimation - we wish to learn the inherent structure of our data without using explicitly-provided labels. 
+<!--
+Most common tasks are clustering, representation learning, and density estimation -
+-->
+
+- We wish to learn the inherent structure of our data without using explicitly-provided labels. 
 
 ![](figure/unsupervisedLearning.png){ height=20% }
 
@@ -183,19 +186,6 @@ Ein Modell wird mit Beispieldaten aufgebaut, das die Zuordnung anschließend sel
 
 
 
-## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
-
-> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
-
-
-## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
-
-- Ensemble learning method - multitude of decision trees 
-- Random forests correct for decision trees' habit of overfitting to their training set.
-
-![](figure/expl_rf.png)
-
-
 ## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
 
 Ensembles are machine learning methods for combining predictions from multiple separate models. 
@@ -230,47 +220,23 @@ Bagging uses complex base models and tries to "smooth out" their predictions, wh
 
 
 
+## [Random Forest](https://www.datascience.com/resources/notebooks/random-forest-intro)
+
+> Random forest aims to reduce the previously mentioned correlation issue by choosing only a subsample of the feature space at each split. Essentially, it aims to make the trees de-correlated and prune the trees by setting a stopping criteria for node splits, which I will cover in more detail later.
 
 
-## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
+## [Random forest](https://en.wikipedia.org/wiki/Random_forest)
 
-Gradient boosting is a machine learning technique for regression and classification problems, which produces a prediction model in the form of an ensemble of weak prediction models, typically decision trees. It builds the model in a stage-wise fashion like other boosting methods do, and it generalizes them by allowing optimization of an arbitrary differentiable loss function.
+- Ensemble learning method - multitude of decision trees 
+- Random forests correct for decision trees' habit of overfitting to their training set.
 
-The idea of gradient boosting originated in the observation by Leo Breiman that boosting can be interpreted as an optimization algorithm on a suitable cost function.
+![](figure/expl_rf.png){height=70%}
 
 
-Breiman, L. (1997). "Arcing The Edge". Technical Report 486. Statistics Department, University of California, Berkeley.
+
 
 
 <!--
--->
-
-
-<!--
-## Explicit algorithms
-
-Explicit regression gradient boosting algorithms were subsequently developed by Jerome H. Friedman, simultaneously with the more general functional gradient boosting perspective of Llew Mason, Jonathan Baxter, Peter Bartlett and Marcus Frean.
-
-
-The latter two papers introduced the view of boosting algorithms as iterative functional gradient descent algorithms. That is, algorithms that optimize a cost function over function space by iteratively choosing a function (weak hypothesis) that points in the negative gradient direction. This functional gradient view of boosting has led to the development of boosting algorithms in many areas of machine learning and statistics beyond regression and classification.
--->
-
-## [**Advantages of gradient boosting**](http://uc-r.github.io/gbm_regression)
-
-- Often provides predictive accuracy that cannot be beat.
-- Lots of flexibility - can optimize on different loss functions and provides several hyperparameter tuning options that make the function fit very flexible.
-- No data pre-processing required - often works great with categorical and numerical values as is.
-- Handles missing data - imputation not required.
-
-## [**Disadvantages**](http://uc-r.github.io/gbm_regression) of gradient boosting
-
-
-- GBMs will continue improving to minimize all errors. This can overemphasize outliers and cause overfitting. Must use cross-validation to neutralize.
-- Computationally expensive - GBMs often require many trees (>1000) which can be time and memory exhaustive.
-- The high flexibility results in many parameters that interact and influence heavily the behavior of the approach (number of iterations, tree depth, regularization parameters, etc.). This requires a large grid search during tuning.
-- Less interpretable although this is easily addressed with various tools (variable importance, partial dependence plots, LIME, etc.).
-
-
 ## Two types of errors for tree methods
 
 ### Bias related errors
@@ -282,6 +248,7 @@ The latter two papers introduced the view of boosting algorithms as iterative fu
 
 - Bagging
 - Random forest
+-->
 
 <!--
 https://www.slideshare.net/JaroslawSzymczak1/gradient-boosting-in-practice-a-deep-dive-into-xgboost
@@ -309,7 +276,7 @@ What am I missing here? Is linear regression somehow inappropriate to use with G
 -->
 
 
-## Links and resources
+## Links and resources (I)
 
 - [Presentations on ‘Elements of Neural Networks & Deep Learning’ ](https://www.r-bloggers.com/my-presentations-on-elements-of-neural-networks-deep-learning-parts-45/)
 

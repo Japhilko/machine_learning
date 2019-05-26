@@ -144,7 +144,6 @@ m3c<-lm(mpg~cyl|wt,data=mtcars)
 
 m3c<-lm(mpg~cyl/wt,data=mtcars)
 
-
 summary(m3b)
 summary(m3c)
 ```
@@ -310,7 +309,7 @@ plot(p)
 
 ```{r}
 (mse5 <- mean((mtcars$mpg -  pre)^2)) # model 5
-(mse4 <- mean((mtcars$mpg -  predict(m4))^2)) # model 4
+(mse3 <- mean((mtcars$mpg -  predict(m3))^2)) 
 ```
 
 
@@ -641,31 +640,48 @@ library(tidyverse)
 library(caret)
 ```
 
+<!--
 ### Swiss Fertility and Socioeconomic Indicators
 
 ```{r}
 data("swiss")
 ```
+-->
 
 ## [Cross Validation in R](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
 
 
 ### Split data into training and testing dataset
 
-```{r}
+```{r,eval=F,echo=F}
 training.samples <- swiss$Fertility %>%
 createDataPartition(p = 0.8, list = FALSE)
 train.data  <- swiss[training.samples, ]
 test.data <- swiss[-training.samples, ]
 ```
 
+```{r}
+training.samples <- ames_data$Sale_Price %>%
+createDataPartition(p = 0.8, list = FALSE)
+train.data  <- ames_data[training.samples, ]
+test.data <- ames_data[-training.samples, ]
+```
+
+
 ### Build the model and make predictions
 
-```{r}
+```{r,eval=F,echo=F}
 model <- lm(Fertility ~., data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
 (predictions <- model %>% predict(test.data))
 ```
+
+```{r}
+model <- lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = train.data)
+# Make predictions and compute the R2, RMSE and MAE
+(predictions <- model %>% predict(test.data))
+```
+
 
 ## Model with cross validation
 
@@ -673,8 +689,19 @@ model <- lm(Fertility ~., data = train.data)
 
 ```{r}
 train.control <- caret::trainControl(method = "LOOCV")
+```
+
+```{r,eval=F,echo=F}
 # Train the model
 model <- train(Fertility ~., data = swiss, method = "lm",
+               trControl = train.control)
+model %>% predict(test.data)
+```
+
+```{r}
+# Train the model
+model <- train(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, 
+               data = train.data, method = "lm",
                trControl = train.control)
 model %>% predict(test.data)
 ```
@@ -798,4 +825,11 @@ http://r-statistics.co/Linear-Regression.html
 https://machinelearningmastery.com/linear-regression-in-r/
 https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
 https://cran.r-project.org/web/packages/Metrics/Metrics.pdf
+-->
+
+
+<!--
+ToDo Liste
+
+Den Effekt von cross validation zeigen
 -->

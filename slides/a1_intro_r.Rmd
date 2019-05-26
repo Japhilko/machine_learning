@@ -21,7 +21,7 @@ output:
 ---
 
 ```{r setupintror, include=FALSE}
-knitr::opts_chunk$set(echo = T,cache=T,message=F,warning=F)
+knitr::opts_chunk$set(echo = T,cache=F,message=F,warning=F,eval=T)
 library(knitr)
 ```
 
@@ -173,11 +173,15 @@ library(dplyr)
 
 ![](figure/dplyr_vignette.PNG)
 
+## The package `magrittr`
+
 ```{r}
 library(magrittr)
 ```
 
 ![](figure/magrittr_vignette.jpg)
+
+
 ## Import `.csv` data 
 
 ### The `read.csv` command
@@ -243,7 +247,8 @@ pp<-scan("../data/ex.data",skip=1,quiet=TRUE)
 ```
 
 ```{r}
-pp <- scan("../data/ex.data",comment.char="#", skip = 1,quiet = TRUE)
+pp <- scan("../data/ex.data",comment.char="#", skip = 1,
+           quiet = TRUE)
 ```
 
 
@@ -312,12 +317,14 @@ install.packages("datasets.load")
 
 ## Exercise
 
-Load the the built-in dataset `swiss` and answer the following questions:
-
+### Load the the built-in dataset `swiss` 
+<!--
+and answer the following questions:
+-->
 - How many observations and variables are available?
 - What is the scale level of the variables?
 
-Create an interactive data table
+### Create an interactive data table
 
 
 
@@ -561,6 +568,8 @@ Further possible topics of this section:
 - the rescale package
 
 - loops
+
+- paste und paste0
 -->
 
 <!--

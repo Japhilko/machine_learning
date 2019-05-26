@@ -203,12 +203,11 @@ install.packages("rvest")
 ## The download the data from UCI.
 
 ```{r}
-url <- 'http://archive.ics.uci.edu/ml/machine-learning-databases/'
-filen <- "00243/yacht_hydrodynamics.data"
+url <- 'http://archive.ics.uci.edu/ml/machine-learning-databases/00243/yacht_hydrodynamics.data'
 colnam <- c('LongPos_COB', 'Prismatic_Coeff','Len_Disp_Ratio',
             'Beam_Draut_Ratio','Length_Beam_Ratio','Froude_Num',
             'Residuary_Resist')
-Yacht_Data <- read_table(file = paste0(url,filen),
+Yacht_Data <- read_table(file = url,
                          col_names = colnam) %>%
   na.omit()
 ```
@@ -219,7 +218,7 @@ Yacht_Data <- read_table(file = paste0(url,filen),
 
 
 ```{r,eval=F}
-ggpairs(Yacht_Data,title="Scatterplot Matrix of the Features of the Yacht Data Set")
+ggpairs(Yacht_Data, title = "Scatterplot Matrix of the Features of the Yacht Data Set")
 ```
 
 ```{r,echo=F,eval=F}
@@ -275,9 +274,8 @@ Yacht_Data_Test <- anti_join(Yacht_Data, Yacht_Data_Train)
 
 ```{r}
 set.seed(12321)
-Yacht_NN1<-neuralnet(Residuary_Resist~LongPos_COB + 
-                  Prismatic_Coeff + Len_Disp_Ratio + 
-                    Beam_Draut_Ratio+
+Yacht_NN1<-neuralnet(Residuary_Resist~LongPos_COB + Prismatic_Coeff + 
+                         Len_Disp_Ratio + Beam_Draut_Ratio+
                        Length_Beam_Ratio +Froude_Num, 
                      data = Yacht_Data_Train)
 ```
@@ -338,9 +336,7 @@ Test_NN1_Output <- compute(Yacht_NN1,
 # 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, 
 # logistic activation function
 set.seed(12321)
-Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
-              Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + 
-                Length_Beam_Ratio + Froude_Num, 
+Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num, 
                        data = Yacht_Data_Train, 
                        hidden = c(4, 1), 
                        act.fct = "logistic")
@@ -350,19 +346,17 @@ Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB +
 
 ```{r}
 ## Training Error
-NN2_Train_SSE <- sum((Yacht_NN2$net.result - 
-                        Yacht_Data_Train[, 7])^2)/2
+NN2_Train_SSE <- sum((Yacht_NN2$net.result - Yacht_Data_Train[, 7])^2)/2
 ## Test Error
-Test_NN2_Output<-compute(Yacht_NN2, 
-            Yacht_Data_Test[, 1:6])$net.result
-NN2_Test_SSE <- sum((Test_NN2_Output - 
-                       Yacht_Data_Test[, 7])^2)/2
+Test_NN2_Output <- compute(Yacht_NN2, Yacht_Data_Test[, 1:6])$net.result
+NN2_Test_SSE <- sum((Test_NN2_Output - Yacht_Data_Test[, 7])^2)/2
 ```
 
 
 
 - We should try and improve the network by modifying its basic structure and hyperparameter modification. 
 - To begin we will add depth to the hidden layer of the network, then we will change the activation function from the logistic to the tangent hyperbolicus (tanh) to determine if these modifications can improve the test data set SSE. 
+- To use the activation function we must rescale the data.
 <!--
 - When using the tanh activation function, we first must rescale the data from $[0,1]$ to $[−1,1]$ using the `rescale` package. 
 -->
@@ -372,11 +366,8 @@ NN2_Test_SSE <- sum((Test_NN2_Output -
 - For the purposes of this exercise we will use the same random seed for reproducible results, generally this is not a best practice.
 -->
 
-## Rescale for tanh activation function
-
-- To use the activation function we must rescale the data.
-
 ```{r}
+# Rescale for tanh activation function
 scale11 <- function(x) {
     (2 * ((x - min(x))/(max(x) - min(x)))) - 1
 }
@@ -386,9 +377,7 @@ Yacht_Data_Test <- Yacht_Data_Test %>% mutate_all(scale11)
 # 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, tanh activation
 # function
 set.seed(12321)
-Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
-          Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + 
-            Length_Beam_Ratio + Froude_Num, 
+Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num, 
                        data = Yacht_Data_Train, 
                        hidden = c(4, 1), 
                        act.fct = "tanh")
@@ -543,39 +532,28 @@ library(GGally)
 - A value of 0 - the patient died within 5 years.
 
 ```{r}
-url1<-'http://archive.ics.uci.edu/ml/machine-learning-databases/'
-url2<-"/haberman/haberman.data"
-url <- paste0(url1,url2)
-Hab_Data<-read_csv(file=url,col_names=c('Age', 'Operation_Year', 
-                          'Number_Pos_Nodes','Survival')) 
-```
+url <- 'http://archive.ics.uci.edu/ml/machine-learning-databases//haberman/haberman.data'
 
-##
-
-```{r}
-Hab_Data <- Hab_Data%>%
+Hab_Data <- read_csv(file = url,
+                     col_names = c('Age', 'Operation_Year', 
+                                   'Number_Pos_Nodes','Survival')) %>%
   na.omit() %>%
   mutate(Survival = ifelse(Survival == 2, 0, 1),
          Survival = factor(Survival))
 ```
 
-
-
 ## Scatterplot Matrix
 
 ```{r,eval=F}
-ggpairs(Hab_Data,title="Scatterplot Matrix Haberman's Survival Features")
+ggpairs(Hab_Data, title = "Scatterplot Matrix of the Features of the Haberman's Survival Data Set")
 ```
 
 ![](figure/class01-1.png)
 
 
-## Interpreting the Scatterplot
+##
 
-- Many patients survived at least 5 years after the operation. 
-- Of the patients that survived (bottom-subplots of the Survival row in the Scatterplot Matrix), we see many of the patients have few numbers of positive axillary nodes detected. 
-- Examination of the Age feature shows a few of the most elderly patients died within 5 years, and of the youngest patients we see increased 5-year survivability. 
-- We forego any more detailed visual inspection in favor of learning the relationships between the features using our classification ANN.
+shows that many more patients survived at least 5 years after the operation. Of the patients that survived (bottom-subplots of the Survival row in the Scatterplot Matrix), we see many of the patients have few numbers of positive axillary nodes detected. Examination of the Age feature shows a few of the most elderly patients died within 5 years, and of the youngest patients we see increased 5-year survivability. We forego any more detailed visual inspection in favor of learning the relationships between the features using our classification ANN.
 
 ## AIC and BIC for final model selection
 
@@ -594,8 +572,6 @@ Hab_Data <- Hab_Data %>%
          Number_Pos_Nodes = scale01(Number_Pos_Nodes), 
          Survival = as.numeric(Survival)-1)
 ```
-
-## 
 
 Classification ANNs in the neuralnet package require that the response feature, in this case Survival, be inputted as a Boolean feature. We modify the feature then run the initial classification ANN.
 
@@ -618,8 +594,7 @@ Hab_Data <- Hab_Data %>%
 
 ```{r}
 set.seed(123)
-Hab_NN1 <- neuralnet(Survival ~ Age + Operation_Year + 
-                       Number_Pos_Nodes, 
+Hab_NN1 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
                      data = Hab_Data, 
                      linear.output = FALSE, 
                      err.fct = 'ce', 
@@ -665,12 +640,7 @@ Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes,
                      likelihood = 
                        TRUE, hidden = c(2,1))
 
-```
-
-## 2-Hidden Layers, Layer-1 2-neurons, Layer-2, 2-neurons
-
-```{r}
-
+# 2-Hidden Layers, Layer-1 2-neurons, Layer-2, 2-neurons
 set.seed(123)
 Hab_NN3 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
                                 data = Hab_Data, 
@@ -678,12 +648,8 @@ Hab_NN3 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nod
                                 err.fct = 'ce', 
                                 likelihood = TRUE, 
                                 hidden = c(2,2))
-```
 
-## 2-Hidden Layers, Layer-1 1-neuron, Layer-2, 2-neuron
-
-```{r}
-
+# 2-Hidden Layers, Layer-1 1-neuron, Layer-2, 2-neuron
 set.seed(123)
 Hab_NN4 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
                                 data = Hab_Data, 
@@ -691,12 +657,8 @@ Hab_NN4 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nod
                                 err.fct = 'ce', 
                                 likelihood = TRUE, 
                                 hidden = c(1,2))
-```
 
-## Bar plot of results
-
-```{r}
-
+# Bar plot of results
 Class_NN_ICs <- tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"), each = 3), 
                        'Metric' = rep(c('AIC', 'BIC', 'ce Error * 100'), length.out = 12),
                        'Value' = c(Hab_NN1$result.matrix[4,1], Hab_NN1$result.matrix[5,1], 
@@ -707,17 +669,13 @@ Class_NN_ICs <- tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"), each = 3),
                                    Hab_NN4$result.matrix[5,1], 100*Hab_NN4$result.matrix[1,1]))
 ```
 
-
-
 ##
 
 ```{r}
 Class_NN_ICs %>%
   ggplot(aes(Network, Value, fill = Metric)) +
   geom_col(position = 'dodge')  +
-  ggtitle("AIC, BIC, and Cross-Entropy Error of the 
-          Classification ANNs", 
-  "Note: ce Error displayed is 100 times its true value")
+  ggtitle("AIC, BIC, and Cross-Entropy Error of the Classification ANNs", "Note: ce Error displayed is 100 times its true value")
 ```
 
 
@@ -821,8 +779,7 @@ install.packages("neuralnet")
 ```{r}
 library(neuralnet)
 n <- names(train_)
-f <- as.formula(paste("medv ~", paste(n[!n %in% "medv"], 
-                                      collapse = " + ")))
+f <- as.formula(paste("medv ~", paste(n[!n %in% "medv"], collapse = " + ")))
 nn <- neuralnet(f,data=train_,hidden=c(5,3),linear.output=T)
 ```
 
@@ -833,7 +790,7 @@ plot(nn)
 ```
 
 
-## Links
+## Further Links
 
 - [How to handle inbalanced classes](https://elitedatascience.com/imbalanced-classes)
 

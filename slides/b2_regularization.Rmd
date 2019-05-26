@@ -18,6 +18,28 @@ output:
 knitr::opts_chunk$set(echo = T,warning=F,message=F)
 ```
 
+
+## Insufficient Solution
+
+- When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
+- This causes significant issues because it means: 
+
+(1) The least-squares estimates are not unique. There are an infinite set of solutions available and most of these solutions overfit the data. 
+
+(2) In many instances the result will be computationally infeasible.
+
+- To resolve this issue we can remove variables until $p<n$ and then fit an OLS regression model. 
+- Although we can use pre-processing tools to apply this manual approach ([**Kuhn and Johnson**](http://appliedpredictivemodeling.com/), 2013, pp. 43-47), it can be cumbersome and prone to errors.
+
+
+## Regularized Regression
+
+- When we experience these concerns, one alternative to OLS regression is to use regularized regression (also commonly referred to as penalized models or shrinkage methods) to control the parameter estimates. 
+
+- Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
+
+
+
 ## [Regularization](https://elitedatascience.com/algorithm-selection)
 
 ### elitedatascience.com definition
@@ -77,6 +99,20 @@ Linear regression in general performs poorly when there are non-linear relations
 <!--
 - The ratio of the two penalty types should be tuned.
 -->
+
+
+## The objective function of regularized regression methods...
+
+- is very similar to OLS regression; 
+- And a penalty parameter (P) is added.
+
+$$
+\text{minimize}\{SSE+P\}
+$$
+ 
+- There are two main penalty parameters, which have a similar effect. 
+- They constrain the size of the coefficients such that the only way the coefficients can increase is if we experience a comparable decrease in the sum of squared errors (SSE). 
+
 
 
 ## Preparations
@@ -178,18 +214,6 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 - Nor do we always wish to remove variables as this may be removing signal in our data.
 -->
 
-## Insufficient Solution
-
-- When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
-- This causes significant issues because it means: 
-
-(1) The least-squares estimates are not unique. There are an infinite set of solutions available and most of these solutions overfit the data. 
-
-(2) In many instances the result will be computationally infeasible.
-
-- To resolve this issue we can remove variables until $p<n$ and then fit an OLS regression model. 
-- Although we can use pre-processing tools to apply this manual approach ([**Kuhn and Johnson**](http://appliedpredictivemodeling.com/), 2013, pp. 43-47), it can be cumbersome and prone to errors.
-
 <!--
 ## Interpretability
 
@@ -198,25 +222,6 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 - Model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
 - We may wish to use a soft threshholding approach that slowly pushes a feature’s effect towards zero. As will be demonstrated, this can provide additional understanding regarding predictive signals.
 -->
-
-## Regularized Regression
-
-- When we experience these concerns, one alternative to OLS regression is to use regularized regression (also commonly referred to as penalized models or shrinkage methods) to control the parameter estimates. 
-
-- Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
-
-
-## The objective function of regularized regression methods...
-
-- is very similar to OLS regression; 
-- And a penalty parameter (P) is added.
-
-$$
-\text{minimize}\{SSE+P\}
-$$
- 
-- There are two main penalty parameters, which have a similar effect. 
-- They constrain the size of the coefficients such that the only way the coefficients can increase is if we experience a comparable decrease in the sum of squared errors (SSE). 
 
 ## Ridge Regression
 
@@ -820,6 +825,9 @@ mean((ames_test_y - pred)^2)
 install.packages("caret")
 ```
 
+### [**Vignette for the `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
+
+
 ```{r}
 library(caret)
 train_control <- trainControl(method = "cv", number = 10)
@@ -830,7 +838,6 @@ caret_mod <- train(x = ames_train_x,y = ames_train_y,
                    tuneLength = 10)
 ```
 
-- [**Vignette for the `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
 
 
 ## Output for `caret` model 
@@ -960,10 +967,11 @@ Sehr ausführlich aber mit Python
 
 - [Penalized Regression in R](https://machinelearningmastery.com/penalized-regression-in-r/)
 
+<!--
 - [Penalized Logistic Regression Essentials in R](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/)
 
 - [All you need to know about Regularization](https://towardsdatascience.com/all-you-need-to-know-about-regularization-b04fc4300369)
-
+--
 <!--
 Evtl könnte ich hier noch eine Aufgabe draus machen:
 https://www.r-bloggers.com/ridge-regression-and-the-lasso/
