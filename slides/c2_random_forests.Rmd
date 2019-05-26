@@ -365,7 +365,7 @@ nrow(hyper_grid) # total number of combinations
 ```
 
 
-## Loop through each hyperparameter combination
+## Loop - hyperparameter combination (I)
 
 - We apply 500 trees since our previous examples illustrated that 500 was plenty to achieve a stable error rate. 
 - We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
@@ -373,7 +373,7 @@ nrow(hyper_grid) # total number of combinations
 - Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
 - We get a full range of `mtry` values showing up in our top 10 - not over influential.
 
-##
+## Loop - hyperparameter combination (II)
 
 ```{r}
 for(i in 1:nrow(hyper_grid)) {
@@ -406,20 +406,18 @@ hyper_grid %>%
 
 ##
 
-- We adjust our `mtry` parameter to search from 50-200 random predictor variables at each split and re-perform our grid search. 
+- We adjust `mtry` to search from 50-200 random predictor variables at each split and re-perform our grid search. 
 - The results suggest that one-hot encoding does not improve performance.
 
 
 ```{r}
 # one-hot encode our categorical variables
 one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
-ames_train_hot <- predict(one_hot, ames_train) %>% 
-  as.data.frame()
-
+ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
 # make ranger compatible names
 names(ames_train_hot) <- make.names(names(ames_train_hot), allow_ = FALSE)
-
-# hyperparameter grid search --> same as above but with increased mtry values
+# hyperparameter grid search 
+# --> same as above but with increased mtry values
 hyper_grid_2 <- expand.grid(
   mtry       = seq(50, 200, by = 25),
   node_size  = seq(3, 9, by = 2),
