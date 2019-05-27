@@ -442,6 +442,81 @@ coef(ames_ridge, s = "lambda.1se") %>%
 
 ![](figure/ridgeTop25influentalVars.PNG)
 
+## Exercise: ridge regression (I)
+
+1) Load the `lars` package and the `diabetes` dataset 
+<!--
+(Efron, Hastie, Johnstone and Tibshirani (2003) “Least Angle Regression” (with discussion) Annals of Statistics). 
+This is the same dataset from the LASSO exercise set and has patient level data on the progression of diabetes. 
+-->
+2) Load the `glmnet` package to implement ridge regression.
+
+The dataset has three matrices x, x2 and y. x has a smaller set of independent variables while x2 contains the full set with quadratic and interaction terms. y is the dependent variable which is a quantitative measure of the progression of diabetes.
+
+3) Generate separate scatterplots with the line of best fit for all the predictors in x with y on the vertical axis.
+
+4) Regress y on the predictors in x using OLS. We will use this result as benchmark for comparison.
+
+## Exercise: ridge regression (II)
+<!-- 
+Exercise 2
+-->
+
+5) Fit the ridge regression model using the `glmnet` function and plot the trace of the estimated coefficients against lambdas. Note that coefficients are shrunk closer to zero for higher values of lambda.
+
+<!--
+Exercise 3
+-->
+
+6) Use the cv.glmnet function to get the cross validation curve and the value of lambda that minimizes the mean cross validation error.
+
+<!--
+Exercise 4
+-->
+
+7) Using the minimum value of lambda from the previous exercise, get the estimated beta matrix. Note that coefficients are lower than least squares estimates.
+
+<!--
+Exercise 5
+-->
+
+8) To get a more parsimonious model we can use a higher value of lambda that is within one standard error of the minimum. Use this value of lambda to get the beta coefficients. Note the shrinkage effect on the estimates.
+
+## Exercise: ridge regression (III)
+
+<!--
+Exercise 6
+-->
+
+9) Split the data randomly between a training set (80%) and test set (20%). We will use these to get the prediction standard error for least squares and ridge regression models.
+
+<!--
+Exercise 7
+-->
+
+10) Fit the ridge regression model on the training and get the estimated beta coefficients for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+
+<!--
+Exercise 8
+-->
+
+11) Get predictions from the ridge regression model for the test set and calculate the prediction standard error. Do this for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+
+<!--
+Exercise 9
+-->
+
+12) Fit the least squares model on the training set.
+
+
+<!-- 
+Exercise 10
+-->
+
+13) Get predictions from the least squares model for the test set and calculate the prediction standard error.
+
+
+
 
 ## Ridge and Lasso
 

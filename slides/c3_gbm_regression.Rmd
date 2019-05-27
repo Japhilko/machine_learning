@@ -21,7 +21,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,message=F,warning=F,cache=T,eval=F)
+knitr::opts_chunk$set(echo = TRUE,message=F,warning=F,cache=T)
 timeconsuming <- F
 ```
 
@@ -167,7 +167,7 @@ The latter two papers introduced the view of boosting algorithms as iterative fu
 ## Sequential training with respect to errors
 
 - Boosted trees are grown sequentially; 
-- each tree is grown using information from previously grown trees. 
+- Each tree is grown using information from previously grown trees. 
 - The basic algorithm for boosted regression trees can be generalized to the following where $x$ represents our features and $y$ represents our response:
 
 1.) Fit a decission tree: $F_1(x)=y$
@@ -184,7 +184,8 @@ Continue this process until some mechanism (i.e. cross validation) tells us to s
 
 ## Basic algorithm for boosted regression trees
 
-The basic algorithm for boosted regression trees can be generalized to the following where the final model is simply a stagewise additive model of $b$ individual regression trees:
+- The basic algorithm for boosted regression trees can be generalized. 
+- The final model is simply a stagewise additive model of $b$ individual regression trees:
 
 $$
 f(x)=B\sum\limits_{b=1}^B f^b(x)
@@ -206,24 +207,29 @@ $$
 
 ## Boosted regression figure - explained 
 
-- The figure illustrates with a simple example where a single predictor ($x$) has a true underlying sine wave relationship (blue line) with y along with some irriducible error. - The first tree fit in the series is a single decision stump (i.e., a tree with a single split). 
-- Each successive decision stump thereafter is fit to the previous one’s residuals. Initially there are large errors, but each additional decision stump in the sequence makes a small improvement in different areas across the feature space where errors still remain.
+- The figure illustrates with a simple example where a single predictor ($x$) has a true underlying sine wave relationship (blue line) with y along with some irriducible error. 
+- The first tree fit in the series is a single decision stump (i.e., a tree with a single split). 
+- Each following successive decision stump is fit to the previous one’s residuals. 
+- Initially there are large errors, but each additional decision stump in the sequence makes a small improvement in different areas across the feature space where errors still remain.
 
 ## Gradient descent
 
 - Many algorithms, including decision trees, focus on minimizing the residuals and, therefore, emphasize the MSE loss function. 
-- This algorithm outlines the approach of sequentially fitting regression trees to minimize the errors. 
-- This specific approach is how gradient boosting minimizes the mean squared error (MSE) loss function. 
-- Often we wish to focus on other loss functions such as mean absolute error (MAE) or to be able to apply the method to a classification problem with a loss function such as deviance. 
+- In GBM approach, regression trees are fitted sequentially to minimize the errors. 
+- This minimizes the loss function - mean squared error (MSE). 
+- Often we wish to focus on other loss functions such as [**mean absolute error**](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) or to be able to apply the method to a classification problem with a loss function such as [**deviance**](https://en.wikipedia.org/wiki/Deviance_(statistics)). 
 - The name gradient boosting machines come from the fact that this procedure can be generalized to loss functions other than MSE.
 
 ## A gradient descent algorithm
 
 - Gradient boosting is considered a gradient descent algorithm. 
-- Gradient descent is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. 
+- Which is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. 
 - The general idea of gradient descent is to tweak parameters iteratively in order to minimize a cost function. 
+
+### Example
+
 - Suppose you are a downhill skier racing your friend. 
-- A good strategy to beat your friend to the bottom is to take the path with the steepest slope. 
+- A good strategy to beat your friend is to take the path with the steepest slope. 
 - This is exactly what gradient descent does - it measures the local gradient of the loss (cost) function for a given set of parameters ($\Phi$) and takes steps in the direction of the descending gradient. 
 - Once the gradient is zero, we have reached the minimum.
 
@@ -255,7 +261,7 @@ $$
 
 ## Stochastic gradient descent
 
-![Stochastic gradient descent](figure/stochastic_gradient_descent.png){height=80%}
+![Stochastic gradient descent](figure/stochastic_gradient_descent.png){height=60%}
 
 
 ## Tuning GBM
@@ -312,9 +318,22 @@ install.packages("vtreat")
 
 - Again, we use the Ames housing dataset 
 
+```{r,eval=F}
+ames_data <- AmesHousing::make_ames()
+```
+
+```{r,eval=F,echo=F}
+save(ames_data,file="../data/ames_data.RData")
+```
+
+```{r,echo=F}
+load("../data/ames_data.RData")
+```
+
+
 ```{r}
 set.seed(123)
-ames_split <- initial_split(AmesHousing::make_ames(),prop=.7)
+ames_split <- initial_split(ames_data,prop=.7)
 ames_train <- training(ames_split)
 ames_test  <- testing(ames_split)
 ```
@@ -951,6 +970,15 @@ xgb.fit3 <- xgb.cv(
 )
 ```
 
+```{r,echo=F,eval=F}
+save(xgb.fit3,file="../data/ml_rf_xgb.fit3.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_rf_xgb.fit3.RData")
+```
+
+
 ## assess results
 
 ```{r}
@@ -966,20 +994,17 @@ xgb.fit3$evaluation_log %>%
 
 ## Loop through a `XGBoost` model
 
-- Now I apply the same for loop procedure to loop through and apply a `XGBoost` model for each hyperparameter combination and dump the results in the hyper_grid data frame.
+- We apply the same in the loop and apply a `XGBoost` model for each hyperparameter combination and dump the results in the `hyper_grid` data frame.
 
 ### Important note: 
 
-- if you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
+- If you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
 
-##
+## Grid search 
 
-```{r,eval=timeconsuming}
-# grid search 
+```{r,eval=F}
 for(i in 1:nrow(hyper_grid)) {
-  
-  # create parameter list
-  params <- list(
+  params <- list(# create parameter list
     eta = hyper_grid$eta[i],
     max_depth = hyper_grid$max_depth[i],
     min_child_weight = hyper_grid$min_child_weight[i],
@@ -989,8 +1014,7 @@ for(i in 1:nrow(hyper_grid)) {
   set.seed(123)
   xgb.tune <- xgb.cv(params = params,
     data = features_train,label = response_train,
-    nrounds = 5000, nfold = 5,objective = "reg:linear", 
-    # for regression models
+    nrounds=5000,nfold=5,objective = "reg:linear",#for regression models
     verbose = 0,               # silent,
     early_stopping_rounds = 10 #stop if no improvement for 10 consecutive trees
   )
@@ -1004,7 +1028,7 @@ for(i in 1:nrow(hyper_grid)) {
 save(xgb.tune,hyper_grid,file="../data/ml_gbm_reg_linear.RData")
 ```
 
-```{r,echo=F}
+```{r,echo=F,eval=F}
 load("../data/ml_gbm_reg_linear.RData")
 ```
 
@@ -1134,12 +1158,17 @@ caret::RMSE(pred, response_test)
 ## [1] 21319.3
 ```
 
-## Links - Boosting
+## Links and Resources - Boosting
+
+### Links
 
 - [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
 
-
 - [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
+
+### Resources
+
+- Geron (2017) - [**Hands-On Machine Learning with Scikit-Learn and TensorFlow: Concepts, Tools and techniques to build intelligent systems**](http://shop.oreilly.com/product/0636920052289.do)
 
 
 <!--
