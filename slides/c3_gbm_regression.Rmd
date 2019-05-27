@@ -994,20 +994,17 @@ xgb.fit3$evaluation_log %>%
 
 ## Loop through a `XGBoost` model
 
-- Now I apply the same for loop procedure to loop through and apply a `XGBoost` model for each hyperparameter combination and dump the results in the hyper_grid data frame.
+- We apply the same in the loop and apply a `XGBoost` model for each hyperparameter combination and dump the results in the `hyper_grid` data frame.
 
 ### Important note: 
 
-- if you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
+- If you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
 
-##
+## Grid search 
 
-```{r,eval=timeconsuming}
-# grid search 
+```{r,eval=F}
 for(i in 1:nrow(hyper_grid)) {
-  
-  # create parameter list
-  params <- list(
+  params <- list(# create parameter list
     eta = hyper_grid$eta[i],
     max_depth = hyper_grid$max_depth[i],
     min_child_weight = hyper_grid$min_child_weight[i],
@@ -1017,8 +1014,7 @@ for(i in 1:nrow(hyper_grid)) {
   set.seed(123)
   xgb.tune <- xgb.cv(params = params,
     data = features_train,label = response_train,
-    nrounds = 5000, nfold = 5,objective = "reg:linear", 
-    # for regression models
+    nrounds=5000,nfold=5,objective = "reg:linear",#for regression models
     verbose = 0,               # silent,
     early_stopping_rounds = 10 #stop if no improvement for 10 consecutive trees
   )
@@ -1032,7 +1028,7 @@ for(i in 1:nrow(hyper_grid)) {
 save(xgb.tune,hyper_grid,file="../data/ml_gbm_reg_linear.RData")
 ```
 
-```{r,echo=F}
+```{r,echo=F,eval=F}
 load("../data/ml_gbm_reg_linear.RData")
 ```
 

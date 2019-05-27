@@ -21,7 +21,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=F)
+knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=T)
 ```
 
 ## Artificial Neural Network Fundamentals
@@ -71,7 +71,7 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=F)
 ### Artifical Neuron–Source: [Chrislb Wikipedia](https://commons.wikimedia.org/wiki/File:ArtificialNeuronModel_english.png)
 
 
-![](figure/ArtificialNeuronModel_english.png){height=50%}
+![](figure/ArtificialNeuronModel_english.png){height=40%}
 
 ## The inputs to the artificial neuron
 
@@ -203,7 +203,7 @@ install.packages("rvest")
 ## The download the data from UCI.
 
 ```{r}
-url <- 'http://archive.ics.uci.edu/ml/machine-learning-databases/'
+url<-'http://archive.ics.uci.edu/ml/machine-learning-databases/'
 filen <- "00243/yacht_hydrodynamics.data"
 colnam <- c('LongPos_COB', 'Prismatic_Coeff','Len_Disp_Ratio',
             'Beam_Draut_Ratio','Length_Beam_Ratio','Froude_Num',
@@ -219,7 +219,8 @@ Yacht_Data <- read_table(file = paste0(url,filen),
 
 
 ```{r,eval=F}
-ggpairs(Yacht_Data,title="Scatterplot Matrix of the Features of the Yacht Data Set")
+ggpairs(Yacht_Data,title="Scatterplot Matrix of the Features of 
+        the Yacht Data Set")
 ```
 
 ```{r,echo=F,eval=F}
@@ -228,13 +229,13 @@ ggpairs(Yacht_Data, title = "Scatterplot Matrix of the Features of the Yacht Dat
 dev.off()
 ```
 
-![](figure/ggpairs_yacht.png)
+![](figure/ggpairs_yacht.png){height=90%}
 
 ## An excellent summary of the variation of each feature
 <!--
 - We see an excellent summary of the variation of each feature in our data set. 
 -->
-- Draw your attention to the bottom-most strip of scatter-plots. 
+- Draw your attention to the bottom strip of scatter-plots. 
 - This shows the residuary resistance as a function of the other data set features (independent experimental values). 
 - The greatest variation appears with the Froude Number feature. 
 - It will be interesting to see how this pattern appears in the subsequent regression ANNs.
@@ -346,10 +347,9 @@ Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB +
                        act.fct = "logistic")
 ```
 
-##
+## Training and test error
 
 ```{r}
-## Training Error
 NN2_Train_SSE <- sum((Yacht_NN2$net.result - 
                         Yacht_Data_Train[, 7])^2)/2
 ## Test Error
@@ -383,8 +383,8 @@ scale11 <- function(x) {
 Yacht_Data_Train <- Yacht_Data_Train %>% mutate_all(scale11)
 Yacht_Data_Test <- Yacht_Data_Test %>% mutate_all(scale11)
 
-# 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, tanh activation
-# function
+# 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron, 
+# tanh activation function
 set.seed(12321)
 Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
           Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + 
@@ -393,39 +393,63 @@ Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB +
                        hidden = c(4, 1), 
                        act.fct = "tanh")
 
-## Training Error
-NN3_Train_SSE <- sum((Yacht_NN3$net.result - Yacht_Data_Train[, 7])^2)/2
-
-## Test Error
-Test_NN3_Output <- compute(Yacht_NN3, Yacht_Data_Test[, 1:6])$net.result
-NN3_Test_SSE <- sum((Test_NN3_Output - Yacht_Data_Test[, 7])^2)/2
-
-# 1-Hidden Layer, 1-neuron, tanh activation function
-set.seed(12321)
-Yacht_NN4 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num, 
-                       data = Yacht_Data_Train, 
-                       act.fct = "tanh")
-
-## Training Error
-NN4_Train_SSE <- sum((Yacht_NN4$net.result - Yacht_Data_Train[, 7])^2)/2
-
-## Test Error
-Test_NN4_Output <- compute(Yacht_NN4, Yacht_Data_Test[, 1:6])$net.result
-NN4_Test_SSE <- sum((Test_NN4_Output - Yacht_Data_Test[, 7])^2)/2
-
-# Bar plot of results
-Regression_NN_Errors <- tibble(Network = rep(c("NN1", "NN2", "NN3", "NN4"), each = 2), 
-                               DataSet = rep(c("Train", "Test"), time = 4), 
-                               SSE = c(NN1_Train_SSE, NN1_Test_SSE, 
-                                       NN2_Train_SSE, NN2_Test_SSE, 
-                                       NN3_Train_SSE, NN3_Test_SSE, 
-                                       NN4_Train_SSE, NN4_Test_SSE))
 ```
 
 ##
 
 ```{r}
-Regression_NN_Errors %>% 
+## Training Error
+NN3_Train_SSE <- sum((Yacht_NN3$net.result - 
+                        Yacht_Data_Train[, 7])^2)/2
+## Test Error
+Test_NN3_Output <- compute(Yacht_NN3, 
+                           Yacht_Data_Test[, 1:6])$net.result
+NN3_Test_SSE <- sum((Test_NN3_Output - 
+                       Yacht_Data_Test[, 7])^2)/2
+```
+
+## 1-Hidden Layer, 1-neuron, tanh activation function
+
+```{r}
+set.seed(12321)
+Yacht_NN4 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
+                         Prismatic_Coeff + Len_Disp_Ratio + 
+                         Beam_Draut_Ratio + Length_Beam_Ratio + 
+                         Froude_Num, 
+                       data = Yacht_Data_Train, 
+                       act.fct = "tanh")
+## Training Error
+NN4_Train_SSE <- sum((Yacht_NN4$net.result - 
+                        Yacht_Data_Train[, 7])^2)/2
+
+```
+
+
+##
+
+<!--
+Regression_NN_Errors
+-->
+
+```{r}
+## Test Error
+Test_NN4_Output <- compute(Yacht_NN4, Yacht_Data_Test[, 1:6])$net.result
+NN4_Test_SSE <- sum((Test_NN4_Output - Yacht_Data_Test[, 7])^2)/2
+
+# Bar plot of results
+RegNNErr<-tibble(Network=rep(c("NN1","NN2","NN3","NN4"),each=2), 
+                     DataSet=rep(c("Train", "Test"), time = 4), 
+                     SSE = c(NN1_Train_SSE, NN1_Test_SSE, 
+                             NN2_Train_SSE, NN2_Test_SSE, 
+                             NN3_Train_SSE, NN3_Test_SSE, 
+                             NN4_Train_SSE, NN4_Test_SSE))
+```
+
+
+##
+
+```{r}
+RegNNErr %>% 
   ggplot(aes(Network, SSE, fill = DataSet)) + 
   geom_col(position = "dodge") + 
   ggtitle("Regression ANN's SSE")
@@ -453,7 +477,11 @@ plot(Yacht_NN2, rep = "best")
 
 ```{r,eval=F}
 set.seed(12321)
-Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + Length_Beam_Ratio + Froude_Num,data = Yacht_Data_Train,hidden = c(4, 1), 
+Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
+                         Prismatic_Coeff + Len_Disp_Ratio + 
+                         Beam_Draut_Ratio + Length_Beam_Ratio + 
+                         Froude_Num,data = Yacht_Data_Train,
+                       hidden = c(4, 1), 
                        act.fct = "logistic",rep = 10)
 ```
 
@@ -486,24 +514,30 @@ plot(Yacht_NN2, rep = "best")
 - We have briefly covered regression ANNs in this tutorial. 
 -->
 
+<!--
 - In the next tutorial we will cover classification ANNs. 
-- The `neuralnet` package used in this tutorial is one of many tools available for ANN implementation in R. 
+-->
+
+- The `neuralnet` package we used so far is one of many tools available for ANN implementation in R. 
 
 ### Others include:
 
 - `nnet`
-- autoencoder
+- `autoencoder`
 - `caret`
-- RSNNS
+- `RSNNS`
 - `h2o`
 
 
 ## Exercise
 
-- Why do we split the yacht data into a training and test data sets?
+- Why do we split the Yacht data into a training and test data sets?
 - Re-load the Yacht Data from the UCI Machine learning repository yacht data without scaling. Run any regression ANN. What happens? Why do you think this happens?
-- After completing exercise question 1, re-scale the yacht data. Perform a simple linear regression fitting Residuary_Resist as a function of all other features. Now run a regression neural network (see 1st Regression ANN section). Plot the regression ANN and compare the weights on the features in the ANN to the p-values for the regressors.
-- Build your own regression ANN using the scaled yacht data modifying one hyperparameter. Use ?neuralnet to see the function options. 
+
+- After completing exercise question 1, re-scale the Yacht data. Perform a simple linear regression fitting Residuary_Resist as a function of all other features. Now run a regression neural network (see 1st Regression ANN section). Plot the regression ANN and compare the weights on the features in the ANN to the p-values for the regressors.
+
+- Build your own regression ANN using the scaled Yacht data modifying one hyperparameter. Use ?neuralnet to see the function options. 
+
 <!--
 Plot your ANN.
 -->
@@ -543,8 +577,8 @@ library(GGally)
 - A value of 0 - the patient died within 5 years.
 
 ```{r}
-url1<-'http://archive.ics.uci.edu/ml/machine-learning-databases/'
-url2<-"/haberman/haberman.data"
+url1<-'http://archive.ics.uci.edu/ml/machine-learning-'
+url2<-"databases//haberman/haberman.data"
 url <- paste0(url1,url2)
 Hab_Data<-read_csv(file=url,col_names=c('Age', 'Operation_Year', 
                           'Number_Pos_Nodes','Survival')) 
@@ -564,10 +598,11 @@ Hab_Data <- Hab_Data%>%
 ## Scatterplot Matrix
 
 ```{r,eval=F}
-ggpairs(Hab_Data,title="Scatterplot Matrix Haberman's Survival Features")
+ggpairs(Hab_Data,title="Scatterplot Matrix Haberman's 
+        Survival Features")
 ```
 
-![](figure/class01-1.png)
+![](figure/class01-1.png){height=90%}
 
 
 ## Interpreting the Scatterplot
@@ -579,21 +614,28 @@ ggpairs(Hab_Data,title="Scatterplot Matrix Haberman's Survival Features")
 
 ## AIC and BIC for final model selection
 
-- As in the regression ANN, we must scale our features to fall on the closed $[0,1]$ interval. 
-- For classification ANNs using the `neuralnet` package we will not use a training and test set for model evaluation, instead we will use the AIC and BIC for final model selection. 
-- These metrics balance the error as a function of the total number of model parameters, in the ANN case the model parameters correspond to the total number of hidden nodes.
+<!--
+As in the regression ANN,
+-->
+
+- We must scale our features to fall on a closed $[0,1]$ interval. 
+- For classification ANNs using `neuralnet`, we will not use a training and test set for model evaluation, instead we will use the AIC and BIC for final model selection. 
+- These metrics balance the error as a function of the total number of model parameters, in the ANN case the parameters correspond to the total number of hidden nodes.
 
 ```{r}
 scale01 <- function(x){
   (x - min(x)) / (max(x) - min(x))
 }
+```
 
+```{r}
 Hab_Data <- Hab_Data %>%
   mutate(Age = scale01(Age), 
          Operation_Year = scale01(Operation_Year), 
          Number_Pos_Nodes = scale01(Number_Pos_Nodes), 
          Survival = as.numeric(Survival)-1)
 ```
+
 
 ## 
 
@@ -611,10 +653,11 @@ Hab_Data <- Hab_Data %>%
 - The `neuralnet` package defaults to random initial weight values, for reproducibility we set a seed and construct the network. 
 - We have added three additional arguments for the classification ANN using the `neuralnet` package, `linear.output`, `err.fct`, and `likelihood`. 
 - Setting the `linear.output` to `FALSE` and the `err.fct` to `"ce"` indicates that we are performing a classification, and forces the model to output what we may interpret as a probability of each observation belonging to Survival class 1. 
+
+## Classification ANN with cross-entropy error metric
+
 - For classification ANN the cross-entropy error metric is more appropriate than the SSE used in regression ANNs. 
 - The likelihood argument set to TRUE indicates to `neuralnet` that we would like to see the AIC and BIC metrics.
-
-## 
 
 ```{r}
 set.seed(123)
@@ -631,11 +674,11 @@ Hab_NN1 <- neuralnet(Survival ~ Age + Operation_Year +
 The `Hab_NN1` is a list containing all parameters of the classification ANN as well as the results of the neural network on the test data set. 
 - To view a diagram of the `Hab_NN1` use the `plot()` function.
 
-```{r}
+```{r,fig.height=8,fig.width=14}
 plot(Hab_NN1, rep = 'best')
 ```
 
-## the cross-entropy error
+## The cross-entropy error
 
 - The error displayed in this plot is the cross-entropy error, which is a measure of the differences between the predicted and observed output for each of the observations in the `Hab_Data` data set. 
 - To view the Hab_NN1 AIC, BIC, and error metrics run the following.
@@ -658,13 +701,10 @@ paste("BIC: ", round(Hab_NN2_BIC, 3))
 ```{r}
 set.seed(123)
 # 2-Hidden Layers, Layer-1 2-neurons, Layer-2, 1-neuron
-Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
-                     data = Hab_Data, 
-                     linear.output = FALSE, 
-                     err.fct = 'ce', 
-                     likelihood = 
-                       TRUE, hidden = c(2,1))
-
+Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + 
+                  Number_Pos_Nodes,data = Hab_Data, 
+                     linear.output = FALSE,err.fct = 'ce', 
+                     likelihood = TRUE, hidden = c(2,1))
 ```
 
 ## 2-Hidden Layers, Layer-1 2-neurons, Layer-2, 2-neurons
@@ -672,7 +712,7 @@ Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes,
 ```{r}
 
 set.seed(123)
-Hab_NN3 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
+Hab_NN3<-neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
                                 data = Hab_Data, 
                                 linear.output = FALSE, 
                                 err.fct = 'ce', 
@@ -685,7 +725,7 @@ Hab_NN3 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nod
 ```{r}
 
 set.seed(123)
-Hab_NN4 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
+Hab_NN4 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
                                 data = Hab_Data, 
                                 linear.output = FALSE, 
                                 err.fct = 'ce', 
@@ -697,21 +737,22 @@ Hab_NN4 <- Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nod
 
 ```{r}
 
-Class_NN_ICs <- tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"), each = 3), 
-                       'Metric' = rep(c('AIC', 'BIC', 'ce Error * 100'), length.out = 12),
-                       'Value' = c(Hab_NN1$result.matrix[4,1], Hab_NN1$result.matrix[5,1], 
-                                   100*Hab_NN1$result.matrix[1,1], Hab_NN2$result.matrix[4,1], 
-                                   Hab_NN2$result.matrix[5,1], 100*Hab_NN2$result.matrix[1,1],
-                                   Hab_NN3$result.matrix[4,1], Hab_NN3$result.matrix[5,1], 
-                                   100*Hab_NN3$result.matrix[1,1], Hab_NN4$result.matrix[4,1], 
-                                   Hab_NN4$result.matrix[5,1], 100*Hab_NN4$result.matrix[1,1]))
+Class_NN_ICs<-tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"),
+    each = 3),'Metric'=rep(c('AIC', 'BIC', 'ce Error * 100'), 
+    length.out = 12),'Value' = c(Hab_NN1$result.matrix[4,1], 
+    Hab_NN1$result.matrix[5,1],100*Hab_NN1$result.matrix[1,1],
+    Hab_NN2$result.matrix[4,1],Hab_NN2$result.matrix[5,1],
+    100*Hab_NN2$result.matrix[1,1],Hab_NN3$result.matrix[4,1],
+    Hab_NN3$result.matrix[5,1],100*Hab_NN3$result.matrix[1,1],
+    Hab_NN4$result.matrix[4,1],Hab_NN4$result.matrix[5,1],
+    100*Hab_NN4$result.matrix[1,1]))
 ```
 
 
 
 ##
 
-```{r}
+```{r,fig.height=8,fig.width=14}
 Class_NN_ICs %>%
   ggplot(aes(Network, Value, fill = Metric)) +
   geom_col(position = 'dodge')  +
@@ -806,7 +847,8 @@ MSE.lm <- sum((pr.lm - test$medv)^2)/nrow(test)
 ```{r}
 maxs <- apply(data, 2, max) 
 mins <- apply(data, 2, min)
-scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+scaled <- as.data.frame(scale(data, center = mins, 
+                              scale = maxs - mins))
 train_ <- scaled[index,]
 test_ <- scaled[-index,]
 ```
