@@ -1,5 +1,5 @@
 ---
-title: "Exercises - neural networks"
+title: "ML Exercises - neural networks"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -26,69 +26,80 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## [Exercise neural networks (I)](https://www.r-exercises.com/2017/06/08/neural-networks-exercises-part-1/)
 
-1) We’ll start by creating the data set on which we want to do a simple regression. Set the seed to 42, draw 200 numbers from a unified random distribution between -10 and 10 and store them in a vector named `x`. Then, create a vector named `y` containing the value of sin(x). 
+### Create example data
+
+<!--
+Creating the data set on which we want to do a simple regression. 
+-->
+
+1) Set the seed to 42, draw 200 numbers from a unified random distribution between -10 and 10 and store them in a vector named `x`. 
+2) Create a vector named `y` containing the value of `sin(x)`. 
 
 <!--
 Neural network are a lot more flexible than most regression algorithms and can fit complex function with ease. The biggest challenge is to find the appropriate network function appropriate to the situation.
 -->
 
-2) A network function is made of three components: the network of neurons, the weight of each connection between neuron and the activation function of each neuron. For this example, we’ll use a feed-forward neural network and the logistic activation which are the defaults for the package `nnet`. We take one number as input of our neural network and we want one number as the output so the size of the input and output layer are both of one. For the hidden layer, we’ll start with three neurons. It’s good practice to randomize the initial weights, so create a vector of 10 random values, picked in the interval [-1,1].
+<!--
+A network function is made of three components: the network of neurons, the weight of each connection between neuron and the activation function of each neuron.
 
-## Solution neuralnet exercises
+3)  For this example, we’ll use a feed-forward neural network and the logistic activation which are the defaults for the package `nnet`. We take one number as input of our neural network and we want one number as the output so the size of the input and output layer are both of one. For the hidden layer, we’ll start with three neurons. It’s good practice to randomize the initial weights, so 
+-->
 
-### Solution Exercise 1
+### Randomize initial weights
+
+3) Create a vector of 10 random values, picked in the interval [-1,1].
+
+## Solution neuralnet exercises (I)
+
+### Create example data
 
 ```{r}
 set.seed(42)
-x<-runif(200, -10, 10)
-y<-sin(x)
+x<-runif(200, -10, 10) #1)
+y<-sin(x) #2)
 ```
 
-### Solution  Exercise 2
-
-- randomize the initial weights
+### Randomize the initial weights
 
 ```{r}
-weight<-runif(10, -1, 1)
+weight<-runif(10, -1, 1) #3)
 ```
 
 
 ## Exercise neural networks (II)
 
-3) Neural networks have a strong tendency of overfitting data, they become really good at describing the relationship between the values in the data set, but are not effective with data that wasn’t used to train your model. As a consequence, we need to cross-validate our model. Set the seed to 42, then create a training set containing 75% of the values in your initial data set and a test set containing the rest of your data.
+### Split the dataset
 
-4) Load the `nnet` package and use the function `nnet` to create a model. Pass your weights via the `Wts` argument and set `maxit=50`. We fit a function which can have   multiple possible output values. We set `linout=T`. Take the time to look at the structure of your model.
+4) Neural networks have a strong tendency of overfitting data, they become really good at describing the relationship between the values in the data set, but are not effective with data that wasn’t used to train your model. As a consequence, we need to cross-validate our model. Set the seed to 42, then create a training set containing 75% of the values in your initial data set and a test set containing the rest of your data.
 
-5) Predict the output for the test set and compute the RMSE of your predictions. Plot the function sin(x) and then plot your predictions.
+### Create a first model 
 
-6) The number of neurons in the hidden layer, as well as the number of hidden layer used, has a great influence on the effectiveness of your model. Repeat the exercises three to five, but this time use a hidden layer with seven neurons and initiate randomly 22 weights.
-
-## Exercise neural networks (III)
-
-7) Now let us use neural networks to solve a classification problem, so let’s load the iris data set! It is good practice to normalize your input data to uniformize the behavior of your model over different range of value and have a faster training. Normalize each factor so that they have a mean of zero and a standard deviation of 1, then create your train and test set.
-
-8) Use the `nnet()` and use a hidden layer of ten neurons to create your model. We want to fit a function which have a finite amount of value as output. To do so, set the linout argument to true. Look at the structure of your model. With classification problem, the output is usually a factor that is coded as multiple dummy variables, instead of a single numeric value. As a consequence, the output layer have as one less neuron than the number of levels of the output factor.
-
-9) Make prediction with the values of the test set.
- 
-10) Create the confusion table of your prediction and compute the accuracy of the model.
+5) Load the `nnet` package and use the function `nnet` to create a model. Pass your weights via the `Wts` argument and set `maxit=50`. 
+<!--
+We fit a function which can have   multiple possible output values. 
+-->
+Set `linout=T` and take some time to look at the structure of your model.
 
 
-## Solution Exercise 3    #
+## Solution neuralnet exercises (II) 
+
+
+### Split the dataset
 
 ```{r}
-set.seed(42)
+set.seed(42) #4)
 index<-sample(1:length(x),round(0.75*length(x)),replace=FALSE)
 reg.train<-data.frame(X=x[index],Y=y[index])
 reg.test<-data.frame(X=x[-index],Y=y[-index])
 ```
 
-## Solution Exercise 4    #
+### Create a first model 
 
 ```{r}
 library(nnet)
 set.seed(42)
-reg.model.1<-nnet(reg.train$X,reg.train$Y,size=3,maxit=50,Wts=weight,linout=TRUE)
+reg.model.1<-nnet(reg.train$X,reg.train$Y,size=3,
+                  maxit=50,Wts=weight,linout=TRUE)
 ```
 
 <!--
@@ -102,6 +113,8 @@ reg.model.1<-nnet(reg.train$X,reg.train$Y,size=3,maxit=50,Wts=weight,linout=TRUE
 ## final  value 39.876476 
 ## stopped after 50 iterations
 -->
+
+## Solution neuralnet exercises (III)
 
 ```{r}
 str(reg.model.1)
@@ -133,9 +146,24 @@ str(reg.model.1)
 ##  - attr(*, "class")= chr "nnet"
 -->
 
-## Solution Exercise 5    #
+
+## Exercise neural networks (III)
+
+### Prediction
+
+6) Predict the output for the test set and compute the RMSE of your predictions. Plot the function sin(x) and then plot your predictions.
+
+### Repeat with different parameters
+
+7) The number of neurons in the hidden layer, and the number of hidden layer used, has a great influence on the effectiveness of your model. Repeat the exercises four to six, but this time use a hidden layer with seven neurons and initiate randomly 22 weights.
+
+
+## Solution neuralnet exercises (IV)
+
+### Prediction
 
 ```{r}
+# 6)
 predict.model.1<-predict(reg.model.1,data.frame(X=reg.test$X))
 str(predict.model.1)
 ```
@@ -148,6 +176,7 @@ str(predict.model.1)
 -->
 
 ```{r}
+# 6)
 rmse.reg<-sqrt(sum((reg.test$Y-predict.model.1)^2))
 rmse.reg
 ```
@@ -156,7 +185,10 @@ rmse.reg
 ## [1] 3.41651
 -->
 
+## Solution neuralnet exercises (V)
+
 ```{r}
+# 6)
 plot(sin, -10, 10)
 points(reg.test$X,predict.model.1)
 ```
@@ -165,68 +197,38 @@ points(reg.test$X,predict.model.1)
 plot of chunk NN_part1
 -->
 
-## Solution Exercise 6    #
-
-```{r}
-set.seed(42)
-reg.model.2<-nnet(reg.train$X,reg.train$Y,size=7,maxit=50,Wts=runif(22, -1, 1),linout=TRUE)
-```
-
+## Solution neuralnet exercises (V)
 <!--
-## # weights:  22
-## initial  value 353.642846 
-## iter  10 value 55.906010
-## iter  20 value 42.700328
-## iter  30 value 22.757713
-## iter  40 value 16.910492
-## iter  50 value 12.770497
-## final  value 12.770497 
-## stopped after 50 iterations
+Exercise 6
 -->
 
+### Repeat with different parameters
+
 ```{r}
+# 7)
+set.seed(42)
+reg.model.2<-nnet(reg.train$X,reg.train$Y,size=7,
+                  maxit=50,Wts=runif(22, -1, 1),linout=TRUE)
+```
+
+## Solution neuralnet exercises (VI)
+
+```{r}
+# 7)
 str(reg.model.2)
 ```
 
-<!--
-## List of 15
-##  $ n            : num [1:3] 1 7 1
-##  $ nunits       : int 10
-##  $ nconn        : num [1:11] 0 0 0 2 4 6 8 10 12 14 ...
-##  $ conn         : num [1:22] 0 1 0 1 0 1 0 1 0 1 ...
-##  $ nsunits      : num 9
-##  $ decay        : num 0
-##  $ entropy      : logi FALSE
-##  $ softmax      : logi FALSE
-##  $ censored     : logi FALSE
-##  $ value        : num 12.8
-##  $ wts          : num [1:22] 0.894 0.992 1.997 1.506 8.113 ...
-##  $ convergence  : int 1
-##  $ fitted.values: num [1:150, 1] 0.585 0.6145 -0.464 0.0943 -0.8862 ...
-##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : NULL
-##   .. ..$ : NULL
-##  $ residuals    : num [1:150, 1] -0.0891 0.2612 0.071 0.1269 0.0232 ...
-##   ..- attr(*, "dimnames")=List of 2
-##   .. ..$ : NULL
-##   .. ..$ : NULL
-##  $ call         : language nnet.default(x = reg.train$X, y = reg.train$Y, size = 7, Wts = runif(22,      -1, 1), linout = TRUE, maxit = 50)
-##  - attr(*, "class")= chr "nnet"
--->
+
+## Solution neuralnet exercises (VII)
 
 ```{r}
+# 7)
 predict.model.2<-predict(reg.model.2,data.frame(X=reg.test$X))
 str(predict.model.2)
 ```
 
-<!--
-##  num [1:50, 1] 1.13 0.153 -0.931 -0.962 0.647 ...
-##  - attr(*, "dimnames")=List of 2
-##   ..$ : NULL
-##   ..$ : NULL
--->
-
 ```{r}
+# 7)
 rmse.reg<-sqrt(sum((reg.test$Y-predict.model.2)^2))
 rmse.reg
 ```
@@ -235,34 +237,51 @@ rmse.reg
 ## [1] 2.188407
 -->
 
+## Solution neuralnet exercises (VIII)
+
 ```{r}
+# 7)
 plot(sin, -10, 10)
 points(reg.test$X,predict.model.2)
 ```
+
+
+
+## Exercise neural networks (IV)
+
+### Normilze
+
+8) Now let us use neural networks to solve a classification problem, so let’s load the iris data set! It is good practice to normalize your input data to uniformize the behavior of your model over different range of value and have a faster training. Normalize each factor so that they have a mean of zero and a standard deviation of 1, then create your train and test set.
+
+### Create model with `nnet`
+
+9) Use the `nnet()` and use a hidden layer of ten neurons to create your model. We want to fit a function which have a finite amount of value as output. To do so, set the linout argument to true. Look at the structure of your model. With classification problem, the output is usually a factor that is coded as multiple dummy variables, instead of a single numeric value. As a consequence, the output layer have as one less neuron than the number of levels of the output factor.
+
 
 <!--
 plot of chunk NN_part1
 -->
 
-## Solution Exercise 7    #
+## Solution Exercise 8
 
 ```{r}
 data<-iris
 
 scale.data<-data.frame(lapply(data[,1:4], function(x) scale(x)))
 scale.data$Species<-data$Species
-
-index<-sample(1:nrow(scale.data),round(0.75*nrow(scale.data)),replace=FALSE)
+index<-sample(1:nrow(scale.data),round(0.75*nrow(scale.data)),
+              replace=FALSE)
 clust.train<-scale.data[index,]
 clust.test<-scale.data[-index,]
 ```
 
 
-## Solution Exercise 8    #
+## Solution Exercise 9
 
 ```{r}
 set.seed(42)
-clust.model<-nnet(Species~.,size=10,Wts=runif(83, -1, 1),data=clust.train)
+clust.model<-nnet(Species~.,size=10,Wts=runif(83, -1, 1),
+                  data=clust.train)
 ```
 
 <!--
@@ -278,15 +297,30 @@ clust.model<-nnet(Species~.,size=10,Wts=runif(83, -1, 1),data=clust.train)
 ## converged
 -->
 
-## Solution Exercise 9    #
+## Exercise neural networks (V)
+
+### prediction and confusion table
+
+10) Make prediction with the values of the test set.
+ 
+11) Create the confusion table of your prediction and compute the accuracy of the model.
+
+
+
+## Solution Exercise 10 and 11
+
+### Prediction
 
 ```{r}
-predict.model.clust<-predict(clust.model,clust.test[,1:4],type="class")
+# 10)
+predict.model.clust<-predict(clust.model,clust.test[,1:4],
+                             type="class")
 ```
 
-## Solution Exercise 10   #
+### Confusion matrix
 
 ```{r}
+# 11)
 (Table<-table(clust.test$Species ,predict.model.clust))
 ```
 

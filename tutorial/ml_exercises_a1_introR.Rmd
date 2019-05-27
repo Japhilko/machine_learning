@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "ML exercises - basics R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -47,24 +47,28 @@ install.packages("kknn") #5)
 
 ## Exercise: load built-in data
 
-### 1) Load the the built-in dataset `swiss` 
+### Load the the built-in dataset `swiss` 
 <!--
 and answer the following questions:
 -->
-- a - How many observations and variables are available?
-- b - What is the scale level of the variables?
+1) How many observations and variables are available?
+2) What is the scale level of the variables?
 
-### 2) Create an interactive data table
+### Interactive data table 
+
+3) Create an interactive data table
 
 ## Solution: load built-in data
 
 ```{r}
-data(swiss) # 1)
-dim(swiss) # 1a)
-str(swiss) # 1b)
+# 1)
+data(swiss) 
+dim(swiss) 
+str(swiss) 
 ```
 
 ```{r,eval=F}
+# 2)
 DT::datatable(swiss)
 ```
 

@@ -387,7 +387,7 @@ Yacht_Data_Test <- Yacht_Data_Test %>% mutate_all(scale11)
 # tanh activation function
 set.seed(12321)
 Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
-          Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + 
+          Prismatic_Coeff+Len_Disp_Ratio+Beam_Draut_Ratio + 
             Length_Beam_Ratio + Froude_Num, 
                        data = Yacht_Data_Train, 
                        hidden = c(4, 1), 
@@ -395,7 +395,7 @@ Yacht_NN3 <- neuralnet(Residuary_Resist ~ LongPos_COB +
 
 ```
 
-##
+## Training and test error
 
 ```{r}
 ## Training Error
@@ -425,7 +425,7 @@ NN4_Train_SSE <- sum((Yacht_NN4$net.result -
 ```
 
 
-##
+## Test error and preparing a bar plot
 
 <!--
 Regression_NN_Errors
@@ -433,10 +433,11 @@ Regression_NN_Errors
 
 ```{r}
 ## Test Error
-Test_NN4_Output <- compute(Yacht_NN4, Yacht_Data_Test[, 1:6])$net.result
-NN4_Test_SSE <- sum((Test_NN4_Output - Yacht_Data_Test[, 7])^2)/2
+Test_NN4_Output <- compute(Yacht_NN4, 
+                           Yacht_Data_Test[, 1:6])$net.result
+NN4_Test_SSE<-sum((Test_NN4_Output-Yacht_Data_Test[, 7])^2)/2
 
-# Bar plot of results
+# Preparing bar plot of results
 RegNNErr<-tibble(Network=rep(c("NN1","NN2","NN3","NN4"),each=2), 
                      DataSet=rep(c("Train", "Test"), time = 4), 
                      SSE = c(NN1_Train_SSE, NN1_Test_SSE, 
@@ -528,7 +529,7 @@ plot(Yacht_NN2, rep = "best")
 - `RSNNS`
 - `h2o`
 
-
+<!--
 ## Exercise
 
 - Why do we split the Yacht data into a training and test data sets?
@@ -537,6 +538,7 @@ plot(Yacht_NN2, rep = "best")
 - After completing exercise question 1, re-scale the Yacht data. Perform a simple linear regression fitting Residuary_Resist as a function of all other features. Now run a regression neural network (see 1st Regression ANN section). Plot the regression ANN and compare the weights on the features in the ANN to the p-values for the regressors.
 
 - Build your own regression ANN using the scaled Yacht data modifying one hyperparameter. Use ?neuralnet to see the function options. 
+-->
 
 <!--
 Plot your ANN.
@@ -584,7 +586,7 @@ Hab_Data<-read_csv(file=url,col_names=c('Age', 'Operation_Year',
                           'Number_Pos_Nodes','Survival')) 
 ```
 
-##
+## Mutate the Survival variable
 
 ```{r}
 Hab_Data <- Hab_Data%>%
@@ -637,9 +639,9 @@ Hab_Data <- Hab_Data %>%
 ```
 
 
-## 
+## Classification ANNs in the `neuralnet` package...
 
-Classification ANNs in the neuralnet package require that the response feature, in this case Survival, be inputted as a Boolean feature. We modify the feature then run the initial classification ANN.
+- ... require that the response feature, in this case Survival, be inputted as a Boolean feature. We modify the feature then run the initial classification ANN.
 
 ```{r}
 Hab_Data <- Hab_Data %>%
@@ -710,34 +712,28 @@ Hab_NN2 <- neuralnet(Survival ~ Age + Operation_Year +
 ## 2-Hidden Layers, Layer-1 2-neurons, Layer-2, 2-neurons
 
 ```{r}
-
 set.seed(123)
-Hab_NN3<-neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
-                                data = Hab_Data, 
-                                linear.output = FALSE, 
-                                err.fct = 'ce', 
-                                likelihood = TRUE, 
-                                hidden = c(2,2))
+Hab_NN3<-neuralnet(Survival~Age+Operation_Year+
+                     Number_Pos_Nodes, 
+  data = Hab_Data,linear.output = FALSE,err.fct = 'ce',
+  likelihood = TRUE, hidden = c(2,2))
 ```
 
 ## 2-Hidden Layers, Layer-1 1-neuron, Layer-2, 2-neuron
 
 ```{r}
-
 set.seed(123)
-Hab_NN4 <- neuralnet(Survival ~ Age + Operation_Year + Number_Pos_Nodes, 
-                                data = Hab_Data, 
-                                linear.output = FALSE, 
-                                err.fct = 'ce', 
-                                likelihood = TRUE, 
-                                hidden = c(1,2))
+Hab_NN4 <- neuralnet(Survival ~ Age + Operation_Year + 
+          Number_Pos_Nodes,data = Hab_Data,
+          linear.output = FALSE,err.fct = 'ce',
+          likelihood = TRUE,hidden = c(1,2))
 ```
 
 ## Bar plot of results
 
 ```{r}
 
-Class_NN_ICs<-tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"),
+Class_NN_ICs<-tibble('Network'=rep(c("NN1","NN2","NN3","NN4"),
     each = 3),'Metric'=rep(c('AIC', 'BIC', 'ce Error * 100'), 
     length.out = 12),'Value' = c(Hab_NN1$result.matrix[4,1], 
     Hab_NN1$result.matrix[5,1],100*Hab_NN1$result.matrix[1,1],
@@ -750,14 +746,12 @@ Class_NN_ICs<-tibble('Network' = rep(c("NN1", "NN2", "NN3", "NN4"),
 
 
 
-##
+## AIC, BIC, and Cross-Entropy Error
 
-```{r,fig.height=8,fig.width=14}
-Class_NN_ICs %>%
-  ggplot(aes(Network, Value, fill = Metric)) +
-  geom_col(position = 'dodge')  +
-  ggtitle("AIC, BIC, and Cross-Entropy Error of the 
-          Classification ANNs", 
+```{r,fig.height=6,fig.width=14}
+Class_NN_ICs %>%ggplot(aes(Network,Value,fill=Metric)) +
+  geom_col(position = 'dodge')+ggtitle("AIC, BIC, and 
+  Cross-Entropy Error of the Classification ANNs", 
   "Note: ce Error displayed is 100 times its true value")
 ```
 
@@ -785,17 +779,40 @@ Class_NN_ICs %>%
 - `h2o`
 -->
 
-
+<!--
 ## Exercise
 
 1.) Build your own classification ANN using the Hab_Data data set.
 
 2.) The iris data set contains 4 numeric features describing 3 plant species. Think about how we would need to modify the iris data set to prepare it for a classification ANN. Hint, the data set for classification will have 7 total features.
-
-3.)R package nnet has the capacity to build classification ANNs. Install and take a look at the documentation of nnet to see how it compares with neuralnet.
-
+-->
 
 
+## [Exercise neural networks (I)](https://www.r-exercises.com/2017/06/08/neural-networks-exercises-part-1/)
+
+### Create example data
+
+<!--
+Creating the data set on which we want to do a simple regression. 
+-->
+0) The R-package `nnet` has the capacity to build classification ANNs. Install and take a look at the documentation of `nnet` to see how it compares with `neuralnet`.
+
+1) Set the seed to 42, draw 200 numbers from a unified random distribution between -10 and 10 and store them in a vector named `x`. 
+2) Create a vector named `y` containing the value of `sin(x)`. 
+
+<!--
+Neural network are a lot more flexible than most regression algorithms and can fit complex function with ease. The biggest challenge is to find the appropriate network function appropriate to the situation.
+-->
+
+<!--
+A network function is made of three components: the network of neurons, the weight of each connection between neuron and the activation function of each neuron.
+
+3)  For this example, we’ll use a feed-forward neural network and the logistic activation which are the defaults for the package `nnet`. We take one number as input of our neural network and we want one number as the output so the size of the input and output layer are both of one. For the hidden layer, we’ll start with three neurons. It’s good practice to randomize the initial weights, so 
+-->
+
+### Randomize initial weights
+
+3) Create a vector of 10 random values, picked in the interval [-1,1].
 
 <!--
 ## Example
@@ -811,16 +828,70 @@ As you may recall from our discussion of lasso regresion...
 -->
 
 
+## Exercise neural networks (II)
+
+### Split the dataset
+
+4) Neural networks have a strong tendency of overfitting data, they become really good at describing the relationship between the values in the data set, but are not effective with data that wasn’t used to train your model. As a consequence, we need to cross-validate our model. Set the seed to 42, then create a training set containing 75% of the values in your initial data set and a test set containing the rest of your data.
+
+### Create a first model 
+
+5) Load the `nnet` package and use the function `nnet` to create a model. Pass your weights via the `Wts` argument and set `maxit=50`. 
+<!--
+We fit a function which can have   multiple possible output values. 
+-->
+Set `linout=T` and take some time to look at the structure of your model.
+
+
+## Exercise neural networks (III)
+
+### Prediction
+
+6) Predict the output for the test set and compute the RMSE of your predictions. Plot the function sin(x) and then plot your predictions.
+
+### Repeat with different parameters
+
+7) The number of neurons in the hidden layer, and the number of hidden layer used, has a great influence on the effectiveness of your model. Repeat the exercises four to six, but this time use a hidden layer with seven neurons and initiate randomly 22 weights.
+
+## Exercise neural networks (IV)
+
+### Normilze
+
+8) Now let us use neural networks to solve a classification problem, so let’s load the iris data set! It is good practice to normalize your input data to uniformize the behavior of your model over different range of value and have a faster training. Normalize each factor so that they have a mean of zero and a standard deviation of 1, then create your train and test set.
+
+### Create model with `nnet`
+
+9) Use the `nnet()` and use a hidden layer of ten neurons to create your model. We want to fit a function which have a finite amount of value as output. To do so, set the linout argument to true. Look at the structure of your model. With classification problem, the output is usually a factor that is coded as multiple dummy variables, instead of a single numeric value. As a consequence, the output layer have as one less neuron than the number of levels of the output factor.
+
+## Exercise neural networks (V)
+
+### prediction and confusion table
+
+10) Make prediction with the values of the test set.
+ 
+11) Create the confusion table of your prediction and compute the accuracy of the model.
+
+## [What are the advantages and disadvantages of neural networks?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+
+### Advantages: 
+
+- Neural networks (specifically deep NNs) have led to performance breakthroughs for unstructured datasets such as images, audio, and video. Their incredible flexibility allows them to learn patterns that no other ML algorithm can learn.
+
+### Disadvantages: 
+
+- Neural networks require a large amount of training data to converge. It's also difficult to pick the right architecture, and the internal "hidden" layers are incomprehensible.
+
+
+
 ## Additional resources and further reading
 
 - [Neural networks with R](https://edu.kpfu.ru/pluginfile.php/419285/mod_resource/content/2/neural-networks-r.pdf)
 
-## [What are the advantages and disadvantages of neural networks?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+- [How to handle inbalanced classes](https://elitedatascience.com/imbalanced-classes)
 
-Advantages: Neural networks (specifically deep NNs) have led to performance breakthroughs for unstructured datasets such as images, audio, and video. Their incredible flexibility allows them to learn patterns that no other ML algorithm can learn.
+- [Free data science resources](https://elitedatascience.com/data-science-resources#foundational-skills)
 
-Disadvantages: However, they require a large amount of training data to converge. It's also difficult to pick the right architecture, and the internal "hidden" layers are incomprehensible.
-
+<!--
 ## [](https://datascienceplus.com/fitting-neural-network-in-r/)
 
 ```{r}
@@ -874,10 +945,4 @@ nn <- neuralnet(f,data=train_,hidden=c(5,3),linear.output=T)
 plot(nn)
 ```
 
-
-## Links
-
-- [How to handle inbalanced classes](https://elitedatascience.com/imbalanced-classes)
-
-- [Free data science resources](https://elitedatascience.com/data-science-resources#foundational-skills)
-
+-->

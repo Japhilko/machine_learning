@@ -463,16 +463,22 @@ hyper_grid %>%
 - Our OOB RMSE ranges between 26,000-27,000. 
 - Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
 - We get a full range of `mtry` values showing up in our top 10 - not over influential.
+<!--
+in their original columnar form, 
+-->
 
 
+<!--
 ##
 
-- Random forests perform quite well with categorical variables in their original columnar form, it is worth checking to see if alternative encodings can increase performance. 
+- Random forests perform well with categorical variables 
+- It is worth checking to see if alternative encodings can increase performance. 
 - E.g., the following one-hot encodes our categorical variables which produces 353 predictor variables versus the 80 we were using above. 
 - We adjust `mtry` to search from 50-200 random predictor variables at each split and re-perform our grid search. 
 - The results suggest that one-hot encoding does not improve performance.
+-->
 
-## hyperparameter grid search - categorical variables
+## Hyperparameter grid search - categorical variables
 
 ```{r}
 # one-hot encode our categorical variables
@@ -606,3 +612,7 @@ head(pred_h2o)
 <!--
 To learn more I would start with the following resources listed in order of complexity
 -->
+
+## Links 
+
+- [Rpubs tutorial - random forests](https://rpubs.com/nuhorchak/randomForest)

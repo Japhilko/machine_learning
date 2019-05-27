@@ -30,7 +30,10 @@ knitr::opts_chunk$set(echo = TRUE,eval=T)
 1
 -->
 
-1) Read in the `adult.csv` file with `header=FALSE`. Store this in df. Use `str()` command to see the dataframe. Download the Data from [**here**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult.csv)
+### Download and import example data
+
+1) Download the Data from [**here**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult.csv)
+and read in the `adult.csv` file with `header=FALSE`. Store this in df. Use `str()` command to see the dataframe. 
 <!--
 2
 
@@ -40,27 +43,22 @@ You are given the meta_data that goes with the CSV.
 <!--
 As a side note, it is always best practice to use that to match and see if all the columns are read in correctly.
 -->
-3) Use the table command to get the distribution of the `class` feature.
-4) Change the class column to binary.
+
+### Get an overview of the data
+
+3) Use the `table` command to get the distribution of the `class` feature.
+4) Make a binary variable `class`.
 5) Use the `cor()` command to see the corelation of all the numeric and integer columns including the class column. 
 <!--
 Remember that numbers close to 1 means high corelation and number close to 0 means low. 
 This will give you a rough idea for feature selection
 -->
-6) Split the dataset into Train and Test sample. You may use `sample.split()` and use the ratio as 0.7 and set the seed to be 1000. Make sure to install and load `caTools` package.
-7) Check the number of rows of Train and Test
-8) We are ready to use decision tree in our dataset. Load the package `rpart` and `rpart.plot` 
-<!--
-If it is not installed, then use the `install.packages()` commmand.
--->
-9) Use `rpart` to build the decision tree on the Train set. Include all features. Store this model in `dec`
-10) Use `prp()` to plot the decision tree. 
-<!--
-If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
--->
 
+## Solution: Download and import (I)
+<!--
 ## Solution: random forests 
-
+### Download
+-->
 ### Exercise 1
 
 ```{r}
@@ -88,22 +86,30 @@ str(df)
 ##  $ V13: int  40 13 40 40 40 40 16 45 50 40 ...
 ##  $ V14: Factor w/ 41 levels " ?"," Cambodia",..: 39 39 39 39 6 39 23 39 39 39 ...
 ##  $ V15: Factor w/ 2 levels " <=50K"," >50K": 1 1 1 1 1 1 1 2 2 2 ...
--->
+
 
 ## Solution: random forests 
 
 ### Exercise 2  
 
+-->
+
+## ## Solution: Download and import (II)
+
+### Exercise 2
 
 ```{r}
-colnames(df)=c("age","workclass","fnlwgt","education",
+colnames(df) <- c("age","workclass","fnlwgt","education",
                "education-num","marital-status","occupation",
                "relationhip","race","sex","capital-gain",
                "capital-loss","hours-per-week",
                "native-country","class")
 ```
 
-### 3
+
+## Solution: Get overview
+
+### Exercise 3
 
 
 ```{r}
@@ -116,15 +122,13 @@ table(df$class)
 ##  12097   3819
 -->
 
-### 4
+### Exercise 4
 
 ```{r}
-df$class=ifelse(df$class==" >50K", 1, 0)
+df$class <- ifelse(df$class==" >50K", 1, 0)
 ```
 
-### 5
-
-
+### Exercise 5
 
 ```{r}
 cor(df[,c(1,3,5,11,12,13,15)])
@@ -150,6 +154,29 @@ cor(df[,c(1,3,5,11,12,13,15)])
 ## hours-per-week   0.05439109     1.00000000  0.22544319
 ## class            0.15366554     0.22544319  1.00000000
 -->
+
+
+
+
+## [Exercise: random forests](https://www.r-exercises.com/2016/12/29/intermediate-tree-1/) 
+
+### Split the dataset 
+
+6) Split the dataset into Train and Test sample. You may use `caTools::sample.split()` and use the ratio as 0.7 and set the seed to be 1000. 
+<!--
+Make sure to install and load `caTools` package.
+-->
+7) Check the number of rows of Train and Test
+8) We are ready to use decision tree in our dataset. Load the package `rpart` and `rpart.plot` 
+<!--
+If it is not installed, then use the `install.packages()` commmand.
+-->
+9) Use `rpart` to build the decision tree on the Train set. Include all features. Store this model in `dec`
+10) Use `prp()` to plot the decision tree. 
+<!--
+If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
+-->
+
 
 
 
@@ -246,7 +273,7 @@ par(mar = rep(2, 4))
 pred_dec=predict(dec,newdata = Test,type="class")
 ```
 
-2)
+### Exercise 2
 
 ```{r,eval=F}
 table(Test$class,pred_dec)
@@ -259,7 +286,7 @@ table(Test$class,pred_dec)
 ##   1  400  364
 -->
 
-3)
+### Exercise 3
 
 ```{r}
 (2345+364)/(2345+364+400+74)
@@ -269,7 +296,7 @@ table(Test$class,pred_dec)
 ## [1] 0.8510839
 -->
 
-4)
+### Exercise 4
 
 ```{r,eval=F}
 mean(Test$class!=pred_dec)
@@ -278,7 +305,7 @@ mean(Test$class!=pred_dec)
 <!--
 ## [1] 0.1489161
 -->
-5)
+### Exercise 5
 
 ```{r,eval=F}
 length(Test$class)
@@ -300,19 +327,19 @@ table(Test$class,base)
 ##   1  764
 -->
 
-6)
+### Exercise 6
 
 0.54
 
 
-7)
+### Exercise 7
 
 ```{r,eval=F}
 pred_dec_reg=predict(dec,newdata = Test,type="prob")
 ```
 
 
-8)
+### Exercise 8
 
 ```{r,eval=F}
 pred=prediction(pred_dec_reg[,2],Test$class)
@@ -321,11 +348,16 @@ plot(perf)
 ```
 
 
-9)
+### Exercise 9
 
 ```{r,eval=F}
 plot(perf,colorize=TRUE)
-plot of chunk unnamed-chunk-1
 ```
 
 10) It is a good model. The initial accuracy is 0.85 which is pretty good. The ROC curve is also l
+
+
+<!--
+https://www.r-exercises.com/2017/01/05/intermediate-tree-2/
+https://github.com/eugeneyan/Statistical-Learning/blob/master/Chapter%208%20Exercises.R
+-->

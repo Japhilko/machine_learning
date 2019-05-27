@@ -56,7 +56,7 @@ https://www.analyticsvidhya.com/blog/2016/02/complete-tutorial-learn-data-scienc
 ## The Idea
 
 - There are many methodologies for constructing regression trees but one of the oldest is the [**classification and regression tree**](https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/) (CART) approach by Breiman et al. (1984). 
-- Basic regression trees partition a data set into smaller subgroups and then fit a simple constant for each observation in the subgroup. 
+- Basic [**regression trees partition a data set into smaller subgroups**](https://towardsdatascience.com/the-complete-guide-to-decision-trees-28a4e3c7be14) and then fit a simple constant for each observation in the subgroup. 
 - The partitioning is achieved by successive binary partitions (aka recursive partitioning) based on the different predictors. 
 - The constant to predict is based on the average response values for all observations that fall in that subgroup.
 
@@ -95,23 +95,6 @@ library(rpart)
 https://www.guru99.com/r-decision-trees.html
 -->
 
-## Regression Trees - preparation
-
-- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
-
-```{r}
-library(rsample)     # data splitting 
-library(dplyr)       # data wrangling
-library(rpart)       # performing regression trees
-library(rpart.plot)  # plotting regression trees
-library(ipred)       # bagging
-library(caret)       # bagging
-```
-
-```{r,echo=F,eval=F}
-install.packages("rpart.plot")
-```
-
 ## Model foundations 
 
 - This simple example can be generalized 
@@ -143,6 +126,25 @@ $$
 - Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. 
 - This process is continued until some stopping criterion is reached. 
 - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
+
+
+## Regression Trees - preparation
+
+- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
+
+```{r}
+library(rsample)     # data splitting 
+library(dplyr)       # data wrangling
+library(rpart)       # performing regression trees
+library(rpart.plot)  # plotting regression trees
+library(ipred)       # bagging
+library(caret)       # bagging
+```
+
+```{r,echo=F,eval=F}
+install.packages("rpart.plot")
+```
+
 
 ## The Ames Housing data 
 
@@ -486,7 +488,7 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 ```
 
 
-## [Exercise - `rpart` Kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-exercises/)
+## [Exercise: `rpart` Kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-exercises/)
 
 ### Consider the Kyphosis data frame
 
@@ -508,7 +510,7 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 6) Predict the kyphosis presence for the other 21 observations.
 7) Which is the misclassification rate (prediction error)
 
-## Exercise `rpart` -  `iris`
+## Exercise: `rpart` `iris`
 
 ### Consider the `iris` data frame
 
@@ -549,12 +551,22 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 - If it is smooth, the piecewise-constant surface can approximate it arbitrarily closely (with enough leaves).
 - There are fast, reliable algorithms to learn these trees.
 
-## Weaknesses of rgression trees
+## Weaknesses of regression trees
 
 - Single regression trees have high variance, resulting in unstable predictions (an alternative subsample of training data can significantly change the terminal nodes).
 - Due to the high variance single regression trees have poor predictive accuracy.
 
+<!--
 
+## [What are the advantages and disadvantages of decision trees?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+
+Advantages: Decision trees are easy to interpret, nonparametric (which means they are robust to outliers), and there are relatively few parameters to tune.
+
+Disadvantages: Decision trees are prone to be overfit. 
+
+- This can be addressed by ensemble methods like random forests or boosted trees.
+
+-->
 
 
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
@@ -872,7 +884,7 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
 - [Video on tree based methods](https://www.youtube.com/watch?v=6ENTbK3yQUQ)
 
-
+- [An example of practical machine learning using R](https://rstudio-pubs-static.s3.amazonaws.com/64455_df98186f15a64e0ba37177de8b4191fa.html)
 
 <!--
 https://www.researchgate.net/figure/A-simple-example-of-visualizing-gradient-boosting_fig5_326379229

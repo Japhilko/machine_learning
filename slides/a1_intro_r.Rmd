@@ -304,9 +304,9 @@ install.packages("datasets.load")
 
 ![](figure/kyphosis_helppage.PNG)
 
-## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+## Excursus [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
 
-- Oben rechts befindet sich ein Button Addins 
+- In the upper right corner there is a button Addins
 
 ![](figure/addins.PNG)
 
@@ -314,17 +314,31 @@ install.packages("datasets.load")
 
 
 
+## How to get help
+
+-  I use [**duckduckgo:**](figure/duckduckgo.PNG)
+
+```
+R-project + "what I want to know" 
+```
+-  this works of course for all search engines!
+
+
+![](figure/duckduckgo.PNG)
+
 
 ## Exercise: load built-in data
 
-### 1) Load the the built-in dataset `swiss` 
+### Load the the built-in dataset `swiss` 
 <!--
 and answer the following questions:
 -->
-- a - How many observations and variables are available?
-- b - What is the scale level of the variables?
+1) How many observations and variables are available?
+2) What is the scale level of the variables?
 
-### 2) Create an interactive data table
+### Interactive data table 
+
+3) Create an interactive data table
 
 
 ## The R-package `data.table`
@@ -343,18 +357,6 @@ library(data.table)
 (airq <- data.table(airquality))
 ```
 
-
-## How to get help
-
--  I use [**duckduckgo:**](figure/duckduckgo.PNG)
-
-```
-R-project + "what I want to know" 
-```
--  this works of course for all search engines!
-
-
-![](figure/duckduckgo.PNG)
 
 
 ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
