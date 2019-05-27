@@ -21,24 +21,26 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,eval=F)
+knitr::opts_chunk$set(echo = TRUE,eval=T)
 ```
 
-## [](https://www.r-exercises.com/2016/12/29/intermediate-tree-1/)
+## [Exercise: random forests](https://www.r-exercises.com/2016/12/29/intermediate-tree-1/)
 
 <!--
 1
 -->
 
-1) Read in the `adult.csv` file with `header=FALSE`. Store this in df. Use `str()` command to see the dataframe. Download the Data from [here](http://www.r-exercises.com/wp-content/uploads/2016/11/adult.csv)
+1) Read in the `adult.csv` file with `header=FALSE`. Store this in df. Use `str()` command to see the dataframe. Download the Data from [**here**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult.csv)
 <!--
 2
+
+You are given the meta_data that goes with the CSV.
 -->
-2) You are given the meta_data that goes with the CSV. You can download this [**here**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult_names.txt). Use that to add the column names for your dataframe. Notice the df is ordered going from V1,V2,V3,... and so on. 
+2) Get the column names from the [**meta data**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult_names.txt) and add them to the data frame. Notice the df is ordered - V1,V2,V3,... and so on. 
 <!--
 As a side note, it is always best practice to use that to match and see if all the columns are read in correctly.
 -->
-3) Use the table command and print out the distribution of the class feature.
+3) Use the table command to get the distribution of the `class` feature.
 4) Change the class column to binary.
 5) Use the `cor()` command to see the corelation of all the numeric and integer columns including the class column. 
 <!--
@@ -52,16 +54,20 @@ This will give you a rough idea for feature selection
 If it is not installed, then use the `install.packages()` commmand.
 -->
 9) Use `rpart` to build the decision tree on the Train set. Include all features. Store this model in `dec`
-10) Use the `prp()` function to plot the decision tree. If you get any error use `par(mar = rep(2, 4))` before the prp() command
+10) Use `prp()` to plot the decision tree. 
+<!--
+If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
+-->
 
+## Solution: random forests 
 
-## Solution
-
-
-### 1
+### Exercise 1
 
 ```{r}
-df=read.csv("C:/Contract/adult.csv",header=FALSE)
+l1 <- "http://www.r-exercises.com/wp-content"
+l2 <-"/uploads/2016/11/adult.csv"
+link <- paste0(l1,l2)
+df <- read.csv(link,header=FALSE)
 str(df)
 ```
 
@@ -84,13 +90,17 @@ str(df)
 ##  $ V15: Factor w/ 2 levels " <=50K"," >50K": 1 1 1 1 1 1 1 2 2 2 ...
 -->
 
+## Solution: random forests 
 
-
-### 2  
+### Exercise 2  
 
 
 ```{r}
-colnames(df)=c("age","workclass","fnlwgt","education","education-num","marital-status","occupation","relationhip","race","sex","capital-gain","capital-loss","hours-per-week","native-country","class")
+colnames(df)=c("age","workclass","fnlwgt","education",
+               "education-num","marital-status","occupation",
+               "relationhip","race","sex","capital-gain",
+               "capital-loss","hours-per-week",
+               "native-country","class")
 ```
 
 ### 3
@@ -147,6 +157,7 @@ cor(df[,c(1,3,5,11,12,13,15)])
 
 ```{r}
 set.seed(1000)
+library(caTools)
 split=sample.split(df$class, SplitRatio=0.8)
 Train=df[split==TRUE,]
 Test=df[split==FALSE,]
@@ -210,8 +221,7 @@ Use the prediction(), performance() and plot() command to print the ROC curve. U
 
 ## [Solution](https://www.r-exercises.com/2017/01/05/intermediate-tree-2-2/)
 
-```{r}
-df=read.csv("C:/Contract/adult.csv",header=FALSE)
+```{r,eval=F}
 library(caTools)
 colnames(df)=c("age","workclass","fnlwgt","education","education-num","marital-status","occupation","relationhip","race","sex","capital-gain","capital-loss","hours-per-week","native-country","class")
 df$class=ifelse(df$class==" >50K", 1, 0)
@@ -232,13 +242,13 @@ par(mar = rep(2, 4))
 1)
 
 
-```{r}
+```{r,eval=F}
 pred_dec=predict(dec,newdata = Test,type="class")
 ```
 
 2)
 
-```{r}
+```{r,eval=F}
 table(Test$class,pred_dec)
 ```
 
@@ -261,7 +271,7 @@ table(Test$class,pred_dec)
 
 4)
 
-```{r}
+```{r,eval=F}
 mean(Test$class!=pred_dec)
 ```
 
@@ -270,14 +280,14 @@ mean(Test$class!=pred_dec)
 -->
 5)
 
-```{r}
+```{r,eval=F}
 length(Test$class)
 ```
 
 <!--
 ## [1] 3183
 -->
-```{r}
+```{r,eval=F}
 base=rep(1,3183)
 table(Test$class,base)
 ```
@@ -297,14 +307,14 @@ table(Test$class,base)
 
 7)
 
-```{r}
+```{r,eval=F}
 pred_dec_reg=predict(dec,newdata = Test,type="prob")
 ```
 
 
 8)
 
-```{r}
+```{r,eval=F}
 pred=prediction(pred_dec_reg[,2],Test$class)
 perf=performance(pred,"tpr","fpr")
 plot(perf)
@@ -313,7 +323,7 @@ plot(perf)
 
 9)
 
-```{r}
+```{r,eval=F}
 plot(perf,colorize=TRUE)
 plot of chunk unnamed-chunk-1
 ```
