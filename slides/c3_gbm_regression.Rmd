@@ -26,6 +26,17 @@ timeconsuming <- F
 ```
 
 
+## Gradient Boosting Machines (GBMs)
+
+- GBMs are extremely popular, successful across many domains and one of the leading methods for winning [**Kaggle competitions**](https://www.kaggle.com/competitions). 
+- GBMs build an ensemble of flat and weak successive trees with each tree learning and improving on the previous. 
+- When combined, these trees produce a powerful “committee” often hard to beat with other algorithms. 
+
+- The following slides are based on UC Business Analytics R Programming Guide on [**GBM regression**](http://uc-r.github.io/gbm_regression)
+
+
+
+
 <!--
 ## [Gradient boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
 
@@ -60,44 +71,18 @@ The latter two papers introduced the view of boosting algorithms as iterative fu
 
 -->
 
-## Gradient Boosting Machines (GBMs)
+## The idea of GBMs
 
-- The following slides are based on UC Business Analytics R Programming Guide on [**GBM regression**](http://uc-r.github.io/gbm_regression)
+- Many machine learning models are founded on a single predictive model (i.e. linear regression, penalized models, naive bayes, svm). 
+- Other approaches (bagging, random forests) are built on the idea of building an ensemble of models where each individual model predicts the outcome and the ensemble simply averages the predicted values. 
+<!--
+- The family of boosting methods is based on a different, constructive strategy of ensemble formation.
+-->
+- The idea of boosting is to add models to the ensemble sequentially. 
+- At each particular iteration, a new weak, base-learner model is trained with respect to the error of the whole ensemble learnt so far.
 
+![Sequential ensemble approach](figure/boosted-trees-process.png){ height=70% }
 
-- GBMs are extremely popular, successful across many domains and one of the leading methods for winning [**Kaggle competitions**](https://www.kaggle.com/competitions). 
-- GBMs build an ensemble of flat and weak successive trees with each tree learning and improving on the previous. 
-- When combined, these trees produce a powerful “committee” often hard to beat with other algorithms. 
-
-
-
-```{r}
-library(rsample)      # data splitting 
-library(gbm)          # basic implementation
-library(xgboost)      # a faster implementation of gbm
-library(caret)        # aggregator package - machine learning
-library(pdp)          # model visualization
-library(ggplot2)      # model visualization
-library(lime)         # model visualization
-```
-
-```{r,eval=F,echo=F}
-install.packages("gbm")
-install.packages("lime")
-install.packages("vtreat")
-```
-
-
-## The dataset
-
-- Again, we use the Ames housing dataset 
-
-```{r}
-set.seed(123)
-ames_split <- initial_split(AmesHousing::make_ames(),prop=.7)
-ames_train <- training(ames_split)
-ames_test  <- testing(ames_split)
-```
 
 <!--
 ## Important note
@@ -113,33 +98,41 @@ ames_test  <- testing(ames_split)
 
 ## Advantages of GBMs
 
--    GBMs often provides predictive accuracy that cannot be beat.
--    Flexibility - optimization on various loss functions possible and several hyperparameter tuning options.
+### Predictive accuracy
+
+-    GBMs often provide predictive accuracy that cannot be beat.
+
+###    Flexibility 
+- optimization on various loss functions possible and several hyperparameter tuning options.
 <!--
  that make the function fit very flexible
 -->
--    No data pre-processing required - often works great with categorical and numerical values as is.
--    Handles missing data - imputation not required.
+
+###  No data pre-processing required 
+- often works great with categorical and numerical values as is.
+
+###  Handles missing data 
+
+- imputation not required.
 
 ## Disadvantages of GBMs
 
-- GBMs will continue improving to minimize all errors. This can overemphasize outliers and cause overfitting. Use cross-validation to neutralize.
-- Computationally expensive - GBMs often require many trees (>1000) which can be time and memory exhaustive.
+### GBMs oeremphasize outliers 
+
+- This causes overfitting.
+- GBMs will continue improving to minimize all errors.  Use cross-validation to neutralize.
+
+
+### Computationally expensive
+
+- GBMs often require many trees (>1000) which can be time and memory exhaustive.
 -    The high flexibility results in many parameters that interact and influence heavily the behavior of the approach (number of iterations, tree depth, regularization parameters, etc.). 
 - This requires a large grid search during tuning.
+
+### Interpretability
+
 - GBMs are less interpretable, but this is easily addressed with various tools (variable importance, partial dependence plots, `LIME`, etc.).
 
-## The idea of GBMs
-
-- Many machine learning models are founded on a single predictive model (i.e. linear regression, penalized models, naive bayes, svm). 
-- Other approaches (bagging, random forests) are built on the idea of building an ensemble of models where each individual model predicts the outcome and the ensemble simply averages the predicted values. 
-<!--
-- The family of boosting methods is based on a different, constructive strategy of ensemble formation.
--->
-- The idea of boosting is to add models to the ensemble sequentially. 
-- At each particular iteration, a new weak, base-learner model is trained with respect to the error of the whole ensemble learnt so far.
-
-![Sequential ensemble approach](figure/boosted-trees-process.png){ height=70% }
 
 ## Important concepts
 
@@ -155,9 +148,9 @@ ames_test  <- testing(ames_split)
 
 ## Training weak models
 
-- A weak model is one whose error rate is only slightly better than random guessing. 
+- A weak model has an error rate only slightly better than random guessing. 
 - The idea behind boosting is that each sequential model builds a simple weak model to slightly improve the remaining errors. 
-- Shallow trees represent a weak learner - trees with only 1-6 splits are used. 
+- Shallow trees represent weak learner - trees with only 1-6 splits. 
 
 ### Benefits of combining many weak models:
 
@@ -262,7 +255,7 @@ $$
 
 ## Stochastic gradient descent
 
-![Stochastic gradient descent](figure/stochastic_gradient_descent.png)
+![Stochastic gradient descent](figure/stochastic_gradient_descent.png){height=80%}
 
 
 ## Tuning GBM
@@ -272,7 +265,7 @@ $$
 
 ### Number of trees
 
-- GBMs often require many trees; however, unlike random forests GBMs can overfit so the goal is to find the optimal number of trees that minimize the loss function of interest with cross validation.
+- GBMs often require many trees; unlike random forests GBMs can overfit so the goal is to find the optimal number of trees that minimize the loss function of interest with cross validation.
 
 ## Tuning parameters
 
@@ -295,6 +288,37 @@ $$
 - Controls if a fraction of the available training observations is used. 
 - Using less than 100% of the training observations means you are implementing [**stochastic gradient descent**](https://en.wikipedia.org/wiki/Stochastic_gradient_descent). 
 - This can help to minimize overfitting and keep from getting stuck in a local minimum or plateau of the loss function gradient.
+
+## The necessary packages 
+
+```{r necpackagesgbm}
+library(rsample)      # data splitting 
+library(gbm)          # basic implementation
+library(xgboost)      # a faster implementation of gbm
+library(caret)        # aggregator package - machine learning
+library(pdp)          # model visualization
+library(ggplot2)      # model visualization
+library(lime)         # model visualization
+```
+
+```{r,eval=F,echo=F}
+install.packages("gbm")
+install.packages("lime")
+install.packages("vtreat")
+```
+
+
+## The dataset
+
+- Again, we use the Ames housing dataset 
+
+```{r}
+set.seed(123)
+ames_split <- initial_split(AmesHousing::make_ames(),prop=.7)
+ames_train <- training(ames_split)
+ames_test  <- testing(ames_split)
+```
+
 
 ## Package implementation
 
@@ -491,17 +515,13 @@ random_ames_train <- ames_train[random_index, ]
 for(i in 1:nrow(hyper_grid)) {
   set.seed(123)
   gbm.tune <- gbm(
-    formula = Sale_Price ~ .,
-    distribution = "gaussian",
-    data = random_ames_train,
-    n.trees = 5000,
+    formula = Sale_Price ~ .,distribution = "gaussian",
+    data = random_ames_train,n.trees = 5000,
     interaction.depth = hyper_grid$interaction.depth[i],
     shrinkage = hyper_grid$shrinkage[i],
     n.minobsinnode = hyper_grid$n.minobsinnode[i],
     bag.fraction = hyper_grid$bag.fraction[i],
-    train.fraction = .75,
-    n.cores = NULL, # will use all cores by default
-    verbose = FALSE
+    train.fraction = .75,n.cores = NULL,verbose = FALSE
   )
   # add min training error and trees to grid
   hyper_grid$optimal_trees[i] <- which.min(gbm.tune$valid.error)
@@ -619,7 +639,7 @@ the change in the predicted response variable is plotted as we vary each predict
 - The results show that most observations follow a common trend as `Gr_Liv_Area` increases; 
 - the centered ICE plot highlights a few observations that deviate from the common trend.
 
-## 
+## First ICE curve
 
 ```{r}
 ice1 <- gbm.fit.final %>%
@@ -634,7 +654,7 @@ ice1 <- gbm.fit.final %>%
   scale_y_continuous(labels = scales::dollar)
 ```
 
-##
+## Second ICE curve
 
 ```{r,eval=F}
 ice2 <- gbm.fit.final %>%
@@ -644,12 +664,10 @@ ice2 <- gbm.fit.final %>%
     grid.resolution = 100,
     ice = TRUE
     ) %>%
-  autoplot(rug = TRUE, train = ames_train, alpha = .1, center = TRUE) +
-  ggtitle("Centered") +
+  autoplot(rug = TRUE, train = ames_train, alpha = .1, 
+           center = TRUE) +  ggtitle("Centered") +
   scale_y_continuous(labels = scales::dollar)
 ```
-
-## 
 
 ```{r,echo=F}
 ice2 <- gbm.fit.final %>%
@@ -704,7 +722,7 @@ plot_features(explanation)
 
 ## Predicting
 
-Once you have decided on a final model you will likely want to use the model to predict on new observations. Like most models, we simply use the predict function; however, we also need to supply the number of trees to use (see ?predict.gbm for details). We see that our RMSE for our test set is very close to the RMSE we obtained on our best gbm model.
+Once you have decided on a final model you will likely want to use the model to predict on new observations. Like most models, we simply use the predict function; we also need to supply the number of trees to use (see ?predict.gbm for details). We see that our RMSE for our test set is very close to the RMSE we obtained on our best gbm model.
 
 ```{r}
 # predict values for test data
@@ -732,7 +750,7 @@ Features include:
 ## Basic implementation
 
 - `XGBoost` only works with matrices that contain all numeric variables; consequently, we need to one hot encode our data. There are different ways to do this in R (i.e. `Matrix::sparse.model.matrix`, `caret::dummyVars`) but here we will use the `vtreat` package. 
-- `vtreat` is a robust package for data prep and helps to eliminate problems caused by missing values, novel categorical levels that appear in future data sets that were not in the training data, etc. However, vtreat is not very intuitive. 
+- `vtreat` is a robust package for data prep and helps to eliminate problems caused by missing values, novel categorical levels that appear in future data sets that were not in the training data, etc. `vtreat` is not very intuitive. 
 
 
 <!--
@@ -825,11 +843,11 @@ load("../data/ml_rf_xgb.fit1.RData")
 # get number of trees that minimize error
 xgb.fit1$evaluation_log %>%
   dplyr::summarise(
-    ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
-    rmse.train   = min(train_rmse_mean),
-    ntrees.test  = which(test_rmse_mean == min(test_rmse_mean))[1],
-    rmse.test   = min(test_rmse_mean)
-  )
+  ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
+  rmse.train= min(train_rmse_mean),
+  ntrees.test=which(test_rmse_mean==min(test_rmse_mean))[1],
+  rmse.test   = min(test_rmse_mean)
+)
 ```
 
 ## Plot error vs number trees
@@ -908,8 +926,8 @@ hyper_grid <- expand.grid(
   min_child_weight = c(1, 3, 5, 7),
   subsample = c(.65, .8, 1), 
   colsample_bytree = c(.8, .9, 1),
-  optimal_trees = 0,               # a place to dump results
-  min_RMSE = 0                     # a place to dump results
+  optimal_trees = 0,# a place to dump results
+  min_RMSE = 0# a place to dump results
 )
 
 nrow(hyper_grid)
@@ -928,14 +946,14 @@ xgb.fit3 <- xgb.cv(
   nfold = 5,
   objective = "reg:linear",  # for regression models
   verbose = 0,               # silent,
-  early_stopping_rounds = 10 # stop if no improvement for 10 consecutive trees
+  # stop if no improvement for 10 consecutive trees
+  early_stopping_rounds = 10 
 )
 ```
 
-##
+## assess results
 
 ```{r}
-# assess results
 xgb.fit3$evaluation_log %>%
   dplyr::summarise(
     ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
@@ -946,9 +964,13 @@ xgb.fit3$evaluation_log %>%
 ```
 
 
-##
+## Loop through a `XGBoost` model
 
-Now I apply the same for loop procedure to loop through and apply a XGBoost model for each hyperparameter combination and dump the results in the hyper_grid data frame. Important note: if you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
+- Now I apply the same for loop procedure to loop through and apply a `XGBoost` model for each hyperparameter combination and dump the results in the hyper_grid data frame.
+
+### Important note: 
+
+- if you plan to run this code be prepared to run it before going out to eat or going to bed as it the full search grid took 6 hours to run!
 
 ##
 
@@ -965,18 +987,13 @@ for(i in 1:nrow(hyper_grid)) {
     colsample_bytree = hyper_grid$colsample_bytree[i]
   )
   set.seed(123)
-  # train model
-  xgb.tune <- xgb.cv(
-    params = params,
-    data = features_train,
-    label = response_train,
-    nrounds = 5000,
-    nfold = 5,
-    objective = "reg:linear",  # for regression models
+  xgb.tune <- xgb.cv(params = params,
+    data = features_train,label = response_train,
+    nrounds = 5000, nfold = 5,objective = "reg:linear", 
+    # for regression models
     verbose = 0,               # silent,
-    early_stopping_rounds = 10 # stop if no improvement for 10 consecutive trees
+    early_stopping_rounds = 10 #stop if no improvement for 10 consecutive trees
   )
-  
   # add min training error and trees to grid
   hyper_grid$optimal_trees[i] <- which.min(xgb.tune$evaluation_log$test_rmse_mean)
   hyper_grid$min_RMSE[i] <- min(xgb.tune$evaluation_log$test_rmse_mean)
@@ -1003,7 +1020,8 @@ hyper_grid %>%
 
 ##
 
-After assessing the results you would likely perform a few more grid searches to hone in on the parameters that appear to influence the model the most. In fact, here is a link to a great blog post that discusses a strategic approach to tuning with xgboost. However, for brevity, we’ll just assume the top model in the above search is the globally optimal model. Once you’ve found the optimal model, we can fit our final model with xgb.train.
+- After assessing the results you would likely perform a few more grid searches to hone in on the parameters that appear to influence the model the most. In fact, here is a link to a great blog post that discusses a strategic approach to tuning with xgboost. 
+- We’ll just assume the top model in the above search is the globally optimal model. Once you’ve found the optimal model, we can fit our final model with xgb.train.
 
 ```{r}
 # parameter list
