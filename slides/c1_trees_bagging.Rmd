@@ -57,7 +57,7 @@ https://www.analyticsvidhya.com/blog/2016/02/complete-tutorial-learn-data-scienc
 
 - There are many methodologies for constructing regression trees but one of the oldest is the [**classification and regression tree**](https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/) (CART) approach by Breiman et al. (1984). 
 - Basic [**regression trees partition a data set into smaller subgroups**](https://towardsdatascience.com/the-complete-guide-to-decision-trees-28a4e3c7be14) and then fit a simple constant for each observation in the subgroup. 
-- The partitioning is achieved by successive binary partitions (aka recursive partitioning) based on the different predictors. 
+- The partitioning is achieved by successive [**binary partitions**](https://en.wikipedia.org/wiki/Binary_space_partitioning) (aka [recursive partitioning](https://en.wikipedia.org/wiki/Recursive_partitioning)) based on the different predictors. 
 - The constant to predict is based on the average response values for all observations that fall in that subgroup.
 
 
@@ -75,9 +75,13 @@ Decision trees model data as a "tree" of hierarchical branches. They make branch
 
 Due to their branching structure, decision trees can easily model nonlinear relationships.
 
-- Let's say for Single Family homes, larger lots command higher prices,
-- and for apartments, smaller lots command higher prices (i.e. it's a proxy for urban / rural).
- -   This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term
+### Example
+
+- For single family homes (larger lots) higher prices,
+- and for apartments, (smaller lots) also higher prices (because here it's a proxy for urban / rural).
+
+
+This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term
 
 <!--
 (i.e. you can anticipate it ahead of time).
@@ -224,7 +228,7 @@ m1
 
 
 
-## Steps of the splits explained
+## Steps of the splits (m1) - explained
 
 <!--
 - Once we’ve fit our model we can look at the `m1` output. 
@@ -335,7 +339,7 @@ plotcp(m2);abline(v = 12, lty = "dashed")
 
 ## Automated tuning by default
 
-- `rpart` is performing some automated tuning by default, with an optimal subtree of 11 splits, 12 terminal nodes, and a cross-validated error of 0.272 (note that this error is equivalent to the PRESS statistic but not the MSE). 
+- `rpart` is performing some automated tuning by default, with an optimal subtree of 11 splits, 12 terminal nodes, and a cross-validated error of 0.272 (note that this error is equivalent to the predicted residual error sum of squares statistic ([**PRESS**](https://en.wikipedia.org/wiki/PRESS_statistic))  but not the MSE). 
 - We can perform additional tuning to try improve model performance.
 
 ## The output `cptable`
@@ -425,7 +429,7 @@ for (i in 1:nrow(hyper_grid)) {
 
 ## A function to extract the minimum error
 
-- We create a function to extract the minimum error associated with the optimal cost complexity $\alpha$ value for each model. 
+- We create functions to extract the minimum error associated with the optimal cost complexity $\alpha$ value for each model. 
 
 ```{r}
 # function to get optimal cp
@@ -458,6 +462,12 @@ hyper_grid %>%
   top_n(-5, wt = error)
 ```
 
+## Exercise
+
+### Apply the final optimal model
+
+### Predict on our test dataset
+
 
 ## The final optimal model
 
@@ -473,7 +483,7 @@ optimal_tree <- rpart(formula = Sale_Price ~ .,
     )
 ```
 
-### Predict on our test set:
+### Predict on our test dataset:
 
 ```{r}
 pred <- predict(optimal_tree, newdata = ames_test)
@@ -621,13 +631,13 @@ http://topepo.github.io/caret/miscellaneous-model-functions.html#bagging-1
 
 ## Train bagged model
 
-- We see that our initial estimate error is close to 3000 Dollar less than the test error we achieved with our single optimal tree (36543 vs. 39145)
-
 ```{r}
 set.seed(123)
 (bagged_m1 <- bagging(formula = Sale_Price ~ .,
   data    = ames_train,coob= TRUE))
 ```
+
+- We see that our initial estimate error is close to 3000 Dollar less than the test error we achieved with our single optimal tree (36543 vs. 39145)
 
 ## Things to note typically
 

@@ -94,3 +94,12 @@ round(exp(diff(log(x))), 1)
 x <- runif(8) #1)
 round(exp(diff(log(x))), 1) #2) and 3)
 ```
+
+<!--
+Exercise cross validation
+https://www.r-exercises.com/2017/09/15/applying-machine-learning-algorithms-exercises/
+
+Applying machine learning algorithms – exercises: solutions
+
+https://www.r-exercises.com/2017/11/28/machine-learning-with-h2o-part-3-exercises/
+-->

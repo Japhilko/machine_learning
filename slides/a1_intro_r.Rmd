@@ -573,6 +573,9 @@ Further possible topics of this section:
 - paste und paste0
 - random number generation
 - the function diag
+
+- mutate
+- purrr::map_dbl
 -->
 
 <!--
