@@ -311,6 +311,9 @@ library(lime)         # model visualization
 install.packages("gbm")
 install.packages("lime")
 install.packages("vtreat")
+install.packages("gbm")
+install.packages("lime")
+install.packages("vtreat")
 ```
 
 
@@ -930,7 +933,6 @@ For example, if we wanted to specify specific values for these parameters we wou
     subsample = .8,
     colsample_bytree = .9
   )
-
 ```
 
 ##
