@@ -15,66 +15,21 @@ output:
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
-knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T,eval=F)
+knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T,eval=T)
 library(knitr)
 ```
 
 ## Random Forests
 
-- [**Bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
-- But bagging suffers from tree correlation, which reduces the overall performance of the model. 
-- Random forests are a modification of bagging that builds a large collection of de-correlated trees 
-- It is a very popular "out-of-the-box" learning algorithm that enjoys good predictive performance. 
+- Thus, [**bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
+- But bagging suffers from [**tree correlation**](https://stats.stackexchange.com/questions/295868/why-is-tree-correlation-a-problem-when-working-with-bagging), which reduces the overall performance of the model. 
+- [**Random forests**](https://en.wikipedia.org/wiki/Random_forest) are a modification of bagging that builds a large collection of de-correlated trees 
+- It is a very popular [**out-of-the-box**](https://en.wikipedia.org/wiki/Out_of_the_box_(feature))) learning algorithm that enjoys good predictive performance. 
 
+<!--
+out of the box - läuft ohne weitere Anpassungen
 
-## Preparation - random forests
-
-- The following slides are based on UC Business Analytics R Programming Guide  on [random forests](http://uc-r.github.io/random_forests)
-
-```{r}
-library(rsample)      # data splitting 
-library(randomForest) # basic implementation
-library(ranger)       # a faster implementation of randomForest
-# an aggregator package for performing many 
-# machine learning models
-library(caret)        
-```
-
-
-```{r,eval=F,echo=F}
-install.packages("ranger")
-install.packages("rsample")
-install.packages("ggplot2")
-install.packages("AmesHousing")
-```
-
-
-## The Ames housing data
-
-```{r}
-set.seed(123)
-ames_data <- AmesHousing::ames_raw
-```
-
-```{r,echo=F}
-if(!("Sale_Price"%in%colnames(ames_data))){
-  ames_data$Sale_Price <- ames_data$SalePrice
-  ames_data <- ames_data[,-which("Sale_Price"%in%colnames(ames_data))]
-}
-```
-
-
-```{r,echo=F,eval=F}
-ames_data$Sale_Price <- ames_data$SalePrice
-ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
-```
-
-```{r}
-ames_split <- rsample::initial_split(ames_data, 
-                                     prop = .7)
-ames_train <- rsample::training(ames_split)
-ames_test  <- rsample::testing(ames_split)
-```
+-->
 
 
 ## Extending the bagging technique
@@ -90,9 +45,9 @@ that reduces the variance of a single tree’s prediction.
 - Trees from different bootstrap samples have similar structure to each other (especially at the top of the tree) due to underlying relationships.
 
 
-## Similar trees
+## Similar trees - tree correlation
 
-- E.g., if we create six decision trees with different bootstrapped samples of the Boston housing data, the top of the trees all have a very similar structure. 
+- If we create six decision trees with different bootstrapped samples of the Boston housing data, the top of the trees all have a very similar structure. 
 - Although there are 15 predictor variables to split on, all six trees have both `lstat` and `rm` variables driving the first few splits.
 
 ![Six decision trees based on different bootstrap samples.](figure/tree-correlation-1.png)
@@ -134,7 +89,7 @@ The basic algorithm for a regression random forest can be generalized:
 8.  |  | Pick the best variable/split-point among the m
 9.  |  | Split the node into two child nodes
 10. |  end
-11. | Use typical tree model stopping criteria to determine when a tree is complete (but do not prune)
+11. | Use tree model stopping criteria to determine: tree complete 
 12. end
 ```
 
@@ -143,47 +98,92 @@ The algorithm randomly selects a bootstrap sample to train and predictors to use
 , tree correlation will be lessened beyond bagged trees.
 -->
 
-## OOB error vs. test set error
+## Characteristics
 
-- Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an out-of-bag (OOB) sample that provides an efficient and reasonable approximation of the test error. 
-- This provides a built-in validation set without any extra work on your part, and you do not need to sacrifice any of your training data to use for validation. 
-- This makes identifying the number of trees required to stablize the error rate during tuning more efficient; 
-- As illustrated below some difference between the OOB error and test error are expected.
+- Since bootstrap samples and sample of features are selected randomly at each split, a more diverse set of trees are produced which tends to lessen tree correlation beyond bagged trees and often dramatically increase predictive power.
+<!--
+- random forests have the least variability in their prediction accuracy when tuning.
+-->
 
-## Random forest out-of-bag error versus validation error
+### out-of-bag error 
+
+- Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an [**out-of-bag**](https://en.wikipedia.org/wiki/Out-of-bag_error) (OOB) sample that provides an efficient and reasonable approximation of the test error. 
+- This provides a built-in validation set without any extra work, and you do not need to sacrifice any of your training data to use for validation. 
+- We are more efficient identifying the number of trees required to stablize the error rate 
+<!--
+during tuning; 
+
+
+## Out-of-bag error vs. validation error
+
+- Some difference between the OOB error and test error are expected.
 
 ![](figure/random_trees_fig1.PNG)
+-->
 
-## Scoring models - metrics
+## Preparation - random forests
 
-- Many packages do not keep track of which observations were part of the OOB sample for a given tree and which were not. 
-- If you are comparing multiple models to one-another, you’d want to score each on the same validation set to compare performance. 
-- It is possible to compute certain metrics such as root mean squared logarithmic error (RMSLE) on the OOB sample, but it is not built in to all packages. 
-- So if you are looking to compare multiple models or use a slightly less traditional loss function you will likely want to still perform cross validation.
+- The following slides are based on UC Business Analytics R Programming Guide  on [**random forests**](http://uc-r.github.io/random_forests)
 
-## Advantages & Disadvantages
+```{r}
+library(rsample)      # data splitting 
+library(randomForest) # basic implementation
+library(ranger)       # a faster implementation of randomForest
+# an aggregator package for performing many 
+# machine learning models
+library(caret)        
+```
 
-### Advantages - random forrests
 
-- Typically have very good performance
-- Remarkably good “out-of-the box” - very little tuning required
-- Built-in validation set - don’t need to sacrifice data for extra validation
-- No pre-processing required
-- Robust to outliers
+```{r,eval=F,echo=F}
+install.packages("ranger")
+install.packages("rsample")
+install.packages("ggplot2")
+install.packages("AmesHousing")
+```
 
-### Disadvantages - random forrests
 
-- Can become slow on large data sets
-- Although accurate, often cannot compete with advanced boosting algorithms
-- Less interpretable
+## The Ames housing data
+
+```{r,eval=F}
+set.seed(123)
+ames_data <- AmesHousing::ames_raw
+```
+
+```{r,echo=F}
+load("../data/ames_data.RData")
+```
+
+
+```{r,echo=F}
+if(!("Sale_Price"%in%colnames(ames_data))){
+  ames_data$Sale_Price <- ames_data$SalePrice
+  ames_data <- ames_data[,-which("Sale_Price"%in%colnames(ames_data))]
+}
+```
+
+
+```{r,echo=F,eval=F}
+ames_data$Sale_Price <- ames_data$SalePrice
+ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
+```
+
+```{r}
+set.seed(123)
+ames_split <- rsample::initial_split(ames_data, 
+                                     prop = .7)
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
+```
+
 
 ## Basic implementation
 
 - There are over 20 random forest packages in R.
-- To demonstrate the basic implementation we illustrate the use of the `randomForest` package, the oldest and most well known implementation of the Random Forest algorithm in R. 
+- To demonstrate the basic implementation we illustrate the use of the `randomForest` package, the oldest and most well known implementation of the random forest algorithm in R. 
 - As your data set grows in size `randomForest` does not scale well (although you can parallelize with `foreach`). 
 - To explore and compare a variety of tuning parameters we can also find more effective packages. 
-- The packages `ranger` and `h2o` packages will be presented in the tuning section.
+- The package `ranger` will be presented in the tuning section.
 
 ## `randomForest::randomForest`
 
@@ -213,7 +213,7 @@ load("../data/ml_randomforest_m1.RData")
 
 - Plotting the model will illustrate the error rate as we average across more trees and shows that our error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 or so trees.
 
-```{r}
+```{r,eval=F}
 plot(m1,main="Error rate")
 ```
 
@@ -241,7 +241,7 @@ sqrt(m1$mse[which.min(m1$mse)])
 - Here we split our training set further to create a training and validation set. 
 - The validation data is in `xtest` and `ytest`.
 
-```{r}
+```{r,eval=F}
 set.seed(123)
 valid_split <- initial_split(ames_train, .8)
 # training data
@@ -252,14 +252,31 @@ x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
 y_test <- ames_valid$Sale_Price
 ```
 
+
+
+<!--
+valid_split <- valid_split%>% na.omit()
+-->
 ## Run the model   
+
+
+
 
 - With the command `randomForest`
 
-```{r}
+```{r,eval=F}
 rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
   data=ames_train_v2,xtest = x_test,ytest=y_test)
 ```
+
+```{r,eval=F,echo=F}
+save(rf_oob_comp,file="../data/ml_rf_oob_comp.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_rf_oob_comp.RData")
+```
+
 
 ## compare error rates
 
@@ -280,7 +297,7 @@ tibble::tibble(
 
 
 
-```{r,echo=F}
+```{r,echo=F,eval=F}
 ## Compare error rates
 tibble::tibble(
   `Out of Bag Error` = oob,
@@ -323,14 +340,16 @@ tibble::tibble(
 - `mtry` - number of variables as candidates at each split. When `mtry=p`the model equates to bagging. 
 - When `mtry=1` the split variable is completely random, all variables get a chance but can lead to biased results. Suggestion: start with 5 values evenly spaced across the range from 2 to p.
 
-### number of samples
+## Tuning parameters (II)
+
+### Number of samples
 
 - `sampsize` -  Default value is 63.25%  since this is the expected value of unique observations in the bootstrap sample. 
 - Lower sample sizes can reduce the training time but may introduce more bias. Increasing sample size can increase performance but at risk of overfitting - it introduces more variance. 
 - When tuning this parameter we stay near the 60-80% range.
 
 
-## Tuning parameters (II)
+## Tuning parameters (III)
 
 ### minimum number of samples within the terminal nodes:
 
@@ -356,7 +375,7 @@ tibble::tibble(
 - `tuneRF` requires a separate x y specification. 
 - The optimal `mtry` value in this sequence is very close to the default mtry value of $\dfrac{\text{features}}{3}=26$.
 
-```{r}
+```{r,eval=F}
 features <- setdiff(names(ames_train), "Sale_Price")
 set.seed(123)
 m2<-tuneRF(x= ames_train[features],
@@ -369,7 +388,7 @@ m2<-tuneRF(x= ames_train[features],
 save(m2,file="../data/ml_rf_m2.RData")
 ```
 
-```{r,eval=F}
+```{r,echo=F}
 load("../data/ml_rf_m2.RData")
 ```
 
@@ -485,7 +504,8 @@ in their original columnar form,
 one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
 ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
 # make ranger compatible names
-names(ames_train_hot) <- make.names(names(ames_train_hot), allow_ = FALSE)
+names(ames_train_hot) <- make.names(names(ames_train_hot), 
+                                    allow_ = FALSE)
 ames_train_hot <- predict(one_hot, ames_train) %>% 
   as.data.frame()
 # --> same as above but with increased mtry values
@@ -559,7 +579,7 @@ dev.off()
 ```
 
 
-![](figure/ml_rf_hist_OOB_RMSE.png){height=80%}
+![](figure/ml_rf_hist_OOB_RMSE.png){height=60%}
 
 ## Variable importance
 
@@ -582,7 +602,7 @@ png("figure/ml_rf_varimp_ranger.png")
 dev.off()
 ```
 
-![](figure/ml_rf_varimp_ranger.png){height=80%}
+![](figure/ml_rf_varimp_ranger.png){height=60%}
 
 
 ## Predicting
@@ -613,6 +633,48 @@ head(pred_h2o)
 To learn more I would start with the following resources listed in order of complexity
 -->
 
+## Advantages & Disadvantages
+
+### Advantages - random forrests
+
+- Typically have very good performance
+- Remarkably good “out-of-the box” - very little tuning required
+- Built-in validation set - don’t need to sacrifice data for extra validation
+- No pre-processing required
+- Robust to outliers
+
+### Disadvantages - random forrests
+
+- Can become slow on large data sets
+- Although accurate, often cannot compete with advanced boosting algorithms
+- Less interpretable
+
+
+
 ## Links 
 
-- [Rpubs tutorial - random forests](https://rpubs.com/nuhorchak/randomForest)
+These slides are mainly based on 
+
+- A UC Business Analytics R Programming Guide - section [**random forests**](http://uc-r.github.io/random_forests)
+
+- and on the [**chapter on random forests**](https://bradleyboehmke.github.io/HOML/random-forest.html) in the e-book of 
+Brad Boehmke and Brandon Greenwell - Hands-on Machine Learning with R
+
+
+- [**Rpubs tutorial** - random forests](https://rpubs.com/nuhorchak/randomForest)
+
+- [Random Forests in R](https://rpubs.com/anish20/RandomForests)
+
+- [Boston Dataset-Tree Family Part-1](https://rpubs.com/Hgoswami/368562)
+
+## Annex 
+
+
+### Scoring models - metrics
+
+- Many packages do not keep track of which observations were part of the OOB sample for a given tree and which were not. 
+- If you are comparing multiple models to one-another, you’d want to score each on the same validation set to compare performance. 
+- It is possible to compute certain metrics such as root mean squared logarithmic error (RMSLE) on the OOB sample, but it is not built in to all packages. 
+- So if you are looking to compare multiple models or use a slightly less traditional loss function you will likely want to still perform cross validation.
+
+

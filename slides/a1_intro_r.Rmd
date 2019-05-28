@@ -443,7 +443,7 @@ glimpse(clean_titanic)
 
 ```{r}
 library(MASS)
-bdat <- Boston
+bdat <- data(Boston)
 ```
 
 ```{r,echo=F,eval=F}
@@ -576,6 +576,8 @@ Further possible topics of this section:
 
 - mutate
 - purrr::map_dbl
+
+- what to do with missing values
 -->
 
 <!--
