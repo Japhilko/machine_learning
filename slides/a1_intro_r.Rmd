@@ -149,15 +149,15 @@ ctv::install.views("MachineLearning")
 ```
 
 
-## Task: Find R-packages
+## Exercise: Find R-packages
 
 Go to https://cran.r-project.org/ and search for packages that can be used:
 
-- to reduce overfitting
-- for random forests
-- for gradient boosting
-- for neural networks
-- for clustering
+1) to reduce overfitting
+2) for regression trees
+3) for gradient boosting
+4) for neural networks
+5) for clustering
 
 
 <!--
@@ -304,9 +304,9 @@ install.packages("datasets.load")
 
 ![](figure/kyphosis_helppage.PNG)
 
-## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+## Excursus [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
 
-- Oben rechts befindet sich ein Button Addins 
+- In the upper right corner there is a button Addins
 
 ![](figure/addins.PNG)
 
@@ -314,18 +314,31 @@ install.packages("datasets.load")
 
 
 
+## How to get help
 
-## Exercise
+-  I use [**duckduckgo:**](figure/duckduckgo.PNG)
+
+```
+R-project + "what I want to know" 
+```
+-  this works of course for all search engines!
+
+
+![](figure/duckduckgo.PNG)
+
+
+## Exercise: load built-in data
 
 ### Load the the built-in dataset `swiss` 
 <!--
 and answer the following questions:
 -->
-- How many observations and variables are available?
-- What is the scale level of the variables?
+1) How many observations and variables are available?
+2) What is the scale level of the variables?
 
-### Create an interactive data table
+### Interactive data table 
 
+3) Create an interactive data table
 
 
 ## The R-package `data.table`
@@ -345,20 +358,8 @@ library(data.table)
 ```
 
 
-## How to get help
 
--  I use [**duckduckgo:**](figure/duckduckgo.PNG)
-
-```
-R-project + "what I want to know" 
-```
--  this works of course for all search engines!
-
-
-![](figure/duckduckgo.PNG)
-
-
-## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
 
 ```{r,echo=F}
 x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 
@@ -366,9 +367,9 @@ x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017,
 x <- runif(8)
 ```
 
-- Draw 8 random numbers from the uniform distribution and save them in a vector `x`
-- Compute the logarithm of `x`, return suitably lagged and iterated differences, 
-- compute the exponential function and round the result
+1) Draw 8 random numbers from the uniform distribution and save them in a vector `x`
+2) Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+3) compute the exponential function and round the result
 
 ```{r,echo=F}
 round(exp(diff(log(x))), 1)
@@ -570,6 +571,11 @@ Further possible topics of this section:
 - loops
 
 - paste und paste0
+- random number generation
+- the function diag
+
+- mutate
+- purrr::map_dbl
 -->
 
 <!--
