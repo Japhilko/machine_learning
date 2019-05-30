@@ -1,0 +1,92 @@
+#' ---
+#' title: "Clustering"
+#' author: "Jan-Philipp Kolb"
+#' date: "18 Januar 2019"
+#' output: beamer_presentation
+#' ---
+#' 
+## ----setupClustering, include=FALSE--------------------------------------
+knitr::opts_chunk$set(echo = FALSE)
+
+#' 
+#' 
+#' 
+#' 
+#' ## Resources
+#' 
+#' 
+## ----echo=F, eval=FALSE--------------------------------------------------
+## slides_path <- getwd()
+## git_path <- gsub("slides","",slides_path)
+## if (Sys.info()$nodename=="MAC14077"){
+##   git_path <- "D:/Daten/GitHub/machine_learning/"
+##   slides_path <- paste0(git_path,"/slides")
+## }
+
+#' 
+#' 
+#' - [Package `kknn`](https://cran.r-project.org/web/packages/kknn/kknn.pdf)
+#' 
+## ----eval=F--------------------------------------------------------------
+## install.packages("kknn")
+
+#' 
+## ------------------------------------------------------------------------
+library("kknn")
+
+#' 
+#' 
+#' ## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
+#' 
+#' 
+#' 
+#' ## hdbscan
+#' 
+#' A fairly new alternative to kmeans, hdbscan does not require you to
+#' specify the number of categories to be assigned. It only requires a
+#' decision as to the minimum number of points needed to be included in a
+#' cluster. This minimum number acts as a smoothing paramter (such as a
+#' density bandwidth parameter or a histograms bin/bar width), with lower
+#' values finding more clusters. Other advantages of hdbscan include .
+#' 
+## ---- eval=FALSE---------------------------------------------------------
+## install.packages("dbscan")
+
+#' 
+#' 
+#' 
+## ------------------------------------------------------------------------
+library(ggplot2)
+library(dplyr)
+library(maps)
+library(dbscan)
+
+
+data(moons)
+
+## Running HDBscan with the minimum number of points set to 5.
+res <- dbscan::hdbscan(moons, minPts = 3)
+
+plot(moons, col = res$cluster + 1, main="R implementation")
+
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+## ---- eval=FALSE---------------------------------------------------------
+## load(paste0(git_path,"/data/osmsa_PLZ_14.RData"))
+
+#' 
+#' 
+#' 
+#' ## [US Census Data](https://elitedatascience.com/datasets)
+#' 
+#' - [US Census Data (Clustering)](https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29) – Clustering based on demographics is a tried and true way to perform market research and segmentation.
+#' 
+#' 
+#' 
+#' ## Links
+#' 
+#' - [Using clusterlab to benchmark clustering algorithms](https://www.r-bloggers.com/using-clusterlab-to-benchmark-clustering-algorithms/)

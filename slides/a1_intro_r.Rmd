@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R"
+title: "Machine Learning - the basics in R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -20,32 +20,45 @@ output:
     keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,cache=T)
+```{r setupintror, include=FALSE}
+knitr::opts_chunk$set(echo = T,cache=F,message=F,warning=F,eval=T)
 library(knitr)
 ```
 
 ## Introduction round
 
+### Please tell us shortly...
+
 - Where are you from? What are you studying/working?
+- What is your experience level in R/other programming languages?
 - What are your expectations of this course?
 - Where do you think you can use Machine Learning in the future?
 
 ## Preliminaries
 
-- This topic is huge - we concentrate on presenting the application in R
+- This topic is huge - we concentrate on presenting the applications in R
 - Usually we have big differences in knowledge and abilities of the participants - please tell, if it is too fast or slow.
 - We have many [**exercises**](http://web.math.ku.dk/~helle/R-intro/exercises.pdf) because at the end you can only learn on your own
-- We have many [**examples**](https://www.showmeshiny.com/) - try them out 
+- We have many [**examples**](https://www.showmeshiny.com/) - try them!
 - If there are questions - always ask
 - R is more fun together - ask your neighbor
 
 
-## Content of the course
+## Content of this section
 
-- The first section is about laying the foundations in R. 
+- The first section is about laying the foundations in R. We will need all things covered later on.
+
+### Topics section:
+
+- Why R is a good choice
+- Constraints of R-usage
+- R is modular 
+- Import and export of data
+
+<!--
 - The second section is an introduction to the field of machine learning.
-
+- The third part is on regression and classification.
+-->
 
 ## Why R is a good choice ...
 
@@ -53,12 +66,8 @@ library(knitr)
 - ... outstanding graphs - [**graphics**](http://matthewlincoln.net/2014/12/20/adjacency-matrix-plots-with-r-and-ggplot2.html), [**graphics**](https://www.r-bloggers.com/3d-plots-with-ggplot2-and-plotly /), [**graphics**](https://procomun.wordpress.com/2011/03/18/splomr/)
 - ... relates to other languages - [**R can be used in combination with other programs**](https://github.com/Japhilko/RInterfaces) - e.g. [**data linking**](https://github.com/Japhilko/RInterfaces/blob/master/slides/Datenimport.md)
 - ...R can be used [**for automation**](https://cran.r-project.org/web/packages/MplusAutomation/index.html)
- - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/)
-- ...
-
-- Because of the large comunity
-- New statistical methodologies are implemented quite fast 
-- Because R can be combined with other programs like Postgresql or Python
+ - ... Vast Community - [**you can use the intelligence of other people ;-)**](https://www.r-bloggers.com/) and new statistical methodologies are implemented quite fast 
+- Because R can be combined with other programs like `PostgreSQL` or `Python`
 
 ## Constraints
 
@@ -74,14 +83,15 @@ https://elitedatascience.com/r-vs-python-for-data-science
 
 - Machine learning is a field that changes rapidly.  
 - Some new tools are first developed in Python. 
-- The package reticulate offers the possibility to use these modules from an R environment. 
+- The package `reticulate` offers the possibility to use these modules from an R environment. 
 - Good news - Python is also Open Source
 
 ### Big Data 
 
 - Especially if you work with web data, you quickly have to deal with large amounts of data. 
-- Therefore one must fall back on databases, which can be used in combination with R. 
+- Therefore one must fall back on databases and parallelization strategies, which can be used in R. 
 
+<!--
 ## Content of this part
 
 - Introduction to programming in R 
@@ -90,12 +100,93 @@ https://elitedatascience.com/r-vs-python-for-data-science
 
 - How to import data?
 - What to do with missing values?
-- Parallelization
+- 
+-->
+
+## R is modular
+
+### Install packages from CRAN Server
+
+```{r,eval=F}
+install.packages("lme4")
+```
+
+### Install packages from Bioconductor Server
+
+```{r,eval=F}
+source("https://bioconductor.org/biocLite.R")
+biocLite(c("GenomicFeatures", "AnnotationDbi"))
+```
 
 
 
+### Install packages from Github
 
-## Import data 
+```{r,eval=F}
+install.packages("devtools")
+library(devtools)
+
+devtools::install_github("koalaverse/vip")
+```
+
+<!--
+https://github.com/koalaverse/vip
+-->
+
+
+## [Task View Machine Learning](https://cran.r-project.org/web/views/MachineLearning.html)
+
+
+![](figure/taskviewmachinelearning.PNG){ width=110% }
+
+
+
+## Install all packages of a task view
+
+```{r,eval=F}
+install.packages("ctv")
+ctv::install.views("MachineLearning")
+```
+
+
+## Exercise: Find R-packages
+
+Go to https://cran.r-project.org/ and search for packages that can be used:
+
+1) to reduce overfitting
+2) for regression trees
+3) for gradient boosting
+4) for neural networks
+5) for clustering
+
+
+<!--
+https://www.r-bloggers.com/what-are-the-best-machine-learning-packages-in-r/
+-->
+
+
+## Preparation - packages
+
+```{r}
+library(dplyr)
+```
+
+![](figure/dplyr_vignette.PNG)
+
+## The package `magrittr`
+
+```{r}
+library(magrittr)
+```
+
+![](figure/magrittr_vignette.jpg)
+
+
+## Import `.csv` data 
+
+### The `read.csv` command
+
+- Use `read.csv2` for German data 
 
 ```{r,eval=F}
 ?read.csv
@@ -104,14 +195,91 @@ https://elitedatascience.com/r-vs-python-for-data-science
 
 ### Using a path to import data
 
+```{r,eval=F}
+path1<-"https://raw.githubusercontent.com/"
+path2<- "thomaspernet/data_csv_r/master/data/"
+dname <- "titanic_csv.csv"
+titanic <- read.csv(paste0(path1,path2,dname))
+```
+
+### Save the dataset
+
+```{r,eval=F}
+save(titanic,file="../data/titanic.RData")
+```
+
+```{r,echo=F}
+load("../data/titanic.RData")
+```
+
+
+## The titanic dataset
+
+```{r,eval=F,echo=F}
+kable(head(titanic))
+```
+
+![](figure/titanicdata.PNG)
 <!--
 https://www.guru99.com/r-decision-trees.html
 -->
 
-```{r}
-path <- 'https://raw.githubusercontent.com/thomaspernet/data_csv_r/master/data/titanic_csv.csv'
-titanic <-read.csv(path)
+
+## The function `scan` to import data 
+
+- `scan` has an easy way to distinguish comments from data
+
+```{r,eval=F}
+?scan
 ```
+
+### Example dataset
+
+```{r}
+cat("TITLE extra line", "# a comment","2 3 5 7", "11 13 17", 
+    file = "../data/ex.data", sep = "\n")
+```
+
+### Import data and skip the first line
+
+```{r,eval=F}
+pp<-scan("../data/ex.data",skip=1,quiet=TRUE)
+```
+
+```{r}
+pp <- scan("../data/ex.data",comment.char="#", skip = 1,
+           quiet = TRUE)
+```
+
+
+
+
+## The download the data from UCI.
+
+```{r,eval=F,echo=F}
+install.packages("bindrcpp")
+```
+
+```{r}
+path1 <- "http://archive.ics.uci.edu/ml/"
+path2 <- "machine-learning-databases/00243/"
+dname <- 'yacht_hydrodynamics.data'
+```
+
+
+```{r}
+url<- paste0(path1,path2,dname)
+Yacht_Data <- readr::read_table(file = url)
+```
+
+```{r,eval=F,echo=F}
+colnam <- c('LongPos_COB', 'Prismatic_Coeff','Len_Disp_Ratio',
+            'Beam_Draut_Ratio','Length_Beam_Ratio','Froude_Num',
+            'Residuary_Resist')
+Yacht_Data <- read_table(file = url,col_names = colnam)
+```
+
+
 
 ## Built in datasets
 
@@ -128,36 +296,50 @@ data(iris)
 install.packages("datasets.load")
 ```
 
+## Help page for built in datasets
 
-## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+```{r,eval=F}
+?kyphosis
+```
 
-- Oben rechts befindet sich ein Button Addins 
+![](figure/kyphosis_helppage.PNG)
+
+## Excursus [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+
+- In the upper right corner there is a button Addins
 
 ![](figure/addins.PNG)
 
 ![](figure/datasetsload.PNG)
 
-## The titanic dataset
 
-```{r}
-kable(head(titanic))
+
+## How to get help
+
+-  I use [**duckduckgo:**](figure/duckduckgo.PNG)
+
 ```
-
-## Exercise
-
-Load the the built-in dataset `swiss` and answer the following questions:
-
-- How many observations and variables are available?
-- What is the scale level of the variables?
-
-Create an interactive data table
-
-
-## The function `scan` to import data 
-
-```{r,eval=F}
-?scan
+R-project + "what I want to know" 
 ```
+-  this works of course for all search engines!
+
+
+![](figure/duckduckgo.PNG)
+
+
+## Exercise: load built-in data
+
+### Load the the built-in dataset `swiss` 
+<!--
+and answer the following questions:
+-->
+1) How many observations and variables are available?
+2) What is the scale level of the variables?
+
+### Interactive data table 
+
+3) Create an interactive data table
+
 
 ## The R-package `data.table`
 
@@ -168,22 +350,26 @@ data(airquality)
 head(airquality)
 ```
 
-### Overview with `data.table`
+## Overview with `data.table`
 
 ```{r}
 library(data.table)
-airq <- data.table(airquality)
-airq
+(airq <- data.table(airquality))
 ```
 
-## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
 
-```{r}
-x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 0.829, 0.907)
+
+## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
+
+```{r,echo=F}
+x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 
+       0.829, 0.907)
+x <- runif(8)
 ```
 
-- Compute the logarithm of `x`, return suitably lagged and iterated differences, 
-- compute the exponential function and round the result
+1) Draw 8 random numbers from the uniform distribution and save them in a vector `x`
+2) Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+3) compute the exponential function and round the result
 
 ```{r,echo=F}
 round(exp(diff(log(x))), 1)
@@ -214,6 +400,9 @@ x %>% log() %>%
 airq
 ```
 
+
+## The command `na.omit`
+
 ```{r}
 na.omit(airq)
 ```
@@ -222,17 +411,25 @@ na.omit(airq)
 ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
 
 ```{r}
-library(dplyr)
-library(magrittr)
-# Drop variables
-clean_titanic <- titanic %>% 	mutate(pclass = factor(pclass, levels = c(1, 2, 3), labels = c('Upper', 'Middle', 'Lower')),
-	survived = factor(survived, levels = c(0, 1), labels = c('No', 'Yes'))) %>%
+clean_titanic <- titanic %>% 	
+  mutate(pclass=factor(pclass,levels = c(1, 2, 3),
+                       labels=c('Upper','Middle','Lower')),
+	survived = factor(survived,levels = c(0, 1), 
+	                  labels=c('No', 'Yes'))) %>%
 na.omit()
 ```
 
--   `pclass = factor(pclass, levels = c(1,2,3), labels= c('Upper', 'Middle', 'Lower'))`: Add label to the variable pclass. 1 becomes Upper, 2 becomes MIddle and 3 becomes lower
- -    `factor(survived, levels = c(0,1), labels = c('No', 'Yes'))`: Add label to the variable survived. 1 Becomes No and 2 becomes Yes
--    `na.omit()`: Remove the NA observations 
+###   `mutate(pclass = factor(...`: 
+
+- Add label to the variable pclass. 
+- 1 becomes Upper, 2 becomes MIddle and 3 becomes lower
+
+###  `factor(survived,...`:
+
+- Add label to the variable survived. 
+- 1 Becomes No and 2 becomes Yes
+
+- `na.omit()`: Remove the NA observations 
 
 
 ## Get an overview of the data
@@ -246,20 +443,35 @@ glimpse(clean_titanic)
 
 ```{r}
 library(MASS)
-data <- Boston
+bdat <- data(Boston)
 ```
 
-```{r}
-kable(head(data))
+```{r,echo=F,eval=F}
+kable(head(bdat))
 ```
+
+![](figure/bostondata.PNG)
 
 ## Normalize your data
 
+### Compute maximum and minimum per column
+
 ```{r}
-maxs <- apply(data, 2, max) 
-mins <- apply(data, 2, min)
-scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+maxs <- apply(bdat, 2, max) 
+mins <- apply(bdat, 2, min)
 ```
+
+### `scale` - Scaling and Centering of Matrix-like Objects
+```{r}
+scaled <- as.data.frame(scale(bdat, center = mins, 
+                              scale = maxs - mins))
+
+```
+
+
+## The scaled data
+
+![](figure/bostonscaled.PNG)
 
 ## The command `sample`
 
@@ -328,6 +540,7 @@ stopCluster(cl)
 ?parallel::makeCluster
 ```
 
+<!--
 ## [The `swirl` package](https://swirlstats.com/)
 
 ```{r,eval=F}
@@ -338,11 +551,13 @@ install.packages("swirl")
 library("swirl")
 swirl()
 ```
+-->
 
 ## Resources
 
-- [Course materials for the Data Science Specialization](https://github.com/DataScienceSpecialization/courses)
-
+- [**Course materials for the Data Science Specialization**](https://github.com/DataScienceSpecialization/courses)
+- Data wrangling - [**`dplyr` vignette**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
+- The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 <!--
 Further possible topics of this section:
 
@@ -350,5 +565,22 @@ Further possible topics of this section:
 - the reticulate package
 - how to install python modules
 
+- mutate function in dplyr package
+- the rescale package
 
+- loops
+
+- paste und paste0
+- random number generation
+- the function diag
+
+- mutate
+- purrr::map_dbl
+
+- what to do with missing values
+-->
+
+<!--
+https://www.r-exercises.com/start-here-to-learn-r/
+https://www.r-exercises.com/category/exercises/exercises-intermediate/
 -->

@@ -1,0 +1,180 @@
+---
+title: "Machine Learning - Solution/Exercises"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=T,warning = F,message = F)
+```
+
+## [Exercise - `rpart` Kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-exercises/)
+
+### Consider the Kyphosis data frame
+
+<!--
+(type `help("kyphosis")` for more details)
+-->
+
+1) Which variables are in the `kyphosis` dataset
+2) Build a tree to classify Kyphosis from Age, Number and Start.
+
+### Consider the tree build above.
+
+3) Which variables are used to explain Kyphosis presence?
+4) How many observations contain the terminal nodes.
+
+### Consider the Kyphosis data frame.
+
+5) Build a tree using the first 60 observations of kyphosis.
+6) Predict the kyphosis presence for the other 21 observations.
+7) Which is the misclassification rate (prediction error)
+
+## [The dataset kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-solutions/)
+
+### The dataset contains (1):
+
+- Kyphosis: a factor with levels absent present indicating if a kyphosis (a type of deformation) was present after the operation.
+- Age: in months.
+- Number: the number of vertebrae involved.
+- Start: the number of the first (topmost) vertebra operated on.
+
+## Build the tree (2)
+
+```{r}
+library('rpart')
+TREE <- rpart(Kyphosis ~ Age + Number + Start, 
+              data=kyphosis,method="class")
+TREE
+```
+
+## Plot the result
+
+```{r}
+plot(TREE)
+text(TREE,use.n=T)
+```
+
+## Answers
+
+3) Which variables are used to explain Kyphosis presence?
+
+- The variables are Start and Age
+
+4) How many observations contain the terminal nodes.
+
+- *denotes terminal nodes. The nodes have 29, 12, 14, 7 and 19 observations
+
+## Consider the Kyphosis data frame.
+
+5) Build a tree using the first 60 observations of kyphosis.
+
+```{r}
+TREE <- rpart(Kyphosis ~ Age + Number + Start, 
+              data=kyphosis[1:60,],method="class")
+```
+
+
+6) Predict the kyphosis presence for the other 21 observations.
+
+```{r}
+PR <- predict(TREE,kyphosis[61:81,],type='class')
+```
+
+
+7) Which is the misclassification rate (prediction error) 
+
+```{r}
+test=kyphosis$Kyphosis[61:81]
+table(PR,test)
+```
+
+```{r}
+rate <- 100*length(which(PR!=test))/length(PR)
+cat('the misclassification rate is:',rate)
+```
+
+## Exercise `rpart` -  `iris`
+
+### Consider the `iris` data frame
+
+1) Build a tree to classify Species from the other variables.
+2) Plot the trees, add nodes information.
+
+### Consider the tree build before
+
+3) Prune the the using median complexity parameter (cp) associated to the tree.
+4) Plot in the same window, the pruned and the original tree.
+5) In which terminal nodes is clasified each oobservations of `iris`?
+6) Which Specie has a flower of `Petal.Length` greater than 2.45 and `Petal.Width` less than 1.75.
+
+## Solution - `rpart` -  `iris` (I)
+
+1) Build a tree to classify Species from the other variables.
+
+```{r}
+TREE2=rpart(Species ~ ., data=iris,method="class")
+TREE2
+```
+
+## Solution - `rpart` -  `iris` (II)
+
+
+2) Plot the trees, add nodes information.
+
+```{r}
+plot(TREE2)
+text(TREE2,use.n=T)
+```
+
+## Solution - `rpart` -  `iris` (III)
+
+
+3) Prune the the using median complexity parameter (cp) associated to the tree.
+
+```{r}
+TP <- prune(TREE2,cp=median(TREE2$cptable[,'CP']))
+```
+
+4) Plot in the same window, the pruned and the original tree.
+
+```{r,fig.height=3}
+par(mfrow=c(1,2))
+plot(TREE2);text(TREE2,use.n=T)
+plot(TP);text(TP,use.n=T)
+```
+
+
+## Solution - `rpart` -  `iris` (IV)
+
+5) In which terminal nodes is clasified each observations of iris?
+
+```{r}
+TREE2$where
+```
+
+## Solution - `rpart` -  `iris` (V)
+
+
+6) Which species has a flower of `Petal.Length` greater than 2.45 and `Petal.Width` less than 1.75.
+
+```{r}
+print('versicolor')
+```
+

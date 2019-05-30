@@ -1,0 +1,363 @@
+---
+title: "Exercises - random forests"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval=T)
+```
+
+## [Exercise: random forests](https://www.r-exercises.com/2016/12/29/intermediate-tree-1/)
+
+<!--
+1
+-->
+
+### Download and import example data
+
+1) Download the Data from [**here**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult.csv)
+and read in the `adult.csv` file with `header=FALSE`. Store this in df. Use `str()` command to see the dataframe. 
+<!--
+2
+
+You are given the meta_data that goes with the CSV.
+-->
+2) Get the column names from the [**meta data**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult_names.txt) and add them to the data frame. Notice the df is ordered - V1,V2,V3,... and so on. 
+<!--
+As a side note, it is always best practice to use that to match and see if all the columns are read in correctly.
+-->
+
+### Get an overview of the data
+
+3) Use the `table` command to get the distribution of the `class` feature.
+4) Make a binary variable `class`.
+5) Use the `cor()` command to see the corelation of all the numeric and integer columns including the class column. 
+<!--
+Remember that numbers close to 1 means high corelation and number close to 0 means low. 
+This will give you a rough idea for feature selection
+-->
+
+## Solution: Download and import (I)
+<!--
+## Solution: random forests 
+### Download
+-->
+### Exercise 1
+
+```{r}
+l1 <- "http://www.r-exercises.com/wp-content"
+l2 <-"/uploads/2016/11/adult.csv"
+link <- paste0(l1,l2)
+df <- read.csv(link,header=FALSE)
+str(df)
+```
+
+<!--
+## 'data.frame':	15916 obs. of  15 variables:
+##  $ V1 : int  39 50 38 53 28 37 49 52 31 42 ...
+##  $ V2 : Factor w/ 9 levels " ?"," Federal-gov",..: 8 7 5 5 5 5 5 7 5 5 ...
+##  $ V3 : int  77516 83311 215646 234721 338409 284582 160187 209642 45781 159449 ...
+##  $ V4 : Factor w/ 16 levels " 10th"," 11th",..: 10 10 12 2 10 13 7 12 13 10 ...
+##  $ V5 : int  13 13 9 7 13 14 5 9 14 13 ...
+##  $ V6 : Factor w/ 7 levels " Divorced"," Married-AF-spouse",..: 5 3 1 3 3 3 4 3 5 3 ...
+##  $ V7 : Factor w/ 15 levels " ?"," Adm-clerical",..: 2 5 7 7 11 5 9 5 11 5 ...
+##  $ V8 : Factor w/ 6 levels " Husband"," Not-in-family",..: 2 1 2 1 6 6 2 1 2 1 ...
+##  $ V9 : Factor w/ 5 levels " Amer-Indian-Eskimo",..: 5 5 5 3 3 5 3 5 5 5 ...
+##  $ V10: Factor w/ 2 levels " Female"," Male": 2 2 2 2 1 1 1 2 1 2 ...
+##  $ V11: int  2174 0 0 0 0 0 0 0 14084 5178 ...
+##  $ V12: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ V13: int  40 13 40 40 40 40 16 45 50 40 ...
+##  $ V14: Factor w/ 41 levels " ?"," Cambodia",..: 39 39 39 39 6 39 23 39 39 39 ...
+##  $ V15: Factor w/ 2 levels " <=50K"," >50K": 1 1 1 1 1 1 1 2 2 2 ...
+
+
+## Solution: random forests 
+
+### Exercise 2  
+
+-->
+
+## ## Solution: Download and import (II)
+
+### Exercise 2
+
+```{r}
+colnames(df) <- c("age","workclass","fnlwgt","education",
+               "education-num","marital-status","occupation",
+               "relationhip","race","sex","capital-gain",
+               "capital-loss","hours-per-week",
+               "native-country","class")
+```
+
+
+## Solution: Get overview
+
+### Exercise 3
+
+
+```{r}
+table(df$class)
+```
+
+
+<!--
+##  <=50K   >50K 
+##  12097   3819
+-->
+
+### Exercise 4
+
+```{r}
+df$class <- ifelse(df$class==" >50K", 1, 0)
+```
+
+### Exercise 5
+
+```{r}
+cor(df[,c(1,3,5,11,12,13,15)])
+```
+
+
+
+<!--
+##                        age       fnlwgt education-num capital-gain
+## age             1.00000000 -0.079506361    0.02668698  0.066466487
+## fnlwgt         -0.07950636  1.000000000   -0.04671504  0.000653693
+## education-num   0.02668698 -0.046715043    1.00000000  0.117453069
+## capital-gain    0.06646649  0.000653693    0.11745307  1.000000000
+## capital-loss    0.06176551 -0.012139341    0.08090257 -0.031685331
+## hours-per-week  0.05659864 -0.012345724    0.14528405  0.075715672
+## class           0.22920766 -0.013067759    0.32856870  0.221049951
+##                capital-loss hours-per-week       class
+## age              0.06176551     0.05659864  0.22920766
+## fnlwgt          -0.01213934    -0.01234572 -0.01306776
+## education-num    0.08090257     0.14528405  0.32856870
+## capital-gain    -0.03168533     0.07571567  0.22104995
+## capital-loss     1.00000000     0.05439109  0.15366554
+## hours-per-week   0.05439109     1.00000000  0.22544319
+## class            0.15366554     0.22544319  1.00000000
+-->
+
+
+
+
+## [Exercise: random forests](https://www.r-exercises.com/2016/12/29/intermediate-tree-1/) 
+
+### Split the dataset 
+
+6) Split the dataset into Train and Test sample. You may use `caTools::sample.split()` and use the ratio as 0.7 and set the seed to be 1000. 
+<!--
+Make sure to install and load `caTools` package.
+-->
+7) Check the number of rows of Train and Test
+8) We are ready to use decision tree in our dataset. Load the package `rpart` and `rpart.plot` 
+<!--
+If it is not installed, then use the `install.packages()` commmand.
+-->
+9) Use `rpart` to build the decision tree on the Train set. Include all features. Store this model in `dec`
+10) Use `prp()` to plot the decision tree. 
+<!--
+If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
+-->
+
+
+
+
+### 6
+
+```{r}
+set.seed(1000)
+library(caTools)
+split=sample.split(df$class, SplitRatio=0.8)
+Train=df[split==TRUE,]
+Test=df[split==FALSE,]
+```
+
+### 7  
+
+```{r}
+nrow(Train)
+nrow(Test)
+```
+
+### 8  
+
+```{r}
+library(rpart)
+library(rpart.plot)
+```
+
+### 9  
+
+```{r}
+dec=rpart(class~., data=Train)
+```
+
+
+### 10 
+
+```{r}
+par(mar = rep(2, 4))
+prp(dec)
+```
+
+
+## [Exercise](https://www.r-exercises.com/2017/01/05/intermediate-tree-2/)
+
+1) use the `predict()` command to make predictions on the Train data. Set the method to `class`. Class returns classifications instead of probability scores. Store this prediction in pred_dec.
+2) Print out the confusion matrix
+3) What is the accuracy of the model. Use the confusion matrix.
+4) What is the misclassification error rate? Refer to Basic_decision_tree exercise to get the formula.
+5) Lets say we want to find the baseline model to compare our prediction improvement. We create a base model using this code
+
+```{r}
+length(Test$class)
+base=rep(1,3183)
+```
+
+- Use the table() command to create a confusion matrix between the base and Test$class.
+
+6) What is the number difference between the confusion matrix accuracy of dec and base?
+
+7) Remember the predict() command in question 1. We will use the same mode and same command except we will set the method to “regression”. This gives us a probability estimates. Store this in pred_dec_reg
+
+8) load the ROCR package.
+
+Use the prediction(), performance() and plot() command to print the ROC curve. Use pred_dec_reg variable from Q7. You can also refer to the previous exercise to see the code.
+
+9) plot() the same ROC curve but set colorize=TRUE
+
+10) Comment on your findings using ROC curve and accuracy. Is it a good model? Did you notice that ROC prediction() command only takes probability predictions as one of its arguments. Why is that so?
+
+## [Solution](https://www.r-exercises.com/2017/01/05/intermediate-tree-2-2/)
+
+```{r,eval=F}
+library(caTools)
+colnames(df)=c("age","workclass","fnlwgt","education","education-num","marital-status","occupation","relationhip","race","sex","capital-gain","capital-loss","hours-per-week","native-country","class")
+df$class=ifelse(df$class==" >50K", 1, 0)
+df$class=as.factor(df$class)
+set.seed(1000)
+
+split=sample.split(df$class, SplitRatio=0.8)
+
+Train=df[split==TRUE,]
+
+Test=df[split==FALSE,]
+library(rpart)
+library(rpart.plot)
+dec=rpart(class~., data=Train)
+par(mar = rep(2, 4))
+```
+
+1)
+
+
+```{r,eval=F}
+pred_dec=predict(dec,newdata = Test,type="class")
+```
+
+### Exercise 2
+
+```{r,eval=F}
+table(Test$class,pred_dec)
+```
+
+<!--
+##    pred_dec
+##        0    1
+##   0 2345   74
+##   1  400  364
+-->
+
+### Exercise 3
+
+```{r}
+(2345+364)/(2345+364+400+74)
+```
+
+<!--
+## [1] 0.8510839
+-->
+
+### Exercise 4
+
+```{r,eval=F}
+mean(Test$class!=pred_dec)
+```
+
+<!--
+## [1] 0.1489161
+-->
+### Exercise 5
+
+```{r,eval=F}
+length(Test$class)
+```
+
+<!--
+## [1] 3183
+-->
+```{r,eval=F}
+base=rep(1,3183)
+table(Test$class,base)
+```
+
+
+<!--
+##    base
+##        1
+##   0 2419
+##   1  764
+-->
+
+### Exercise 6
+
+0.54
+
+
+### Exercise 7
+
+```{r,eval=F}
+pred_dec_reg=predict(dec,newdata = Test,type="prob")
+```
+
+
+### Exercise 8
+
+```{r,eval=F}
+pred=prediction(pred_dec_reg[,2],Test$class)
+perf=performance(pred,"tpr","fpr")
+plot(perf)
+```
+
+
+### Exercise 9
+
+```{r,eval=F}
+plot(perf,colorize=TRUE)
+```
+
+10) It is a good model. The initial accuracy is 0.85 which is pretty good. The ROC curve is also l
+
+
+<!--
+https://www.r-exercises.com/2017/01/05/intermediate-tree-2/
+https://github.com/eugeneyan/Statistical-Learning/blob/master/Chapter%208%20Exercises.R
+-->

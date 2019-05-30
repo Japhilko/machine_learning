@@ -14,6 +14,24 @@ knitr::opts_chunk$set(echo = TRUE)
 - The datasets we use for this course
 - What to do with missing data?
 
+
+
+## `mtcars` example
+
+- Target: predict the miles per gallon a car will drive in average 
+- Independent variables: cylinders (`cyl`) and horsepower (`hp`). 
+- All observations go through the tree, are assessed at a node, and proceed to the left if the answer is "yes"" or to the right if the answer is "no". 
+- E.g., all observations that have 6 or 8 cylinders go to the left branch, all other proceed to the right branch. 
+- Next, the left branch is further partitioned by horsepower. 
+- Those 6 or 8 cylinder observations with horsepower equal to or greater than 192 proceed to the left branch; those with less than 192 hp proceed to the right. 
+- These branches lead to terminal nodes or leafs which contain our predicted response value. 
+- All cars that do not have 6 or 8 cylinders (far right branch) average 27 mpg. 
+- All cars that have 6 or 8 cylinders and have more than 192 hp (far left branch) average 13 mpg.
+
+## Predicting `mpg` based on `cyl` and `hp`.
+
+![](figure/ex_regression_tree.png)
+
 ## The package `rpart` 
 
 - `rpart` - recursive partitioning and regression trees
@@ -153,3 +171,13 @@ best_model <- h2o.getModel(best_h2o_model)
 <!--
 ames_lasso, s
 -->
+
+
+
+
+## [Algorithm selection](https://elitedatascience.com/algorithm-selection)
+
+- Unfortunately, decision trees suffer from a major flaw. 
+- If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
+- As a result, individual unconstrained decision trees are very prone to being overfit.
+

@@ -11,17 +11,24 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part A - introduction
 
-- [What is machine learning and why should you care](intro_ml.Rmd)
+- [A1 - Laying the foundations in R](slides/a1_intro_r.Rmd)
+- [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
+<!--
 - [Parallelization](doParallel.Rmd)
-
+-->
 ## Part B - lasso and ridge regression
 
-- [Lasso regression](slides/lasso_regression.Rmd)
-- The `glmnet` package
+- [B1 - A small recap on linear regression](slides/b1_regression.md)
+- [B2 - Using regularization to prevent overfitting and perform feature selection](slides/b2_regularization.md)
 
+<!--
+- The `glmnet` package
+-->
 
 
 ## Part C - Supervised Learning: Bagging and Boosting, tree-methods 
+
+- []()
 
 
 ## Part D - Supervised Learning: Neural Network

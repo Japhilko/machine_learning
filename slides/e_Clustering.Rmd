@@ -93,10 +93,6 @@ data(moons)
 res <- dbscan::hdbscan(moons, minPts = 3)
 
 plot(moons, col = res$cluster + 1, main="R implementation")
-                                                                                                                                                                                              
-
-
-
 ```
 
 

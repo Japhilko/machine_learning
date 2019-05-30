@@ -1,0 +1,10 @@
+base
+knitr
+tidyr
+rsample
+randomForest
+ranger
+lattice
+ggplot2
+caret
+h2o

@@ -1,0 +1,105 @@
+---
+title: "ML exercises - basics R"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Exercise: Find R-packages
+
+Go to https://cran.r-project.org/ and search for packages that can be used:
+
+1) to reduce overfitting
+2) for regression trees
+3) for gradient boosting
+4) for neural networks
+5) for clustering
+
+## Solution: Find R-packages
+
+```{r,eval=F}
+install.packages("glmnet") #1)
+install.packages("rpart") #2)
+install.packages("gbm") #3)
+install.packages("neuralnet") #4)
+install.packages("kknn") #5)
+```
+
+## Exercise: load built-in data
+
+### Load the the built-in dataset `swiss` 
+<!--
+and answer the following questions:
+-->
+1) How many observations and variables are available?
+2) What is the scale level of the variables?
+
+### Interactive data table 
+
+3) Create an interactive data table
+
+## Solution: load built-in data
+
+```{r}
+# 1)
+data(swiss) 
+dim(swiss) 
+str(swiss) 
+```
+
+```{r,eval=F}
+# 2)
+DT::datatable(swiss)
+```
+
+## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
+
+```{r,echo=F}
+x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 
+       0.829, 0.907)
+x <- runif(8)
+```
+
+1) Draw 8 random numbers from the uniform distribution and save them in a vector `x`
+2) Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+3) compute the exponential function and round the result
+
+```{r,echo=F}
+round(exp(diff(log(x))), 1)
+```
+
+## Solution: random numbers
+
+```{r,echo=F}
+x <- runif(8) #1)
+round(exp(diff(log(x))), 1) #2) and 3)
+```
+
+<!--
+Exercise cross validation
+https://www.r-exercises.com/2017/09/15/applying-machine-learning-algorithms-exercises/
+
+Applying machine learning algorithms – exercises: solutions
+
+https://www.r-exercises.com/2017/11/28/machine-learning-with-h2o-part-3-exercises/
+-->

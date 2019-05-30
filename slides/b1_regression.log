@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  16 MAY 2019 18:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  27 MAY 2019 20:33
 entering extended mode
 **./b1_regression.tex
 (b1_regression.tex
@@ -1650,34 +1650,41 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )) [3
 
 ]
-Overfull \hbox (92.96065pt too wide) in alignment at lines 284--284
+Overfull \hbox (92.96065pt too wide) in alignment at lines 290--290
  [] [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (92.96065pt too wide) in alignment at lines 284--284
+Overfull \hbox (92.96065pt too wide) in alignment at lines 290--290
  [] [] [] [] [] [] [] [] [] [] [] [] 
  []
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 1 on input line 284.
+(longtable)                in table 1 on input line 290.
 
 
-Overfull \vbox (204.38196pt too high) detected at line 284
+Overfull \vbox (204.38196pt too high) detected at line 290
  []
 
 [4
 
 ]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
 <b1_regression_files/figure-beamer/unnamed-chunk-3-1.pdf, id=46, 361.35pt x 216
 .81pt>
 File: b1_regression_files/figure-beamer/unnamed-chunk-3-1.pdf Graphic file (typ
 e pdf)
 <use b1_regression_files/figure-beamer/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-3-1.pd
-f  used on input line 291.
+f  used on input line 11.
 (pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+)
+Overfull \vbox (4.5491pt too high) detected at line 305
+ []
+
 [5
 
  <./b1_regression_files/figure-beamer/unnamed-chunk-3-1.pdf>]
@@ -1693,12 +1700,12 @@ Package microtype Info: Character `029' is missing
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 23.
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 29.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ts1lmtt.fd"
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Overfull \hbox (33.95914pt too wide) in paragraph at lines 23--23
+Overfull \hbox (33.95914pt too wide) in paragraph at lines 29--29
 []\T1/lmtt/m/n/10 ## Signif. codes:  0 \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 ***\TS
 1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 0.001 \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 **\TS1/
 lmtt/m/n/10 ' \T1/lmtt/m/n/10 0.01 \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 *\TS1/lmtt
@@ -1707,13 +1714,13 @@ lmtt/m/n/10 ' \T1/lmtt/m/n/10 0.01 \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 *\TS1/lmtt
  []
 
 
-Overfull \hbox (2.45923pt too wide) in paragraph at lines 23--23
+Overfull \hbox (2.45923pt too wide) in paragraph at lines 29--29
 []\T1/lmtt/m/n/10 ## Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446[]
  
  []
 
 )
-Overfull \vbox (5.17372pt too high) detected at line 340
+Overfull \vbox (23.17372pt too high) detected at line 367
  []
 
 [7
@@ -1728,399 +1735,2412 @@ Overfull \vbox (5.17372pt too high) detected at line 340
 
 (b1_regression.vrb) [9
 
-] [10
+]
+\openout4 = `b1_regression.vrb'.
 
-] [11
+(b1_regression.vrb) [10
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb)
+Overfull \vbox (273.78482pt too high) detected at line 526
+ []
+
+[11
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb)
+Overfull \vbox (309.78482pt too high) detected at line 593
+ []
+
+[12
 
 ]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-Overfull \hbox (12.9592pt too wide) in paragraph at lines 12--12
+Overfull \hbox (12.9592pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ##                Estimate  Std. Error   t value     Pr(>|t|)
 [] 
  []
 
 
-Overfull \hbox (12.9592pt too wide) in paragraph at lines 12--12
+Overfull \hbox (12.9592pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## (Intercept) 44.08199770 3.123062627 14.114990 2.955567e-14
 [] 
  []
 
 
-Overfull \hbox (12.9592pt too wide) in paragraph at lines 12--12
+Overfull \hbox (12.9592pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## wt          -6.49567966 1.313382622 -4.945763 3.216705e-05
 [] 
  []
 
 
-Overfull \hbox (12.9592pt too wide) in paragraph at lines 12--12
+Overfull \hbox (12.9592pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## disp        -0.05635816 0.013238696 -4.257078 2.101721e-04
 [] 
  []
 
 
-Overfull \hbox (12.9592pt too wide) in paragraph at lines 12--12
+Overfull \hbox (12.9592pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## wt:disp      0.01170542 0.003255102  3.596022 1.226988e-03
 [] 
  []
 
-) [12
-
-]
-\openout4 = `b1_regression.vrb'.
-
-(b1_regression.vrb
-<figure/mtcars_model_interact.PNG, id=112, 523.9575pt x 144.54pt>
-File: figure/mtcars_model_interact.PNG Graphic file (type png)
-<use figure/mtcars_model_interact.PNG>
-Package pdftex.def Info: figure/mtcars_model_interact.PNG  used on input line 1
-9.
-(pdftex.def)             Requested size: 307.29341pt x 84.77058pt.
 ) [13
 
- <./figure/mtcars_model_interact.PNG>]
-\openout4 = `b1_regression.vrb'.
-
-(b1_regression.vrb
-Overfull \hbox (81.209pt too wide) in paragraph at lines 17--17
-[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
-ornet 4 Drive[] 
- []
-
-
-Overfull \hbox (81.209pt too wide) in paragraph at lines 17--17
-[]\T1/lmtt/m/n/10 ##          22.27914          21.46545          26.25203     
-     20.38052[] 
- []
-
-
-Overfull \hbox (81.209pt too wide) in paragraph at lines 24--24
-[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
-ornet 4 Drive[] 
- []
-
-
-Overfull \hbox (81.209pt too wide) in paragraph at lines 24--24
-[]\T1/lmtt/m/n/10 ##        -1.2791447        -0.4654468        -3.4520262     
-    1.0194838[] 
- []
-
-) [14
-
 ]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-Overfull \hbox (81.209pt too wide) in paragraph at lines 13--13
-[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
-ornet 4 Drive[] 
- []
-
-
-Overfull \hbox (81.209pt too wide) in paragraph at lines 13--13
-[]\T1/lmtt/m/n/10 ##          23.28261          21.91977          24.88595     
-     20.10265[] 
- []
-
-) [15
-
-]
-<b1_regression_files/figure-beamer/unnamed-chunk-21-1.pdf, id=138, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-21-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-21-1.p
-df  used on input line 489.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-<figure/resid_fitted.PNG, id=139, 548.0475pt x 230.0595pt>
-File: figure/resid_fitted.PNG Graphic file (type png)
-<use figure/resid_fitted.PNG>
-Package pdftex.def Info: figure/resid_fitted.PNG  used on input line 489.
-(pdftex.def)             Requested size: 307.29755pt x 128.99742pt.
-
-Overfull \vbox (128.26872pt too high) detected at line 489
- []
-
-[16
-
- <./b1_regression_files/figure-beamer/unnamed-chunk-21-1.pdf> <./figure/resid_f
-itted.PNG>]
-<b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf, id=153, 361.35pt x 2
+<b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf, id=122, 361.35pt x 2
 16.81pt>
 File: b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf Graphic file (ty
 pe pdf)
 <use b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-22-1.p
-df  used on input line 503.
+df  used on input line 17.
 (pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-
-Overfull \vbox (2.32687pt too high) detected at line 503
+<figure/resid_fitted.PNG, id=123, 548.0475pt x 230.0595pt>
+File: figure/resid_fitted.PNG Graphic file (type png)
+<use figure/resid_fitted.PNG>
+Package pdftex.def Info: figure/resid_fitted.PNG  used on input line 19.
+(pdftex.def)             Requested size: 307.29755pt x 128.99742pt.
+)
+Overfull \vbox (158.54652pt too high) detected at line 637
  []
 
-[17
+[14
 
- <./b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf>]
-<figure/prediction_mtcars.PNG, id=166, 710.655pt x 186.6975pt>
+ <./b1_regression_files/figure-beamer/unnamed-chunk-22-1.pdf> <./figure/resid_f
+itted.PNG>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<b1_regression_files/figure-beamer/unnamed-chunk-23-1.pdf, id=138, 361.35pt x 2
+16.81pt>
+File: b1_regression_files/figure-beamer/unnamed-chunk-23-1.pdf Graphic file (ty
+pe pdf)
+<use b1_regression_files/figure-beamer/unnamed-chunk-23-1.pdf>
+Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-23-1.p
+df  used on input line 10.
+(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+)
+Overfull \vbox (22.5491pt too high) detected at line 657
+ []
+
+[15
+
+ <./b1_regression_files/figure-beamer/unnamed-chunk-23-1.pdf>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (81.209pt too wide) in paragraph at lines 24--24
+[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
+ornet 4 Drive[] 
+ []
+
+
+Overfull \hbox (81.209pt too wide) in paragraph at lines 24--24
+[]\T1/lmtt/m/n/10 ##          22.27914          21.46545          26.25203     
+     20.38052[] 
+ []
+
+
+Overfull \hbox (81.209pt too wide) in paragraph at lines 31--31
+[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
+ornet 4 Drive[] 
+ []
+
+
+Overfull \hbox (81.209pt too wide) in paragraph at lines 31--31
+[]\T1/lmtt/m/n/10 ##        -1.2791447        -0.4654468        -3.4520262     
+    1.0194838[] 
+ []
+
+) [16
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (81.209pt too wide) in paragraph at lines 26--26
+[]\T1/lmtt/m/n/10 ##         Mazda RX4     Mazda RX4 Wag        Datsun 710    H
+ornet 4 Drive[] 
+ []
+
+
+Overfull \hbox (81.209pt too wide) in paragraph at lines 26--26
+[]\T1/lmtt/m/n/10 ##          23.28261          21.91977          24.88595     
+     20.10265[] 
+ []
+
+) [17
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<figure/prediction_mtcars.PNG, id=165, 710.655pt x 186.6975pt>
 File: figure/prediction_mtcars.PNG Graphic file (type png)
 <use figure/prediction_mtcars.PNG>
-Package pdftex.def Info: figure/prediction_mtcars.PNG  used on input line 510.
+Package pdftex.def Info: figure/prediction_mtcars.PNG  used on input line 12.
 (pdftex.def)             Requested size: 307.29984pt x 80.73131pt.
-[18
+) [18
 
  <./figure/prediction_mtcars.PNG>]
-<figure/visreg.PNG, id=175, 513.117pt x 236.082pt>
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [19
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<figure/visreg.PNG, id=185, 513.117pt x 236.082pt>
 File: figure/visreg.PNG Graphic file (type png)
 <use figure/visreg.PNG>
-Package pdftex.def Info: figure/visreg.PNG  used on input line 517.
+Package pdftex.def Info: figure/visreg.PNG  used on input line 16.
 (pdftex.def)             Requested size: 307.30103pt x 141.38731pt.
-[19
+) [20
 
  <./figure/visreg.PNG>]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-<figure/visregplot1.PNG, id=185, 763.653pt x 300.52275pt>
+<figure/visregplot1.PNG, id=194, 763.653pt x 300.52275pt>
 File: figure/visregplot1.PNG Graphic file (type png)
 <use figure/visregplot1.PNG>
-Package pdftex.def Info: figure/visregplot1.PNG  used on input line 13.
+Package pdftex.def Info: figure/visregplot1.PNG  used on input line 19.
 (pdftex.def)             Requested size: 307.29686pt x 120.93149pt.
-) [20
+) [21
 
  <./figure/visregplot1.PNG>]
-<figure/visreg2.PNG, id=195, 546.24075pt x 209.583pt>
-File: figure/visreg2.PNG Graphic file (type png)
-<use figure/visreg2.PNG>
-Package pdftex.def Info: figure/visreg2.PNG  used on input line 552.
-(pdftex.def)             Requested size: 307.30135pt x 117.90613pt.
-[21
-
- <./figure/visreg2.PNG>]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb) [22
 
 ]
-<figure/visregcat.PNG, id=212, 550.4565pt x 217.41225pt>
-File: figure/visregcat.PNG Graphic file (type png)
-<use figure/visregcat.PNG>
-Package pdftex.def Info: figure/visregcat.PNG  used on input line 578.
-(pdftex.def)             Requested size: 307.29602pt x 121.37183pt.
-[23
-
- <./figure/visregcat.PNG>] [24
-
-]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+<figure/visregcat.PNG, id=210, 550.4565pt x 217.41225pt>
+File: figure/visregcat.PNG Graphic file (type png)
+<use figure/visregcat.PNG>
+Package pdftex.def Info: figure/visregcat.PNG  used on input line 12.
+(pdftex.def)             Requested size: 307.29602pt x 121.37183pt.
+) [23
+
+ <./figure/visregcat.PNG>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ##               Estimate Std. Error    t value     Pr(>|t|)[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## (Intercept)  39.571196   3.193940 12.3894599 2.058359e-12[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## cyl6        -11.162351   9.355346 -1.1931522 2.435843e-01[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## cyl8        -15.703167   4.839464 -3.2448150 3.223216e-03[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## wt           -5.647025   1.359498 -4.1537586 3.127578e-04[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## cyl6:wt       2.866919   3.117330  0.9196716 3.661987e-01[
 ] 
  []
 
 
-Overfull \hbox (7.70921pt too wide) in paragraph at lines 12--12
+Overfull \hbox (7.70921pt too wide) in paragraph at lines 19--19
 []\T1/lmtt/m/n/10 ## cyl8:wt       3.454587   1.627261  2.1229458 4.344037e-02[
 ] 
  []
 
-) [25
-
-]
-<b1_regression_files/figure-beamer/unnamed-chunk-38-1.pdf, id=236, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-38-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-38-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-38-1.p
-df  used on input line 609.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-<b1_regression_files/figure-beamer/unnamed-chunk-39-1.pdf, id=237, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-39-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-39-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-39-1.p
-df  used on input line 609.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-<figure/factor3vars_visreg.PNG, id=238, 552.26324pt x 237.2865pt>
-File: figure/factor3vars_visreg.PNG Graphic file (type png)
-<use figure/factor3vars_visreg.PNG>
-Package pdftex.def Info: figure/factor3vars_visreg.PNG  used on input line 609.
-
-(pdftex.def)             Requested size: 307.29341pt x 132.03227pt.
-
-Overfull \vbox (302.73453pt too high) detected at line 609
- []
-
-[26
-
- <./b1_regression_files/figure-beamer/unnamed-chunk-38-1.pdf> <./b1_regression_
-files/figure-beamer/unnamed-chunk-39-1.pdf> <./figure/factor3vars_visreg.PNG>]
-<b1_regression_files/figure-beamer/unnamed-chunk-41-1.pdf, id=261, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-41-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-41-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-41-1.p
-df  used on input line 618.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-<figure/visreg_m6.PNG, id=262, 543.2295pt x 222.8325pt>
-File: figure/visreg_m6.PNG Graphic file (type png)
-<use figure/visreg_m6.PNG>
-Package pdftex.def Info: figure/visreg_m6.PNG  used on input line 618.
-(pdftex.def)             Requested size: 307.28995pt x 126.0502pt.
-
-Overfull \vbox (105.37708pt too high) detected at line 618
- []
-
-[27
-
- <./b1_regression_files/figure-beamer/unnamed-chunk-41-1.pdf> <./figure/visreg_
-m6.PNG>]
-<b1_regression_files/figure-beamer/unnamed-chunk-42-1.pdf, id=279, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-42-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-42-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-42-1.p
-df  used on input line 625.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-[28
-
- <./b1_regression_files/figure-beamer/unnamed-chunk-42-1.pdf>]
-<b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf, id=293, 361.35pt x 2
-16.81pt>
-File: b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf Graphic file (ty
-pe pdf)
-<use b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf>
-Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-43-1.p
-df  used on input line 632.
-(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
-[29
-
- <./b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf>]
-<figure/stargazertabex.PNG, id=308, 451.6875pt x 550.4565pt>
-File: figure/stargazertabex.PNG Graphic file (type png)
-<use figure/stargazertabex.PNG>
-Package pdftex.def Info: figure/stargazertabex.PNG  used on input line 644.
-(pdftex.def)             Requested size: 193.7187pt x 236.07854pt.
-
-Overfull \vbox (63.18541pt too high) detected at line 644
- []
-
-[30
-
- <./figure/stargazertabex.PNG>]
-\openout4 = `b1_regression.vrb'.
-
-(b1_regression.vrb) [31
-
-]
-<figure/Overfitting_fig1.PNG, id=326, 674.52pt x 274.02374pt>
-File: figure/Overfitting_fig1.PNG Graphic file (type png)
-<use figure/Overfitting_fig1.PNG>
-Package pdftex.def Info: figure/Overfitting_fig1.PNG  used on input line 679.
-(pdftex.def)             Requested size: 307.29819pt x 124.83987pt.
-<figure/electoral_precedent.png, id=327, 742.775pt x 1609.01125pt>
-File: figure/electoral_precedent.png Graphic file (type png)
-<use figure/electoral_precedent.png>
-Package pdftex.def Info: figure/electoral_precedent.png  used on input line 679
-.
-(pdftex.def)             Requested size: 108.97467pt x 236.0627pt.
-
-Overfull \vbox (185.85406pt too high) detected at line 679
- []
-
-[32
-
- <./figure/Overfitting_fig1.PNG> <./figure/electoral_precedent.png>]
-<figure/The_Signal_and_the_Noise.jpg, id=337, 128.27925pt x 193.6836pt>
-File: figure/The_Signal_and_the_Noise.jpg Graphic file (type jpg)
-<use figure/The_Signal_and_the_Noise.jpg>
-Package pdftex.def Info: figure/The_Signal_and_the_Noise.jpg  used on input lin
-e 697.
-(pdftex.def)             Requested size: 128.28479pt x 193.69197pt.
-
-Overfull \vbox (35.64346pt too high) detected at line 697
- []
-
-[33
-
- <./figure/The_Signal_and_the_Noise.jpg>]
-<figure/450px-Overfitting.svg.png, id=346, 451.6875pt x 451.6875pt>
-File: figure/450px-Overfitting.svg.png Graphic file (type png)
-<use figure/450px-Overfitting.svg.png>
-Package pdftex.def Info: figure/450px-Overfitting.svg.png  used on input line 7
-09.
-(pdftex.def)             Requested size: 236.09187pt x 236.09187pt.
-
-Overfull \vbox (79.9878pt too high) detected at line 709
- []
-
-[34
-
- <./figure/450px-Overfitting.svg.png>] [35
+) [24
 
 ]
 \openout4 = `b1_regression.vrb'.
 
 (b1_regression.vrb
-Overfull \hbox (49.70909pt too wide) in paragraph at lines 32--32
+<b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf, id=226, 361.35pt x 2
+16.81pt>
+File: b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf Graphic file (ty
+pe pdf)
+<use b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf>
+Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-43-1.p
+df  used on input line 10.
+(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+<b1_regression_files/figure-beamer/unnamed-chunk-44-1.pdf, id=227, 361.35pt x 2
+16.81pt>
+File: b1_regression_files/figure-beamer/unnamed-chunk-44-1.pdf Graphic file (ty
+pe pdf)
+<use b1_regression_files/figure-beamer/unnamed-chunk-44-1.pdf>
+Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-44-1.p
+df  used on input line 12.
+(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+<figure/factor3vars_visreg.PNG, id=228, 552.26324pt x 237.2865pt>
+File: figure/factor3vars_visreg.PNG Graphic file (type png)
+<use figure/factor3vars_visreg.PNG>
+Package pdftex.def Info: figure/factor3vars_visreg.PNG  used on input line 14.
+(pdftex.def)             Requested size: 307.29341pt x 132.03227pt.
+)
+Overfull \vbox (322.95676pt too high) detected at line 894
+ []
+
+[25
+
+ <./b1_regression_files/figure-beamer/unnamed-chunk-43-1.pdf> <./b1_regression_
+files/figure-beamer/unnamed-chunk-44-1.pdf> <./figure/factor3vars_visreg.PNG>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<b1_regression_files/figure-beamer/unnamed-chunk-46-1.pdf, id=252, 361.35pt x 2
+16.81pt>
+File: b1_regression_files/figure-beamer/unnamed-chunk-46-1.pdf Graphic file (ty
+pe pdf)
+<use b1_regression_files/figure-beamer/unnamed-chunk-46-1.pdf>
+Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-46-1.p
+df  used on input line 16.
+(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+<figure/visreg_m6.PNG, id=253, 543.2295pt x 222.8325pt>
+File: figure/visreg_m6.PNG Graphic file (type png)
+<use figure/visreg_m6.PNG>
+Package pdftex.def Info: figure/visreg_m6.PNG  used on input line 18.
+(pdftex.def)             Requested size: 307.28995pt x 126.0502pt.
+)
+Overfull \vbox (143.5993pt too high) detected at line 916
+ []
+
+[26
+
+ <./b1_regression_files/figure-beamer/unnamed-chunk-46-1.pdf> <./figure/visreg_
+m6.PNG>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<b1_regression_files/figure-beamer/unnamed-chunk-47-1.pdf, id=270, 361.35pt x 2
+16.81pt>
+File: b1_regression_files/figure-beamer/unnamed-chunk-47-1.pdf Graphic file (ty
+pe pdf)
+<use b1_regression_files/figure-beamer/unnamed-chunk-47-1.pdf>
+Package pdftex.def Info: b1_regression_files/figure-beamer/unnamed-chunk-47-1.p
+df  used on input line 10.
+(pdftex.def)             Requested size: 307.29231pt x 184.37538pt.
+) [27
+
+ <./b1_regression_files/figure-beamer/unnamed-chunk-47-1.pdf>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+<figure/stargazertabex.PNG, id=284, 451.6875pt x 550.4565pt>
+File: figure/stargazertabex.PNG Graphic file (type png)
+<use figure/stargazertabex.PNG>
+Package pdftex.def Info: figure/stargazertabex.PNG  used on input line 13.
+(pdftex.def)             Requested size: 193.7187pt x 236.07854pt.
+)
+Overfull \vbox (77.40764pt too high) detected at line 948
+ []
+
+[28
+
+ <./figure/stargazertabex.PNG>]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [29
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [30
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [31
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (86.45898pt too wide) in paragraph at lines 18--18
+[]\T1/lmtt/m/n/10 ## lm(formula = Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, dat
+a = ames_data)[] 
+ []
+
+) [32
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [33
+
+] [34
+
+]
+<figure/Overfitting_fig1.PNG, id=341, 674.52pt x 274.02374pt>
+File: figure/Overfitting_fig1.PNG Graphic file (type png)
+<use figure/Overfitting_fig1.PNG>
+Package pdftex.def Info: figure/Overfitting_fig1.PNG  used on input line 1161.
+(pdftex.def)             Requested size: 307.29819pt x 124.83987pt.
+[35
+
+ <./figure/Overfitting_fig1.PNG>] [36
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb) [37
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##         1         2         3         4         5         
+6         7[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 195877.67 188756.39 216145.92 142360.23 108837.15 173613.3
+8 129350.20[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##         8         9        10        11        12        1
+3        14[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 161122.05 153589.93 157258.43 206422.63 204642.31 168027.6
+2 185577.50[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        15        16        17        18        19        2
+0        21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 183278.48 218855.78 137977.90 113767.26 132939.93 173692.1
+5 242008.44[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        22        23        24        25        26        2
+7        28[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 170492.68 171500.98 179639.08 194371.24 161669.85 145373.0
+8 201463.43[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        29        30        31        32        33        3
+4        35[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 118726.47 271335.82 173613.38 146937.68 136118.82 103770.0
+8 128528.51[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        36        37        38        39        40        4
+1        42[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 145842.10 150440.14 178182.33 111331.30 150303.19 224491.2
+1 166463.01[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        43        44        45        46        47        4
+8        49[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 181116.41 216361.63 161122.05 118639.19 170434.50 227101.7
+3 124967.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        50        51        52        53        54        5
+5        56[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 147348.53 197031.43 168272.43 206285.69 126914.24 367493.6
+5 177692.72[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        57        58        59        60        61        6
+2        63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 199438.30 110480.52 199056.55 115655.44 143592.76 140609.0
+0 144032.69[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        64        65        66        67        68        6
+9        70[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 172733.51 117054.00 167998.53 197247.14 272070.23 164134.9
+0 119929.91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        71        72        73        74        75        7
+6        77[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 111302.20 260321.82 170953.19 204368.42 142771.07 187249.9
+6 219237.53[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        78        79        80        81        82        8
+3        84[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 186291.33 173036.50 177771.48 202862.00 153892.92 108837.1
+5 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        85        86        87        88        89        9
+0        91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 158109.21 125681.71 160848.16 166433.92 316578.21 188208.6
+0 236053.00[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        92        93        94        95        96        9
+7        98[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 213133.07 282067.41 216693.71 192180.08 285960.13 159752.5
+8 182045.95[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##        99       100       101       102       103       10
+4       105[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 183963.22 147319.43 268841.67 162296.40 152876.10 275004.3
+1 198479.67[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       106       107       108       109       110       11
+1       112[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 316088.61 293629.19 202177.26 228305.17 176460.19 211813.2
+6 136060.64[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       113       114       115       116       117       11
+8       119[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 132363.05 132363.05 221623.82  97881.33 108837.15 104699.6
+2 255615.93[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       120       121       122       123       124       12
+5       126[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 162520.62 207244.32 169123.20 180236.54 171471.89 319923.1
+4 157042.72[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       127       128       129       130       131       13
+2       133[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 171285.27 187416.00 122365.87  87473.31 134309.41 142937.1
+1 181145.50[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       134       135       136       137       138       13
+9       140[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 207107.37 182211.99 172517.80 144414.44 144140.55 168135.4
+8 213925.66[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       141       142       143       144       145       14
+6       147[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 128146.76 109824.87 131707.40 123627.49 109687.92  98976.9
+1 283905.91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       148       149       150       151       152       15
+3       154[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 167969.44 263932.13 168791.12 122228.92 169368.01 122913.6
+6 129408.39[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       155       156       157       158       159       16
+0       161[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 225047.51 182485.89  99827.69 125026.06 168683.27 234878.6
+5  97636.53[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       162       163       164       165       166       16
+7       168[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 125026.06 123872.29 119000.36 224773.62 139650.37 245178.8
+2 147427.29[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       169       170       171       172       173       17
+4       175[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 340054.45 122228.92 210668.01 126092.55 223433.24 185361.7
+9 195222.02[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       176       177       178       179       180       18
+1       182[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 132939.93  95690.17 145783.92 117356.99 205737.90 144717.4
+3 190918.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       183       184       185       186       187       18
+8       189[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 119548.15 157561.42 240385.65 189304.18 135238.95 209651.1
+9 194400.33[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       190       191       192       193       194       19
+5       196[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 173692.15 148219.88 244456.47 137567.06 240825.59 158823.0
+4 158823.04[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       197       198       199       200       201       20
+2       203[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 158823.04 173173.45 110235.71 259010.53 158627.91 188756.3
+9 228608.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       204       205       206       207       208       20
+9       210[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 203135.89 158686.09 170953.19 183581.47 210971.00 347312.6
+7 177663.63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       211       212       213       214       215       21
+6       217[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 268127.84 129408.39 108837.15 147622.42 267032.26 213983.8
+5 236140.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       218       219       220       221       222       22
+3       224[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 307353.05 316059.52 202480.24 161151.15 162433.35 173447.3
+4 212390.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       225       226       227       228       229       23
+0       231[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 184647.96 223951.93 211215.80 220470.06 215813.84 140716.8
+6 200152.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       232       233       234       235       236       23
+7       238[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 199164.41 199027.46 154851.56 214834.63 172683.84 215216.3
+8 350844.22[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       239       240       241       242       243       24
+4       245[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 196670.26 218552.79 134280.32 153042.14 166326.07 155507.2
+0 122013.21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       246       247       248       249       250       25
+1       252[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 137567.06 120614.64 131599.55 210668.01  93254.21 193383.5
+2 231015.03[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       253       254       255       256       257       25
+8       259[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 115136.74 175472.47 114207.20 132773.89 113630.31  67674.0
+9 197276.23[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       260       261       262       263       264       26
+5       266[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 163010.23 258786.31 179991.74 142663.21  97881.33 208779.8
+4 149099.75[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       267       268       269       270       271       27
+2       273[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 118531.34 193383.52 164487.56 197247.14 189441.13 179443.9
+5 158930.89[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       274       275       276       277       278       27
+9       280[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##  94457.64 235289.50 177174.02 259881.89 186457.37 149921.4
+4 165504.38[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       281       282       283       284       285       28
+6       287[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 280785.21 130308.83 151290.92 131022.66 214913.39 224391.8
+7 261280.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       288       289       290       291       292       29
+3       294[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 204397.51 210668.01 179443.95 193989.49 168488.14 128068.0
+0 117356.99[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       295       296       297       298       299       30
+0       301[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 248955.17 129350.20 151809.61 137567.06 134720.25 114090.8
+3 117875.69[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       302       303       304       305       306       30
+7       308[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 238057.54 204173.29 131844.35 102263.66 236825.01 216751.8
+9 247369.98[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       309       310       311       312       313       31
+4       315[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 200396.94 209190.68 138662.64 112974.67  95524.13 261994.2
+9 206422.63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       316       317       318       319       320       32
+1       322[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 192483.07 283935.00 139513.42 278564.95 164105.81 200562.9
+8 163421.07[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       323       324       325       326       327       32
+8       329[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 182348.94 211979.30 228031.27 140990.75 124860.02 115684.5
+3 173613.38[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       330       331       332       333       334       33
+5       336[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 166736.91 145705.16 248847.31 322114.31 239700.91 325371.9
+6 286341.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       337       338       339       340       341       34
+2       343[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 215872.02 331065.57 274946.13 207352.18 168820.22 235758.5
+2 161122.05[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       344       345       346       347       348       34
+9       350[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 190154.96 161611.66 179473.04 173829.09 161395.95 152083.5
+1 178622.26[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       351       352       353       354       355       35
+6       357[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 226661.79 159997.38 194234.29 285001.49 234056.97 292778.4
+2 182427.70[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       358       359       360       361       362       36
+3       364[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 179717.84 173966.04 219706.56 283681.69 282233.45 172596.5
+7 164545.75[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       365       366       367       368       369       37
+0       371[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 195114.16 112945.57 124557.03 132939.93 125818.65 103330.1
+5 175667.60[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       372       373       374       375       376       37
+7       378[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 216644.04 178572.59 152631.30 126856.05 173604.87 144140.5
+5 133213.83[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       379       380       381       382       383       38
+4       385[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 164790.55 218415.84 168243.33 172019.68 157042.72 137840.9
+5 117190.95[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       386       387       388       389       390       39
+1       392[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 166052.17 179991.74 128312.80 112123.89 138691.73 149892.3
+5 222582.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       393       394       395       396       397       39
+8       399[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 206530.49 108837.15 107986.37 121984.12 165201.39 129408.3
+9 136060.64[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       400       401       402       403       404       40
+5       406[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 211821.78 308145.65 107467.67 268430.83 282889.09 261828.2
+5 225703.16[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       407       408       409       410       411       41
+2       413[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 267638.23 128146.76 122228.92 112945.57 110588.37 112945.5
+7 158109.21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       414       415       416       417       418       41
+9       420[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 157698.36 140853.80 127188.13 177526.68 203028.04 311490.5
+7 202480.24[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       421       422       423       424       425       42
+6       427[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##  73367.70 171774.88 155615.06 177281.88 249669.00 240522.6
+0 313536.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       428       429       430       431       432       43
+3       434[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 160026.47 145236.13 153726.88 251478.41 215129.10 126092.5
+5 171637.93[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       435       436       437       438       439       44
+0       441[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 132939.93 266131.81 179609.99 244601.94 162902.37 161943.7
+4 146057.81[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       442       443       444       445       446       44
+7       448[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 111273.11 102263.66 172625.66 119685.10 112945.57 164134.9
+0 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       449       450       451       452       453       45
+4       455[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 136139.40 140882.90  96267.05 136990.18 265388.89 218092.2
+8 278457.10[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       456       457       458       459       460       46
+1       462[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 133624.67 140911.99 201355.57 230143.67 127295.99 126748.2
+0 168409.37[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       463       464       465       466       467       46
+8       469[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 170434.50 131022.66 196072.80 193989.49 149618.45 212311.3
+8 136197.58[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       470       471       472       473       474       47
+5       476[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 140061.21 139268.62  99524.71  95690.17 167587.69 211871.4
+5 165309.25[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       477       478       479       480       481       48
+2       483[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 197794.93 309427.84 401211.86 246627.06 192346.12 215158.1
+9 126885.14[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       484       485       486       487       488       48
+9       490[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 129897.99 129350.20 135894.60 201384.66 239065.85 244514.6
+6 264127.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       491       492       493       494       495       49
+6       497[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 212859.17 219129.67 166599.96 167147.75 210697.10 207958.1
+5 172214.81[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       498       499       500       501       502       50
+3       504[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 160026.47 157777.13 197442.27 183689.32 275033.41 433668.4
+5 338655.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       505       506       507       508       509       51
+0       511[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 405565.09 341697.82 208505.94 223922.84 195632.86 146908.5
+9 220665.19[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       512       513       514       515       516       51
+7       518[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 188619.44 145646.97 125270.86 310033.82 261965.20 178651.3
+5 145236.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       519       520       521       522       523       52
+4       525[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 221320.84 134583.30 172870.46 161972.83 261612.54 206617.7
+7 166599.96[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       526       527       528       529       530       53
+1       532[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 158490.96 123598.40 206206.92 124420.09 169338.91 267550.9
+6 145099.18[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       533       534       535       536       537       53
+8       539[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 119548.15 122228.92 163010.23 164653.60 101852.82 152386.5
+0 105550.40[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       540       541       542       543       544       54
+5       546[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 133429.54 118805.23 298833.20 127295.99 163831.92 121602.3
+7 129134.49[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       547       548       549       550       551       55
+2       553[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 204779.26 230417.57 112945.57 137293.16 233372.23 220088.3
+1 155585.96[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       554       555       556       557       558       55
+9       560[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 146879.50 237783.65 126092.55 190839.69 155370.25 241481.2
+3 221105.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       561       562       563       564       565       56
+6       567[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 223922.84 181635.11 180568.62 151564.81 137322.26 137322.2
+6 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       568       569       570       571       572       57
+3       574[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 164848.73 192209.17 197931.88 205024.07 264704.15 221623.8
+2 152054.42[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ##       575       576       577       578       579       58
+0       581[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 196--196
+[]\T1/lmtt/m/n/10 ## 292641.47 167861.58 163176.27 169094.11 140061.21 144630.1
+5 140061.21[] 
+ []
+
+)
+Overfull \vbox (1943.48448pt too high) detected at line 1406
+ []
+
+[38
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##         1         2         3         4         5         
+6         7[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 195877.67 188756.39 216145.92 142360.23 108837.15 173613.3
+8 129350.20[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##         8         9        10        11        12        1
+3        14[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 161122.05 153589.93 157258.43 206422.63 204642.31 168027.6
+2 185577.50[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        15        16        17        18        19        2
+0        21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 183278.48 218855.78 137977.90 113767.26 132939.93 173692.1
+5 242008.44[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        22        23        24        25        26        2
+7        28[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 170492.68 171500.98 179639.08 194371.24 161669.85 145373.0
+8 201463.43[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        29        30        31        32        33        3
+4        35[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 118726.47 271335.82 173613.38 146937.68 136118.82 103770.0
+8 128528.51[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        36        37        38        39        40        4
+1        42[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 145842.10 150440.14 178182.33 111331.30 150303.19 224491.2
+1 166463.01[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        43        44        45        46        47        4
+8        49[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 181116.41 216361.63 161122.05 118639.19 170434.50 227101.7
+3 124967.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        50        51        52        53        54        5
+5        56[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 147348.53 197031.43 168272.43 206285.69 126914.24 367493.6
+5 177692.72[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        57        58        59        60        61        6
+2        63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 199438.30 110480.52 199056.55 115655.44 143592.76 140609.0
+0 144032.69[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        64        65        66        67        68        6
+9        70[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 172733.51 117054.00 167998.53 197247.14 272070.23 164134.9
+0 119929.91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        71        72        73        74        75        7
+6        77[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 111302.20 260321.82 170953.19 204368.42 142771.07 187249.9
+6 219237.53[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        78        79        80        81        82        8
+3        84[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 186291.33 173036.50 177771.48 202862.00 153892.92 108837.1
+5 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        85        86        87        88        89        9
+0        91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 158109.21 125681.71 160848.16 166433.92 316578.21 188208.6
+0 236053.00[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        92        93        94        95        96        9
+7        98[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 213133.07 282067.41 216693.71 192180.08 285960.13 159752.5
+8 182045.95[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##        99       100       101       102       103       10
+4       105[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 183963.22 147319.43 268841.67 162296.40 152876.10 275004.3
+1 198479.67[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       106       107       108       109       110       11
+1       112[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 316088.61 293629.19 202177.26 228305.17 176460.19 211813.2
+6 136060.64[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       113       114       115       116       117       11
+8       119[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 132363.05 132363.05 221623.82  97881.33 108837.15 104699.6
+2 255615.93[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       120       121       122       123       124       12
+5       126[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 162520.62 207244.32 169123.20 180236.54 171471.89 319923.1
+4 157042.72[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       127       128       129       130       131       13
+2       133[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 171285.27 187416.00 122365.87  87473.31 134309.41 142937.1
+1 181145.50[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       134       135       136       137       138       13
+9       140[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 207107.37 182211.99 172517.80 144414.44 144140.55 168135.4
+8 213925.66[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       141       142       143       144       145       14
+6       147[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 128146.76 109824.87 131707.40 123627.49 109687.92  98976.9
+1 283905.91[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       148       149       150       151       152       15
+3       154[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 167969.44 263932.13 168791.12 122228.92 169368.01 122913.6
+6 129408.39[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       155       156       157       158       159       16
+0       161[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 225047.51 182485.89  99827.69 125026.06 168683.27 234878.6
+5  97636.53[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       162       163       164       165       166       16
+7       168[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 125026.06 123872.29 119000.36 224773.62 139650.37 245178.8
+2 147427.29[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       169       170       171       172       173       17
+4       175[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 340054.45 122228.92 210668.01 126092.55 223433.24 185361.7
+9 195222.02[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       176       177       178       179       180       18
+1       182[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 132939.93  95690.17 145783.92 117356.99 205737.90 144717.4
+3 190918.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       183       184       185       186       187       18
+8       189[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 119548.15 157561.42 240385.65 189304.18 135238.95 209651.1
+9 194400.33[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       190       191       192       193       194       19
+5       196[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 173692.15 148219.88 244456.47 137567.06 240825.59 158823.0
+4 158823.04[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       197       198       199       200       201       20
+2       203[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 158823.04 173173.45 110235.71 259010.53 158627.91 188756.3
+9 228608.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       204       205       206       207       208       20
+9       210[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 203135.89 158686.09 170953.19 183581.47 210971.00 347312.6
+7 177663.63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       211       212       213       214       215       21
+6       217[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 268127.84 129408.39 108837.15 147622.42 267032.26 213983.8
+5 236140.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       218       219       220       221       222       22
+3       224[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 307353.05 316059.52 202480.24 161151.15 162433.35 173447.3
+4 212390.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       225       226       227       228       229       23
+0       231[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 184647.96 223951.93 211215.80 220470.06 215813.84 140716.8
+6 200152.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       232       233       234       235       236       23
+7       238[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 199164.41 199027.46 154851.56 214834.63 172683.84 215216.3
+8 350844.22[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       239       240       241       242       243       24
+4       245[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 196670.26 218552.79 134280.32 153042.14 166326.07 155507.2
+0 122013.21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       246       247       248       249       250       25
+1       252[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 137567.06 120614.64 131599.55 210668.01  93254.21 193383.5
+2 231015.03[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       253       254       255       256       257       25
+8       259[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 115136.74 175472.47 114207.20 132773.89 113630.31  67674.0
+9 197276.23[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       260       261       262       263       264       26
+5       266[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 163010.23 258786.31 179991.74 142663.21  97881.33 208779.8
+4 149099.75[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       267       268       269       270       271       27
+2       273[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 118531.34 193383.52 164487.56 197247.14 189441.13 179443.9
+5 158930.89[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       274       275       276       277       278       27
+9       280[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##  94457.64 235289.50 177174.02 259881.89 186457.37 149921.4
+4 165504.38[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       281       282       283       284       285       28
+6       287[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 280785.21 130308.83 151290.92 131022.66 214913.39 224391.8
+7 261280.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       288       289       290       291       292       29
+3       294[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 204397.51 210668.01 179443.95 193989.49 168488.14 128068.0
+0 117356.99[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       295       296       297       298       299       30
+0       301[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 248955.17 129350.20 151809.61 137567.06 134720.25 114090.8
+3 117875.69[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       302       303       304       305       306       30
+7       308[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 238057.54 204173.29 131844.35 102263.66 236825.01 216751.8
+9 247369.98[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       309       310       311       312       313       31
+4       315[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 200396.94 209190.68 138662.64 112974.67  95524.13 261994.2
+9 206422.63[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       316       317       318       319       320       32
+1       322[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 192483.07 283935.00 139513.42 278564.95 164105.81 200562.9
+8 163421.07[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       323       324       325       326       327       32
+8       329[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 182348.94 211979.30 228031.27 140990.75 124860.02 115684.5
+3 173613.38[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       330       331       332       333       334       33
+5       336[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 166736.91 145705.16 248847.31 322114.31 239700.91 325371.9
+6 286341.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       337       338       339       340       341       34
+2       343[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 215872.02 331065.57 274946.13 207352.18 168820.22 235758.5
+2 161122.05[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       344       345       346       347       348       34
+9       350[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 190154.96 161611.66 179473.04 173829.09 161395.95 152083.5
+1 178622.26[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       351       352       353       354       355       35
+6       357[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 226661.79 159997.38 194234.29 285001.49 234056.97 292778.4
+2 182427.70[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       358       359       360       361       362       36
+3       364[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 179717.84 173966.04 219706.56 283681.69 282233.45 172596.5
+7 164545.75[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       365       366       367       368       369       37
+0       371[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 195114.16 112945.57 124557.03 132939.93 125818.65 103330.1
+5 175667.60[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       372       373       374       375       376       37
+7       378[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 216644.04 178572.59 152631.30 126856.05 173604.87 144140.5
+5 133213.83[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       379       380       381       382       383       38
+4       385[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 164790.55 218415.84 168243.33 172019.68 157042.72 137840.9
+5 117190.95[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       386       387       388       389       390       39
+1       392[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 166052.17 179991.74 128312.80 112123.89 138691.73 149892.3
+5 222582.46[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       393       394       395       396       397       39
+8       399[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 206530.49 108837.15 107986.37 121984.12 165201.39 129408.3
+9 136060.64[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       400       401       402       403       404       40
+5       406[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 211821.78 308145.65 107467.67 268430.83 282889.09 261828.2
+5 225703.16[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       407       408       409       410       411       41
+2       413[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 267638.23 128146.76 122228.92 112945.57 110588.37 112945.5
+7 158109.21[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       414       415       416       417       418       41
+9       420[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 157698.36 140853.80 127188.13 177526.68 203028.04 311490.5
+7 202480.24[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       421       422       423       424       425       42
+6       427[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##  73367.70 171774.88 155615.06 177281.88 249669.00 240522.6
+0 313536.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       428       429       430       431       432       43
+3       434[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 160026.47 145236.13 153726.88 251478.41 215129.10 126092.5
+5 171637.93[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       435       436       437       438       439       44
+0       441[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 132939.93 266131.81 179609.99 244601.94 162902.37 161943.7
+4 146057.81[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       442       443       444       445       446       44
+7       448[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 111273.11 102263.66 172625.66 119685.10 112945.57 164134.9
+0 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       449       450       451       452       453       45
+4       455[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 136139.40 140882.90  96267.05 136990.18 265388.89 218092.2
+8 278457.10[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       456       457       458       459       460       46
+1       462[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 133624.67 140911.99 201355.57 230143.67 127295.99 126748.2
+0 168409.37[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       463       464       465       466       467       46
+8       469[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 170434.50 131022.66 196072.80 193989.49 149618.45 212311.3
+8 136197.58[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       470       471       472       473       474       47
+5       476[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 140061.21 139268.62  99524.71  95690.17 167587.69 211871.4
+5 165309.25[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       477       478       479       480       481       48
+2       483[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 197794.93 309427.84 401211.86 246627.06 192346.12 215158.1
+9 126885.14[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       484       485       486       487       488       48
+9       490[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 129897.99 129350.20 135894.60 201384.66 239065.85 244514.6
+6 264127.27[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       491       492       493       494       495       49
+6       497[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 212859.17 219129.67 166599.96 167147.75 210697.10 207958.1
+5 172214.81[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       498       499       500       501       502       50
+3       504[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 160026.47 157777.13 197442.27 183689.32 275033.41 433668.4
+5 338655.88[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       505       506       507       508       509       51
+0       511[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 405565.09 341697.82 208505.94 223922.84 195632.86 146908.5
+9 220665.19[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       512       513       514       515       516       51
+7       518[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 188619.44 145646.97 125270.86 310033.82 261965.20 178651.3
+5 145236.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       519       520       521       522       523       52
+4       525[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 221320.84 134583.30 172870.46 161972.83 261612.54 206617.7
+7 166599.96[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       526       527       528       529       530       53
+1       532[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 158490.96 123598.40 206206.92 124420.09 169338.91 267550.9
+6 145099.18[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       533       534       535       536       537       53
+8       539[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 119548.15 122228.92 163010.23 164653.60 101852.82 152386.5
+0 105550.40[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       540       541       542       543       544       54
+5       546[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 133429.54 118805.23 298833.20 127295.99 163831.92 121602.3
+7 129134.49[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       547       548       549       550       551       55
+2       553[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 204779.26 230417.57 112945.57 137293.16 233372.23 220088.3
+1 155585.96[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       554       555       556       557       558       55
+9       560[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 146879.50 237783.65 126092.55 190839.69 155370.25 241481.2
+3 221105.13[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       561       562       563       564       565       56
+6       567[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 223922.84 181635.11 180568.62 151564.81 137322.26 137322.2
+6 108837.15[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       568       569       570       571       572       57
+3       574[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 164848.73 192209.17 197931.88 205024.07 264704.15 221623.8
+2 152054.42[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ##       575       576       577       578       579       58
+0       581[] 
+ []
+
+
+Overfull \hbox (70.70903pt too wide) in paragraph at lines 197--197
+[]\T1/lmtt/m/n/10 ## 292641.47 167861.58 163176.27 169094.11 140061.21 144630.1
+5 140061.21[] 
+ []
+
+)
+Overfull \vbox (1904.95149pt too high) detected at line 1606
+ []
+
+[39
+
+]
+\openout4 = `b1_regression.vrb'.
+
+(b1_regression.vrb
+Overfull \hbox (44.4591pt too wide) in paragraph at lines 25--25
+[]\T1/lmtt/m/n/10 ## Summary of sample sizes: 2345, 2345, 2345, 2345, 2345, 234
+5, ...[] 
+ []
+
+
+Overfull \hbox (49.70909pt too wide) in paragraph at lines 25--25
 []\T1/lmtt/m/n/10 ## Tuning parameter \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 interce
 pt\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 was held constant at a value of TRUE[] 
  []
 
-)
-Overfull \vbox (22.27353pt too high) detected at line 764
- []
-
-[36
-
-] [37
-
-]
-<figure/bias_variance_tradeoff.PNG, id=381, 560.0925pt x 464.937pt>
-File: figure/bias_variance_tradeoff.PNG Graphic file (type png)
-<use figure/bias_variance_tradeoff.PNG>
-Package pdftex.def Info: figure/bias_variance_tradeoff.PNG  used on input line 
-778.
-(pdftex.def)             Requested size: 142.20209pt x 118.04301pt.
-[38
-
- <./figure/bias_variance_tradeoff.PNG>] [39
+) [40
 
 ]
 \openout4 = `b1_regression.vrb'.
@@ -2128,31 +4148,17 @@ Package pdftex.def Info: figure/bias_variance_tradeoff.PNG  used on input line
 (b1_regression.vrb
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 24.
-) [40
+) [41
 
 ]
-Package microtype Info: Loading generic settings for font family
-(microtype)             `lmss' (encoding: OT1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 859.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 859.
-<figure/Diagslr.PNG, id=417, 1132.23pt x 591.4095pt>
+<figure/Diagslr.PNG, id=408, 1132.23pt x 591.4095pt>
 File: figure/Diagslr.PNG Graphic file (type png)
 <use figure/Diagslr.PNG>
-Package pdftex.def Info: figure/Diagslr.PNG  used on input line 859.
+Package pdftex.def Info: figure/Diagslr.PNG  used on input line 1683.
 (pdftex.def)             Requested size: 307.27834pt x 160.50389pt.
+[42
 
-Overfull \vbox (24.89981pt too high) detected at line 859
- []
-
-[41
-
- <./figure/Diagslr.PNG>] [42
-
-]
+ <./figure/Diagslr.PNG>]
 \tf@nav=\write6
 \openout6 = `b1_regression.nav'.
 
@@ -2165,21 +4171,21 @@ Overfull \vbox (24.89981pt too high) detected at line 859
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 873.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 873.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1685.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1685.
 (b1_regression.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 873.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 873.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 873.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1685.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1685.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1685.
  ) 
 Here is how much of TeX's memory you used:
- 24836 strings out of 493337
- 453906 string characters out of 3139439
- 551765 words of memory out of 3000000
- 27662 multiletter control sequences out of 15000+200000
- 57987 words of font info for 63 fonts, out of 3000000 for 9000
+ 24804 strings out of 493337
+ 453243 string characters out of 3139439
+ 676163 words of memory out of 3000000
+ 27606 multiletter control sequences out of 15000+200000
+ 50823 words of font info for 52 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191
- 56i,15n,55p,417b,466s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 56i,15n,55p,417b,478s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program Files/M
 iKTeX 2.9/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type
 1/public/lm/lmcsc10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmss
@@ -2188,9 +4194,9 @@ ram Files/MiKTeX 2.9/fonts/type1/public/lm/lmtcsc10.pfb><C:/Program Files/MiKTe
 X 2.9/fonts/type1/public/lm/lmtk10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /public/lm/lmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
 symbols/msam7.pfb>
-Output written on b1_regression.pdf (42 pages, 2022273 bytes).
+Output written on b1_regression.pdf (42 pages, 1125868 bytes).
 PDF statistics:
- 491 PDF objects out of 1000 (max. 8388607)
+ 472 PDF objects out of 1000 (max. 8388607)
  126 named destinations out of 1000 (max. 500000)
- 10403 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 6272 words of extra memory for PDF output out of 10000 (max. 10000000)
 
