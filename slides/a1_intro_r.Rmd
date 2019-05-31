@@ -438,6 +438,27 @@ na.omit()
 glimpse(clean_titanic)
 ```
 
+## With `gather` from wide to long format  
+
+```{r}
+library(dplyr)
+library(tidyr)
+# From http://stackoverflow.com/questions/1181060
+stocks <- tibble(
+  time = as.Date('2009-01-01') + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+
+gather(stocks, "stock", "price", -time)
+```
+
+## The comman `expand.grid`
+
+```{r}
+expand.grid(letters[1:4],5:3,LETTERS[1:2])
+```
 
 ## [Example Data - Housing Values in Suburbs of Boston](https://datascienceplus.com/fitting-neural-network-in-r/)
 
@@ -569,6 +590,7 @@ Further possible topics of this section:
 - the rescale package
 
 - loops
+- exercise with loops
 
 - paste und paste0
 - random number generation
@@ -583,4 +605,8 @@ Further possible topics of this section:
 <!--
 https://www.r-exercises.com/start-here-to-learn-r/
 https://www.r-exercises.com/category/exercises/exercises-intermediate/
+
+Exercises that Practice and Extend Skills with R
+https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
 -->
+

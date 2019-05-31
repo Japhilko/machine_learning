@@ -178,9 +178,9 @@ If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
 -->
 
 
+## Solutions
 
-
-### 6
+### Solution Exxercise 6
 
 ```{r}
 set.seed(1000)
@@ -190,28 +190,28 @@ Train=df[split==TRUE,]
 Test=df[split==FALSE,]
 ```
 
-### 7  
+### Solution Exxercise 7  
 
 ```{r}
 nrow(Train)
 nrow(Test)
 ```
 
-### 8  
+### Solution Exxercise 8  
 
 ```{r}
 library(rpart)
 library(rpart.plot)
 ```
 
-### 9  
+### Solution Exxercise 9  
 
 ```{r}
 dec=rpart(class~., data=Train)
 ```
 
 
-### 10 
+### Solution Exxercise 10 
 
 ```{r}
 par(mar = rep(2, 4))

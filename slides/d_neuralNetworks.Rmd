@@ -42,9 +42,11 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=T)
 - The following shows the basic functional unit of the brain, a biologic neuron.
 -->
 
-### Biologic Neuron–Source: Bruce Blaus [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Blausen_0657_MultipolarNeuron.png)
+### Biologic Neuron 
 
 ![](figure/Blausen_0657_MultipolarNeuron.png){height=50%}
+
+Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Blausen_0657_MultipolarNeuron.png)
 
 ## ANN neurons
 

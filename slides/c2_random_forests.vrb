@@ -1,0 +1,25 @@
+\frametitle{Loop - hyperparameter combination (I)}
+\protect\hypertarget{loop---hyperparameter-combination-i-1}{}
+
+\begin{itemize}
+\tightlist
+\item
+  We apply 500 trees since our previous example illustrated that 500 was
+  plenty to achieve a stable error rate.
+\item
+  We set the random number generator seed. This allows us to
+  consistently sample the same observations for each sample size and
+  make the impact of each change clearer.
+\item
+  Our OOB RMSE ranges between
+  2.5404601\times 10\textsuperscript{\{4\}-2.6265709\times 10}\{4\}.
+\item
+  Our top 10 performing models all have RMSE values right around
+  2.5515\times 10\^{}\{4\} and the results show that models with slighly
+  larger sample sizes (70-80 per cent) and deeper trees (3-5
+  observations in an terminal node) perform best.
+\item
+  We get a full range of \texttt{mtry} values showing up in our top 10 -
+  not over influential.
+\end{itemize}
+
