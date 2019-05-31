@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  31 MAY 2019 07:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.2.7)  31 MAY 2019 08:13
 entering extended mode
 **./c2_random_forests.tex
 (c2_random_forests.tex
@@ -1325,8 +1325,7 @@ Package grffile Info: Option `multidot' is set to `true'.
 Package grffile Info: Option `extendedchars' is set to `false'.
 Package grffile Info: Option `space' is set to `true'.
 Package grffile Info: \Gin@ii of package `graphicx' fixed on input line 494.
-)
-No file c2_random_forests.aux.
+) (c2_random_forests.aux)
 \openout1 = `c2_random_forests.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
@@ -1735,9 +1734,9 @@ Package pdftex.def Info: figure/ml_rf_errorrate_m1.png  used on input line 17.
 l.15   2.5404601\times
                        10\textsuperscript{\{4\}-2.6265709\times 10}\{4\}. 
 Here is how much of TeX's memory you used:
- 23471 strings out of 493337
- 427839 string characters out of 3139439
- 500669 words of memory out of 3000000
+ 23473 strings out of 493337
+ 427915 string characters out of 3139439
+ 500597 words of memory out of 3000000
  26358 multiletter control sequences out of 15000+200000
  58292 words of font info for 68 fonts, out of 3000000 for 9000
  1127 hyphenation exceptions out of 8191
