@@ -606,6 +606,8 @@ swirl()
 - [**Course materials for the Data Science Specialization**](https://github.com/DataScienceSpecialization/courses)
 - Data wrangling - [**`dplyr` vignette**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
 - The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
+- Gareth James et al (2013) [**An Introduction to
+Statistical Learning**](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf)
 <!--
 Further possible topics of this section:
 
