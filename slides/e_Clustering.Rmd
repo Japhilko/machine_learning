@@ -1,6 +1,6 @@
 ---
 title: "Clustering"
-author: "Jan-Philipp Kolb"
+author: "Jan-Philipp Kolb and Alexander Murray-Watters"
 date: "18 Januar 2019"
 output: beamer_presentation
 ---
@@ -38,6 +38,15 @@ library("kknn")
 
 ## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
 
+Animated example: 
+https://towardsdatascience.com/the-5-clustering-algorithms-data-scientists-need-to-know-a36d136ef68
+
+
+## Exercise: Kmeans
+
+Apply kmeans to to the `iris` dataset with 2, 3, and 4
+clusters. Produce three scatter plots, with the points colored
+according to cluster assignment.
 
 
 ## hdbscan
@@ -45,7 +54,7 @@ library("kknn")
 A fairly new alternative to kmeans, hdbscan does not require you to
 specify the number of categories to be assigned. It only requires a
 decision as to the minimum number of points needed to be included in a
-cluster. This minimum number acts as a smoothing paramter (such as a
+cluster. This minimum number acts as a smoothing parameter (such as a
 density bandwidth parameter or a histograms bin/bar width), with lower
 values finding more clusters. Other advantages of hdbscan include .
 
@@ -61,6 +70,23 @@ library(dplyr)
 library(maps)
 library(dbscan)
 
+## Example where kmeans finds only 1 cluster.
+two.clust.eg <- rbind(matrix(rnorm(1000, sd = 0.8), ncol=2),
+                      matrix(rnorm(100, mean = 120, sd = 0.12), ncol = 2))
+
+clust <- kmeans(two.clust.eg, centers=2)
+
+plot(x, col = clust$cluster)
+##     points(cl$centers, col = 1:2, pch = 8, cex = 2)
+
+
+```
+
+```{r}
+
+
+
+
 
 data(moons)
 
@@ -72,7 +98,13 @@ plot(moons, col = res$cluster + 1, main="R implementation")
 
 
 
+## Exercise: Apply kmeans to the moons dataset and compare the results. 
+-- Be sure to try different numbers of centers.
 
+
+## Exercise: Apply hdbscan to the moons dataset with different minimums for the number of points. 
+
+TODO: Add more exercises
 
 
 ```{r, eval=FALSE}
