@@ -63,4 +63,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   [Shiny App for machine
     learning](https://www.showmeshiny.com/machlearn/)
+
+https://www.r-exercises.com/?s=machine+learning
 -->

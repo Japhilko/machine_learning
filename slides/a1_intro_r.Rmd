@@ -413,6 +413,27 @@ airq
 na.omit(airq)
 ```
 
+## Available loops in R
+
+![](figure/content_flowchart1.png)
+
+## [Loops in R](https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r?utm_source=adwords_ppc&utm_campaignid=1655852085&utm_adgroupid=61045433942&utm_device=c&utm_keyword=%2Bloops%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=318880582254&utm_targetid=aud-392016246653:kwd-589281898934&utm_loc_interest_ms=&utm_loc_physical_ms=9041580&gclid=Cj0KCQjwocPnBRDFARIsAJJcf97mSXl9jWq7mdoRkuxbhu_LS_WCY00hyty2VW5AbXe7hetdvXio9VAaAmpMEALw_wcB)
+
+- This loop calculates the square of the first 10 elements of vector u1
+
+```{r}
+u1 <- rnorm(30)
+# Initialize `usq`
+usq <- 0
+for(i in 1:10) {
+  # i-th element of `u1` squared into `i`-th position of `usq`
+  usq[i] <- u1[i]*u1[i]
+  print(usq[i])
+}
+print(i)
+```
+
+
 
 ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
 
@@ -460,7 +481,7 @@ stocks <- tibble(
 gather(stocks, "stock", "price", -time)
 ```
 
-## The comman `expand.grid`
+## The command `expand.grid`
 
 ```{r}
 expand.grid(letters[1:4],5:3,LETTERS[1:2])
@@ -637,5 +658,9 @@ https://www.r-exercises.com/category/exercises/exercises-intermediate/
 
 Exercises that Practice and Extend Skills with R
 https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
+
+
+Loops in R
+https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r?utm_source=adwords_ppc&utm_campaignid=1655852085&utm_adgroupid=61045433942&utm_device=c&utm_keyword=%2Bloops%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=318880582254&utm_targetid=aud-392016246653:kwd-589281898934&utm_loc_interest_ms=&utm_loc_physical_ms=9041580&gclid=Cj0KCQjwocPnBRDFARIsAJJcf97mSXl9jWq7mdoRkuxbhu_LS_WCY00hyty2VW5AbXe7hetdvXio9VAaAmpMEALw_wcB
 -->
 

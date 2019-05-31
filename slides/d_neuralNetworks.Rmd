@@ -83,15 +83,19 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 - The output signal then moves to a raw output or other neurons depending on specific ANN architecture. 
 - This basic artificial neuron is combined with multiple other artificial neurons to create an ANNs such as the ones shown in the following figure.
 
-## Examples of Multi-Neuron ANNs–Source: Click images
+## Examples of Multi-Neuron 
+
+<!--
+ANNs–Source: Click images
+-->
 
 ![](figure/neuralnetfig.PNG)
 
 ## ANNs described
 
-- ANNs have an Input layer, Hidden layer, and Output layer. 
+- ANNs have an Input layer, hidden layer, and output layer. 
 - The input layer reads in data values from a user provided input. 
-- Within the hidden layer is where a majority of the "learning" takes place, and the output layer displays the results of the ANN. 
+- Within the hidden layer a majority of the "learning" takes place, and the output layer displays the results of the ANN. 
 - In the bottom plot of the figure, each of the red input nodes correspond to an input vector $x_i$. Each of the black lines with correspond to a weight, $w^{(l)}_{ij}$, and describe how artificial neurons are connections to one another within the ANN. 
 - The $i$ subscript identifies the source and the $j$ subscript describes to which artificial neuron the weight connects the source to. The green output nodes are the output vectors $y_q$.
 
@@ -133,7 +137,7 @@ $$
 
 ## Common ANN Activation functions
 
-![](figure/activations-1.png)
+![](figure/activations-1.png){height=90%}
 
 ## How ANNs Learn
 
@@ -221,8 +225,7 @@ Yacht_Data <- read_table(file = paste0(url,filen),
 
 
 ```{r,eval=F}
-ggpairs(Yacht_Data,title="Scatterplot Matrix of the Features of 
-        the Yacht Data Set")
+ggpairs(Yacht_Data,title="Scatterplot Matrix - features of Yacht dataset")
 ```
 
 ```{r,echo=F,eval=F}
@@ -231,7 +234,7 @@ ggpairs(Yacht_Data, title = "Scatterplot Matrix of the Features of the Yacht Dat
 dev.off()
 ```
 
-![](figure/ggpairs_yacht.png){height=90%}
+![](figure/ggpairs_yacht.png){height=80%}
 
 ## An excellent summary of the variation of each feature
 <!--
@@ -342,7 +345,8 @@ Test_NN1_Output <- compute(Yacht_NN1,
 # logistic activation function
 set.seed(12321)
 Yacht_NN2 <- neuralnet(Residuary_Resist ~ LongPos_COB + 
-              Prismatic_Coeff + Len_Disp_Ratio + Beam_Draut_Ratio + 
+              Prismatic_Coeff + Len_Disp_Ratio + 
+                Beam_Draut_Ratio + 
                 Length_Beam_Ratio + Froude_Num, 
                        data = Yacht_Data_Train, 
                        hidden = c(4, 1), 
@@ -606,7 +610,7 @@ ggpairs(Hab_Data,title="Scatterplot Matrix Haberman's
         Survival Features")
 ```
 
-![](figure/class01-1.png){height=90%}
+![](figure/class01-1.png){height=70%}
 
 
 ## Interpreting the Scatterplot
