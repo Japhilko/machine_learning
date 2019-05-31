@@ -38,7 +38,8 @@ library("kknn")
 
 ## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
 
-
+Animated example: 
+https://towardsdatascience.com/the-5-clustering-algorithms-data-scientists-need-to-know-a36d136ef68
 
 
 ## Exercise: Kmeans
