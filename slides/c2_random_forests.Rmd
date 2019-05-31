@@ -5,13 +5,15 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output: 
   beamer_presentation: 
-    theme: Dresden
     colortheme: dolphin
     fig_height: 3
     fig_width: 5
-    fig_caption: no
     fonttheme: structuresmallcapsserif
     highlight: haddock
+    theme: Dresden
+  slidy_presentation: 
+    highlight: haddock
+    keep_md: yes
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
@@ -100,7 +102,7 @@ The algorithm randomly selects a bootstrap sample to train and predictors to use
 
 ## Characteristics
 
-- Since bootstrap samples and sample of features are selected randomly at each split, a more diverse set of trees are produced which tends to lessen tree correlation beyond bagged trees and often dramatically increase predictive power.
+- Since bootstrap samples and features are selected randomly at each split, we create a more diverse set of trees, which tends to lessen tree correlation beyond bagged trees and often dramatically increase predictive power.
 <!--
 - random forests have the least variability in their prediction accuracy when tuning.
 -->
@@ -120,6 +122,7 @@ during tuning;
 
 ![](figure/random_trees_fig1.PNG)
 -->
+
 
 ## Preparation - random forests
 
@@ -170,8 +173,7 @@ ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
 
 ```{r}
 set.seed(123)
-ames_split <- rsample::initial_split(ames_data, 
-                                     prop = .7)
+ames_split <- rsample::initial_split(ames_data,prop=.7)
 ames_train <- rsample::training(ames_split)
 ames_test  <- rsample::testing(ames_split)
 ```
@@ -185,13 +187,16 @@ ames_test  <- rsample::testing(ames_split)
 - To explore and compare a variety of tuning parameters we can also find more effective packages. 
 - The package `ranger` will be presented in the tuning section.
 
+
 ## `randomForest::randomForest`
 
-- `randomForest` can use the formula or separate x, y matrix notation for specifying our model. 
-- Below we apply the default `randomForest` model using the formulaic specification. 
+- `randomForest` can use the formula or separate x, y matrix notation for specifying the model. 
+- Below we apply the default `randomForest` model using the formal specification. 
 - The default random forest performs 500 trees and $\dfrac{\text{features}}{3}=26$ randomly selected predictor variables at each split. 
-- Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
 
+<!--
+- Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
+-->
 
 
 ```{r,eval=F}
@@ -208,10 +213,22 @@ save(m1,file="../data/ml_randomforest_m1.RData")
 load("../data/ml_randomforest_m1.RData")
 ```
 
+```{r,echo=F}
+m1
+```
+
+<!--
+## The resulting object `m1`
+-->
+
 
 ## Plotting the model
 
-- Plotting the model will illustrate the error rate as we average across more trees and shows that our error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 or so trees.
+<!--
+- Plotting the model will illustrate the error rate as we average across more trees and shows that our 
+-->
+
+- The error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 trees.
 
 ```{r,eval=F}
 plot(m1,main="Error rate")
@@ -223,93 +240,7 @@ png("figure/ml_rf_errorrate_m1.png")
 dev.off()
 ```
 
-![](figure/ml_rf_errorrate_m1.png){height=50%}
-
-## The plotted error rate
-
-- The plotted error rate above is based on the OOB sample error and can be accessed directly at `m1$mse`. 
-- We can find which number of trees providing the lowest error rate, which is 344 trees providing an average home sales price error of $25,673.
-
-```{r}
-which.min(m1$mse)
-sqrt(m1$mse[which.min(m1$mse)])
-```
-
-## A validation set to measure predictive accuracy
-
-- `randomForest` also allows us to use a validation set to measure predictive accuracy if we did not want to use the OOB samples. 
-- Here we split our training set further to create a training and validation set. 
-- The validation data is in `xtest` and `ytest`.
-
-```{r,eval=F}
-set.seed(123)
-valid_split <- initial_split(ames_train, .8)
-# training data
-ames_train_v2 <- analysis(valid_split)
-# validation data
-ames_valid <- assessment(valid_split)
-x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
-y_test <- ames_valid$Sale_Price
-```
-
-
-
-<!--
-valid_split <- valid_split%>% na.omit()
--->
-## Run the model   
-
-
-
-
-- With the command `randomForest`
-
-```{r,eval=F}
-rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
-  data=ames_train_v2,xtest = x_test,ytest=y_test)
-```
-
-```{r,eval=F,echo=F}
-save(rf_oob_comp,file="../data/ml_rf_oob_comp.RData")
-```
-
-```{r,echo=F}
-load("../data/ml_rf_oob_comp.RData")
-```
-
-
-## compare error rates
-
-- Extract OOB & validation errors
-
-```{r,eval=F}
-tibble::tibble(
-  `Out of Bag Error` = oob,
-  `Test error` = validation,
-  ntrees = 1:rf_oob_comp$ntree
-) %>%
-  gather(Metric, RMSE, -ntrees) %>%
-  ggplot(aes(ntrees, RMSE, color = Metric)) +
-  geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  xlab("Number of trees")
-```
-
-
-
-```{r,echo=F,eval=F}
-## Compare error rates
-tibble::tibble(
-  `Out of Bag Error` = oob,
-  `Test error` = validation,
-  ntrees = 1:rf_oob_comp$ntree
-) %>%
-  gather(Metric, RMSE, -ntrees) %>%
-  ggplot(aes(ntrees, RMSE, color = Metric)) +
-  geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  xlab("Number of trees")
-```
+![](figure/ml_rf_errorrate_m1.png){height=65%}
 
 ## Random forests - out-of-the-box algorithm
 
@@ -319,17 +250,18 @@ tibble::tibble(
 - Random forests perform remarkably well with very little tuning.
 - We get an RMSE of less than 30K Dollar without any tuning 
 - This is more than 6K Dollar RMSE-reduction compared to a fully-tuned bagging model 
-- and $4K reduction to to a fully-tuned elastic net model. 
+- and 4K dollar reduction to to a fully-tuned elastic net model. 
 - We can still seek improvement by tuning our random forest model.
 
-## Tuning Random forests
+### Tuning Random forests
 
 - Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
 - The primary concern at the beginning is tuning the number of candidate variables to select from at each split. 
 - A few additional hyperparameters are important. 
-- The argument names may differ across packages, but these hyperparameters should be present:
 
 ## Tuning parameters (I)
+
+- The argument names may differ across packages, but these hyperparameters should be present:
 
 ### number of trees
 
@@ -354,7 +286,7 @@ tibble::tibble(
 ### minimum number of samples within the terminal nodes:
 
 - `nodesize` - Controls the complexity of the trees. 
-- Smaller node size allows for deeper, more complex trees 
+- Smaller node size allow for deeper, more complex trees 
 - This is another bias-variance tradeoff where deeper trees introduce more variance (risk of overfitting) 
 - Shallower trees introduce more bias (risk of not fully capturing unique patters and relatonships in the data).
 
@@ -371,16 +303,24 @@ tibble::tibble(
 <!--
 - `tuneRf` will start at a value of `mtry` that you supply and increase by a certain step factor until the OOB error stops improving. 
 -->
-- We start with `mtry = 5` and increases by a factor of 1.5 until the OOB error stops improving by 1 per cent. 
+- We start with 5 candidate variables (`mtryStart=5`) and increase by a factor of 2 until the OOB error stops improving by 1 per cent. 
 - `tuneRF` requires a separate x y specification. 
 - The optimal `mtry` value in this sequence is very close to the default mtry value of $\dfrac{\text{features}}{3}=26$.
 
-```{r,eval=F}
+```{r,eval=F,echo=F}
+?randomForest::tuneRF
+```
+
+
+```{r}
 features <- setdiff(names(ames_train), "Sale_Price")
+```
+
+```{r,eval=F}
 set.seed(123)
-m2<-tuneRF(x= ames_train[features],
+m2<-tuneRF(x= ames_train[,features],
   y= ames_train$Sale_Price,ntreeTry   = 500,
-  mtryStart  = 5,stepFactor = 1.5,
+  mtryStart  = 5,stepFactor = 2,
   improve    = 0.01,trace=FALSE)
 ```
 
@@ -395,7 +335,7 @@ load("../data/ml_rf_m2.RData")
 
 ## Full grid search with `ranger`
 
-- To perform a larger grid search across several hyperparameters we’ll need to create a grid and loop through each hyperparameter combination and evaluate the model. 
+- To perform a larger grid search across several hyperparameters we’ll need to create a grid, loop through each hyperparameter combination and evaluate the model. 
 - Unfortunately, this is where `randomForest` becomes quite inefficient since it does not scale well. 
 - Instead, we can use `ranger` which is a C++ implementation of Breiman’s random forest algorithm and is over 6 times faster than `randomForest`.
 
@@ -404,7 +344,7 @@ load("../data/ml_rf_m2.RData")
 
 ### `randomForest` speed
 
-```{r}
+```{r,eval=F}
 system.time(
   ames_randomForest <- randomForest(
     formula = Sale_Price ~ ., 
@@ -415,19 +355,33 @@ system.time(
 )
 ```
 
+```{r}
+#       User      System    elapsed 
+#     145.47        0.09      152.48 
+```
+
+
+```{r,eval=F,echo=F}
+save(ames_randomForest,file="../data/ml_rf_ames_randomForest.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_rf_ames_randomForest.RData")
+```
+
 ## `ranger` speed
 
 ```{r}
 system.time(
-  ames_ranger <- ranger(
-    formula   = Sale_Price ~ ., 
-    data      = ames_train, 
-    num.trees = 500,
-    mtry      = floor(length(features) / 3)
-  )
+  ames_ranger <- ranger(formula=Sale_Price ~ ., 
+    data      = ames_train,num.trees = 500,
+    mtry      = floor(length(features) / 3))
 )
 ```
 
+```{r}
+
+```
 
 ## The grid search
 
@@ -449,7 +403,7 @@ nrow(hyper_grid) # total number of combinations
 
 ## Loop - hyperparameter combination (I)
 
-```{r}
+```{r,eval=F}
 for(i in 1:nrow(hyper_grid)) {
   # train model
   model <- ranger(
@@ -466,6 +420,15 @@ for(i in 1:nrow(hyper_grid)) {
 }
 ```
 
+```{r,eval=F,echo=F}
+save(hyper_grid,file="../data/ml_rf_hypergrid_oobrmse.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_rf_hypergrid_oobrmse.RData")
+```
+
+
 ## The results
 
 ```{r}
@@ -474,13 +437,29 @@ hyper_grid %>%
   head(10)
 ```
 
+```{r,echo=F}
+top10 <- hyper_grid %>% 
+  dplyr::arrange(OOB_RMSE) %>%
+  head(10)
+
+
+roob_hg <- range(hyper_grid$OOB_RMSE)
+
+roob_hgr <- round(roob_hg/1000)*1000
+```
+
+
+```{r,echo=F}
+roundmeantop10 <- round(mean(top10$OOB_RMSE))
+```
+
 
 ## Loop - hyperparameter combination (I)
 
 - We apply 500 trees since our previous example illustrated that 500 was plenty to achieve a stable error rate. 
 - We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
-- Our OOB RMSE ranges between 26,000-27,000. 
-- Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
+- Our OOB RMSE ranges between 25000 - 26000. 
+- Our top 10 performing models all have RMSE values right around 25500 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
 - We get a full range of `mtry` values showing up in our top 10 - not over influential.
 <!--
 in their original columnar form, 
@@ -492,17 +471,35 @@ in their original columnar form,
 
 - Random forests perform well with categorical variables 
 - It is worth checking to see if alternative encodings can increase performance. 
-- E.g., the following one-hot encodes our categorical variables which produces 353 predictor variables versus the 80 we were using above. 
 - We adjust `mtry` to search from 50-200 random predictor variables at each split and re-perform our grid search. 
 - The results suggest that one-hot encoding does not improve performance.
 -->
 
 ## Hyperparameter grid search - categorical variables
 
+- We use [**one-hot encoding**](https://hackernoon.com/what-is-one-hot-encoding-why-and-when-do-you-have-to-use-it-e3c6186d008f) for our categorical variables which produces 353 predictor variables versus the 80 we were using above. 
+
+
 ```{r}
 # one-hot encode our categorical variables
-one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
+(one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE))
+```
+
+## Make a dataframe of dummy variable object
+
+```{r}
 ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
+```
+
+```{r}
+ames_train_hot[1:8,1:8]
+```
+
+
+
+## Hot encoding and hypergrid
+
+```{r}
 # make ranger compatible names
 names(ames_train_hot) <- make.names(names(ames_train_hot), 
                                     allow_ = FALSE)
@@ -516,6 +513,7 @@ hyper_grid_2 <- expand.grid(
   OOB_RMSE  = 0
 )
 ```
+
 
 ## The best model
 
@@ -538,7 +536,7 @@ with a most likely just shy of 26,200.
 
 ## Random forests with `ranger`
 
-```{r,eva=F}
+```{r,eval=F}
 OOB_RMSE <- vector(mode = "numeric", length = 100)
 
 for(i in seq_along(OOB_RMSE)) {
@@ -579,7 +577,7 @@ dev.off()
 ```
 
 
-![](figure/ml_rf_hist_OOB_RMSE.png){height=60%}
+![](figure/ml_rf_hist_OOB_RMSE.png){height=75%}
 
 ## Variable importance
 
@@ -608,7 +606,7 @@ dev.off()
 ## Predicting
 
 - With the  preferred model we can use the traditional predict function to make predictions on a new data set. 
-- We can use this for all our model types (`randomForest`, `ranger`, and `h2o`); although the outputs differ slightly. 
+- We can use this for all our model types (`randomForest` and `ranger`); although the outputs differ slightly. 
 <!--
 - not that the new data for the `h2o` model needs to be an `h2o` object.
 -->
@@ -619,10 +617,14 @@ head(pred_randomForest)
 # ranger
 pred_ranger <- predict(ames_ranger, ames_test)
 head(pred_ranger$predictions)
+```
+
+```{r,echo=F,eval=F}
 # h2o
 pred_h2o <- predict(best_model, ames_test.h2o)
 head(pred_h2o)
 ```
+
 
 ## Summary - random forests
 
@@ -666,15 +668,3 @@ Brad Boehmke and Brandon Greenwell - Hands-on Machine Learning with R
 - [Random Forests in R](https://rpubs.com/anish20/RandomForests)
 
 - [Boston Dataset-Tree Family Part-1](https://rpubs.com/Hgoswami/368562)
-
-## Annex 
-
-
-### Scoring models - metrics
-
-- Many packages do not keep track of which observations were part of the OOB sample for a given tree and which were not. 
-- If you are comparing multiple models to one-another, you’d want to score each on the same validation set to compare performance. 
-- It is possible to compute certain metrics such as root mean squared logarithmic error (RMSLE) on the OOB sample, but it is not built in to all packages. 
-- So if you are looking to compare multiple models or use a slightly less traditional loss function you will likely want to still perform cross validation.
-
-

@@ -357,6 +357,12 @@ library(data.table)
 (airq <- data.table(airquality))
 ```
 
+## Column (and row) names of `airq`
+
+```{r}
+colnames(airq)
+rownames(airq)
+```
 
 
 ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
@@ -438,12 +444,33 @@ na.omit()
 glimpse(clean_titanic)
 ```
 
+## With `gather` from wide to long format  
+
+```{r}
+library(dplyr)
+library(tidyr)
+# From http://stackoverflow.com/questions/1181060
+stocks <- tibble(
+  time = as.Date('2009-01-01') + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+
+gather(stocks, "stock", "price", -time)
+```
+
+## The comman `expand.grid`
+
+```{r}
+expand.grid(letters[1:4],5:3,LETTERS[1:2])
+```
 
 ## [Example Data - Housing Values in Suburbs of Boston](https://datascienceplus.com/fitting-neural-network-in-r/)
 
 ```{r}
 library(MASS)
-bdat <- data(Boston)
+bdat <- Boston
 ```
 
 ```{r,echo=F,eval=F}
@@ -482,6 +509,27 @@ scaled <- as.data.frame(scale(bdat, center = mins,
 sample(1:10,3,replace=T)
 sample(1:10,3,replace=T)
 ```
+
+```{r}
+ntest <- round(nrow(bdat)*.2)
+ind <- sample(1:nrow(bdat),ntest)
+bdat_test <- bdat[ind,]
+bdat_train <- bdat[-ind,]
+```
+
+
+## Alternative to split dataset
+
+- `Y` - Vector of data labels. If there are only a few labels (as is expected) than relative ratio of data in both subsets will be the same.
+- `SplitRatio` - Splitting ratio
+
+```{r}
+split <- caTools::sample.split(Y = bdat$lstat,SplitRatio = .8)
+Train <- bdat[split,]
+Test <- bdat[!split,]
+nrow(Train);nrow(Test)
+```
+
 
 
 ## Set a seed
@@ -569,6 +617,7 @@ Further possible topics of this section:
 - the rescale package
 
 - loops
+- exercise with loops
 
 - paste und paste0
 - random number generation
@@ -583,4 +632,8 @@ Further possible topics of this section:
 <!--
 https://www.r-exercises.com/start-here-to-learn-r/
 https://www.r-exercises.com/category/exercises/exercises-intermediate/
+
+Exercises that Practice and Extend Skills with R
+https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
 -->
+

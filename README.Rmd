@@ -12,8 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Part A - introduction
 
 - [A1 - Laying the foundations in R](slides/a1_intro_r.Rmd)
-- [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
+
 <!--
+- [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
 - [Parallelization](doParallel.Rmd)
 -->
 ## Part B - lasso and ridge regression
@@ -28,22 +29,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part C - Supervised Learning: Bagging and Boosting, tree-methods 
 
-- []()
+- [C3 - Supervised learning: random forests](slides/c3_gbm_regression.md)
 
 
 ## Part D - Supervised Learning: Neural Network
 
+- [D - Supervised learning: neural network](slides/d_neuralNetworks.md)
 
 ## Part E - Unsupervised Learning: kmeans, hdbscan
 
-
+- [E - Unsupervised Learning: kmeans, hdbscan](slides/e_Clustering.md)
 
 ## Part F - The dangers of machine learning
 
+- [F - The dangers of machine learning](slides/f_dangers_ml.md)
+
 ## Part G - `reticulate` package: Umap
 
-- work with python and R
+- [G - reticulate package: Umap](slides/g_reticulate_umap.md)
 
+<!--
+- work with python and R
+-->
+
+<!--
 ## Links
 
 -   [Your First Machine Learning Project in R
@@ -54,3 +63,4 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   [Shiny App for machine
     learning](https://www.showmeshiny.com/machlearn/)
+-->

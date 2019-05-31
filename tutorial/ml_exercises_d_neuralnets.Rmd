@@ -26,6 +26,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## [Exercise neural networks (I)](https://www.r-exercises.com/2017/06/08/neural-networks-exercises-part-1/)
 
+
+
+<!--
+- Neural network have become a corner stone of machine learning in the last decade.
+- Created in the late 1940s with the intention to create computer programs who mimics the way neurons process information
+
+
+- Those kinds of algorithm have long been believe to be only an academic curiosity, deprived of practical use since they require a lot of processing power and other machine learning algorithm outperform them. However since the mid 2000s, the creation of new neural network types and techniques, couple with the increase availability of fast computers made the neural network a powerful tool that every data analysts or programmer must know.
+-->
+
 ### Create example data
 
 <!--
@@ -336,3 +346,7 @@ predict.model.clust<-predict(clust.model,clust.test[,1:4],
 (accuracy<-sum(diag(Table))/sum(Table))
 ```
 
+
+<!--
+https://www.r-exercises.com/2017/06/21/neural-networks-solutions-part-3/
+-->

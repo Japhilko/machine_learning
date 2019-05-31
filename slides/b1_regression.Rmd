@@ -1,5 +1,5 @@
 ---
-title: "Regression in R"
+title: "Machine Learning: Regression in R"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -127,6 +127,12 @@ m3 <- lm(fo,data=mtcars)
 
 
 ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
+
+### Take all available predictors
+
+```{r}
+m3_a<-lm(mpg~.,data=mtcars) 
+```
 
 ### Interaction effect
 
@@ -312,7 +318,9 @@ plot(p)
 (mse3 <- mean((mtcars$mpg -  predict(m3))^2)) 
 ```
 
-
+<!--
+https://stats.stackexchange.com/questions/107643/how-to-get-the-value-of-mean-squared-error-in-a-linear-regression-in-r
+-->
 
 ## The `visreg`-package
 

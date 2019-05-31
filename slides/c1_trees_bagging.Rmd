@@ -741,7 +741,7 @@ plot(varImp(bagged_cv), 20)
 - We have successfully reduced our error to about $35,000; 
 - Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 
-```{r}
+```{r predictbaggedcv}
 pred <- predict(bagged_cv, ames_test)
 RMSE(pred, ames_test$Sale_Price)
 ```

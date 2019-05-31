@@ -1,0 +1,38 @@
+\frametitle{Predicting}
+\protect\hypertarget{predicting}{}
+
+\begin{itemize}
+\tightlist
+\item
+  With the preferred model we can use the traditional predict function
+  to make predictions on a new data set.
+\item
+  We can use this for all our model types (\texttt{randomForest} and
+  \texttt{ranger}); although the outputs differ slightly.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# randomForest}
+\NormalTok{pred_randomForest <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(ames_randomForest, ames_test)}
+\KeywordTok{head}\NormalTok{(pred_randomForest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        1        2        3        4        5        6
+## 113543.1 185556.4 259258.1 190943.9 179071.0 480952.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# ranger}
+\NormalTok{pred_ranger <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(ames_ranger, ames_test)}
+\KeywordTok{head}\NormalTok{(pred_ranger}\OperatorTok{$}\NormalTok{predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 129258.1 186520.7 265628.2 197745.5 175517.6 392691.7
+\end{verbatim}
+
