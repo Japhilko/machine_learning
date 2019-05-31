@@ -349,4 +349,8 @@ predict.model.clust<-predict(clust.model,clust.test[,1:4],
 
 <!--
 https://www.r-exercises.com/2017/06/21/neural-networks-solutions-part-3/
+
+https://www.r-exercises.com/?s=neural+networks
 -->
+
+

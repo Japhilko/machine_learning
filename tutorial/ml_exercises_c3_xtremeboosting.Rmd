@@ -35,18 +35,18 @@ If you obtained a different (correct) answer than those listed on the solutions 
 ## Boosting Exercises - first part
 
 ### Exercise 1
-Load xgboost library and download German Credit dataset. Your goal in this tutorial will be to predict Creditability (the first column in the dataset).
+Load `xgboost` library and download German Credit dataset. Your goal will be to predict creditability (the first column in the dataset).
 
 ### Exercise 2
-Convert columns `c(2,4,5,7,8,9,10,11,12,13,15,16,17,18,19,20)` to factors and then encode them as dummy variables. HINT: use `model.matrix()
+Convert columns `c(2,4,5,7,8,9,10,11,12,13,15,16,17,18,19,20)` to factors and then encode them as dummy variables. HINT: use the command `model.matrix()`
 
 ### Exercise 3
-Split data into training and test set 700:300. Create xgb.DMatrix for both sets with Creditability as label.
+Split data into training and test set 700:300. Create `xgb.DMatrix` for both sets with Creditability as label.
 
 ## Boosting Exercises - second part
 
 ### Exercise 4
-Train xgboost with logistic objective and 30 rounds of training and maximal depth 2.
+Train `xgboost` with logistic objective and 30 rounds of training and maximal depth 2.
 
 ### Exercise 5
 To check model performance calculate test set classification error.
@@ -71,14 +71,14 @@ image_pdf
 
 ## [Solutions: boosting exercises](https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-solutions-part-1/)
 
-### Solution Exercise 1 
+### Solution Exercise 1 - import dataset
 
 ```{r}
 library(xgboost)
 ```
 
 
-```{r}
+```{r,eval=F}
 url <- "http://freakonometrics.free.fr/german_credit.csv"
 credit <- read.csv(url, header = TRUE, sep = ",")
 ```
@@ -92,10 +92,13 @@ save(credit,file="../data/german_credit.RData")
 load("../data/german_credit.RData")
 ```
 
+```{r}
+head(credit)
+```
 
 ## Solutions boosting exercises - first part
 
-### Solution Exercise 2   
+### Solution Exercise 2 - convert columns
 
 ```{r}
 factor_columns <- c(2,4,5,7,8,9,10,11,12,13,15,16,17,18,19,20)
@@ -107,15 +110,15 @@ X <- model.matrix(~ . - Creditability, data=credit)
 
 ```{r}
 inTraining <- sample(1:nrow(credit),size=700)
-dtrain <- xgb.DMatrix(X[inTraining,],
+dtrain <- xgboost::xgb.DMatrix(X[inTraining,],
                       label=credit$Creditability[inTraining])
-dtest <- xgb.DMatrix(X[-inTraining,],
+dtest <- xgboost::xgb.DMatrix(X[-inTraining,],
                      label=credit$Creditability[-inTraining])
 ```
 
 ## Solutions boosting exercises - second part
 
-### Solution Exercise 4 
+### Solution Exercise 4 - train `xgboost` model 
 
 ```{r}
 model <- xgboost(data = dtrain,
@@ -213,3 +216,8 @@ model_eta <- xgb.train(data = dtrain,
 ```
 
 
+<!--
+https://www.r-exercises.com/2017/10/01/extremely-boost-your-machine-learning-exercises-part-2/
+
+https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-solutions-part-1/
+-->

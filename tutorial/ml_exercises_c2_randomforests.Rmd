@@ -39,14 +39,34 @@ and read in the `adult.csv` file with `header=FALSE`. Store this in `dat`. Use `
 
 You are given the meta_data that goes with the CSV.
 -->
-2) Get the column names from the [**meta data**](http://www.r-exercises.com/wp-content/uploads/2016/11/adult_names.txt) and add them to the data frame. Notice the ` dat` is ordered - V1,V2,V3,... and so on. 
+2) Get the column names from the [**meta data**](https://github.com/Japhilko/machine_learning/raw/master/data/meta_cnames.Rdata) and add them to the data frame. Notice that ` dat` is ordered - V1,V2,V3,...  
+
+<!--
+http://www.r-exercises.com/wp-content/uploads/2016/11/adult_names.txt
+-->
+
+```{r,eval=F,echo=F}
+cnames_dat <- c("age","workclass","fnlwgt","education",
+               "education-num","marital-status","occupation",
+               "relationhip","race","sex","capital-gain",
+               "capital-loss","hours-per-week",
+               "native-country","class")
+
+save(cnames_dat,file="../data/meta_cnames.Rdata")
+```
+
+```{r,eval=F,echo=F}
+pp<-scan("../data/meta.data",quiet=TRUE,skip=1)
+```
+
+
 <!--
 As a side note, it is always best practice to use that to match and see if all the columns are read in correctly.
 -->
 
 ### Get an overview of the data
 
-3) Use the `table` command to get the distribution of the `class` feature.
+3) Use the `table` command to get the distribution of the feature `class`.
 4) Make a binary variable `class`.
 5) Use the `cor()` command to see the corelation of all the numeric and integer columns including the class column. 
 <!--
@@ -118,6 +138,12 @@ colnames(dat) <- c("age","workclass","fnlwgt","education",
                "native-country","class")
 ```
 
+```{r}
+load("../data/meta_cnames.Rdata")
+colnames(dat) <- cnames_dat
+```
+
+
 
 ## Solution: Get overview
 
@@ -153,9 +179,14 @@ dat$class <- ifelse(dat$class==">50K", 1, 0)
 ### Correlation of all numeric and integer variables
 
 ```{r}
-cor(dat[,c(1,3,5,11,12,13,15)])
+(cormat <- cor(dat[,c(1,3,5,11,12,13,15)]))
 ```
 
+## A `levelplot` of the correlation matrix
+
+```{r}
+lattice::levelplot(cormat)
+```
 
 
 <!--
@@ -202,7 +233,7 @@ If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
 
 ## Solutions
 
-### Solution Exercise 6
+### Solution Exercise 6 - Split dataset
 
 ```{r}
 dat$class <- as.factor(dat$class)
@@ -217,47 +248,55 @@ Train <- dat[split==TRUE,]
 Test <- dat[split==FALSE,]
 ```
 
-### Solution Exercise 7  
+### Solution Exercise 7  - Number of rows
 
 ```{r}
 nrow(Train)
 nrow(Test)
 ```
 
-## Solution Exercise 8  
+## Solutions Exercise 
+
+### Soltution erxercise 8 - load packages  
 
 ```{r}
 library(rpart)
 library(rpart.plot)
 ```
 
-### Solution Exercise 9  
+### Solution Exercise 9  - first model
 
 ```{r}
 dec <- rpart(class~., data=Train)
 ```
 
 
-## Solution Exercise 10 
+## Solution Exercise 10 - plot the resulting tree
+
+<!--
+par(mar = rep(2, 4))
+-->
 
 ```{r}
-par(mar = rep(2, 4))
 prp(dec)
 ```
 
 
-## [Exercise](https://www.r-exercises.com/2017/01/05/intermediate-tree-2/) - predict and confusion matrix
+## [Exercise](https://www.r-exercises.com/2017/01/05/intermediate-tree-2/) - predict and produce confusion matrix
 
-1) use the `predict()` command to make predictions on the Train data. Set the method to `class`. Class returns classifications instead of probability scores. Store this prediction in `pred_dec`.
-2) Print out the [**confusion matrix**](https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62) 
+11) use the `predict()` command to make predictions on the Train data. Set the method to `class`. Class returns classifications instead of probability scores. Store this prediction in `pred_dec`.
+12) Create a [**confusion matrix**](https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62) 
+(4 different combinations of predicted and actual values - see figure below) and print it. 
 
-[![](../slides/figure/confusionMatrix.png){height=60%}](https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62)
+[![](../slides/figure/confusionMatrix.png){height=50%}](https://towardsdatascience.com/understanding-confusion-matrix-a9ad42dcfd62)
 
 ## Exercises - accuracy 
 
-3) What is the accuracy of the model. Use the confusion matrix.
-4) What is the misclassification error rate? Refer to `Basic_decision_tree` exercise to get the formula.
-5) Lets say we want to find the baseline model to compare our prediction improvement. We create a base model using this code
+13) What is the [**accuracy of the model**](https://en.wikipedia.org/wiki/Confusion_matrix) (ACC). Hint: all necessary information is in the confusion matrix.
+14) What is the [**misclassification rate**](https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/)? Hint: (FP+FN)/total
+
+<!--
+15) Lets say we want to find the baseline model to compare our prediction improvement. We create a base model using this code
 
 ```{r}
 length(Test$class)
@@ -265,6 +304,8 @@ base <- rep(1,3183)
 ```
 
 - Use the `table()` command to create a confusion matrix between the base and Test$class.
+-->
+
 
 ## Exercises
 
@@ -272,15 +313,13 @@ base <- rep(1,3183)
 6) What is the number difference between the confusion matrix accuracy of dec and base?
 -->
 
-7) Remember the `predict()` command in question 1. We will use the same mode and same command except we will set the method to “regression”. This gives us a probability estimates. Store this in pred_dec_reg
+15) Remember the `predict()` command in question 11. We will use the same mode and same command except we will set the method to “regression”. This gives us a probability estimates. Store this in pred_dec_reg
 
-8) load the `ROCR` package.
+16) Load the `ROCR` package. Use the `prediction()`, `performance()` and `plot()` command to print the [**ROC curve**](https://en.wikipedia.org/wiki/Receiver_operating_characteristic. Use `pred_dec_reg` variable from Q7. You can also refer to the previous exercise to see the code.
 
-Use the `prediction()`, `performance()` and `plot()` command to print the ROC curve. Use `pred_dec_reg` variable from Q7. You can also refer to the previous exercise to see the code.
+17) `plot()` the same ROC curve but set `colorize=TRUE`
 
-9) `plot()` the same ROC curve but set `colorize=TRUE`
-
-10) Comment on your findings using ROC curve and accuracy. Is it a good model? Did you notice that ROC `prediction()` command only takes probability predictions as one of its arguments. Why is that so?
+18) Comment on your findings using ROC curve and accuracy. Is it a good model? Did you notice that ROC `prediction()` command only takes probability predictions as one of its arguments. Why is that so?
 <!--
 ## [Solution](https://www.r-exercises.com/2017/01/05/intermediate-tree-2-2/)
 
@@ -296,7 +335,7 @@ set.seed(1000)
 ```
 -->
 
-## Solution Exercise 1
+## Solution Exercise 11
 
 ### Split the dataset
 
@@ -331,10 +370,10 @@ pred_dec <- predict(dec,newdata = Test,type="class")
 
 ## Solutions 
 
-### Exercise 2 - Confusion matrix
+### Exercise 12 - Confusion matrix
 
 ```{r}
-table(Test$class,pred_dec)
+(confmat <- table(Test$class,pred_dec))
 ```
 
 <!--
@@ -344,41 +383,53 @@ table(Test$class,pred_dec)
 ##   1  400  364
 -->
 
-### Solution Exercise 3
+### Solution Exercise 13 - model accuracy
 
 ```{r}
-(2345+364)/(2345+364+400+74)
+(confmat[1,1] + confmat[2,2])/(sum(confmat))
 ```
 
 <!--
+
+(2345+364)/(2345+364+400+74)
+
 das oben drüber stimmt vermutlich nicht
 
 ## [1] 0.8510839
 -->
 
-### Solution Exercise 4
+### Solution Exercise 14 - misclassification error
 
 ```{r}
 mean(as.factor(Test$class)!=pred_dec)
 ```
 
 <!--
+https://blog.revolutionanalytics.com/2016/03/com_class_eval_metrics_r.html
+-->
+
+<!--
 ## [1] 0.1489161
 -->
-## Solution Exercise 5
+
+<!--
+## Solution Exercise 15
 
 ```{r}
 length(Test$class)
 ```
+-->
 
 <!--
 ## [1] 3183
 -->
-```{r,eval=F}
+
+<!--
+```{r}
 base <- rep(1,nrow(Test))
 table(Test$class,base)
 ```
-
+-->
 
 <!--
 ##    base
@@ -395,14 +446,14 @@ table(Test$class,base)
 0.54
 -->
 
-### Solution Exercise 7
+### Solution Exercise 15 - Make prediction
 
 ```{r}
 pred_dec_reg <- predict(dec,newdata = Test,type="prob")
 ```
 
 
-### Solution Exercise 8
+### Solution Exercise 16 - ROC Curve
 
 ```{r,eval=F,echo=F}
 install.packages("ROCR")
@@ -411,19 +462,29 @@ install.packages("ROCR")
 
 ```{r}
 library(ROCR)
-pred <- prediction(predictions=as.numeric(pred_dec_reg[,2]),Test$class)
+pred <- prediction(predictions=as.numeric(pred_dec_reg[,2]),
+                   Test$class)
 perf <- performance(pred,"tpr","fpr")
+```
+
+```{r,eval=F}
+plot(perf)
+```
+
+## Performance plot
+
+```{r,echo=F}
 plot(perf)
 ```
 
 
-## Solution Exercise 9
+## Solution Exercise 17
 
 ```{r}
 plot(perf,colorize=TRUE)
 ```
 
-## Solution Exercise 10
+## Solution Exercise 18
 
 - It is a good model. The initial accuracy is 0.85 which is pretty good. 
 - The ROC curve is also leaning more towards the true positive side which is also a good sign. ROC `prediction()` command takes probability score predictions because it is used to give a visual representation of a range of threshold values. 
@@ -433,4 +494,6 @@ plot(perf,colorize=TRUE)
 <!--
 https://www.r-exercises.com/2017/01/05/intermediate-tree-2/
 https://github.com/eugeneyan/Statistical-Learning/blob/master/Chapter%208%20Exercises.R
+
+https://rstudio-pubs-static.s3.amazonaws.com/245066_f7b5962e8ab84594829b84f06ced39b6.html
 -->
