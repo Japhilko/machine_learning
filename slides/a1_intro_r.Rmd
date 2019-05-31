@@ -357,6 +357,12 @@ library(data.table)
 (airq <- data.table(airquality))
 ```
 
+## Column (and row) names of `airq`
+
+```{r}
+colnames(airq)
+rownames(airq)
+```
 
 
 ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
@@ -464,7 +470,7 @@ expand.grid(letters[1:4],5:3,LETTERS[1:2])
 
 ```{r}
 library(MASS)
-bdat <- data(Boston)
+bdat <- Boston
 ```
 
 ```{r,echo=F,eval=F}
@@ -503,6 +509,27 @@ scaled <- as.data.frame(scale(bdat, center = mins,
 sample(1:10,3,replace=T)
 sample(1:10,3,replace=T)
 ```
+
+```{r}
+ntest <- round(nrow(bdat)*.2)
+ind <- sample(1:nrow(bdat),ntest)
+bdat_test <- bdat[ind,]
+bdat_train <- bdat[-ind,]
+```
+
+
+## Alternative to split dataset
+
+- `Y` - Vector of data labels. If there are only a few labels (as is expected) than relative ratio of data in both subsets will be the same.
+- `SplitRatio` - Splitting ratio
+
+```{r}
+split <- caTools::sample.split(Y = bdat$lstat,SplitRatio = .8)
+Train <- bdat[split,]
+Test <- bdat[!split,]
+nrow(Train);nrow(Test)
+```
+
 
 
 ## Set a seed

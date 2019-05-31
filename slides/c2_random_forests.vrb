@@ -1,25 +1,38 @@
-\frametitle{Loop - hyperparameter combination (I)}
-\protect\hypertarget{loop---hyperparameter-combination-i-1}{}
+\frametitle{Predicting}
+\protect\hypertarget{predicting}{}
 
 \begin{itemize}
 \tightlist
 \item
-  We apply 500 trees since our previous example illustrated that 500 was
-  plenty to achieve a stable error rate.
+  With the preferred model we can use the traditional predict function
+  to make predictions on a new data set.
 \item
-  We set the random number generator seed. This allows us to
-  consistently sample the same observations for each sample size and
-  make the impact of each change clearer.
-\item
-  Our OOB RMSE ranges between
-  2.5404601\times 10\textsuperscript{\{4\}-2.6265709\times 10}\{4\}.
-\item
-  Our top 10 performing models all have RMSE values right around
-  2.5515\times 10\^{}\{4\} and the results show that models with slighly
-  larger sample sizes (70-80 per cent) and deeper trees (3-5
-  observations in an terminal node) perform best.
-\item
-  We get a full range of \texttt{mtry} values showing up in our top 10 -
-  not over influential.
+  We can use this for all our model types (\texttt{randomForest} and
+  \texttt{ranger}); although the outputs differ slightly.
 \end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# randomForest}
+\NormalTok{pred_randomForest <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(ames_randomForest, ames_test)}
+\KeywordTok{head}\NormalTok{(pred_randomForest)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        1        2        3        4        5        6
+## 113543.1 185556.4 259258.1 190943.9 179071.0 480952.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# ranger}
+\NormalTok{pred_ranger <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(ames_ranger, ames_test)}
+\KeywordTok{head}\NormalTok{(pred_ranger}\OperatorTok{$}\NormalTok{predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 129258.1 186520.7 265628.2 197745.5 175517.6 392691.7
+\end{verbatim}
 

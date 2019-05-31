@@ -5,13 +5,15 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output: 
   beamer_presentation: 
-    theme: Dresden
     colortheme: dolphin
     fig_height: 3
     fig_width: 5
-    fig_caption: no
     fonttheme: structuresmallcapsserif
     highlight: haddock
+    theme: Dresden
+  slidy_presentation: 
+    highlight: haddock
+    keep_md: yes
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
@@ -442,6 +444,8 @@ top10 <- hyper_grid %>%
 
 
 roob_hg <- range(hyper_grid$OOB_RMSE)
+
+roob_hgr <- round(roob_hg/1000)*1000
 ```
 
 
@@ -454,8 +458,8 @@ roundmeantop10 <- round(mean(top10$OOB_RMSE))
 
 - We apply 500 trees since our previous example illustrated that 500 was plenty to achieve a stable error rate. 
 - We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
-- Our OOB RMSE ranges between `r roob_hg[1]`-`r roob_hg[2]`. 
-- Our top 10 performing models all have RMSE values right around `r roundmeantop10` and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
+- Our OOB RMSE ranges between 25000 - 26000. 
+- Our top 10 performing models all have RMSE values right around 25500 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
 - We get a full range of `mtry` values showing up in our top 10 - not over influential.
 <!--
 in their original columnar form, 
@@ -532,7 +536,7 @@ with a most likely just shy of 26,200.
 
 ## Random forests with `ranger`
 
-```{r,eva=F}
+```{r,eval=F}
 OOB_RMSE <- vector(mode = "numeric", length = 100)
 
 for(i in seq_along(OOB_RMSE)) {
