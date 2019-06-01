@@ -104,7 +104,26 @@ plot(moons, col = res$cluster + 1, main="R implementation")
 
 ## Exercise: Apply hdbscan to the moons dataset with different minimums for the number of points. 
 
-TODO: Add more exercises
+## Exercise: Apply both kmeans and hdbscan to the `ChickWeight` dataset's "weight" "Time" variables, and see how well you can get each to perform.
+
+
+
+
+```{r, eval=FALSE, echo=FALSE}
+## kmeans
+plot(ChickWeight[,1:2], col=kmeans(ChickWeight[,1:2], centers=4)$centers)
+
+## hdbscan, minPts=10
+plot(ChickWeight[,1:2], col=dbscan::hdbscan(ChickWeight[,1:2], minPts=10)$cluster)
+
+## Diet cat. for comparison.
+plot(ChickWeight[,1:2], col=ChickWeight$Diet)
+
+## Chick cat. for comparison.
+plot(ChickWeight[,1:2], col=ChickWeight$Chick)
+
+
+```
 
 
 ```{r, eval=FALSE}
