@@ -504,6 +504,12 @@ visreg2d(m6, "wt", "hp", plot.type = "persp")
 
 [![](figure/bias_variance_tradeoff2.png)](https://towardsdatascience.com/understanding-the-bias-variance-tradeoff-165e6942b229)
 
+<!--
+https://lbelzile.github.io/lineaRmodels/bias-and-variance-tradeoff.html
+http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+https://daviddalpiaz.github.io/r4sl/biasvariance-tradeoff.html
+-->
+
 ## The bias-variance tradeoff (II)
 
 ![](figure/bias_variance_tradeoff.PNG)

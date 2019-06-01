@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = T,warning=F,message=F)
 
 ## Regularized Regression
 
-- When we experience these concerns, one alternative to OLS regression is to use regularized regression (also commonly referred to as penalized models or shrinkage methods) to control the parameter estimates. 
+- When we experience these concerns, one alternative is to use regularized regression (also commonly referred to as penalized models or [**shrinkage methods**](https://gerardnico.com/lang/r/ridge_lasso)) to control the parameter estimates. 
 
 - Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
 
