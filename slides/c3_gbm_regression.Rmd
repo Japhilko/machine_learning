@@ -840,7 +840,7 @@ https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgb
 
 ## Basic implementation
 
-- `XGBoost` only works with matrices that contain all numeric variables; consequently, we need to one hot encode our data. There are different ways to do this in R (i.e. `Matrix::sparse.model.matrix`, `caret::dummyVars`) but here we will use the `vtreat` package. 
+- `XGBoost` only works with matrices that contain all numeric variables; consequently, we need to hot encode our data. There are different ways to do this in R (i.e. `Matrix::sparse.model.matrix`, `caret::dummyVars`) but here we will use the `vtreat` package. 
 - `vtreat` is a robust package for data prep and helps to eliminate problems caused by missing values, novel categorical levels that appear in future data sets that were not in the training data, etc. `vtreat` is not very intuitive. 
 
 

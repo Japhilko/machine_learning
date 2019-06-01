@@ -365,6 +365,19 @@ rownames(airq)
 ```
 
 
+## Command `mutate` - create or transform variables
+
+
+```{r,eval=F}
+?dplyr::mutate
+```
+
+```{r}
+airq %>%
+  mutate(Temp / max(Temp, na.rm = TRUE)) 
+```
+
+
 ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
 
 ```{r,echo=F}
@@ -465,12 +478,11 @@ na.omit()
 glimpse(clean_titanic)
 ```
 
-## With `gather` from wide to long format  
+## [With `gather` from wide to long format](http://stackoverflow.com/questions/1181060)
 
 ```{r}
 library(dplyr)
 library(tidyr)
-# From http://stackoverflow.com/questions/1181060
 stocks <- tibble(
   time = as.Date('2009-01-01') + 0:9,
   X = rnorm(10, 0, 1),
@@ -521,6 +533,7 @@ scaled <- as.data.frame(scale(bdat, center = mins,
 
 ![](figure/bostonscaled.PNG)
 
+
 ## The command `sample`
 
 - We can use this command to draw a sample. 
@@ -531,6 +544,8 @@ sample(1:10,3,replace=T)
 sample(1:10,3,replace=T)
 ```
 
+### Create test and training datasets
+
 ```{r}
 ntest <- round(nrow(bdat)*.2)
 ind <- sample(1:nrow(bdat),ntest)
@@ -539,7 +554,7 @@ bdat_train <- bdat[-ind,]
 ```
 
 
-## Alternative to split dataset
+## Alternative to split a dataset
 
 - `Y` - Vector of data labels. If there are only a few labels (as is expected) than relative ratio of data in both subsets will be the same.
 - `SplitRatio` - Splitting ratio

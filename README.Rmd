@@ -1,7 +1,7 @@
 ---
 title: "README"
 author: "Jan-Philipp Kolb"
-date: "19 Juli 2018"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: md_document
 ---
 
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part A - introduction
 
-- [A1 - Laying the foundations in R](slides/a1_intro_r.Rmd)
+- A1 - Laying the foundations in R ([Browser](slides/a1_intro_r.Rmd) | [pdf](slides/a1_intro_r.pdf) | [rcode]())
 
 <!--
 - [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
