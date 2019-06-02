@@ -40,6 +40,14 @@ library("kknn")
 
 
 
+
+## Exercise: Kmeans
+
+Apply kmeans to to the `iris` dataset with 2, 3, and 4
+clusters. Produce three scatterplots, with the points colored
+according to cluster assignment.
+
+
 ## hdbscan
 
 A fairly new alternative to kmeans, hdbscan does not require you to
@@ -76,7 +84,11 @@ plot(moons, col = res$cluster + 1, main="R implementation")
 
 
 
+## Exercise: Apply kmeans to the moons dataset and compare the results. 
+-- Be sure to try different numbers of centers.
 
+
+## Exercise: Apply hdbscan to the moons dataset with different minimums for the number of points. 
 
 
 ```{r, eval=FALSE}
