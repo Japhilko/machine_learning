@@ -1,5 +1,5 @@
 ---
-title: "Machine Learning - Solution/Exercises"
+title: "Machine Learning - Decision Trees Exercises/Solution"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
@@ -67,8 +67,7 @@ TREE
 ## Plot the result
 
 ```{r}
-plot(TREE)
-text(TREE,use.n=T)
+rpart.plot::rpart.plot(TREE)
 ```
 
 ## Answers
@@ -101,14 +100,18 @@ PR <- predict(TREE,kyphosis[61:81,],type='class')
 7) Which is the misclassification rate (prediction error) 
 
 ```{r}
-test=kyphosis$Kyphosis[61:81]
+test <- kyphosis$Kyphosis[61:81]
 table(PR,test)
 ```
 
 ```{r}
-rate <- 100*length(which(PR!=test))/length(PR)
+(rate <- 100*length(which(PR!=test))/length(PR))
+```
+
+```{r,echo=F,eval=F}
 cat('the misclassification rate is:',rate)
 ```
+
 
 ## Exercise `rpart` -  `iris`
 
@@ -129,7 +132,7 @@ cat('the misclassification rate is:',rate)
 1) Build a tree to classify Species from the other variables.
 
 ```{r}
-TREE2=rpart(Species ~ ., data=iris,method="class")
+TREE2 <- rpart(Species ~ ., data=iris,method="class")
 TREE2
 ```
 
@@ -139,9 +142,18 @@ TREE2
 2) Plot the trees, add nodes information.
 
 ```{r}
-plot(TREE2)
-text(TREE2,use.n=T)
+library(rpart.plot)
+rpart.plot(TREE2)
 ```
+
+```{r,echo=F,eval=F}
+library(rpart.plot)
+png("figure/ml_tb_rpart_iris.png")
+rpart.plot(TREE2)
+dev.off()
+```
+
+
 
 ## Solution - `rpart` -  `iris` (III)
 
@@ -154,10 +166,24 @@ TP <- prune(TREE2,cp=median(TREE2$cptable[,'CP']))
 
 4) Plot in the same window, the pruned and the original tree.
 
-```{r,fig.height=3}
+```{r,fig.height=3,echo=F,eval=F}
 par(mfrow=c(1,2))
 plot(TREE2);text(TREE2,use.n=T)
 plot(TP);text(TP,use.n=T)
+```
+
+```{r,fig.height=3,eval=F}
+par(mfrow=c(1,2))
+rpart.plot(TREE2)
+rpart.plot(TP)
+```
+
+## The plotted results
+
+```{r,echo=F}
+par(mfrow=c(1,2))
+rpart.plot(TREE2)
+rpart.plot(TP)
 ```
 
 
@@ -176,5 +202,7 @@ TREE2$where
 
 ```{r}
 print('versicolor')
+unique(iris[iris$Petal.Length>2.45 & 
+              iris$Petal.Width<1.75,"Species"])
 ```
 

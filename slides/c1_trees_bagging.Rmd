@@ -78,7 +78,7 @@ Due to their branching structure, decision trees can easily model nonlinear rela
 ### Example
 
 - For single family homes (larger lots) higher prices,
-- and for apartments, (smaller lots) also higher prices (because here it's a proxy for urban / rural).
+- and for apartments (smaller lots), also higher prices (because here it's a proxy for urban / rural).
 
 
 This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term
@@ -163,7 +163,7 @@ ames_test  <- testing(ames_split)
 ```
 
 
-## Example 
+## Pruning
 
 <!--
 [**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
@@ -173,7 +173,7 @@ ames_test  <- testing(ames_split)
 - The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
 - These deeper nodes tend to overfit to specific attributes of the sample data; 
 - Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
-- By pruning these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
+- By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
 
 
 
@@ -329,6 +329,12 @@ m2 <- rpart(formula = Sale_Price ~ .,data=ames_train,
     method  = "anova",control = list(cp = 0, xval = 10))
 ```
 
+- `control` - a list of options that control details of the rpart algorithm.
+- `cp` - complexity parameter. Any split that does not decrease the overall lack of fit by a factor of cp is not attempted. For instance, with anova splitting, this means that the overall R-squared must increase by cp at each step (Pruning). 
+- `xval`	number of cross-validations.
+<!--
+The main role of this parameter is to save computing time by pruning off splits that are obviously not worthwhile. Essentially,the user informs the program that any split which does not improve the fit by cp will likely be pruned off by cross-validation, and that hence the program need not pursue it.
+-->
 
 ## Plot the result
 

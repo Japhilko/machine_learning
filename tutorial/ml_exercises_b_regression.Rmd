@@ -47,7 +47,7 @@ lm(Sale_Price ~ Gr_Liv_Area, data = ames_data)$coefficients
 lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 ```
 
-## Exercise: ridge regression (I)
+## [Exercise: ridge regression (I)](https://www.r-bloggers.com/ridge-regression-in-r-exercises/)
 
 1) Load the `lars` package and the `diabetes` dataset 
 <!--

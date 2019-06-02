@@ -72,12 +72,12 @@ Regularization is a technique for penalizing large coefficients in order to avoi
 
 ### Strengths: 
 
-Linear regression is straightforward to understand and explain, and can be regularized to avoid overfitting. In addition, linear models can be updated easily with new data
+- Linear regression is straightforward to understand and explain, and can be regularized to avoid overfitting. 
+- Linear models can be updated easily with new data
 
 ### Weaknesses: 
 
-Linear regression in general performs poorly when there are non-linear relationships. They are not naturally flexible enough to capture more complex patterns, and adding the right interaction terms or polynomials can be tricky and time-consuming.
-
+- Linear regression in general performs poorly when there are non-linear relationships. - They are not naturally flexible enough to capture more complex patterns, and adding the right interaction terms or polynomials can be tricky and time-consuming.
 
 ## [Three regularized regression algorithms](https://elitedatascience.com/algorithm-selection)
 
@@ -262,20 +262,19 @@ Siehe hier: https://beta.vu.nl/nl/Images/werkstuk-fonti_tcm235-836234.pdf
 
 - We have a large negative parameter that fluctuates until $log(\lambda)\approx 2$ where it then continuously shrinks to zero. 
 
-- This is indicitive of multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
+- This is indicates multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
 
 - But how do we find the amount of shrinkage (or $\lambda$) that minimizes our error? 
 
 ## Implementation in `glmnet`
 
-- `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
-- The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
-- We also log transform our response variable due to its skeweness.
-
 ```{r,fig.height=2.5}
 plot(density(ames_data$Sale_Price),main="")
 ```
 
+- `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
+- The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
+- We also log transform our response variable due to its skeweness.
 
 
 <!--
@@ -602,7 +601,7 @@ https://www.youtube.com/watch?v=A5I1G1MfUmA
 ## Lasso Regression
 
 - Originally introduced in geophysics literature in 1986
-- The least absolute shrinkage and selection operator (Lasso) model was rediscovered and popularized in 1996 by Robert Tibshirani 
+- The least absolute shrinkage and selection operator (Lasso) model was rediscovered and popularized in [**1996 by Robert Tibshirani**](https://www.jstor.org/stable/2346178?seq=1#page_scan_tab_contents) 
 - It is an alternative to Ridge regression that has a small modification to the penalty in the objective function.
 - Rather than the $L_2$ penalty we use the following $L_1$ penalty $\lambda\sum_{j=1}^p |\beta_j|$ in the objective function.
 
@@ -693,6 +692,15 @@ abline(v=log(ames_lasso$lambda.min),col="red",lty="dashed")
 abline(v=log(ames_lasso$lambda.1se),col="red",lty="dashed")
 ```
 
+## Lasso for other models than least squares
+
+- Though originally defined for least squares, Lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
+
+- Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
+
+- The Lasso is closely related to basis pursuit denoising.
+
+
 ## Advantages and Disadvantages
 
 - Similar to Ridge, the Lasso pushes many of the collinear features towards each other rather than allowing for one to be wildly positive and the other wildly negative. 
@@ -759,7 +767,7 @@ min(ames_lasso$cvm)
 
 ## Elastic Nets
 
-A generalization of the Ridge and Lasso models is the Elastic Net (Zou and Hastie, 2005), which combines the two penalties.
+A generalization of the Ridge and Lasso models is the Elastic Net ([**Zou and Hastie, 2005**](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/j.1467-9868.2005.00503.x)), which combines the two penalties.
 
 $$
 minimize \{SSE+\lambda \sum^p_{j=1} \beta^2_j+\lambda_2\sum_{j=1}^p |\beta_j|\}
@@ -797,7 +805,7 @@ plot(ridge, xvar = "lambda", main = "Ridge (Alpha = 0)")
 ## Tuning the Elastic Net model
 
 - $\lambda$  is the primary tuning parameter in Ridge and Lasso models. 
-- With Elastic Nets, we want to tune the $\lambda$ and the alpha parameters. 
+- With elastic nets, we want to tune the $\lambda$ and the $\alpha$ parameters. 
 - To set up our tuning, we create a common `fold_id`, which just allows us to apply the same CV folds to each model. 
 
 ```{r}
@@ -1007,13 +1015,6 @@ install.packages("biglasso")
 
 ![](figure/biglasso.PNG)
 
-## Lasso for other models than least squares
-
-- Though originally defined for least squares, Lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
-
-- Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
-
-- The Lasso is closely related to basis pursuit denoising.
 
 ## Resources and Links  
 

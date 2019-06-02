@@ -493,6 +493,23 @@ stocks <- tibble(
 gather(stocks, "stock", "price", -time)
 ```
 
+## Sequences
+
+- Later we will create hyperparameter grids.
+- To do so, we will need sequences
+
+```{r}
+# the easiest sequence
+1:4
+# the other way
+4:1
+# the command sequence
+seq(start=1,to = 10,by = 2)
+# we will need the following for loops
+seq_along(14:21)
+```
+
+
 ## The command `expand.grid`
 
 ```{r}
