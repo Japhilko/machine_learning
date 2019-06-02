@@ -1,0 +1,34 @@
+---
+title: "To Do Liste"
+author: "Jan-Philipp Kolb"
+date: "23 Mai 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Teil a1 
+
+- Konzept Bootstrapping erklären
+
+
+## Teil b1 
+
+- MSE könnte noch näher erklärt werden
+- Genauer beschreiben, was bei cross validation passiert
+- andere Arten der Cross Validation hinzufügen
+
+## Teil b2
+
+- Die Folie 33 - Tuning ist recht leer
+- Was steckt alles im Output drin
+- Eine Aufgabe hinzufügen - Vielleicht diese hier: https://www.r-exercises.com/2017/06/12/lasso-regression-in-r-exercises/#comments
+
+https://www.r-exercises.com/2017/06/12/lasso-regression-in-r-solutions/
+
+## Teil c1
+
+- Hier und im Teil vorher muss ich mir Aufgaben ausdenken
+- Schauen, ob die Hinweise zur Lösung der Aufgaben in den Folien sind

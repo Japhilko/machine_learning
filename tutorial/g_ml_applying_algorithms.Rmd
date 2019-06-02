@@ -1,0 +1,67 @@
+---
+title: "Applying machine learning algorithms – exercises"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## [](https://www.r-exercises.com/2017/09/15/applying-machine-learning-algorithms-exercises/)
+
+### Exercise 1
+
+Create a list named “control” that runs a 10-fold cross-validation. HINT: Use trainControl().
+
+### Exercise 2
+
+Use the metric of “Accuracy” to evaluate models.
+
+### Exercise 3
+
+Build the “LDA”, “CART”, “kNN”, “SVM” and “RF” models.
+
+### Exercise 4
+
+Create a list of the 5 models you just built and name it “results”. HINT: Use `resamples()`.
+
+### Exercise 5
+
+Report the accuracy of each model by using the summary function on the list “results”. HINT: Use summary().
+
+### Exercise 6
+
+Create a plot of the model evaluation results and compare the spread and the mean accuracy of each model. HINT: Use dotplot().
+
+### Exercise 7
+
+Which model seems to be the most accurate?
+
+### Exercise 8
+
+Summarize the results of the best model and print them. HINT: Use print().
+
+### Exercise 9
+
+Run the “LDA” model directly on the validation set to create a factor named “predictions”. HINT: Use predict().
+
+### Exercise 10
+
+Summarize the results in a confusion matrix. HINT: Use `confusionMatrix()`.

@@ -1,7 +1,7 @@
 ---
 title: "README"
 author: "Jan-Philipp Kolb"
-date: "19 Juli 2018"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: md_document
 ---
 
@@ -11,32 +11,48 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part A - introduction
 
-- [What is machine learning and why should you care](intro_ml.Rmd)
-- [Parallelization](doParallel.Rmd)
+- A1 - Laying the foundations in R ([Browser](slides/a1_intro_r.Rmd) | [pdf](slides/a1_intro_r.pdf) | [rcode]())
 
+<!--
+- [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
+- [Parallelization](doParallel.Rmd)
+-->
 ## Part B - lasso and ridge regression
 
-- [Lasso regression](slides/lasso_regression.Rmd)
-- The `glmnet` package
+- [B1 - A small recap on linear regression](slides/b1_regression.md)
+- [B2 - Using regularization to prevent overfitting and perform feature selection](slides/b2_regularization.md)
 
+<!--
+- The `glmnet` package
+-->
 
 
 ## Part C - Supervised Learning: Bagging and Boosting, tree-methods 
 
+- [C3 - Supervised learning: random forests](slides/c3_gbm_regression.md)
+
 
 ## Part D - Supervised Learning: Neural Network
 
+- [D - Supervised learning: neural network](slides/d_neuralNetworks.md)
 
 ## Part E - Unsupervised Learning: kmeans, hdbscan
 
-
+- [E - Unsupervised Learning: kmeans, hdbscan](slides/e_Clustering.md)
 
 ## Part F - The dangers of machine learning
 
+- [F - The dangers of machine learning](slides/f_dangers_ml.md)
+
 ## Part G - `reticulate` package: Umap
 
-- work with python and R
+- [G - reticulate package: Umap](slides/g_reticulate_umap.md)
 
+<!--
+- work with python and R
+-->
+
+<!--
 ## Links
 
 -   [Your First Machine Learning Project in R
@@ -47,3 +63,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   [Shiny App for machine
     learning](https://www.showmeshiny.com/machlearn/)
+
+https://www.r-exercises.com/?s=machine+learning
+-->

@@ -14,6 +14,24 @@ knitr::opts_chunk$set(echo = TRUE)
 - The datasets we use for this course
 - What to do with missing data?
 
+
+
+## `mtcars` example
+
+- Target: predict the miles per gallon a car will drive in average 
+- Independent variables: cylinders (`cyl`) and horsepower (`hp`). 
+- All observations go through the tree, are assessed at a node, and proceed to the left if the answer is "yes"" or to the right if the answer is "no". 
+- E.g., all observations that have 6 or 8 cylinders go to the left branch, all other proceed to the right branch. 
+- Next, the left branch is further partitioned by horsepower. 
+- Those 6 or 8 cylinder observations with horsepower equal to or greater than 192 proceed to the left branch; those with less than 192 hp proceed to the right. 
+- These branches lead to terminal nodes or leafs which contain our predicted response value. 
+- All cars that do not have 6 or 8 cylinders (far right branch) average 27 mpg. 
+- All cars that have 6 or 8 cylinders and have more than 192 hp (far left branch) average 13 mpg.
+
+## Predicting `mpg` based on `cyl` and `hp`.
+
+![](figure/ex_regression_tree.png)
+
 ## The package `rpart` 
 
 - `rpart` - recursive partitioning and regression trees
@@ -77,4 +95,89 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 post(fit, file = "D:/Daten/GitHub/machine_learning/slides/figure/tree.ps", 
    title = "Classification Tree for Kyphosis")
 ```
+
+
+## `h2o` package
+
+```{r,eval=F,echo=F}
+install.packages("h2o")
+```
+
+
+
+```{r,eval=F}
+# http://uc-r.github.io/regularized_regression
+library(h2o)
+h2o.init()
+
+# convert data to h2o object
+ames_h2o <- ames_train %>%
+  mutate(Sale_Price_log = log(Sale_Price)) %>%
+  as.h2o()
+
+# set the response column to Sale_Price_log
+response <- "Sale_Price_log"
+
+# set the predictor names
+predictors <- setdiff(colnames(ames_train), "Sale_Price")
+
+# try using the `alpha` parameter:
+# train your model, where you specify alpha
+ames_glm <- h2o.glm(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o,
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  alpha = .25
+  )
+
+# print the mse for the validation data
+print(h2o.mse(ames_glm, xval = TRUE))
+
+# grid over `alpha`
+# select the values for `alpha` to grid over
+hyper_params <- list(
+  alpha = seq(0, 1, by = .1),
+  lambda = seq(0.0001, 10, length.out = 10)
+  )
+
+# this example uses cartesian grid search because the search space is small
+# and we want to see the performance of all models. For a larger search space use
+# random grid search instead: {'strategy': "RandomDiscrete"}
+
+# build grid search with previously selected hyperparameters
+grid <- h2o.grid(
+  x = predictors, 
+  y = response, 
+  training_frame = ames_h2o, 
+  nfolds = 10,
+  keep_cross_validation_predictions = TRUE,
+  algorithm = "glm",
+  grid_id = "ames_grid", 
+  hyper_params = hyper_params,
+  search_criteria = list(strategy = "Cartesian")
+  )
+
+# Sort the grid models by mse
+sorted_grid <- h2o.getGrid("ames_grid", sort_by = "mse", decreasing = FALSE)
+sorted_grid
+
+# grab top model id
+best_h2o_model <- sorted_grid@model_ids[[1]]
+best_model <- h2o.getModel(best_h2o_model)
+```
+
+<!--
+ames_lasso, s
+-->
+
+
+
+
+## [Algorithm selection](https://elitedatascience.com/algorithm-selection)
+
+- Unfortunately, decision trees suffer from a major flaw. 
+- If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
+- As a result, individual unconstrained decision trees are very prone to being overfit.
 

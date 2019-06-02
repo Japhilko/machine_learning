@@ -1,0 +1,223 @@
+---
+title: "ML Exercises - Gradient Boosting"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output: 
+  beamer_presentation: 
+    theme: Dresden
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=T,message=F,warning=F)
+```
+
+## [eXtremely Boost your machine learning Exercises (Part-1)](https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-exercises-part-1/)
+
+- eXtreme Gradient Boosting is a machine learning model which became really popular few years ago after winning several Kaggle competitions. 
+- It is very powerful algorithm that use an ensemble of weak learners to obtain a strong learner. 
+- Its R implementation is available in xgboost package and it is really worth including into anyone’s machine learning portfolio.
+
+<!--
+This is the first part of eXtremely Boost your machine learning series. For other parts follow the tag xgboost.
+
+Answers to the exercises are available here.
+
+If you obtained a different (correct) answer than those listed on the solutions page, please feel free to post your answer as a comment on that page.
+-->
+
+## Boosting Exercises - first part
+
+### Exercise 1
+Load `xgboost` library and download German Credit dataset. Your goal will be to predict creditability (the first column in the dataset).
+
+### Exercise 2
+Convert columns `c(2,4,5,7,8,9,10,11,12,13,15,16,17,18,19,20)` to factors and then encode them as dummy variables. HINT: use the command `model.matrix()`
+
+### Exercise 3
+Split data into training and test set 700:300. Create `xgb.DMatrix` for both sets with Creditability as label.
+
+## Boosting Exercises - second part
+
+### Exercise 4
+Train `xgboost` with logistic objective and 30 rounds of training and maximal depth 2.
+
+### Exercise 5
+To check model performance calculate test set classification error.
+
+### Exercise 6
+Plot predictors importance.
+
+## Boosting Exercises - third part
+
+### Exercise 7
+Use `xgb.train()` instead of `xgboost()` to add both train and test sets as a watchlist. Train model with same parameters, but 100 rounds to see how it performs during training.
+
+### Exercise 8
+Train model again adding AUC and Log Loss as evaluation metrices.
+
+### Exercise 9
+Plot how AUC and Log Loss for train and test sets was changing during training process. Use plotting function/library of your choice.
+
+### Exercise 10
+Check how setting parameter eta to 0.01 influences the AUC and Log Loss curves.
+image_pdf
+
+## [Solutions: boosting exercises](https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-solutions-part-1/)
+
+### Solution Exercise 1 - import dataset
+
+```{r}
+library(xgboost)
+```
+
+
+```{r,eval=F}
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+credit <- read.csv(url, header = TRUE, sep = ",")
+```
+
+
+```{r,eval=F,echo=F}
+save(credit,file="../data/german_credit.RData")
+```
+
+```{r,echo=F}
+load("../data/german_credit.RData")
+```
+
+```{r}
+head(credit)
+```
+
+## Solutions boosting exercises - first part
+
+### Solution Exercise 2 - convert columns
+
+```{r}
+factor_columns <- c(2,4,5,7,8,9,10,11,12,13,15,16,17,18,19,20)
+for(i in factor_columns) credit[,i] <- as.factor(credit[,i])
+X <- model.matrix(~ . - Creditability, data=credit)
+```
+
+###  Solution  Exercise 3 
+
+```{r}
+inTraining <- sample(1:nrow(credit),size=700)
+dtrain <- xgboost::xgb.DMatrix(X[inTraining,],
+                      label=credit$Creditability[inTraining])
+dtest <- xgboost::xgb.DMatrix(X[-inTraining,],
+                     label=credit$Creditability[-inTraining])
+```
+
+## Solutions boosting exercises - second part
+
+### Solution Exercise 4 - train `xgboost` model 
+
+```{r}
+model <- xgboost(data = dtrain,
+                 max_depth = 2,
+                 nrounds = 30,
+                 objective = "binary:logistic")
+```
+
+## Solutions boosting exercises - third part
+
+###    Exercise 5   
+
+```{r}
+err<-mean(round(predict(model,dtest))!=getinfo(dtest,'label'))
+print(paste("test-error=", err))
+```
+
+
+###    Exercise 6   
+
+```{r,eval=F}
+importance.matrix <- xgb.importance(model = model, 
+                                    feature_names = colnames(X))
+xgb.plot.importance(importance.matrix)
+```
+
+## Importance plot
+
+```{r,echo=F}
+importance.matrix <- xgb.importance(model = model, 
+                                feature_names = colnames(X))
+xgb.plot.importance(importance.matrix)
+```
+
+
+##    Exercise 7  
+
+```{r}
+model_watchlist <- xgb.train(data = dtrain,
+                      max_depth = 2,nrounds = 100,
+                      objective = "binary:logistic",
+                      watchlist = list(train=dtrain, 
+                                       test=dtest))
+```
+
+
+
+##  Solution  Exercise 8   
+
+```{r}
+model_auc<-xgb.train(data = dtrain,max_depth = 2,
+                       nrounds = 100,objective = "binary:logistic",
+                       watchlist = list(train=dtrain, 
+                                        test=dtest),
+                       eval_metric = 'auc',
+                       eval_metric = 'logloss')
+```
+
+## Solution  Exercise 9   
+
+```{r,eval=F}
+library(tidyverse)
+model_auc$evaluation_log %>%
+  gather(metric, value, -iter) %>%
+  separate(metric, c('set','metric')) %>%
+  ggplot(aes(iter, value, color = set)) +
+  geom_line() +
+  facet_grid(metric~.)
+```
+
+## Evaluation plot
+
+```{r,echo=F}
+library(tidyverse)
+model_auc$evaluation_log %>%
+  gather(metric, value, -iter) %>%
+  separate(metric, c('set','metric')) %>%
+  ggplot(aes(iter, value, color = set)) +
+  geom_line() +
+  facet_grid(metric~.)
+```
+
+
+###    Exercise 10  
+
+```{r}
+model_eta <- xgb.train(data = dtrain,
+                       max_depth = 2,
+                       eta = 0.05,
+                       nrounds = 100,
+                       objective = "binary:logistic",
+                       watchlist = list(train=dtrain, test=dtest),
+                       eval_metric = 'auc',
+                       eval_metric = 'logloss')
+```
+
+
+<!--
+https://www.r-exercises.com/2017/10/01/extremely-boost-your-machine-learning-exercises-part-2/
+
+https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-solutions-part-1/
+-->

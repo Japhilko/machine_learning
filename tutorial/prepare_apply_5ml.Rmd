@@ -1,0 +1,26 @@
+---
+title: "Prepare Machine Learning"
+author: "Jan-Philipp Kolb"
+date: "31 5 2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## [How to prepare and apply machine learning to your dataset](https://www.r-exercises.com/2017/08/25/machine-learning-tutorial/)
+
+### Content of this section
+
+1) Use one of the most popular machine learning packages in R.
+2) Explore a dataset by using statistical summaries and data visualization.
+3) Build 5 machine-learning models, pick the best, and build confidence that the accuracy is reliable.
+
+### standard and necessary steps:
+
+1. Define Problem.
+2. Prepare Data.
+3. Evaluate Algorithms.
+4. Improve Results.
+5. Present Results.

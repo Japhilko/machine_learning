@@ -1,0 +1,398 @@
+---
+title: "Exercises regression"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning=F,message=F)
+```
+
+## Exercise: regression Ames housing data
+
+1) Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
+2) Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
+
+## Solution: regression Ames housing data
+
+```{r,eval=F}
+install.packages("AmesHousing") # 1)
+```
+
+```{r}
+ames_data <- AmesHousing::make_ames() # 1)
+```
+
+## Three regression models
+
+```{r}
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
+lm(Sale_Price ~ Gr_Liv_Area, data = ames_data)$coefficients
+lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
+```
+
+## [Exercise: ridge regression (I)](https://www.r-bloggers.com/ridge-regression-in-r-exercises/)
+
+1) Load the `lars` package and the `diabetes` dataset 
+<!--
+(Efron, Hastie, Johnstone and Tibshirani (2003) “Least Angle Regression” (with discussion) Annals of Statistics). 
+This is the same dataset from the LASSO exercise set and has patient level data on the progression of diabetes. 
+-->
+2) Load the `glmnet` package to implement ridge regression.
+
+The dataset has three matrices x, x2 and y. x has a smaller set of independent variables while x2 contains the full set with quadratic and interaction terms. y is the dependent variable which is a quantitative measure of the progression of diabetes.
+
+3) Generate separate scatterplots with the line of best fit for all the predictors in x with y on the vertical axis.
+
+4) Regress y on the predictors in x using OLS. We will use this result as benchmark for comparison.
+
+## Solution: ridge regression (I)
+
+```{r,eval=F}
+install.packages("lars")
+```
+
+
+```{r}
+library(lars) # 1)
+data(diabetes)
+attach(diabetes)
+
+library(glmnet) #2)
+```
+
+```{r,eval=F}
+# Create the scatterplots
+set.seed(1234)
+par(mfrow=c(2,5))
+for(i in 1:10){ # 3)
+  plot(x[,i], y)
+  abline(lm(y~x[,i]))
+}
+```
+
+## Scatterplots
+
+```{r,echo=F}
+# Create the scatterplots
+set.seed(1234)
+par(mfrow=c(2,5),mai=c(0,0,0,0))
+for(i in 1:10){ # 3)
+  plot(x[,i], y)
+  abline(lm(y~x[,i]),col="red")
+}
+```
+
+## A OLS regression
+
+```{r}
+model_ols <- lm(y ~ x) # 4)
+summary(model_ols)
+```
+
+## Exercise: ridge regression (II)
+<!-- 
+Exercise 2
+-->
+
+5) Fit the ridge regression model using the `glmnet` function and plot the trace of the estimated coefficients against lambdas. Note that coefficients are shrunk closer to zero for higher values of lambda.
+
+<!--
+Exercise 3
+-->
+
+6) Use the cv.glmnet function to get the cross validation curve and the value of lambda that minimizes the mean cross validation error.
+
+<!--
+Exercise 4
+-->
+
+7) Using the minimum value of lambda from the previous exercise, get the estimated beta matrix. Note that coefficients are lower than least squares estimates.
+
+<!--
+Exercise 5
+-->
+
+8) To get a more parsimonious model we can use a higher value of lambda that is within one standard error of the minimum. Use this value of lambda to get the beta coefficients. Note the shrinkage effect on the estimates.
+
+## Solution: ridge regression (Exercise 5)
+
+
+```{r}
+lambdas <- 10^seq(7, -3)
+model_ridge <- glmnet(x, y, alpha = 0, lambda = lambdas)
+plot.glmnet(model_ridge, xvar = "lambda", label = TRUE)
+```
+
+
+
+## Solution: ridge regression (Exercise 6)
+
+<!-- Exercise 3-->
+
+```{r}
+cv_fit <- cv.glmnet(x=x, y=y, alpha = 0, nlambda = 1000)
+cv_fit$lambda.min
+plot.cv.glmnet(cv_fit)
+```
+
+
+<!--
+## [1] 4.685654
+-->
+
+
+## Solution: ridge regression (Exercise 7)
+<!--
+<!-- Exercise 4-->
+
+
+```{r}
+fit <- glmnet(x=x, y=y, alpha = 0, lambda=cv_fit$lambda.min)
+fit$beta
+```
+
+<!--
+## 10 x 1 sparse Matrix of class "dgCMatrix"
+##              s0
+## age   -1.776857
+## sex -218.078518
+## bmi  503.649515
+## map  309.268175
+## tc  -116.815832
+## ldl  -51.664808
+## hdl -181.472588
+## tch  113.468602
+## ltg  470.871230
+## glu   80.969337
+-->
+
+## Solution: ridge regression (Exercise 8)
+
+<!--
+<!-- Exercise 5-->
+
+```{r}
+fit <- glmnet(x=x, y=y, alpha = 0, lambda=cv_fit$lambda.1se)
+fit$beta
+```
+
+<!--
+## 10 x 1 sparse Matrix of class "dgCMatrix"
+##              s0
+## age   22.463959
+## sex -120.242431
+## bmi  366.769888
+## map  235.675894
+## tc    -9.896795
+## ldl  -52.093095
+## hdl -170.482275
+## tch  121.536669
+## ltg  313.810759
+## glu  112.152681
+-->
+
+## Exercise: ridge regression (III)
+
+<!--
+Exercise 6
+-->
+
+9) Split the data randomly between a training set (80%) and test set (20%). We will use these to get the prediction standard error for least squares and ridge regression models.
+
+<!--
+Exercise 7
+-->
+
+10) Fit the ridge regression model on the training and get the estimated beta coefficients for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+
+<!--
+Exercise 8
+-->
+
+11) Get predictions from the ridge regression model for the test set and calculate the prediction standard error. Do this for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+
+<!--
+Exercise 9
+-->
+
+12) Fit the least squares model on the training set.
+
+
+<!-- 
+Exercise 10
+-->
+
+13) Get predictions from the least squares model for the test set and calculate the prediction standard error.
+
+## Solution: ridge regression (Exercise 9)
+
+<!-- Exercise 6-->
+
+```{r}
+library(caret)
+intrain <- createDataPartition(y=diabetes$y,
+                                  p = 0.8,
+                                  list = FALSE)
+training <- diabetes[intrain,]
+testing <- diabetes[-intrain,]
+```
+
+## Solution: ridge regression (Exercise 10a)
+<!-- Exercise 7-->
+
+
+```{r}
+cv_ridge <- cv.glmnet(x=training$x, y=training$y,
+                      alpha = 0, nlambda = 1000)
+ridge_reg <- glmnet(x=training$x, y=training$y,
+                    alpha = 0, lambda=cv_ridge$lambda.min)
+ridge_reg$beta
+```
+
+
+<!--
+## 10 x 1 sparse Matrix of class "dgCMatrix"
+##             s0
+## age   38.25965
+## sex -209.67238
+## bmi  529.69156
+## map  341.55293
+## tc  -102.08181
+## ldl  -70.38056
+## hdl -141.87799
+## tch  102.70460
+## ltg  489.04852
+## glu   52.72637
+-->
+
+## Solution: ridge regression (Exercise 10b) 
+
+```{r}
+ridge_reg <- glmnet(x=training$x, y=training$y,
+                    alpha = 0, lambda=cv_ridge$lambda.1se)
+ridge_reg$beta
+```
+
+
+<!--
+## 10 x 1 sparse Matrix of class "dgCMatrix"
+##              s0
+## age   49.941787
+## sex -127.389221
+## bmi  399.264021
+## map  272.565206
+## tc    -5.586767
+## ldl  -66.919061
+## hdl -151.119495
+## tch  104.071028
+## ltg  339.155470
+## glu   96.613412
+-->
+
+
+## Solution: ridge regression (Exercise 11a)
+<!-- Exercise 8-->
+
+
+```{r}
+ridge_reg <- glmnet(x=training$x, y=training$y,
+                alpha = 0, lambda=cv_ridge$lambda.min)
+ridge_pred<-predict.glmnet(ridge_reg,
+               s = cv_ridge$lambda.min,newx = testing$x)
+sd((ridge_pred - testing$y)^2)/sqrt(length(testing$y))
+```
+
+
+<!--
+## [1] 415.6961
+-->
+## Solution: ridge regression (Exercise 11b)
+
+```{r}
+ridge_reg <- glmnet(x=training$x, y=training$y,
+              alpha = 0, lambda=cv_ridge$lambda.1se)
+ridge_pred <- predict.glmnet(ridge_reg,
+              s = cv_ridge$lambda.1se, newx = testing$x)
+sd((ridge_pred - testing$y)^2)/sqrt(length(testing$y))
+```
+
+
+<!--
+## [1] 394.3651
+# lower prediction error with higher lambda
+-->
+
+## Solution: ridge regression (Exercise 12)
+<!-- Exercise 9-->
+
+
+```{r}
+ols_reg <- lm(y ~ x, data = training)
+summary(ols_reg)
+```
+
+
+<!--
+## 
+## Call:
+## lm(formula = y ~ x, data = training)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -154.669  -41.299    1.594   38.940  151.834 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  153.601      2.922  52.575  < 2e-16 ***
+## xage          33.104     68.732   0.482  0.63036    
+## xsex        -228.818     69.589  -3.288  0.00111 ** 
+## xbmi         546.497     77.994   7.007 1.29e-11 ***
+## xmap         359.381     74.686   4.812 2.24e-06 ***
+## xtc         -721.463    447.808  -1.611  0.10808    
+## xldl         403.276    362.512   1.112  0.26672    
+## xhdl         128.830    232.186   0.555  0.57935    
+## xtch         177.948    180.552   0.986  0.32503    
+## xltg         748.765    185.718   4.032 6.82e-05 ***
+## xglu          34.245     77.094   0.444  0.65718    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 54.92 on 344 degrees of freedom
+## Multiple R-squared:  0.5142,	Adjusted R-squared:  0.5001 
+## F-statistic: 36.42 on 10 and 344 DF,  p-value: < 2.2e-16
+-->
+
+
+## Solution: ridge regression (Exercise 13)
+<!-- Exercise 10-->
+
+
+
+```{r}
+ols_pred <- predict(ols_reg, newdata=testing$x, 
+                    type = "response")
+sd((ols_pred - testing$y)^2)/sqrt(length(testing$y))
+```
+
+<!--
+## [1] 419.758
+# least squares prediction error is higher.
+-->
+

@@ -1,0 +1,34 @@
+---
+title: "Addon"
+author: "Jan-Philipp Kolb"
+date: "27 5 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A Intro 
+
+- 90 minutes
+
+- 38 slides - Intro R
+
+- 3 exercises
+
+- 15 slides - intro ml
+
+## B regression
+
+- 75 minutes
+
+- 42 slides - regression in R
+
+- 
+
+
+## C Bagging Boosting Trees
+
+- 2 exercises
+

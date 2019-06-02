@@ -1,0 +1,10 @@
+\frametitle{Further packages}
+\protect\hypertarget{further-packages}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# https://cran.rstudio.com/web/packages/biglasso/biglasso.pdf}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"biglasso"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+

@@ -1,0 +1,179 @@
+---
+title: 'Visualizing dataset to apply machine learning'
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output: 
+  beamer_presentation: 
+    theme: Dresden
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,message = F,warning=F)
+```
+
+## Exercises: Visualizing dataset to apply machine learning
+
+- Exercise based on [r-exercises - visualizing for ml](https://www.r-exercises.com/2017/09/08/visualizing-dataset-to-apply-machine-learning-exercises/)
+
+
+### Exercise 1
+
+Create a variable “x” and attach to it the input attributes of the “iris” dataset. HINT: Use columns 1 to 4.
+
+### Exercise 2
+
+Create a variable “y” and attach to it the output attribute of the “iris” dataset. HINT: Use column 5.
+
+### Exercise 3
+
+Create a whisker plot (boxplot) for the variable of the first column of the “iris” dataset. HINT: Use `boxplot()`.
+
+## Exercises
+
+### Exercise 4
+
+Now create a whisker plot for each one of the four input variables of the “iris” dataset in one image. HINT: Use par().
+
+### Exercise 5
+
+Create a barplot to breakdown your output attribute. HINT: Use plot().
+
+### Exercise 6
+
+Create a scatterplot matrix of the “iris” dataset using the “x” and “y” variables. HINT: Use featurePlot().
+
+### Exercise 7
+
+Create a scatterplot matrix with ellipses around each separated group. HINT: Use plot="ellipse".
+
+## Exercises
+
+### Exercise 8
+
+Create box and whisker plots of each input variable again, but this time broken down into separated plots for each class. HINT: Use plot="box".
+
+### Exercise 9
+
+Create a list named “scales” that includes the “x” and “y” variables and set relation to “free” for both of them. HINT: Use `list()`
+
+### Exercise 10
+
+Create a density plot matrix for each attribute by class value. HINT: Use `featurePlot()`.
+
+
+## [Solutions](https://www.r-exercises.com/2017/09/08/visualizing-dataset-to-apply-machine-learning-exercises-solutions/)
+
+###   Solution Exercise 1
+
+<!--
+# install.packages("caret")
+-->
+
+```{r}
+library(caret)
+data(iris)
+validation <- createDataPartition(iris$Species, p=0.80, 
+                                  list=FALSE)
+validation20 <- iris[-validation,]
+iris <- iris[validation,]
+x <- iris[,1:4]
+```
+
+###   Solution Exercise 2 
+
+```{r}
+library(caret)
+y <- iris[,5]
+```
+
+
+##   Solution Exercise 3 
+
+```{r}
+library(caret)
+boxplot(x[,1], main=names(iris)[1])
+```
+
+
+##    Solution Exercise 4   
+
+```{r}
+library(caret)
+par(mfrow=c(1,4))
+for(i in 1:4) {
+  boxplot(x[,i], main=names(iris)[i])
+}
+```
+
+
+##    Solution Exercise 5   
+
+```{r}
+library(caret)
+plot(y)
+```
+
+
+##    Solutions - Visualizing ML
+
+### Solution Exercise 6   
+
+```{r}
+library(caret)
+featurePlot(x=x, y=y)
+```
+
+
+##    Solution Exercise 7   
+
+```{r}
+# install.packages("ellipse")
+library(ellipse)
+library(caret)
+featurePlot(x=x, y=y,plot="ellipse")
+```
+
+
+##    Solutions - Visualizing ML  
+
+### Solution Exercise 8   
+
+```{r}
+library(caret)
+featurePlot(x=x, y=y, plot="box")
+```
+
+
+##    Solutions - Visualizing ML    
+
+### Solution Exercise 9   
+
+```{r}
+library(caret)
+scales <- list(x=list(relation="free"), y=list(relation="free"))
+```
+
+
+
+###    Solution Exercise 10  
+
+```{r,eval=F}
+library(caret)
+scales <- list(x=list(relation="free"), y=list(relation="free"))
+featurePlot(x=x, y=y, plot="density", scales=scales)
+```
+
+##    Solution Exercise 10  
+
+```{r,echo=F}
+library(caret)
+scales <- list(x=list(relation="free"), y=list(relation="free"))
+featurePlot(x=x, y=y, plot="density", scales=scales)
+```

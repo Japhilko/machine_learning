@@ -1,0 +1,52 @@
+---
+title: "More slides"
+author: "Jan-Philipp Kolb"
+date: "28 5 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+```{r}
+library(magrittr)
+```
+
+
+## Create or transform variables
+
+
+```{r}
+?dplyr::mutate
+```
+
+## Apply a function to each element of a vector
+
+```{r}
+?purrr::map_dbl
+```
+
+## Arrange rows by variables
+
+```{r}
+?dplyr::arrange
+```
+
+```{r}
+dplyr::arrange(mtcars, cyl, disp)
+```
+
+## Select top (or bottom) n rows (by value)
+
+```{r}
+?dplyr::top_n
+```
+
+```{r}
+mtcars %>% dplyr::top_n(-2)
+```
+
+
