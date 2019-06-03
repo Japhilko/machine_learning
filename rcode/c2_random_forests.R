@@ -3,97 +3,82 @@
 #' author: "Jan-Philipp Kolb"
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
 #' fontsize: 10pt
-#' output:
+#' output: 
 #'   beamer_presentation: 
 #'     colortheme: dolphin
 #'     fig_height: 3
 #'     fig_width: 5
-#'     fig_caption: no
 #'     fonttheme: structuresmallcapsserif
 #'     highlight: haddock
 #'     theme: Dresden
-#'   pdf_document: 
-#'     keep_tex: yes
-#'     toc: yes
 #'   slidy_presentation: 
-#'     css: mycss.css
+#'     highlight: haddock
 #'     keep_md: yes
 #' ---
 #' 
 ## ----setupbaggingboosting, include=FALSE---------------------------------
-knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T)
+knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T,eval=T)
 library(knitr)
 
 #' 
 #' ## Random Forests
 #' 
-#' - Bagging (bootstrap aggregating) regression trees is a technique that can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
-#' - Unfortunately, bagging regression trees typically suffers from tree correlation, which reduces the overall performance of the model. 
-#' - Random forests are a modification of bagging that builds a large collection of de-correlated trees and have become a very popular "out-of-the-box" learning algorithm that enjoys good predictive performance. 
+#' - [**Bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
+#' - But bagging suffers from [**tree correlation**](https://stats.stackexchange.com/questions/295868/why-is-tree-correlation-a-problem-when-working-with-bagging), which reduces the overall performance of the model. 
+#' - [**Random forests**](https://en.wikipedia.org/wiki/Random_forest) are a modification of bagging that builds a large collection of de-correlated trees 
+#' - It is a very popular [**out-of-the-box**](https://en.wikipedia.org/wiki/Out_of_the_box_(feature)) learning algorithm that enjoys good predictive performance. 
+#' 
+#' <!--
+#' out of the box - läuft ohne weitere Anpassungen
+#' 
+#' -->
 #' 
 #' 
-#' ## Preparation - random forests
+#' ## Extending the bagging technique
 #' 
-#' - The following slides are based on UC Business Analytics R Programming Guide  on [random forests](http://uc-r.github.io/random_forests)
-#' 
-## ------------------------------------------------------------------------
-library(rsample)      # data splitting 
-library(randomForest) # basic implementation
-library(ranger)       # a faster implementation of randomForest
-library(caret)        # an aggregator package for performing many machine learning models
-library(h2o)          # an extremely fast java-based platform
-
-#' 
-#' 
-## ----eval=F,echo=F-------------------------------------------------------
-## install.packages("ranger")
-
-#' 
-#' 
-#' ## The Ames housing data
-#' 
-## ------------------------------------------------------------------------
-set.seed(123)
-ames_split <- initial_split(AmesHousing::make_ames(), prop = .7)
-ames_train <- training(ames_split)
-ames_test  <- testing(ames_split)
-
-#' 
-#' ## The idea of random forests
-#' 
+#' <!--
 #' - Random forests are built on the same fundamental principles as decision trees and bagging. 
-#' - Bagging trees introduces a random component in to the tree building process that reduces the variance of a single tree’s prediction and improves predictive performance. 
+#' -->
+#' - Bagging introduces a random component in to the tree building process 
+#' <!--
+#' that reduces the variance of a single tree’s prediction. 
+#' -->
 #' - The trees in bagging are not completely independent of each other since all the original predictors are considered at every split of every tree. 
-#' - Trees from different bootstrap samples typically have similar structure to each other (especially at the top of the tree) due to underlying relationships.
+#' - Trees from different bootstrap samples have similar structure to each other (especially at the top of the tree) due to underlying relationships.
 #' 
 #' 
-#' ## Similar trees
+#' ## Similar trees - tree correlation
 #' 
-#' - E.g., if we create six decision trees with different bootstrapped samples of the Boston housing data, we see that the top of the trees all have a very similar structure. 
+#' - If we create six decision trees with different bootstrapped samples of the Boston housing data, the top of the trees all have a very similar structure. 
 #' - Although there are 15 predictor variables to split on, all six trees have both `lstat` and `rm` variables driving the first few splits.
 #' 
 #' ![Six decision trees based on different bootstrap samples.](figure/tree-correlation-1.png)
 #' 
 #' ## Tree correlation
 #' 
-#' - This characteristic is known as tree correlation and prevents bagging from optimally reducing variance of the predictive values. 
-#' - In order to reduce variance further, we need to minimize the amount of correlation between the trees. 
-#' - This can be achieved by injecting more randomness into the tree-growing process. Random forests achieve this in two ways:
+#' - Tree correlation prevents bagging from optimally reducing variance of the predictive values. 
+#' - To reduce variance further, we need to minimize the amount of correlation between the trees. 
+#' - This can be achieved by injecting more randomness into the tree-growing process. 
 #' 
-#' ### 1. Bootstrap: 
+#' ## Random forests achieve this in two ways:
 #' 
-#' - Similar to bagging, each tree is grown to a bootstrap resampled data set, which makes them different and somewhat decorrelates them.
+#' 1) Bootstrap: 
 #' 
-#' ### 2. Split-variable randomization: 
+#' - Similar to bagging, each tree is grown to a bootstrap resampled data set, which makes them different and decorrelates them.
 #' 
-#' - Each time a split is to be performed, the search for the split variable is limited to a random subset of m of the p variables. 
-#' - For regression trees, typical default values are $m=\dfrac{p}{3}$ but this should be considered a tuning parameter. 
-#' - When $m=p$, the randomization amounts to using only step 1 and is the same as bagging.
+#' 2) Split-variable randomization: 
+#' 
+#' - For every split, the search for the split variable is limited to a random subset of $m$ of the $p$ variables.
+#' <!--
+#' Für was steht m und p hier?
+#' -->
+#' - For regression trees, typical default values are $m=p/3$ (tuning parameter). 
+#' - When $m=p$, the randomization is limited (only step 1) and is the same as bagging.
 #' 
 #' 
 #' ## Basic algorithm
 #' 
-#' The basic algorithm for a regression random forest can be generalized to the following:
+#' The basic algorithm for a regression random forest can be generalized:
 #' 
 #' ```
 #' 1.  Given training data set
@@ -106,29 +91,599 @@ ames_test  <- testing(ames_split)
 #' 8.  |  | Pick the best variable/split-point among the m
 #' 9.  |  | Split the node into two child nodes
 #' 10. |  end
-#' 11. | Use typical tree model stopping criteria to determine when a tree is complete (but do not prune)
+#' 11. | Use tree model stopping criteria to determine: tree complete 
 #' 12. end
 #' ```
 #' 
-#' - Since the algorithm randomly selects a bootstrap sample to train on and predictors to use at each split, tree correlation will be lessened beyond bagged trees.
+#' The algorithm randomly selects a bootstrap sample to train and predictors to use at each split.
+#' <!--
+#' , tree correlation will be lessened beyond bagged trees.
+#' -->
 #' 
-#' ## OOB error vs. test set error
+#' ## Characteristics
 #' 
-#' - Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an out-of-bag (OOB) sample that provides an efficient and reasonable approximation of the test error. 
-#' - This provides a built-in validation set without any extra work on your part, and you do not need to sacrifice any of your training data to use for validation. 
-#' - This makes identifying the number of trees required to stablize the error rate during tuning more efficient; 
-#' - As illustrated below some difference between the OOB error and test error are expected.
+#' - Since bootstrap samples and features are selected randomly at each split, we create a more diverse set of trees, which tends to lessen tree correlation beyond bagged trees and often dramatically increase predictive power.
+#' <!--
+#' - random forests have the least variability in their prediction accuracy when tuning.
+#' -->
 #' 
-#' ## Random forest out-of-bag error versus validation error
+#' ### out-of-bag error 
+#' 
+#' - Similar to bagging, a natural benefit of the bootstrap resampling process is that random forests have an [**out-of-bag**](https://en.wikipedia.org/wiki/Out-of-bag_error) (OOB) sample that provides an efficient and reasonable approximation of the test error. 
+#' - This provides a built-in validation set without any extra work, and you do not need to sacrifice any of your training data to use for validation. 
+#' - We are more efficient identifying the number of trees required to stablize the error rate 
+#' <!--
+#' during tuning; 
+#' 
+#' 
+#' ## Out-of-bag error vs. validation error
+#' 
+#' - Some difference between the OOB error and test error are expected.
 #' 
 #' ![](figure/random_trees_fig1.PNG)
+#' -->
 #' 
-#' ## Scoring models - metrics
 #' 
-#' - Many packages do not keep track of which observations were part of the OOB sample for a given tree and which were not. 
-#' - If you are comparing multiple models to one-another, you’d want to score each on the same validation set to compare performance. 
-#' - It is possible to compute certain metrics such as root mean squared logarithmic error (RMSLE) on the OOB sample, but it is not built in to all packages. 
-#' - So if you are looking to compare multiple models or use a slightly less traditional loss function you will likely want to still perform cross validation.
+#' ## Preparation - random forests
+#' 
+#' - The following slides are based on UC Business Analytics R Programming Guide  on [**random forests**](http://uc-r.github.io/random_forests)
+#' 
+## ------------------------------------------------------------------------
+library(rsample)      # data splitting 
+library(randomForest) # basic implementation
+library(ranger)       # a faster implementation of randomForest
+# an aggregator package for performing many 
+# machine learning models
+library(caret)        
+
+#' 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## install.packages("ranger")
+## install.packages("rsample")
+## install.packages("ggplot2")
+## install.packages("AmesHousing")
+
+#' 
+#' 
+#' ## The Ames housing data
+#' 
+## ----eval=F--------------------------------------------------------------
+## set.seed(123)
+## ames_data <- AmesHousing::ames_raw
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ames_data.RData")
+
+#' 
+#' 
+## ----echo=F--------------------------------------------------------------
+if(!("Sale_Price"%in%colnames(ames_data))){
+  ames_data$Sale_Price <- ames_data$SalePrice
+  ames_data <- ames_data[,-which("Sale_Price"%in%colnames(ames_data))]
+}
+
+#' 
+#' 
+## ----echo=F,eval=F-------------------------------------------------------
+## ames_data$Sale_Price <- ames_data$SalePrice
+## ames_data <- ames_data[,which(colnames(ames_data)=="SalePrice")]
+
+#' 
+## ------------------------------------------------------------------------
+set.seed(123)
+ames_split <- rsample::initial_split(ames_data,prop=.7)
+ames_train <- rsample::training(ames_split)
+ames_test  <- rsample::testing(ames_split)
+
+#' 
+#' 
+#' ## Basic implementation
+#' 
+#' - There are over 20 random forest packages in R.
+#' - To demonstrate the basic implementation we use the `randomForest` package, the oldest and most well known implementation of the random forest algorithm in R. 
+#' - As your data set grows in size `randomForest` does not scale well (although you can parallelize with `foreach`). 
+#' - To explore and compare a variety of tuning parameters we can find more effective packages. 
+#' - The package `ranger` will be presented in the tuning section.
+#' 
+#' 
+#' ## `randomForest::randomForest`
+#' 
+#' - `randomForest` can use the formula or  x-y matrix notation. 
+#' - Below we apply the default `randomForest` model using the formal specification. 
+#' - The default random forest performs 500 trees and $\dfrac{\text{nr. features}}{3}=26$ randomly selected predictor variables at each split. 
+#' 
+#' <!--
+#' - Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
+#' -->
+#' 
+#' 
+## ----eval=F--------------------------------------------------------------
+## set.seed(123)
+## # default RF model
+## (m1 <- randomForest(formula = Sale_Price ~ .,data=ames_train))
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## save(m1,file="../data/ml_randomforest_m1.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_randomforest_m1.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+m1
+
+#' 
+#' <!--
+#' ## The resulting object `m1`
+#' -->
+#' 
+#' 
+#' ## Plotting the model
+#' 
+#' <!--
+#' - Plotting the model will illustrate the error rate as we average across more trees and shows that our 
+#' -->
+#' 
+#' - The error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 trees.
+#' 
+## ----eval=F--------------------------------------------------------------
+## plot(m1,main="Error rate")
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## png("figure/ml_rf_errorrate_m1.png")
+##   plot(m1,main="Error rate")
+## dev.off()
+
+#' 
+#' ![](figure/ml_rf_errorrate_m1.png){height=65%}
+#' 
+#' ## Random forests - out-of-the-box algorithm
+#' 
+#' <!--
+#' - Random forests are one of the best “out-of-the-box” machine learning algorithms. 
+#' -->
+#' - Random forests perform remarkably well with very little tuning.
+#' - We get an RMSE of less than 30K dollar without any tuning.
+#' - This is more than 6K dollar RMSE-reduction compared to a fully-tuned bagging model 
+#' - and 4K dollar reduction to to a fully-tuned elastic net model. 
+#' - We can still seek improvement by tuning our random forest model.
+#' 
+#' ### Tuning Random forests
+#' 
+#' - Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
+#' - First we tune the number of candidate variables to select from at each split. 
+#' - A few additional hyperparameters are important. 
+#' 
+#' ## Tuning parameters (I)
+#' 
+#' <!--
+#' - The argument names may differ across packages, but these hyperparameters should be present:
+#' -->
+#' 
+#' - The following hyperparameter are important (names may differ across packages):
+#' 
+#' ### number of trees
+#' 
+#' - `ntree` - We want enough trees to stabalize the error but using too many trees is inefficient, esp. for large data sets.
+#' 
+#' ### number of variables
+#' 
+#' - `mtry` - number of variables as candidates at each split. When `mtry=p` the model equates to bagging. 
+#' - When `mtry=1` the split variable is completely random, all variables get a chance but can lead to biased results. Suggestion: start with 5 values evenly spaced across the range from 2 to p.
+#' 
+#' ## Tuning parameters (II)
+#' 
+#' ### Number of samples
+#' 
+#' - `sampsize` -  Default value is 63.25%  since this is the expected value of unique observations in the bootstrap sample. 
+#' - Lower sample sizes can reduce training time but may introduce more bias. Increasing sample size can increase performance but at risk of overfitting - it introduces more variance. 
+#' <!--
+#' - When tuning this parameter we stay near the 60-80% range.
+#' -->
+#' 
+#' ## Tuning parameters (III)
+#' 
+#' ### minimum number of samples within the terminal nodes:
+#' 
+#' - `nodesize` - Controls the complexity of the trees. 
+#' - It is the minimum size of terminal nodes.
+#' - Smaller node size allow for deeper, more complex trees 
+#' - This is another bias-variance tradeoff where deeper trees introduce more variance (risk of overfitting) 
+#' - Shallower trees introduce more bias (risk of not fully capturing unique patters and relatonships in the data).
+#' 
+#' <!--
+#' https://stats.stackexchange.com/questions/158583/what-does-node-size-refer-to-in-the-random-forest
+#' -->
+#' 
+#' ### maximum number of terminal nodes
+#' 
+#' - `maxnodes`: A way to control the complexity of the trees. 
+#' - More nodes equates to deeper, more complex trees. 
+#' - Less nodes result in shallower trees.
+#' 
+#' 
+#' ## Initial tuning with `randomForest`
+#' 
+#' - If we just tune the `mtry` parameter we can use `randomForest::tuneRF` for a quick and easy tuning assessment.
+#' <!--
+#' - `tuneRf` will start at a value of `mtry` that you supply and increase by a certain step factor until the OOB error stops improving. 
+#' -->
+#' - We start with 5 candidate variables (`mtryStart=5`) and increase by a factor of 2 until the OOB error stops improving by 1 per cent. 
+#' - `tuneRF` requires a separate x y specification. 
+#' - The optimal `mtry` value in this sequence is very close to the default mtry value of $\dfrac{\text{features}}{3}=26$.
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## ?randomForest::tuneRF
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+features <- setdiff(names(ames_train), "Sale_Price")
+
+#' 
+## ----eval=F--------------------------------------------------------------
+## set.seed(123)
+## m2<-tuneRF(x= ames_train[,features],
+##   y= ames_train$Sale_Price,ntreeTry   = 500,
+##   mtryStart  = 5,stepFactor = 2,
+##   improve    = 0.01,trace=FALSE)
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## save(m2,file="../data/ml_rf_m2.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_rf_m2.RData")
+
+#' 
+#' 
+#' ## Full grid search with `ranger`
+#' 
+#' - To perform a larger grid search across several hyperparameters we’ll need to create a grid, loop through each hyperparameter combination and evaluate the model. 
+#' - Unfortunately, this is where `randomForest` becomes quite inefficient since it does not scale well. 
+#' - Instead, we can use `ranger` which is a C++ implementation of Breiman’s random forest algorithm and is over 6 times faster than `randomForest`.
+#' 
+#' 
+#' ## Assessing the speed
+#' 
+#' ### `randomForest` speed
+#' 
+## ----eval=F--------------------------------------------------------------
+## system.time(
+##   ames_randomForest <- randomForest(
+##     formula = Sale_Price ~ .,
+##     data    = ames_train,
+##     ntree   = 500,
+##     mtry    = floor(length(features) / 3)
+##   )
+## )
+
+#' 
+## ------------------------------------------------------------------------
+#       User      System    elapsed 
+#     145.47        0.09      152.48 
+
+#' 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## save(ames_randomForest,file="../data/ml_rf_ames_randomForest.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_rf_ames_randomForest.RData")
+
+#' 
+#' ## `ranger` speed
+#' 
+## ------------------------------------------------------------------------
+system.time(
+  ames_ranger <- ranger(formula=Sale_Price ~ ., 
+    data      = ames_train,num.trees = 500,
+    mtry      = floor(length(features) / 3))
+)
+
+#' 
+## ------------------------------------------------------------------------
+
+
+#' 
+#' ## The grid search
+#' 
+#' - To perform the grid search, we construct our grid of hyperparameters. 
+#' 
+## ------------------------------------------------------------------------
+# hyperparameter grid search
+hyper_grid <- expand.grid(
+  mtry       = seq(20, 30, by = 2),
+  node_size  = seq(3, 9, by = 2),
+  sampe_size = c(.55, .632, .70, .80),
+  OOB_RMSE   = 0
+)
+
+#' 
+#' - We search across 96 different models with varying `mtry`, minimum node size, and sample size.
+#' 
+#' 
+## ------------------------------------------------------------------------
+nrow(hyper_grid) # total number of combinations
+
+#' 
+#' 
+#' ## Loop - hyperparameter combination (I)
+#' 
+#' - We apply 500 trees since our previous example illustrated that 500 was plenty to achieve a stable error rate. 
+#' - We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
+#' 
+#' 
+## ----eval=F--------------------------------------------------------------
+## for(i in 1:nrow(hyper_grid)) {
+##   model <- ranger(formula= Sale_Price ~ .,data= ames_train,
+##     num.trees       = 500,mtry= hyper_grid$mtry[i],
+##     min.node.size   = hyper_grid$node_size[i],
+##     sample.fraction = hyper_grid$sampe_size[i],
+##     seed            = 123)
+##     # add OOB error to grid
+##   hyper_grid$OOB_RMSE[i] <- sqrt(model$prediction.error)
+## }
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## save(hyper_grid,file="../data/ml_rf_hypergrid_oobrmse.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_rf_hypergrid_oobrmse.RData")
+
+#' 
+#' 
+#' ## The results - samll difference between RMSE
+#' 
+#' <!--
+#' - Our OOB RMSE ranges between 25000 - 26000. 
+#' -->
+## ----eval=F,echo=F-------------------------------------------------------
+## oob_rmse <- hyper_grid %>% dplyr::arrange(OOB_RMSE)
+## save(oob_rmse,file="../data/ml_rf_oob_rmse.RData")
+
+#' 
+## ----eval=F--------------------------------------------------------------
+## hyper_grid %>% dplyr::arrange(OOB_RMSE) %>% head(10)
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_rf_oob_rmse.RData")
+oob_rmse %>% head(10)
+
+#' 
+#' 
+## ----echo=F--------------------------------------------------------------
+top10 <- hyper_grid %>% dplyr::arrange(OOB_RMSE) %>% head(10)
+
+roob_hg <- range(hyper_grid$OOB_RMSE)
+
+roob_hgr <- round(roob_hg/1000)*1000
+
+#' 
+#' 
+## ----echo=F--------------------------------------------------------------
+roundmeantop10 <- round(mean(top10$OOB_RMSE))
+
+#' 
+#' <!--
+#' ## Loop - hyperparameter combination (I)
+#' -->
+#' <!--
+#' - Our top 10 performing models all have RMSE values and 
+#' -->
+#' - Models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in terminal node) perform best. 
+#' - We get various `mtry` values in top 10 - not over influential.
+#' <!--
+#' in their original columnar form, 
+#' -->
+#' 
+#' 
+#' <!--
+#' ##
+#' 
+#' - Random forests perform well with categorical variables 
+#' - It is worth checking to see if alternative encodings can increase performance. 
+#' - We adjust `mtry` to search from 50-200 random predictor variables at each split and re-perform our grid search. 
+#' - The results suggest that one-hot encoding does not improve performance.
+#' -->
+#' 
+#' ## Hyperparameter grid search - categorical variables
+#' 
+#' - We use [**one-hot encoding**](https://hackernoon.com/what-is-one-hot-encoding-why-and-when-do-you-have-to-use-it-e3c6186d008f) for our categorical variables which produces 353 predictor variables versus the 80 we were using above. 
+#' 
+#' 
+## ------------------------------------------------------------------------
+# one-hot encode our categorical variables
+(one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE))
+
+#' 
+#' ## Make a dataframe of dummy variable object
+#' 
+## ------------------------------------------------------------------------
+ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
+
+#' 
+## ---- eval=F,echo=F------------------------------------------------------
+## ames_train_hot[1:8,1:8]
+
+#' 
+#' ![](figure/OneHotEncoding.PNG)
+#' 
+#' ## Hot encoding and hypergrid
+#' 
+## ------------------------------------------------------------------------
+# make ranger compatible names
+names(ames_train_hot) <- make.names(names(ames_train_hot), 
+                                    allow_ = FALSE)
+# --> same as above but with increased mtry values
+hyper_grid_2 <- expand.grid(
+  mtry       = seq(50, 200, by = 25),
+  node_size  = seq(3, 9, by = 2),
+  sampe_size = c(.55, .632, .70, .80),
+  OOB_RMSE  = 0
+)
+
+#' 
+#' 
+#' ## The best model
+#' 
+#' ### The best random forest model:
+#' 
+#' - uses columnar categorical variables
+#' - `mtry` = 24, 
+#' - terminal node size of 5 observations
+#' - sample size of 80%. 
+#' 
+#' ### How to proceed
+#' 
+#' - Repeat the model to get a better expectation of error rate. 
+#' 
+#' <!--
+#' - as expected error ranges between ~25,800-26,400 
+#' 
+#' with a most likely just shy of 26,200.
+#' 
+#' 
+#' -->
+#' 
+#' ## Random forests with `ranger`
+#' 
+#' - The `impurity` measure is the variance of the responses for regression
+#' - `impurity` is a measure for heterogeneity - it measures how well the classes are  
+#' <!--
+#' https://stats.stackexchange.com/questions/220321/what-is-node-impurity-purity-in-decision-trees-in-plain-english-why-do-we-need
+#' 
+#' https://people.cs.pitt.edu/~milos/courses/cs2750-Spring03/lectures/class19.pdf
+#' -->
+#' 
+## ----eval=F--------------------------------------------------------------
+## OOB_RMSE <- vector(mode = "numeric", length = 100)
+## for(i in seq_along(OOB_RMSE)) {
+##   optimal_ranger <- ranger(formula= Sale_Price ~ .,
+##     data            = ames_train,
+##     num.trees       = 500,
+##     mtry            = 24,
+##     min.node.size   = 5,
+##     sample.fraction = .8,
+##     importance      = 'impurity')
+##   OOB_RMSE[i] <- sqrt(optimal_ranger$prediction.error)
+## }
+
+#' 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## ?ranger
+## save(OOB_RMSE,file="../data/ml_rf_OOB_RMSE.RData")
+## save(optimal_ranger,file="../data/ml_rf_optimal_ranger.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_rf_OOB_RMSE.RData")
+load("../data/ml_rf_optimal_ranger.RData")
+
+#' 
+#' 
+#' 
+#' ## Variable importance / node impurity
+#' 
+#' - [**Node impurity**](https://stats.stackexchange.com/questions/223109/what-do-we-mean-by-node-impurity-ref-random-forest) represents how well the trees split the data. There are several impurity measures; 
+#' - Gini index, Entropy and misclassification error are [options](https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf) to measure the node impurity
+#' 
+#' - We set `importance = 'impurity'`, which allows us to assess variable importance. 
+#' - [**Variable importance**](https://topepo.github.io/caret/variable-importance.html) is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
+#' - The remaining error left in predictive accuracy after a node split is known as node impurity.
+#' <!--
+#' https://medium.com/the-artificial-impostor/feature-importance-measures-for-tree-models-part-i-47f187c1a2c3
+#' http://www.cse.msu.edu/~cse802/DecisionTrees.pdf
+#' https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf
+#' 
+#' http://mason.gmu.edu/~jgentle/csi772/16s/L10_CART_16s.pdf
+#' 
+#' https://stats.stackexchange.com/questions/158583/what-does-node-size-refer-to-in-the-random-forest
+#' -->
+#' - A variable that reduces this impurity is considered more imporant than those variables that do not. 
+#' - We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important. 
+#' 
+#' ## Plot the variable importance
+#' 
+## ------------------------------------------------------------------------
+varimp_ranger <- optimal_ranger$variable.importance 
+
+#' 
+#' 
+## ----eval=F--------------------------------------------------------------
+## lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue")
+
+#' 
+#' - We see that `r names(sort(varimp_ranger))[1]` has the greatest impact in reducing MSE across our trees, followed by `names(sort(varimp_ranger))[2]`, `r names(sort(varimp_ranger))[3]`, etc.
+#' 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## png("figure/ml_rf_varimp_ranger.png")
+##   lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue",xlab="Variable importance")
+## dev.off()
+
+#' 
+#' ![](figure/ml_rf_varimp_ranger.png){height=60%}
+#' 
+#' 
+#' ## A histogram of OOB RMSE
+#' 
+## ----eval=F--------------------------------------------------------------
+## hist(OOB_RMSE, breaks = 20,col="royalblue")
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## png("figure/ml_rf_hist_OOB_RMSE.png")
+##   hist(OOB_RMSE, breaks = 20,col="royalblue")
+## dev.off()
+
+#' 
+#' 
+#' ![](figure/ml_rf_hist_OOB_RMSE.png){height=75%}
+#' 
+#' 
+#' ## Predicting
+#' 
+#' - With the  preferred model we can use the traditional predict function to make predictions on a new data set. 
+#' - We can use this for all our model types (`randomForest` and `ranger`); although the outputs differ slightly. 
+#' <!--
+#' - not that the new data for the `h2o` model needs to be an `h2o` object.
+#' -->
+## ------------------------------------------------------------------------
+# randomForest
+pred_randomForest <- predict(ames_randomForest, ames_test)
+head(pred_randomForest)
+# ranger
+pred_ranger <- predict(ames_ranger, ames_test)
+head(pred_ranger$predictions)
+
+#' 
+## ----echo=F,eval=F-------------------------------------------------------
+## # h2o
+## pred_h2o <- predict(best_model, ames_test.h2o)
+## head(pred_h2o)
+
+#' 
+#' 
+#' ## Summary - random forests
+#' 
+#' - Random forests provide a very powerful out-of-the-box algorithm that often has great predictive accuracy. 
+#' - Because of their more simplistic tuning nature and the fact that they require very little, if any, feature pre-processing they are often one of the first go-to algorithms when facing a predictive modeling problem. 
+#' 
+#' <!--
+#' To learn more I would start with the following resources listed in order of complexity
+#' -->
 #' 
 #' ## Advantages & Disadvantages
 #' 
@@ -146,295 +701,20 @@ ames_test  <- testing(ames_split)
 #' - Although accurate, often cannot compete with advanced boosting algorithms
 #' - Less interpretable
 #' 
-#' ## Basic implementation
-#' 
-#' - There are over 20 random forest packages in R.
-#' - To demonstrate the basic implementation we illustrate the use of the `randomForest` package, the oldest and most well known implementation of the Random Forest algorithm in R. 
-#' - As your data set grows in size `randomForest` does not scale well (although you can parallelize with `foreach`). 
-#' - To explore and compare a variety of tuning parameters we can also find more effective packages. 
-#' - The packages `ranger` and `h2o` packages will be presented in the tuning section.
-#' 
-#' ## `randomForest::randomForest`
-#' 
-#' - `randomForest` can use the formula or separate x, y matrix notation for specifying our model. 
-#' - Below we apply the default `randomForest` model using the formulaic specification. 
-#' - The default random forest performs 500 trees and $\dfrac{\text{features}}{3}=26$ randomly selected predictor variables at each split. 
-#' - Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
-#' 
-## ------------------------------------------------------------------------
-set.seed(123)
-# default RF model
-m1 <- randomForest(formula = Sale_Price ~ .,data=ames_train)
-m1
-
-#' 
-#' ## Plotting the model
-#' 
-#' - Plotting the model will illustrate the error rate as we average across more trees and shows that our error rate stabalizes with around 100 trees but continues to decrease slowly until around 300 or so trees.
-#' 
-## ------------------------------------------------------------------------
-plot(m1)
-
-#' 
-#' ## The plotted error rate
-#' 
-#' - The plotted error rate above is based on the OOB sample error and can be accessed directly at `m1$mse`. 
-#' - We can find which number of trees providing the lowest error rate, which is 344 trees providing an average home sales price error of $25,673.
-#' 
-## ------------------------------------------------------------------------
-which.min(m1$mse)
-sqrt(m1$mse[which.min(m1$mse)])
-
-#' 
-#' ## A validation set to measure predictive accuracy
-#' 
-#' - `randomForest` also allows us to use a validation set to measure predictive accuracy if we did not want to use the OOB samples. 
-#' - Here we split our training set further to create a training and validation set. 
-#' - We then supply the validation data in the `xtest` and `ytest` arguments.
-#' 
-## ------------------------------------------------------------------------
-set.seed(123)
-valid_split <- initial_split(ames_train, .8)
-# training data
-ames_train_v2 <- analysis(valid_split)
-# validation data
-ames_valid <- assessment(valid_split)
-x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
-y_test <- ames_valid$Sale_Price
-
-#' 
-#' ## Extract OOB & validation errors
-#' 
-## ------------------------------------------------------------------------
-rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
-  data=ames_train_v2,xtest = x_test,ytest=y_test)
-oob <- sqrt(rf_oob_comp$mse) # extract OOB & validation errors
-validation <- sqrt(rf_oob_comp$test$mse)
-
-#' 
-## ----eval=F--------------------------------------------------------------
-## # compare error rates
-## tibble::tibble(
-##   `Out of Bag Error` = oob,
-##   `Test error` = validation,
-##   ntrees = 1:rf_oob_comp$ntree
-## ) %>%
-##   gather(Metric, RMSE, -ntrees) %>%
-##   ggplot(aes(ntrees, RMSE, color = Metric)) +
-##   geom_line() +
-##   scale_y_continuous(labels = scales::dollar) +
-##   xlab("Number of trees")
-
-#' 
-#' ## Compare error rates
-#' 
-## ----echo=F--------------------------------------------------------------
-tibble::tibble(
-  `Out of Bag Error` = oob,
-  `Test error` = validation,
-  ntrees = 1:rf_oob_comp$ntree
-) %>%
-  gather(Metric, RMSE, -ntrees) %>%
-  ggplot(aes(ntrees, RMSE, color = Metric)) +
-  geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  xlab("Number of trees")
-
-#' 
-#' ## Random forests - out-of-the-box algorithm
-#' 
-#' - Random forests are one of the best “out-of-the-box” machine learning algorithms. 
-#' - They typically perform remarkably well with very little tuning required. - - E.g., we were able to get an RMSE of less than 30K Dollar without any tuning which is over a 6K Dollar reduction to the RMSE achieved with a fully-tuned bagging model and $4K reduction to to a fully-tuned elastic net model. 
-#' - We can still seek improvement by tuning our random forest model.
-#' 
-#' ## Tuning
-#' 
-#' - Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
-#' - Typically, the primary concern at the beginning is tuning the number of candidate variables to select from at each split. 
-#' - There are a few additional hyperparameters that we should be aware of. 
-#' - The argument names may differ across packages, but these hyperparameters should be present:
-#' 
-#' ## Tuning parameters
-#' 
-#' - `ntree`: number of trees. We want enough trees to stabalize the error but using too many trees is unncessarily inefficient, especially when using large data sets.
-#' - `mtry`: the number of variables to randomly sample as candidates at each split. When `mtry` =p the model equates to bagging. When `mtry=1` the split variable is completely random, so all variables get a chance but can lead to overly biased results. A common suggestion is to start with 5 values evenly spaced across the range from 2 to p.
-#' - `sampsize`: the number of samples to train on. The default value is 63.25% of the training set since this is the expected value of unique observations in the bootstrap sample. Lower sample sizes can reduce the training time but may introduce more bias than necessary. Increasing the sample size can increase performance but at the risk of overfitting because it introduces more variance. Typically, when tuning this parameter we stay near the 60-80% range.
-#' - `nodesize`: minimum number of samples within the terminal nodes. Controls the complexity of the trees. Smaller node size allows for deeper, more complex trees and smaller node results in shallower trees. This is another bias-variance tradeoff where deeper trees introduce more variance (risk of overfitting) and shallower trees introduce more bias (risk of not fully capturing unique patters and relatonships in the data).
-#' - `maxnodes`: maximum number of terminal nodes. Another way to control the complexity of the trees. More nodes equates to deeper, more complex trees and less nodes result in shallower trees.
-#' 
-#' ## Initial tuning with `randomForest`
-#' 
-#' - If we are interested with just starting out and tuning the mtry parameter we can use `randomForest::tuneRF` for a quick and easy tuning assessment.
-#' - `tuneRf` will start at a value of mtry that you supply and increase by a certain step factor until the OOB error stops improving be a specified amount. 
-#' - For example, the below starts with mtry = 5 and increases by a factor of 1.5 until the OOB error stops improving by 1 per cent. 
-#' - Note that `tuneRF` requires a separate x y specification. 
-#' - We see that the optimal `mtry` value in this sequence is very close to the default mtry value of $\dfrac{\text{features}{3}=26$.
-#' 
-#' ## Names of features
-#' 
-## ------------------------------------------------------------------------
-features <- setdiff(names(ames_train), "Sale_Price")
-
-set.seed(123)
-
-m2 <- tuneRF(
-  x          = ames_train[features],
-  y          = ames_train$Sale_Price,
-  ntreeTry   = 500,
-  mtryStart  = 5,
-  stepFactor = 1.5,
-  improve    = 0.01,
-  trace      = FALSE      # to not show real-time progress 
-)
-
-#' 
-#' ## Full grid search with `ranger`
-#' 
-#' - To perform a larger grid search across several hyperparameters we’ll need to create a grid and loop through each hyperparameter combination and evaluate the model. 
-#' - Unfortunately, this is where `randomForest` becomes quite inefficient since it does not scale well. 
-#' - Instead, we can use `ranger` which is a C++ implementation of Brieman’s random forest algorithm and, as the following illustrates, is over 6 times faster than `randomForest`.
-#' 
-#' ## Assessing the speed
-#' 
-#' ### `randomForest` speed
-#' 
-## ------------------------------------------------------------------------
-system.time(
-  ames_randomForest <- randomForest(
-    formula = Sale_Price ~ ., 
-    data    = ames_train, 
-    ntree   = 500,
-    mtry    = floor(length(features) / 3)
-  )
-)
-
-#' 
-#' ### ranger speed
-#' 
-## ------------------------------------------------------------------------
-system.time(
-  ames_ranger <- ranger(
-    formula   = Sale_Price ~ ., 
-    data      = ames_train, 
-    num.trees = 500,
-    mtry      = floor(length(features) / 3)
-  )
-)
-
-#' 
-#' ## The grid search
-#' 
-#' - To perform the grid search, first we want to construct our grid of hyperparameters. 
-#' - We’re going to search across 96 different models with varying `mtry`, minimum node size, and sample size.
-#' 
-## ------------------------------------------------------------------------
-# hyperparameter grid search
-hyper_grid <- expand.grid(
-  mtry       = seq(20, 30, by = 2),
-  node_size  = seq(3, 9, by = 2),
-  sampe_size = c(.55, .632, .70, .80),
-  OOB_RMSE   = 0
-)
-
-nrow(hyper_grid) # total number of combinations
-
-#' 
-#' ## Loop through each hyperparameter combination
-#' 
-#' - We apply 500 trees since our previous examples illustrated that 500 was plenty to achieve a stable error rate. 
-#' - We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
-#' - Our OOB RMSE ranges between $\tilde$ 26,000-27,000. 
-#' - Our top 10 performing models all have RMSE values right around 26,000 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
-#' - We get a full range of `mtry` values showing up in our top 10 - not over influential.
-#' 
-## ------------------------------------------------------------------------
-for(i in 1:nrow(hyper_grid)) {
-  # train model
-  model <- ranger(
-    formula         = Sale_Price ~ ., 
-    data            = ames_train, 
-    num.trees       = 500,
-    mtry            = hyper_grid$mtry[i],
-    min.node.size   = hyper_grid$node_size[i],
-    sample.fraction = hyper_grid$sampe_size[i],
-    seed            = 123
-  )
-    # add OOB error to grid
-  hyper_grid$OOB_RMSE[i] <- sqrt(model$prediction.error)
-}
-
-#' 
-#' ##
-#' 
-## ------------------------------------------------------------------------
-hyper_grid %>% 
-  dplyr::arrange(OOB_RMSE) %>%
-  head(10)
-
-#' 
-#' - Random forests perform quite well with categorical variables in their original columnar form, it is worth checking to see if alternative encodings can increase performance. 
-#' - E.g., the following one-hot encodes our categorical variables which produces 353 predictor variables versus the 80 we were using above. 
-#' - We adjust our `mtry` parameter to search from 50-200 random predictor variables at each split and re-perform our grid search. 
-#' - The results suggest that one-hot encoding does not improve performance.
-#' 
-#' ##
-#' 
-## ------------------------------------------------------------------------
-# one-hot encode our categorical variables
-one_hot <- dummyVars(~ ., ames_train, fullRank = FALSE)
-ames_train_hot <- predict(one_hot, ames_train) %>% as.data.frame()
-
-# make ranger compatible names
-names(ames_train_hot) <- make.names(names(ames_train_hot), allow_ = FALSE)
-
-# hyperparameter grid search --> same as above but with increased mtry values
-hyper_grid_2 <- expand.grid(
-  mtry       = seq(50, 200, by = 25),
-  node_size  = seq(3, 9, by = 2),
-  sampe_size = c(.55, .632, .70, .80),
-  OOB_RMSE  = 0
-)
-
-#' 
-#' ## The best model
-#' 
-#' ### The best random forest model:
-#' 
-#' - retains columnar categorical variables
-#' - `mtry` = 24, 
-#' - terminal node size of 5 observations
-#' - sample size of 80%. 
-#' 
-#' ## How to proceed
-#' 
-#' - repeat the model to get a better expectation of error rate. 
-#' - as expected error ranges between ~25,800-26,400 
-#' 
-#' <!--
-#' with a most likely just shy of 26,200.
-#' -->
 #' 
 #' 
-#' ## 
+#' ## Links 
 #' 
-## ------------------------------------------------------------------------
-OOB_RMSE <- vector(mode = "numeric", length = 100)
-
-for(i in seq_along(OOB_RMSE)) {
-
-  optimal_ranger <- ranger(
-    formula         = Sale_Price ~ ., 
-    data            = ames_train, 
-    num.trees       = 500,
-    mtry            = 24,
-    min.node.size   = 5,
-    sample.fraction = .8,
-    importance      = 'impurity'
-  )
-  
-  OOB_RMSE[i] <- sqrt(optimal_ranger$prediction.error)
-}
-
-hist(OOB_RMSE, breaks = 20)
-
+#' These slides are mainly based on 
 #' 
+#' - A UC Business Analytics R Programming Guide - section [**random forests**](http://uc-r.github.io/random_forests)
+#' 
+#' - and on the [**chapter on random forests**](https://bradleyboehmke.github.io/HOML/random-forest.html) in the e-book of 
+#' Brad Boehmke and Brandon Greenwell - Hands-on Machine Learning with R
+#' 
+#' 
+#' - [**Rpubs tutorial** - random forests](https://rpubs.com/nuhorchak/randomForest)
+#' 
+#' - [Random Forests in R](https://rpubs.com/anish20/RandomForests)
+#' 
+#' - [Boston Dataset-Tree Family Part-1](https://rpubs.com/Hgoswami/368562)

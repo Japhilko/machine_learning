@@ -265,6 +265,14 @@ calc.sentiment("My name is Shaniqua", glove.df=glove.df.final)
 
 
 #' 
+#' ## Exercise: calc.sentiment
+#' Try giving `calc.sentiment` some other sentences to check for other
+#' kinds of prejudices or bias contained in the glove neural network.
+#' 
+#' ## Exercise: calc.sentiment
+#' Try to find some words or sentences that break the regular expression
+#' that extracts words from sentences.
+#' 
 #' A stereotypical black name (Shaniqua) is rated far more negatively
 #' than a stereotypical white name (such as Emily or Heather).
 #' 

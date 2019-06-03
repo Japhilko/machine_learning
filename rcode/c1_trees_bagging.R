@@ -55,9 +55,9 @@ library(knitr)
 #' 
 #' ## The Idea
 #' 
-#' - There are many methodologies for constructing regression trees but one of the oldest is the classification and regression tree (CART) approach by Breiman et al. (1984). 
-#' - Basic regression trees partition a data set into smaller subgroups and then fit a simple constant for each observation in the subgroup. 
-#' - The partitioning is achieved by successive binary partitions (aka recursive partitioning) based on the different predictors. 
+#' - There are many methodologies for constructing regression trees but one of the oldest is the [**classification and regression tree**](https://machinelearningmastery.com/classification-and-regression-trees-for-machine-learning/) (CART) approach by Breiman et al. (1984). 
+#' - Basic [**regression trees partition a data set into smaller subgroups**](https://towardsdatascience.com/the-complete-guide-to-decision-trees-28a4e3c7be14) and then fit a simple constant for each observation in the subgroup. 
+#' - The partitioning is achieved by successive [**binary partitions**](https://en.wikipedia.org/wiki/Binary_space_partitioning) (aka [recursive partitioning](https://en.wikipedia.org/wiki/Recursive_partitioning)) based on the different predictors. 
 #' - The constant to predict is based on the average response values for all observations that fall in that subgroup.
 #' 
 #' 
@@ -75,9 +75,13 @@ library(knitr)
 #' 
 #' Due to their branching structure, decision trees can easily model nonlinear relationships.
 #' 
-#' - Let's say for Single Family homes, larger lots command higher prices,
-#' - and for apartments, smaller lots command higher prices (i.e. it's a proxy for urban / rural).
-#'  -   This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term
+#' ### Example
+#' 
+#' - For single family homes (larger lots) higher prices,
+#' - and for apartments (smaller lots), also higher prices (because here it's a proxy for urban / rural).
+#' 
+#' 
+#' This reversal of correlation is difficult for linear models to capture unless you explicitly add an interaction term
 #' 
 #' <!--
 #' (i.e. you can anticipate it ahead of time).
@@ -94,6 +98,39 @@ library(rpart)
 #' <!--
 #' https://www.guru99.com/r-decision-trees.html
 #' -->
+#' 
+#' ## Model foundations 
+#' 
+#' - This simple example can be generalized 
+#' - We have a continuous response variable $Y$ and two inputs $X_1$ and $X_2$. 
+#' - The recursive partitioning results in three regions ($R_1$,$R_2$,$R_3$) where the model predicts $Y$ with a constant $c_m$ for region $R_m$:
+#' 
+#' $$
+#' \hat{f} (X) = \sum\limits_{m=1}^3c_mI(X_1,X_2)\in R_m
+#' $$
+#' <!--
+#' An important question remains of how to grow a regression tree.
+#' -->
+#' 
+#' ## How to grow a regression tree - deciding on splits
+#' 
+#' - It is important to realize the partitioning of variables are done in a top-down approach. 
+#' - A partition performed earlier in the tree will not change based on later partitions. 
+#' 
+#' ### How are these partions made?
+#' 
+#' - The model begins with the entire data set, $S$, and searches every distinct value of every input variable to find the predictor and split value that partitions the data into two regions ($R_1$ and $R_2$) such that the overall sums of squares error are minimized:
+#' 
+#' $$
+#' \text{minimize}\{SSE=\sum\limits_{i\in R_1}(y_i - c_1)^2 + \sum\limits_{i\in R_2} (y_i - c_2)^2 \}
+#' $$
+#' 
+#' ## The best split 
+#' 
+#' - Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. 
+#' - This process is continued until some stopping criterion is reached. 
+#' - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
+#' 
 #' 
 #' ## Regression Trees - preparation
 #' 
@@ -112,37 +149,6 @@ library(caret)       # bagging
 ## install.packages("rpart.plot")
 
 #' 
-#' ## Model foundations 
-#' 
-#' - This simple example can be generalized 
-#' - We have a continuous response variable $Y$ and two inputs $X_1$ and $X_2$. 
-#' - The recursive partitioning results in three regions ($R_1$,$R_2$,$R_3$) where the model predicts $Y$ with a constant $c_m$ for region $R_m$:
-#' 
-#' $$
-#' \hat{f} (X) = \sum\limits_{m=1}^3c_mI(X_1,X_2)\in R_m
-#' $$
-#' <!--
-#' An important question remains of how to grow a regression tree.
-#' -->
-#' 
-#' ## How to grow a regression tree - deciding on splits
-#' 
-#' - It is important to realize the partitioning of variables are done in a top-down, greedy fashion. 
-#' - A partition performed earlier in the tree will not change based on later partitions. 
-#' 
-#' ### How are these partions made?
-#' 
-#' - The model begins with the entire data set, $S$, and searches every distinct value of every input variable to find the predictor and split value that partitions the data into two regions ($R_1$ and $R_2$) such that the overall sums of squares error are minimized:
-#' 
-#' $$
-#' \text{minimize}\{SSE=\sum\limits_{i\in R_1}(y_i - c_1)^2 + \sum\limits_{i\in R_2} (y_i - c_2)^2 \}
-#' $$
-#' 
-#' ## The best split 
-#' 
-#' - Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. 
-#' - This process is continued until some stopping criterion is reached. 
-#' - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
 #' 
 #' ## The Ames Housing data 
 #' 
@@ -157,13 +163,17 @@ ames_test  <- testing(ames_split)
 
 #' 
 #' 
-#' ## Example [**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
+#' ## Pruning
+#' 
+#' <!--
+#' [**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
+#' -->
 #' 
 #' - We create three decision trees based on three different samples of the data. 
-#' - You can see that the first few partitions are fairly similar at the top of each tree; - they tend to differ substantially closer to the terminal nodes. 
+#' - The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
 #' - These deeper nodes tend to overfit to specific attributes of the sample data; 
-#' - slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
-#' - By pruning these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
+#' - Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
+#' - By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
 #' 
 #' 
 #' 
@@ -188,23 +198,7 @@ ames_test  <- testing(ames_split)
 #' - Smaller penalties tend to produce more complex models, which result in larger trees. 
 #' - Larger penalties result in much smaller trees. 
 #' - As a tree grows larger, the reduction in the SSE must be greater than the cost complexity penalty. 
-#' - Typically, we evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
-#' 
-#' ## Advantages to regression trees
-#' 
-#' - They are very interpretable.
-#' - Making predictions is fast (no complicated calculations, just looking up constants in the tree).
-#' - It’s easy to understand what variables are important in making the prediction. 
-#' - The internal nodes (splits) are those variables that most largely reduced the SSE.
-#' - If some data is missing, we might not be able to go all the way down the tree to a leaf, but we can still make a prediction by averaging all the leaves in the sub-tree.
-#' - The model provides a non-linear response, so it can work when the true regression surface is not smooth. 
-#' - If it is smooth, the piecewise-constant surface can approximate it arbitrarily closely (with enough leaves).
-#' - There are fast, reliable algorithms to learn these trees.
-#' 
-#' ## Weaknesses
-#' 
-#' - Single regression trees have high variance, resulting in unstable predictions (an alternative subsample of training data can significantly change the terminal nodes).
-#' - Due to the high variance single regression trees have poor predictive accuracy.
+#' - We evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
 #' 
 #' ## Fit a regression tree using `rpart`
 #' 
@@ -234,7 +228,7 @@ m1
 #' 
 #' 
 #' 
-#' ## Steps of the splits explained
+#' ## Steps of the splits (m1) - explained
 #' 
 #' <!--
 #' - Once we’ve fit our model we can look at the `m1` output. 
@@ -284,11 +278,12 @@ m1
 #' - This tree contains 11 internal nodes resulting in 12 terminal nodes. 
 #' - This tree is partitioning on 11 variables to produce its model. 
 #' <!--
+#' fig.width=12, fig.height=8
 #' -->
 #' 
-#' ## The `rpart.plot`
+#' ## The package `rpart.plot`
 #' 
-## ------------------------------------------------------------------------
+## ----fig.height=6,fig.width=13-------------------------------------------
 rpart.plot(m1)
 
 #' 
@@ -301,11 +296,17 @@ rpart.plot(m1)
 #' - To compare the error for each $\alpha$ value, `rpart` performs a 10-fold cross validation so that the error associated with a $\alpha$ value is computed on the hold-out validation data. 
 #' 
 #' ## The `plotcp`
+#' <!--
+#' - Diminishing returns after 12 terminal nodes  (
+#' - cross validation error - y-axis
+#' - lower x-axis is cost complexity ($\alpha$) value, upper x-axis is the number of terminal nodes (tree size = $|T|$). 
 #' 
-#' - In this example we find diminishing returns after 12 terminal nodes  (y-axis is cross validation error, lower x-axis is cost complexity ($\alpha$) value, upper x-axis is the number of terminal nodes (tree size = $|T|$). 
+#' -->
 #' <!--
 #' - The dashed line which goes through the point $|T|=9$. 
 #' -->
+#' 
+#' - Lower x-axis - cost complexity - alpha
 #' 
 ## ------------------------------------------------------------------------
 plotcp(m1)
@@ -328,6 +329,12 @@ m2 <- rpart(formula = Sale_Price ~ .,data=ames_train,
     method  = "anova",control = list(cp = 0, xval = 10))
 
 #' 
+#' - `control` - a list of options that control details of the rpart algorithm.
+#' - `cp` - complexity parameter. Any split that does not decrease the overall lack of fit by a factor of cp is not attempted. For instance, with anova splitting, this means that the overall R-squared must increase by cp at each step (Pruning). 
+#' - `xval`	number of cross-validations.
+#' <!--
+#' The main role of this parameter is to save computing time by pruning off splits that are obviously not worthwhile. Essentially,the user informs the program that any split which does not improve the fit by cp will likely be pruned off by cross-validation, and that hence the program need not pursue it.
+#' -->
 #' 
 #' ## Plot the result
 #' 
@@ -338,7 +345,7 @@ plotcp(m2);abline(v = 12, lty = "dashed")
 #' 
 #' ## Automated tuning by default
 #' 
-#' - `rpart` is performing some automated tuning by default, with an optimal subtree of 11 splits, 12 terminal nodes, and a cross-validated error of 0.272 (note that this error is equivalent to the PRESS statistic but not the MSE). 
+#' - `rpart` is performing some automated tuning by default, with an optimal subtree of 11 splits, 12 terminal nodes, and a cross-validated error of 0.272 (note that this error is equivalent to the predicted residual error sum of squares statistic ([**PRESS**](https://en.wikipedia.org/wiki/PRESS_statistic))  but not the MSE). 
 #' - We can perform additional tuning to try improve model performance.
 #' 
 #' ## The output `cptable`
@@ -405,7 +412,12 @@ nrow(hyper_grid)
 #' 
 #' ## A loop to autimate modeling
 #' 
-#' - To automate the modeling we simply set up a for loop and iterate through each minsplit and maxdepth combination. We save each model into its own list item.
+#' <!--
+#' - To automate the modeling we simply set up a for loop and 
+#' -->
+#' 
+#' - We iterate through each `minsplit` and `maxdepth` combination. 
+#' - We save each model into its own list item.
 #' 
 ## ------------------------------------------------------------------------
 models <- list()
@@ -423,8 +435,7 @@ for (i in 1:nrow(hyper_grid)) {
 #' 
 #' ## A function to extract the minimum error
 #' 
-#' - We can now create a function to extract the minimum error associated with the optimal cost complexity $\alpha$ value for each model. 
-#' - After a little data wrangling to extract the optimal $\alpha$ value and its respective error, adding it back to our grid, and filter for the top 5 minimal error values we see that the optimal model makes a slight improvement over our earlier model (xerror of 0.242 versus 0.272).
+#' - We create functions to extract the minimum error associated with the optimal cost complexity $\alpha$ value for each model. 
 #' 
 ## ------------------------------------------------------------------------
 # function to get optimal cp
@@ -440,6 +451,11 @@ get_min_error <- function(x) {
 }
 
 #' 
+#' <!--
+#' - After a little data wrangling to extract the optimal $\alpha$ value and its respective error, adding it back to our grid, and filter for the top 5 minimal error values we see that the optimal model makes a slight improvement over our earlier model (xerror of 0.242 versus 0.272).
+#' 
+#' -->
+#' 
 #' ## Apply the functions
 #' 
 ## ------------------------------------------------------------------------
@@ -452,32 +468,86 @@ hyper_grid %>%
   top_n(-5, wt = error)
 
 #' 
+#' ## Exercise
+#' 
+#' ### Apply the final optimal model
+#' 
+#' ### Predict on our test dataset
+#' 
 #' 
 #' ## The final optimal model
 #' 
-#' - If we were satisfied with these results we could apply this final optimal model and predict on our test set. 
+#' <!--
+#' - If we were satisfied with these results 
+#' -->
+#' ### Apply the final optimal model:
+#' 
+## ------------------------------------------------------------------------
+optimal_tree <- rpart(formula = Sale_Price ~ .,
+    data    = ames_train,method  = "anova",
+    control = list(minsplit = 5, maxdepth = 13, cp = 0.0108982)
+    )
+
+#' 
+#' ### Predict on our test dataset:
+#' 
+## ------------------------------------------------------------------------
+pred <- predict(optimal_tree, newdata = ames_test)
+
+#' 
+#' 
+#' 
 #' - The final RMSE is 39145.39 which suggests that, on average, our predicted sales prices are about 39,145 Dollar off from the actual sales price.
 #' 
 ## ------------------------------------------------------------------------
-optimal_tree <- rpart(
-    formula = Sale_Price ~ .,
-    data    = ames_train,
-    method  = "anova",
-    control = list(minsplit = 11, maxdepth = 8, cp = 0.01)
-    )
-
-pred <- predict(optimal_tree, newdata = ames_test)
 RMSE(pred = pred, obs = ames_test$Sale_Price)
 
 #' 
 #' 
+#' ## [Exercise: `rpart` Kyphosis](https://www.r-exercises.com/2016/12/13/recursive-partitioning-and-regression-trees-exercises/)
 #' 
+#' ### Consider the Kyphosis data frame
+#' 
+#' <!--
+#' (type `help("kyphosis")` for more details)
+#' -->
+#' 
+#' 1) Which variables are in the `kyphosis` dataset
+#' 2) Build a tree to classify Kyphosis from Age, Number and Start.
+#' 
+#' ### Consider the tree build above.
+#' 
+#' 3) Which variables are used to explain Kyphosis presence?
+#' 4) How many observations contain the terminal nodes.
+#' 
+#' ### Consider the Kyphosis data frame.
+#' 
+#' 5) Build a tree using the first 60 observations of kyphosis.
+#' 6) Predict the kyphosis presence for the other 21 observations.
+#' 7) Which is the misclassification rate (prediction error)
+#' 
+#' ## Exercise: `rpart` `iris`
+#' 
+#' ### Consider the `iris` data frame
+#' 
+#' 1) Build a tree to classify Species from the other variables.
+#' 2) Plot the trees, add nodes information.
+#' 
+#' ### Consider the tree build before
+#' 
+#' 3) Prune the the using median complexity parameter (cp) associated to the tree.
+#' 4) Plot in the same window, the pruned and the original tree.
+#' 5) In which terminal nodes is clasified each oobservations of `iris`?
+#' 6) Which Specie has a flower of `Petal.Length` greater than 2.45 and `Petal.Width` less than 1.75.
+#' 
+#' <!--
 #' ## What is bagging?
 #' 
 #' - Basic regression trees divide a data set into smaller groups and then fit a simple model (constant) for each subgroup. 
 #' - But a single tree model tends to be highly unstable and a poor predictor. 
 #' - Bootstrap aggregating (bagging) regression trees is quite powerful and effective. 
 #' - This provides the fundamental basis of more complex tree-based models such as random forests and gradient boosting machines. 
+#' -->
 #' 
 #' <!--
 #' - This tutorial will get you started with regression trees and bagging.
@@ -486,14 +556,74 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 #' -->
 #' 
 #' 
+#' ## Advantages of regression trees
+#' 
+#' - They are very interpretable.
+#' - Making predictions is fast (no complicated calculations, just looking up constants in the tree).
+#' - It’s easy to understand what variables are important for the prediction. 
+#' - The internal nodes (splits) are those variables that most largely reduced the SSE.
+#' - If some data is missing, we might not be able to go all the way down the tree to a leaf, but we can still make a prediction by averaging all the leaves in the sub-tree.
+#' - The model provides a non-linear response, so it can work when the true regression surface is not smooth. 
+#' - If it is smooth, the piecewise-constant surface can approximate it arbitrarily closely (with enough leaves).
+#' - There are fast, reliable algorithms to learn these trees.
+#' 
+#' ## Weaknesses of regression trees
+#' 
+#' - Single regression trees have high variance, resulting in unstable predictions (an alternative subsample of training data can significantly change the terminal nodes).
+#' - Due to the high variance single regression trees have poor predictive accuracy.
+#' 
+#' <!--
+#' 
+#' ## [What are the advantages and disadvantages of decision trees?](https://elitedatascience.com/machine-learning-interview-questions-answers#supervised-learning)
+#' 
+#' Advantages: Decision trees are easy to interpret, nonparametric (which means they are robust to outliers), and there are relatively few parameters to tune.
+#' 
+#' Disadvantages: Decision trees are prone to be overfit. 
+#' 
+#' - This can be addressed by ensemble methods like random forests or boosted trees.
+#' 
+#' -->
+#' 
+#' ## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
+#' 
+#' Ensembles are machine learning methods for combining predictions from multiple separate models. 
+#' 
+#' <!--
+#' There are a few different methods for ensembling, but the two most common are:
+#' -->
+#' 
+#' ### Bagging 
+#' 
+#' attempts to reduce the chance of overfitting complex models.
+#' 
+#' 
+#' - It trains a large number of "strong" learners in parallel.
+#' -  A strong learner is a model that's relatively unconstrained.
+#' -  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
+#' 
+#' ### Boosting 
+#' 
+#' attempts to improve the predictive flexibility of simple models.
+#' 
+#' - It trains a large number of "weak" learners in sequence.
+#' - A weak learner is a constrained model (limit for max depth of tree).
+#' -    Each one in the sequence focuses on learning from the mistakes of the one before it.
+#' - Boosting combines all the weak learners into a single strong learner.
+#' 
+#' ## Bagging and boosting
+#' 
+#' While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
+#' 
+#' Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
+#' 
+#' 
 #' ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
 #' 
-#' - Single tree models suffer from high variance.
-#' -  Pruning helps, but there are alternative methods that exploite the variability of single trees in a way that can significantly improve performance. 
+#' - Single tree models suffer from high variance, they are highly unstable and poor predictors.
+#' -  [**Pruning**](https://en.wikipedia.org/wiki/Decision_tree_pruning) helps, but there are alternative methods that exploite the variability of single trees in a way that can significantly improve performance. 
 #' - Bootstrap aggregating (bagging) is one such approach (originally proposed by Breiman, 1996).
-#' - Bagging is a method for combining predictions from different regression or classification models and was developed by Leo Breiman.
-#' - The results of the models are then averaged 
-#' - Model predictions are included in the prediction with the same weight (simplest case).
+#' - Bagging is a method for combining predictions from different regression or classification models.
+#' - The results of the models are then averaged - in the simplest case model predictions are included with the same weight.
 #' - The weights could depend on the quality of the model prediction, i.e. "good" models are more important than "bad" models.
 #' - Bagging leads to significantly improved predictions in the case of unstable models.
 #' 
@@ -511,7 +641,7 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 #' 
 #' ## Bagging follows three simple steps:
 #' 
-#' - 1.) Create m bootstrap samples from the training data. Bootstrapped samples allow us to create many slightly different data sets but with the same distribution as the overall training set.
+#' - 1.) Create $m$ bootstrap samples from the training data. Bootstrapped samples allow us to create many slightly different data sets but with the same distribution as the overall training set.
 #' 
 #' - 2.) For each bootstrap sample train a single, unpruned regression tree.
 #' 
@@ -527,7 +657,7 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 #' - This process can be applied to any regression or classification model; 
 #' - It provides the greatest improvement for models that have high variance. 
 #' - More stable parametric models such as linear regression and multi-adaptive regression splines tend to experience less improvement in predictive performance.
-#' - On average, a bootstrap sample will contain 63 per cent (23) of the training data. 
+#' - On average, a bootstrap sample will contain 63 per cent of the training data. 
 #' - This leaves about 33 per cent ($\dfrac{1}{3}$) of the data out of the bootstrapped sample. We call this the out-of-bag (OOB) sample. 
 #' - We can use the OOB observations to estimate the model’s accuracy, creating a natural cross-validation process.
 #' 
@@ -536,20 +666,18 @@ RMSE(pred = pred, obs = ames_test$Sale_Price)
 #' - Fitting a bagged tree model is quite simple. 
 #' - Instead of using `rpart` we use `ipred::bagging`. 
 #' - We use `coob = TRUE` to use the OOB sample to estimate the test error. 
-#' - We see that our initial estimate error is close to $3K less than the test error we achieved with our single optimal tree (36543 vs. 39145)
 #' 
-#' ## Bagging with `ipred` (II)
+#' ## Train bagged model
 #' 
 ## ------------------------------------------------------------------------
-# make bootstrapping reproducible
 set.seed(123)
-
-# train bagged model
 (bagged_m1 <- bagging(formula = Sale_Price ~ .,
   data    = ames_train,coob= TRUE))
 
 #' 
-#' ## One thing to note typically
+#' - We see that our initial estimate error is close to 3000 Dollar less than the test error we achieved with our single optimal tree (36543 vs. 39145)
+#' 
+#' ## Things to note typically
 #' 
 #' - The more trees the better - we are averaging over more high variance single trees. 
 #' - We see a dramatic reduction in variance (and hence our error) and eventually the reduction in error will flatline 
@@ -566,26 +694,26 @@ set.seed(123)
 #' -->
 #' 
 ## ------------------------------------------------------------------------
-ntree <- 10:50 # assess 10-50 bagged trees
+# assess 10-50 bagged trees
+ntree <- 10:50 
 # create empty vector to store OOB RMSE values
 rmse <- vector(mode = "numeric", length = length(ntree))
 for (i in seq_along(ntree)) {
-  set.seed(123)   # reproducibility
+  # reproducibility
+  set.seed(123)   
   # perform bagged model
-  model <- bagging(
-  formula = Sale_Price ~ .,
-  data    = ames_train,
-  coob    = TRUE,
-  nbagg   = ntree[i]
+  model <- bagging(formula = Sale_Price ~ .,
+  data=ames_train,coob= TRUE,nbagg=ntree[i]
 )
-  rmse[i] <- model$err   # get OOB error
+  # get OOB error
+  rmse[i] <- model$err   
 }
 
 #' 
 #' 
 #' ## Plot the result
 #' 
-#' - We see that the error is stabilizing at about 25 trees so we will likely not gain much improvement by simply bagging more trees.
+#' - The error is stabilizing at about 25 trees - we will improve by bagging more trees.
 #' 
 #' 
 ## ------------------------------------------------------------------------
@@ -599,27 +727,52 @@ abline(v = 25, col = "red", lty = "dashed")
 #' 
 #' - Bagging with `ipred` is simple but there are some additional benefits of bagging with `caret`.
 #' 
-#' 1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will also provide a more robust understanding of the true expected test error.
+#' 1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will provide a more robust understanding of the true expected test error.
 #' 
-#' 2.) We can assess variable importance across the bagged trees.
+#' 2.) We can assess [**variable importance**](https://topepo.github.io/caret/variable-importance.html) across the bagged trees.
 #' 
-#' ## A 10-fold cross-validated model.  
+#' ## [Excursus: Variable importance (vi)](https://cran.r-project.org/web/packages/datarobot/vignettes/VariableImportance.html)
+#' 
+#' - vi measures help understand the results obtained from complex machine learning models 
+#' - There is no general consensus on the “best” way to compute - or even define - the concept of variable importance. 
+#' - See a list of many possible approaches to compute vi in the help file of the command `varImp` 
+#' 
+## ----eval=F--------------------------------------------------------------
+## ?caret::varImp
+
+#' 
+#' - vi refers to how much a given model "uses" that variable to make accurate predictions. The more a model relies on a variable to make predictions, the more important it is for the model. 
+#' 
+#' <!--
+#' https://stats.stackexchange.com/questions/332960/what-is-variable-importance
+#' -->
+#' 
+#' <!--
+#' 
+#' 
+#' https://topepo.github.io/caret/variable-importance.html
+#' https://www.salford-systems.com/blog/dan-steinberg/what-is-the-variable-importance-measure
+#' 
+#' https://christophm.github.io/interpretable-ml-book/pdp.html
+#' 
 #' 
 #' - We see that the cross-validated RMSE is 36,477 dollar. 
-#' - We also assess the top 20 variables from our model. 
-#' - Variable importance for regression trees is measured by assessing the total amount SSE is decreased by splits over a given predictor, averaged over all m trees. 
-#' - The predictors with the largest average impact to SSE are considered most important. - The importance value is simply the relative mean decrease in SSE compared to the most important variable (provides a 0-100 scale).
+#' -->
 #' 
+#' 
+#' ## A 10-fold cross-validated model.  
+#' <!--
 #' ## CV bagged model 
-#' 
+#' -->
 ## ------------------------------------------------------------------------
 # Specify 10-fold cross validation
 ctrl <- trainControl(method = "cv",  number = 10) 
 
 bagged_cv <- train(Sale_Price ~ .,data = ames_train,
-  method = "treebag",trControl = ctrl,importance = TRUE
-  )
+  method = "treebag",trControl = ctrl,importance = TRUE)
 
+#' 
+#' - `treebag`- means we use a bagging tree
 #' 
 #' ## Assess results
 #' 
@@ -627,8 +780,18 @@ bagged_cv <- train(Sale_Price ~ .,data = ames_train,
 bagged_cv
 
 #' 
-#' ## Assess results with a plot
+#' ## Assess results with a plot (top 20 variables)
 #' 
+#' <!--
+#' - We also assess the top 20 variables from our model. 
+#' -->
+#' 
+#' - Here, variable importance is measured by assessing the total amount SSE is decreased by splits over a given predictor, averaged over all $m$ trees. 
+#' 
+#' <!--
+#' - The predictors with the largest average impact to SSE are considered most important. 
+#' - The importance value is simply the relative mean decrease in SSE compared to the most important variable (provides a 0-100 scale).
+#' -->
 ## ------------------------------------------------------------------------
 plot(varImp(bagged_cv), 20) 
 
@@ -637,14 +800,14 @@ plot(varImp(bagged_cv), 20)
 #' ## Extensions
 #' 
 #' - If we compare this to the test set out of sample we see that our cross-validated error estimate was very close. 
-#' - We have successfully reduced our error to about $35,000; 
-#' - Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 #' 
-## ------------------------------------------------------------------------
+## ----predictbaggedcv-----------------------------------------------------
 pred <- predict(bagged_cv, ames_test)
 RMSE(pred, ames_test$Sale_Price)
 
 #' 
+#' - We have successfully reduced our error to about $35k; 
+#' - Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 #' 
 #' <!--
 #' ## [Classification Tree example](https://www.guru99.com/r-decision-trees.html)
@@ -780,25 +943,20 @@ text(fit, use.n=TRUE, all=TRUE, cex=.8)
 #' -->
 #' 
 #' 
-#' ## Links
+#' ## Resources and links
+#' 
+#' - Breimann (1984) - [**Classification and Regression Trees**](https://www.amazon.com/Classification-Regression-Wadsworth-Statistics-Probability/dp/0412048418)
 #' 
 #' - [**Vignette**](https://cran.r-project.org/web/packages/partykit/vignettes/ctree.pdf) for package `partykit` 
 #' 
-#' - [Conditional Inference Trees](https://rpubs.com/awanindra01/ctree)
+#' - [**Conditional Inference Trees**](https://rpubs.com/awanindra01/ctree)
 #' 
 #' 
-#' - [Conditional inference trees vs traditional decision trees](https://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees)
+#' - [**Conditional inference trees vs traditional decision trees**](https://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees)
 #' 
 #' - [Video on tree based methods](https://www.youtube.com/watch?v=6ENTbK3yQUQ)
 #' 
-#' 
-#' ### Links - Boosting
-#' 
-#' - [**Gradient Boosting Machines**](http://uc-r.github.io/gbm_regression)
-#' 
-#' 
-#' - [**How to Visualize Gradient Boosting Decision Trees With XGBoost in Python**](https://machinelearningmastery.com/visualize-gradient-boosting-decision-trees-xgboost-python/)
-#' 
+#' - [An example of practical machine learning using R](https://rstudio-pubs-static.s3.amazonaws.com/64455_df98186f15a64e0ba37177de8b4191fa.html)
 #' 
 #' <!--
 #' https://www.researchgate.net/figure/A-simple-example-of-visualizing-gradient-boosting_fig5_326379229
