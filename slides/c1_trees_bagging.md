@@ -298,9 +298,8 @@ go to the 2nd branch.
 We can visualize our model with `rpart.plot`. 
 -->
 
-
-- `rpart.plot` has many plotting options
 <!--
+- `rpart.plot` has many plotting options
 , which we’ll leave to the reader to explore. 
 -->
 - In the default print it will show the percentage of data that fall to that node and the average sales price for that branch. 

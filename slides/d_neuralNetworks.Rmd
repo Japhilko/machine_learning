@@ -25,9 +25,11 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=T)
 ```
 
 ## Artificial Neural Network Fundamentals
-
-- Artificial neural networks (ANNs) describe a specific class of machine learning algorithms designed to acquire their own knowledge by extracting useful patterns from data. 
-- ANNs are [**function approximators**](https://deepmind.com/research/publications/universal-value-function-approximators/), mapping inputs to outputs, 
+<!--
+- Artificial neural networks (ANNs) describe a specific class of machine learning algorithms designed to acquire their own knowledge by extracting useful patterns from data.
+-->
+- ANNs are engineered computational models inspired by the brain.
+- They are [**function approximators**](https://deepmind.com/research/publications/universal-value-function-approximators/), mapping inputs to outputs, 
 - They are composed of many connected computational units, called neurons. 
 - Each individual neuron possesses little intrinsic approximation capability; 
 - When many neurons function cohesively together, their combined effects show remarkable learning performance. 
@@ -36,20 +38,19 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=T)
 
 - Much of the following slides is based on UC Business Analytics R Programming Guide - [**neural networks**](http://uc-r.github.io/ann_fundamentals)
 
+<!--
 ## Biologic Model
 
-- ANNs are engineered computational models inspired by the brain.
 - While some researchers used ANNs to study animal brains, most researchers view neural networks as being inspired by, not models of, neurological systems.
-<!--
 - The following shows the basic functional unit of the brain, a biologic neuron.
--->
 
 ### Biologic Neuron 
 
 ![](figure/Blausen_0657_MultipolarNeuron.png){height=50%}
 
 Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:Blausen_0657_MultipolarNeuron.png)
-
+-->
+<!--
 ## ANN neurons
 
 - ANN neurons are simple representations of their biologic counterparts. 
@@ -59,6 +60,7 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 - The specific number of input signals required for a response signal is dependent on the individual neuron. 
 - When the generated signal reaches the synaptic terminals neurotransmitters flow out of the synaptic terminals and interact with dendrites of adjoining neurons.
 
+
 ## Three major takeaways from the biologic neuron
 
 1.) The neuron only generates a signal if a sufficient number of input signals enter the neurons dendrites (all or nothing)
@@ -66,11 +68,16 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 2.) Neurons receive inputs from many adjacent neurons upstream, and can transmit signals to many adjacent signals downstream (cumulative inputs)
 
 3.) Each neuron has its own threshold for activation (synaptic weight).
+-->
 
 ## Artifical Neuron
 
+<!--
 - The artificial analog of the biologic neuron is shown below. 
-- In the artificial model the inputs correspond to the dendrites, the transfer function, net input, and activation function correspond to the cell body, and the activation corresponds to the axon and synaptic terminal.
+- In the artificial model the inputs correspond to the dendrites, 
+-->
+
+- The transfer function, net input, and activation function correspond to the cell body, and the activation corresponds to the axon and synaptic terminal.
 
 ### Artifical Neuron–Source: [Chrislb Wikipedia](https://commons.wikimedia.org/wiki/File:ArtificialNeuronModel_english.png)
 
@@ -85,11 +92,9 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 - The output signal then moves to a raw output or other neurons depending on specific ANN architecture. 
 - This basic artificial neuron is combined with multiple other artificial neurons to create an ANNs such as the ones shown in the following figure.
 
+<!--
 ## Examples of Multi-Neuron 
 
-<!--
-ANNs–Source: Click images
--->
 
 ![](figure/neuralnetfig.PNG){height=120%}
 
@@ -100,6 +105,7 @@ ANNs–Source: Click images
 - Within the hidden layer a majority of the "learning" takes place, and the output layer displays the results of the ANN. 
 - Each of the red input nodes correspond to an input vector $x_i$. Each of the black lines with correspond to a weight, $w^{(l)}_{ij}$, and describe how artificial neurons are connections to one another within the ANN. 
 - The $i$ subscript identifies the source and the $j$ subscript describes to which artificial neuron the weight connects the source to. The green output nodes are the output vectors $y_q$.
+-->
 
 <!--
 ## Examination of the figure
@@ -118,6 +124,7 @@ ANNs–Source: Click images
 - The bias inputs to each hidden node, denoted by the $b_q$. 
 -->
 
+
 ## Activation Functions
 
 - The capability of ANNs to learn approximately any function, (given sufficient training data examples) are dependent on the appropriate selection of the [**activation function(s)**](https://en.wikipedia.org/wiki/Activation_function) present in the network. 
@@ -129,9 +136,11 @@ $$
 o_j = \Phi(b_j + \sum\limits_{i=1}^pw_ix_i)
 $$
 
+<!--
 ## Activation functions
 
 [![](figure/activation_funs.PNG)](https://en.wikipedia.org/wiki/Activation_function)
+-->
 
 ## The output ($o_j$)...
 

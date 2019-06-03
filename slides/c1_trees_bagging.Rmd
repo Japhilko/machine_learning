@@ -4,11 +4,6 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output:
-  slidy_presentation: 
-    keep_md: yes
-  pdf_document: 
-    keep_tex: yes
-    toc: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -17,6 +12,11 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    keep_md: yes
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
@@ -35,6 +35,11 @@ into a number of simple regions. ([**Hastie and Tibshirani**](https://lagunita.s
 ### But:
 
 - These methods do not deliver the best results concerning prediction accuracy. 
+
+### Source of slides
+
+- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
+
 
 <!--
 https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/about
@@ -131,9 +136,28 @@ $$
 - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
 
 
+## Pruning
+
+<!--
+[**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
+-->
+
+- We create three decision trees based on three different samples of the data. 
+- The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
+- These deeper nodes tend to overfit to specific attributes of the sample data; 
+- Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
+- By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
+
+
+
+## Three decision trees based on three samples.
+
+![](figure/decissiontree.PNG)
+
+
+
 ## Regression Trees - preparation
 
-- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
 
 ```{r}
 library(rsample)     # data splitting 
@@ -162,42 +186,7 @@ ames_test  <- testing(ames_split)
 ```
 
 
-## Pruning
 
-<!--
-[**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
--->
-
-- We create three decision trees based on three different samples of the data. 
-- The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
-- These deeper nodes tend to overfit to specific attributes of the sample data; 
-- Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
-- By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
-
-
-
-## Three decision trees based on three samples.
-
-![](figure/decissiontree.PNG)
-
-## Cost complexity criterion
-
-- There is often a balance to be achieved in the depth and complexity of the tree to optimize predictive performance on some unseen data. 
-- To find this balance, we grow a very large tree as showed and then prune it back to find an optimal subtree. 
-- We find this subtree by using a cost complexity parameter ($\alpha$) that penalizes our objective function for the number of terminal nodes of the tree (T).
-
-$$
-\text{minimize}\{SSE + \alpha|T|\}
-$$
-
-## The complexity value $\alpha$  
-
-- For a given value of $\alpha$, we find the smallest pruned tree that has the lowest penalized error. 
-- $\rightarrow$ A close association to the lasso $L_1$ norm penalty. 
-- Smaller penalties tend to produce more complex models, which result in larger trees. 
-- Larger penalties result in much smaller trees. 
-- As a tree grows larger, the reduction in the SSE must be greater than the cost complexity penalty. 
-- We evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
 
 ## Fit a regression tree using `rpart`
 
@@ -268,9 +257,8 @@ go to the 2nd branch.
 We can visualize our model with `rpart.plot`. 
 -->
 
-
-- `rpart.plot` has many plotting options
 <!--
+- `rpart.plot` has many plotting options
 , which we’ll leave to the reader to explore. 
 -->
 - In the default print it will show the percentage of data that fall to that node and the average sales price for that branch. 
@@ -291,8 +279,44 @@ rpart.plot(m1)
 
 There are 80 variables in `ames_train`. So what happened?
 
+- There is often a balance to be achieved in the depth and complexity of the tree to optimize predictive performance on some unseen data. 
+- To find this balance, we grow a very large tree as showed and then prune it back to find an optimal subtree. 
+- We find this subtree by using a cost complexity parameter ($\alpha$) that penalizes our objective function for the number of terminal nodes of the tree (T).
+
+$$
+\text{minimize}\{SSE + \alpha|T|\}
+$$
+
+
+```{r}
+TP <- prune(m1,cp=median(m1$cptable[,'CP']))
+```
+
+## Plot the pruned tree
+
+```{r}
+rpart.plot(TP)
+```
+
+
+<!--
 - `rpart` is automatically applying a range of cost complexity $\alpha$ values to prune the tree. 
 - To compare the error for each $\alpha$ value, `rpart` performs a 10-fold cross validation so that the error associated with a $\alpha$ value is computed on the hold-out validation data. 
+-->
+<!--
+## Cost complexity criterion
+
+
+## The complexity value $\alpha$  
+
+- For a given value of $\alpha$, we find the smallest pruned tree that has the lowest penalized error. 
+- $\rightarrow$ A close association to the lasso $L_1$ norm penalty. 
+- Smaller penalties tend to produce more complex models, which result in larger trees. 
+- Larger penalties result in much smaller trees. 
+- As a tree grows larger, the reduction in the SSE must be greater than the cost complexity penalty. 
+- We evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
+-->
+
 
 ## The `plotcp`
 <!--

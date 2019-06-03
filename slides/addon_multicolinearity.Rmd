@@ -1,0 +1,112 @@
+---
+title: "Machine Learning - Housekeeping"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+fontsize: 10pt
+output:
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fig_caption: no
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,message=F,warning=F)
+```
+
+
+## [Include all possible interaction effects](https://stackoverflow.com/questions/47144532/how-to-include-all-possible-two-way-interaction-terms-in-a-linear-model-in-r?rq=1)
+
+- This creates all combinations of two-way interactions
+
+```{r}
+data(mtcars)
+lm(mpg~(cyl+disp+hp)^2,data=mtcars)$coefficients
+```
+
+```{r}
+lm(mpg~(cyl+disp+hp)^3,data=mtcars)$coefficients
+```
+
+
+## [Colinearity diagnostics](https://cran.r-project.org/web/packages/olsrr/vignettes/regression_diagnostics.html)
+
+- Collinearity implies two variables are near perfect linear combinations of one another.
+- Multicollinearity involves more than two variables. 
+- In the presence of multicollinearity, regression estimates are unstable and have high standard errors.
+
+## variane inflation factor (VIF)
+
+- VIF is the ratio of variance in a model with multiple terms, divided by the variance of a model with one term alone.
+- It quantifies the severity of multicollinearity in an regression analysis. 
+- It provides an index that measures how much the variance (the square of the estimate's standard deviation) of an estimated regression coefficient is increased because of collinearity. 
+
+### Interpretation
+
+- The square root of the variance inflation factor indicates how much larger the standard error is, compared with what it would be if that variable were uncorrelated with the other predictor variables in the model.
+
+- If the variance inflation factor of a predictor variable were 5.27 ($\sqrt{5.27} = 2.3$), this means that the standard error for the coefficient of that predictor variable is 2.3 times as large as it would be if that predictor variable were uncorrelated with the other predictor variables. 
+
+<!--
+$\Rightarrow$ 
+-->
+
+## An ols model
+
+```{r}
+data(mtcars)
+olsmod <- lm(mpg ~ disp + hp + wt + qsec, data = mtcars)
+```
+
+```{r}
+modmatx<-model.matrix(mpg ~disp+hp+wt+qsec,mtcars)[,-1]
+mody <- mtcars$mpg
+```
+
+```{r,eval=F,echo=F}
+?genridge::ridge
+```
+
+```{r}
+library(genridge)
+lambda <- c(0, 0.005, 0.01, 0.02, 0.04, 0.08)
+lridge <- ridge(mody, modmatx, lambda=lambda)
+```
+
+## Compute the vif
+
+```{r,eval=F,echo=F}
+install.packages("genridge")
+```
+
+
+```{r}
+library(olsrr)
+ols_vif_tol(olsmod)
+```
+
+## Compare vif for ols and ridge
+
+```{r}
+# https://rdrr.io/cran/genridge/man/vif.ridge.html
+vif(olsmod)
+
+(vridge <- vif(lridge))
+
+```
+
+
+```{r,eval=F,echo=F}
+coef(lridge)
+ridgemod <- glmnet::glmnet(x = modmatx,y = mody,alpha = 0)
+```
+

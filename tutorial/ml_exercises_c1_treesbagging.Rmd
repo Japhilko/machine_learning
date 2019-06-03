@@ -50,24 +50,33 @@ knitr::opts_chunk$set(echo = TRUE,cache=T,warning = F,message = F)
 
 ### The dataset contains (1):
 
-- Kyphosis: a factor with levels absent present indicating if a kyphosis (a type of deformation) was present after the operation.
+- Kyphosis: a factor with levels absent and present, indicating if a kyphosis (a type of deformation) was present after the operation.
 - Age: in months.
 - Number: the number of vertebrae involved.
 - Start: the number of the first (topmost) vertebra operated on.
 
+```{r}
+data(kyphosis,package = "rpart")
+dplyr::glimpse(kyphosis)
+```
+
 ## Build the tree (2)
 
 ```{r}
-library('rpart')
-TREE <- rpart(Kyphosis ~ Age + Number + Start, 
-              data=kyphosis,method="class")
-TREE
+(TREE<-rpart::rpart(Kyphosis~Age+Number+Start,
+                    data=kyphosis,method="class"))
 ```
 
-## Plot the result
+## [Plot the result](https://www.rdocumentation.org/packages/rpart.plot/versions/3.0.7/topics/rpart.plot)
 
 ```{r}
-rpart.plot::rpart.plot(TREE)
+rpart.plot::rpart.plot(TREE,extra=1)
+```
+
+
+```{r,eval=F,echo=F}
+rpart.plot::rpart.plot(TREE,type=5)
+rpart.plot::rpart.plot(TREE,extra=1)
 ```
 
 ## Answers
@@ -78,17 +87,26 @@ rpart.plot::rpart.plot(TREE)
 
 4) How many observations contain the terminal nodes.
 
-- *denotes terminal nodes. The nodes have 29, 12, 14, 7 and 19 observations
+<!--
+*denotes terminal nodes.
+-->
 
+- The terminal nodes have 29, 12, 12, 3 and 8 observations
+
+<!--
 ## Consider the Kyphosis data frame.
+-->
 
 5) Build a tree using the first 60 observations of kyphosis.
 
+- `y` is a factor $\Rightarrow$ we choose `method="class"` 
 ```{r}
 TREE <- rpart(Kyphosis ~ Age + Number + Start, 
               data=kyphosis[1:60,],method="class")
 ```
 
+
+## Further answers
 
 6) Predict the kyphosis presence for the other 21 observations.
 
@@ -97,7 +115,7 @@ PR <- predict(TREE,kyphosis[61:81,],type='class')
 ```
 
 
-7) Which is the misclassification rate (prediction error) 
+7) Which is the [**misclassification rate**](https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/) (prediction error) 
 
 ```{r}
 test <- kyphosis$Kyphosis[61:81]
@@ -122,7 +140,7 @@ cat('the misclassification rate is:',rate)
 
 ### Consider the tree build before
 
-3) Prune the the using median complexity parameter (cp) associated to the tree.
+3) Prune the tree using median complexity parameter (cp) associated to the tree.
 4) Plot in the same window, the pruned and the original tree.
 5) In which terminal nodes is clasified each oobservations of `iris`?
 6) Which Specie has a flower of `Petal.Length` greater than 2.45 and `Petal.Width` less than 1.75.
@@ -132,8 +150,7 @@ cat('the misclassification rate is:',rate)
 1) Build a tree to classify Species from the other variables.
 
 ```{r}
-TREE2 <- rpart(Species ~ ., data=iris,method="class")
-TREE2
+(TREE2 <- rpart(Species ~ ., data=iris,method="class"))
 ```
 
 ## Solution - `rpart` -  `iris` (II)
