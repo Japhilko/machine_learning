@@ -1,20 +1,19 @@
 ---
 title: "Random Forests"
 author: "Jan-Philipp Kolb"
-date: "31 Mai, 2019"
+date: "02 Juni, 2019"
 fontsize: 10pt
 output: 
   slidy_presentation: 
     highlight: haddock
     keep_md: yes
   beamer_presentation: 
-    theme: Dresden
     colortheme: dolphin
     fig_height: 3
     fig_width: 5
-    fig_caption: no
     fonttheme: structuresmallcapsserif
     highlight: haddock
+    theme: Dresden
 ---
 
 
@@ -608,12 +607,14 @@ hyper_grid_2 <- expand.grid(
 ### How to proceed
 
 - repeat the model to get a better expectation of error rate. 
-- as expected error ranges between ~25,800-26,400 
 
 <!--
-with a most likely just shy of 26,200.
--->
+- as expected error ranges between ~25,800-26,400 
 
+with a most likely just shy of 26,200.
+
+
+-->
 
 ## Random forests with `ranger`
 
@@ -642,6 +643,7 @@ for(i in seq_along(OOB_RMSE)) {
 
 
 
+
 ## A histogram of OOB RMSE
 
 
@@ -654,21 +656,39 @@ hist(OOB_RMSE, breaks = 20,col="royalblue")
 
 ![](figure/ml_rf_hist_OOB_RMSE.png){height=75%}
 
-## Variable importance
+## node impurity
+
+- [**Node impurity**](https://stats.stackexchange.com/questions/223109/what-do-we-mean-by-node-impurity-ref-random-forest) represents how well the trees split the data. There are several impurity measures; 
+- Gini index, Entropy and misclassification error are [options](https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf) to measure the node impurity
+
+## Variable importance / node impurity
 
 - We set `importance = 'impurity'`, which allows us to assess variable importance. 
 - [**Variable importance**](https://topepo.github.io/caret/variable-importance.html) is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
-- The remaining error left in predictive accuracy after a node split is known as node impurity and a variable that reduces this impurity is considered more imporant than those variables that do not. 
-- We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important, or impactful. 
-- We see that `Overall_Qual` has the greatest impact in reducing MSE across our trees, followed by `Gr_Liv_Area`, `Garage_Cars`, etc.
+- The remaining error left in predictive accuracy after a node split is known as node impurity.
+<!--
+https://medium.com/the-artificial-impostor/feature-importance-measures-for-tree-models-part-i-47f187c1a2c3
+http://www.cse.msu.edu/~cse802/DecisionTrees.pdf
+https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf
+-->
+- A variable that reduces this impurity is considered more imporant than those variables that do not. 
+- We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important. 
 
 ## Plot the variable importance
 
 
 ```r
 varimp_ranger <- optimal_ranger$variable.importance 
+```
+
+
+
+```r
 lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue")
 ```
+
+- We see that 3.1272239\times 10^{7} has the greatest impact in reducing MSE across our trees, followed by `sort(varimp_ranger)[2]`, `sort(varimp_ranger)[3]`, etc.
+
 
 
 

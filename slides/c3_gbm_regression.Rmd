@@ -73,7 +73,7 @@ The latter two papers introduced the view of boosting algorithms as iterative fu
 
 ## The idea of GBMs
 
-- Many machine learning models are founded on a single predictive model (i.e. linear regression, penalized models, naive bayes, svm). 
+- Many machine learning models are founded on a single predictive model (i.e. linear regression, penalized models, naive bayes, [**svm**](https://de.wikipedia.org/wiki/Support_Vector_Machine)). 
 - Other approaches (bagging, random forests) are built on the idea of building an ensemble of models where each individual model predicts the outcome and the ensemble simply averages the predicted values. 
 <!--
 - The family of boosting methods is based on a different, constructive strategy of ensemble formation.
@@ -163,7 +163,7 @@ https://towardsdatascience.com/understanding-model-predictions-with-lime-a582fdf
 
 - [**Speed**](https://cran.r-project.org/web/packages/gbm/vignettes/gbm.pdf): Constructing weak models is computationally cheap.
 - [**Accuracy improvement**](https://bradleyboehmke.github.io/HOML/gbm.html): Weak models allow the algorithm to learn slowly; making minor adjustments in new areas where it does not perform well. In general, statistical approaches that learn slowly tend to perform well.
-- [**Avoids overfitting**](https://www.kdnuggets.com/2019/02/understanding-gradient-boosting-machines.html): Due to making only small incremental improvements with each model in the ensemble, this allows us to stop the learning process as soon as overfitting has been detected (typically by using cross-validation).
+- [**Avoids overfitting**](https://www.kdnuggets.com/2019/02/understanding-gradient-boosting-machines.html): Making only small incremental improvements with each model in the ensemble allows us to stop the learning process as soon as overfitting has been detected (typically by using cross-validation).
 
 
 
@@ -171,7 +171,9 @@ https://towardsdatascience.com/understanding-model-predictions-with-lime-a582fdf
 
 - Boosted trees are grown sequentially; 
 - Each tree is grown using information from previously grown trees. 
-- The basic algorithm for boosted regression trees can be generalized to the following where $x$ represents our features and $y$ represents our response:
+- $x \rightarrow$ features and $y \rightarrow$ response:
+- The basic algorithm for boosted regression trees can be generalized:  
+
 
 1.) Fit a decission tree: $F_1(x)=y$
 
@@ -221,20 +223,28 @@ $$
 
 - Many algorithms, including decision trees, focus on minimizing the residuals and emphasize the MSE loss function. 
 - In GBM approach, regression trees are fitted sequentially to minimize the errors. 
+<!--
 - This minimizes the loss function - mean squared error (MSE). 
-- Often we wish to focus on other loss functions such as [**mean absolute error**](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) or to be able to apply the method to a classification problem with a loss function such as [**deviance**](https://en.wikipedia.org/wiki/Deviance_(statistics)). 
+-->
+- Often we wish to focus on other loss functions such as [**mean absolute error**](https://en.wikipedia.org/wiki/Mean_absolute_error) (MAE) 
+- Or we want to apply the method to a classification problem with a loss function such as [**deviance**](https://en.wikipedia.org/wiki/Deviance_(statistics)). 
+- With gradient boosting machines we can generalize the procedure to loss functions other than MSE.
+<!--
 - The name gradient boosting machines come from the fact that this procedure can be generalized to loss functions other than MSE.
+-->
 
 ## A gradient descent algorithm
 
-- Gradient boosting is considered a gradient descent algorithm. 
+- Gradient boosting is considered a [**gradient descent**](https://en.wikipedia.org/wiki/Gradient_descent) algorithm. 
 - Which is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. 
 - The general idea of gradient descent is to tweak parameters iteratively in order to minimize a cost function. 
 
 ### Example
 
-- Suppose you are a downhill skier racing your friend. 
+- Suppose you are a downhill skier racing against your friend. 
 - A good strategy to beat your friend is to take the path with the steepest slope. 
+
+
 - This is exactly what gradient descent does - it measures the local gradient of the loss (cost) function for a given set of parameters ($\Phi$) and takes steps in the direction of the descending gradient. 
 - Once the gradient is zero, we have reached the minimum.
 
@@ -260,14 +270,18 @@ $$
 
 - Not all cost functions are convex (bowl shaped). 
 - There may be local minimas, plateaus, and other irregular terrain of the loss function that makes finding the global minimum difficult. 
-- Stochastic gradient descent can help us address this problem by sampling a fraction of the training observations (typically without replacement) and growing the next tree using that subsample. 
+- [**Stochastic gradient descent**](https://en.wikipedia.org/wiki/Stochastic_gradient_descent) can help us address this problem.
+- Stochastic because the method uses randomly selected (or shuffled) samples to evaluate the gradients.
+- By sampling a fraction of the training observations (typically without replacement) and growing the next tree using that subsample. 
 - This makes the algorithm faster but the stochastic nature of random sampling also adds some random nature in descending the loss function gradient. 
 - Although this randomness does not allow the algorithm to find the absolute global minimum, it can actually help the algorithm jump out of local minima and off plateaus and get near the global minimum.
 
+
+<!--
 ## Stochastic gradient descent
 
 ![Stochastic gradient descent](figure/stochastic_gradient_descent.png){height=60%}
-
+-->
 
 ## Tuning GBM
 
@@ -276,21 +290,21 @@ $$
 
 ### Number of trees
 
-- GBMs often require many trees; unlike random forests GBMs can overfit so the goal is to find the optimal number of trees that minimize the loss function of interest with cross validation.
+- GBMs often require many trees; 
+- GBMs can overfit so the goal is to find the optimal number of trees that minimize the loss function of interest with cross validation.
 
 ## Tuning parameters
 
 ### Depth of trees
 
 - The number $d$ of splits in each tree, which controls the complexity of the boosted ensemble. 
-- Often $d=1$ works well, in which case each tree is a stump consisting of a single split. More commonly, $d$ is greater than 1 but it is unlikely $d>10$
- will be required.
+- Often $d=1$ works well, in which case each tree is a stump consisting of a single split. More commonly, $d$ is greater than 1 but it is unlikely that $d>10$ will be required.
 
 ### Learning rate
 
-- The number d of splits in each tree, which controls the complexity of the boosted ensemble. 
-- Often $d=1$ works well, in which case each tree is a stump consisting of a single split. -
-- Normally, $d$ is greater than 1 but it is unlikely $d>10$ will be required.
+- Controls how quickly the algorithm proceeds down the gradient descent. 
+- Smaller values reduce the chance of overfitting but also increases the time to find the optimal fit. 
+- This is also called shrinkage.
 
 ## Tuning parameters (II)
 
@@ -365,9 +379,11 @@ A powerful java-based interface that provides parallel distributed algorithms an
 
 ## The R-package `gbm`
 
-The `gbm` R package is an implementation of extensions to Freund and Schapire’s [**AdaBoost**](https://en.wikipedia.org/wiki/AdaBoost) algorithm and [**Friedman’s gradient boosting machine**](https://www.frontiersin.org/articles/10.3389/fnbot.2013.00021/full). This is the original R implementation of GBM. 
+- The `gbm` R package is an implementation of extensions to Freund and Schapire’s [**AdaBoost**](https://en.wikipedia.org/wiki/AdaBoost) algorithm and [**Friedman’s gradient boosting machine**](https://www.frontiersin.org/articles/10.3389/fnbot.2013.00021/full). 
 
 <!--
+This is the original R implementation of GBM. 
+
 https://www.slideshare.net/mark_landry/gbm-package-in-r
 -->
 
@@ -388,23 +404,62 @@ When working with many variables it is more efficient to use the matrix rather t
 - This is a very small learning rate and typically requires a large number of trees to find the minimum MSE. 
 - `gbm` uses the default number of 100 trees, which is rarely sufficient. 
 - The default depth of each tree (`interaction.depth`) is 1, which means we are ensembling a bunch of stumps. 
-- `cv.folds` will be presented which perform a 5 fold cross validation. 
+- We will use `cv.folds` to perform a 5 fold cross validation. 
 - The model takes about 90 seconds to run and the results show that the MSE loss function is minimized with 10000 trees.
 
 ## Train a GBM model
 
 <!--
 folgendes dauert auch wieder länger
+
+Either a character string specifying the name of the distribution to use or a list with a component name specifying the distribution and any additional parameters needed. If not specified, gbm will try to guess: if the response has only 2 unique values, bernoulli is assumed; otherwise, if the response is a factor, multinomial is assumed; otherwise, if the response has class "Surv", coxph is assumed; otherwise, gaussian is assumed.
+
+Currently available options are "gaussian" (squared error), "laplace" (absolute loss), "tdist" (t-distribution loss), "bernoulli" (logistic regression for 0-1 outcomes), "huberized" (huberized hinge loss for 0-1 outcomes), classes), "adaboost" (the AdaBoost exponential loss for 0-1 outcomes), "poisson" (count outcomes), "coxph" (right censored observations), "quantile", or "pairwise" (ranking measure using the LambdaMart algorithm).
+
+If quantile regression is specified, distribution must be a list of the form list(name = "quantile", alpha = 0.25) where alpha is the quantile to estimate. The current version's quantile regression method does not handle non-constant weights and will stop.
+
+If "tdist" is specified, the default degrees of freedom is 4 and this can be controlled by specifying distribution = list(name = "tdist", df = DF) where DF is your chosen degrees of freedom.
+
+If "pairwise" regression is specified, distribution must be a list of the form list(name="pairwise",group=...,metric=...,max.rank=...) (metric and max.rank are optional, see below). group is a character vector with the column names of data that jointly indicate the group an instance belongs to (typically a query in Information Retrieval applications). For training, only pairs of instances from the same group and with different target labels can be considered. metric is the IR measure to use, one of
+
+list("conc")
+Fraction of concordant pairs; for binary labels, this is equivalent to the Area under the ROC Curve
+
+:
+Fraction of concordant pairs; for binary labels, this is equivalent to the Area under the ROC Curve
+
+list("mrr")
+Mean reciprocal rank of the highest-ranked positive instance
+
+:
+Mean reciprocal rank of the highest-ranked positive instance
+
+list("map")
+Mean average precision, a generalization of mrr to multiple positive instances
+
+:
+Mean average precision, a generalization of mrr to multiple positive instances
+
+list("ndcg:")
+Normalized discounted cumulative gain. The score is the weighted sum (DCG) of the user-supplied target values, weighted by log(rank+1), and normalized to the maximum achievable value. This is the default if the user did not specify a metric.
+
+ndcg and conc allow arbitrary target values, while binary targets 0,1 are expected for map and mrr. For ndcg and mrr, a cut-off can be chosen using a positive integer parameter max.rank. If left unspecified, all ranks are taken into account.
+
+Note that splitting of instances into training and validation sets follows group boundaries and therefore only approximates the specified train.fraction ratio (the same applies to cross-validation folds). Internally, queries are randomly shuffled before training, to avoid bias.
+
+Weights can be used in conjunction with pairwise metrics, however it is assumed that they are constant for instances from the same group.
+
+For details and background on the algorithm, see e.g. Burges (2010).
 -->
+
+- `distribution` - depends on the response (e.g. bernoulli for binomial)
+- 
 
 ```{r,eval=timeconsuming}
 set.seed(123)
-gbm.fit <- gbm(formula = Sale_Price ~ .,
-               distribution = "gaussian",
+gbm.fit <- gbm(formula = Sale_Price ~ .,distribution = "gaussian",
   data = ames_train,n.trees = 10000,interaction.depth = 1,
-  shrinkage = 0.001,cv.folds = 5,
-  n.cores = NULL, # will use all cores by default
-  verbose = FALSE)  
+  shrinkage = 0.001,cv.folds = 5,n.cores = NULL,verbose = FALSE)  
 ```
 
 ```{r,echo=F,eval=F}

@@ -446,6 +446,46 @@ for(i in 1:10) {
 print(i)
 ```
 
+## [Library `purrr` ](https://r4ds.had.co.nz/iteration.html)
+
+### `purrr` - Functional Programming Tools
+
+- The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. 
+
+<!--
+https://cran.r-project.org/web/packages/purrr/purrr.pdf
+-->
+
+```{r}
+library(purrr)
+```
+
+
+-    `map()` makes a list.
+-    `map_lgl()` makes a logical vector.
+-    `map_int()` makes an integer vector.
+-    `map_dbl()` makes a double vector.
+-    `map_chr()` makes a character vector.
+
+
+## Example `map_dbl`
+
+```{r}
+map_dbl(airq, mean)
+```
+
+
+```{r}
+map_dbl(airq, mean,na.rm=T)
+```
+
+
+## Get an overview of the data
+
+```{r}
+glimpse(clean_titanic)
+```
+
 
 
 ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
@@ -472,11 +512,7 @@ na.omit()
 - `na.omit()`: Remove the NA observations 
 
 
-## Get an overview of the data
 
-```{r}
-glimpse(clean_titanic)
-```
 
 ## [With `gather` from wide to long format](http://stackoverflow.com/questions/1181060)
 
@@ -661,6 +697,7 @@ swirl()
 - The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 - Gareth James et al (2013) [**An Introduction to
 Statistical Learning**](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf)
+
 <!--
 Further possible topics of this section:
 

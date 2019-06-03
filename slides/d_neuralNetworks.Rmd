@@ -861,7 +861,7 @@ Set `linout=T` and take some time to look at the structure of your model.
 
 ## Exercise neural networks (IV)
 
-### Normilze
+### Normalize
 
 8) Now let us use neural networks to solve a classification problem, so let’s load the iris data set! It is good practice to normalize your input data to uniformize the behavior of your model over different range of value and have a faster training. Normalize each factor so that they have a mean of zero and a standard deviation of 1, then create your train and test set.
 

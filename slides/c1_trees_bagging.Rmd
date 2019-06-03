@@ -485,7 +485,7 @@ hyper_grid %>%
 ```{r}
 optimal_tree <- rpart(formula = Sale_Price ~ .,
     data    = ames_train,method  = "anova",
-    control = list(minsplit = 11, maxdepth = 8, cp = 0.01)
+    control = list(minsplit = 5, maxdepth = 13, cp = 0.0108982)
     )
 ```
 
@@ -583,6 +583,38 @@ Disadvantages: Decision trees are prone to be overfit.
 - This can be addressed by ensemble methods like random forests or boosted trees.
 
 -->
+
+## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
+
+Ensembles are machine learning methods for combining predictions from multiple separate models. 
+
+<!--
+There are a few different methods for ensembling, but the two most common are:
+-->
+
+### Bagging 
+
+attempts to reduce the chance of overfitting complex models.
+
+
+- It trains a large number of "strong" learners in parallel.
+-  A strong learner is a model that's relatively unconstrained.
+-  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
+
+### Boosting 
+
+attempts to improve the predictive flexibility of simple models.
+
+- It trains a large number of "weak" learners in sequence.
+- A weak learner is a constrained model (limit for max depth of tree).
+-    Each one in the sequence focuses on learning from the mistakes of the one before it.
+- Boosting combines all the weak learners into a single strong learner.
+
+## Bagging and boosting
+
+While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
+
+Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
 
 
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
@@ -697,11 +729,33 @@ abline(v = 25, col = "red", lty = "dashed")
 
 1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will provide a more robust understanding of the true expected test error.
 
-2.) We can assess variable importance across the bagged trees.
+2.) We can assess [**variable importance**](https://topepo.github.io/caret/variable-importance.html) across the bagged trees.
 
+## [Excursus: Variable importance (vi)](https://cran.r-project.org/web/packages/datarobot/vignettes/VariableImportance.html)
 
+- vi measures help understand the results obtained from complex machine learning models 
+- There is no general consensus on the “best” way to compute - or even define - the concept of variable importance. 
+- See a list of many possible approaches to compute vi in the help file of the command `varImp` 
+
+```{r,eval=F}
+?caret::varImp
+```
+
+- vi refers to how much a given model "uses" that variable to make accurate predictions. The more a model relies on a variable to make predictions, the more important it is for the model. 
 
 <!--
+https://stats.stackexchange.com/questions/332960/what-is-variable-importance
+-->
+
+<!--
+
+
+https://topepo.github.io/caret/variable-importance.html
+https://www.salford-systems.com/blog/dan-steinberg/what-is-the-variable-importance-measure
+
+https://christophm.github.io/interpretable-ml-book/pdp.html
+
+
 - We see that the cross-validated RMSE is 36,477 dollar. 
 -->
 
@@ -717,6 +771,8 @@ ctrl <- trainControl(method = "cv",  number = 10)
 bagged_cv <- train(Sale_Price ~ .,data = ames_train,
   method = "treebag",trControl = ctrl,importance = TRUE)
 ```
+
+- `treebag`- means we use a bagging tree
 
 ## Assess results
 
@@ -744,14 +800,14 @@ plot(varImp(bagged_cv), 20)
 ## Extensions
 
 - If we compare this to the test set out of sample we see that our cross-validated error estimate was very close. 
-- We have successfully reduced our error to about $35,000; 
-- Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 
 ```{r predictbaggedcv}
 pred <- predict(bagged_cv, ames_test)
 RMSE(pred, ames_test$Sale_Price)
 ```
 
+- We have successfully reduced our error to about $35k; 
+- Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 
 <!--
 ## [Classification Tree example](https://www.guru99.com/r-decision-trees.html)
