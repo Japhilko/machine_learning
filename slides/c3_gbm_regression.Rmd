@@ -453,11 +453,11 @@ For details and background on the algorithm, see e.g. Burges (2010).
 -->
 
 - `distribution` - depends on the response (e.g. bernoulli for binomial)
-- 
+- `gaussian` is the defaulf value
 
 ```{r,eval=timeconsuming}
 set.seed(123)
-gbm.fit <- gbm(formula = Sale_Price ~ .,distribution = "gaussian",
+gbm.fit <- gbm(formula = Sale_Price ~ .,distribution="gaussian",
   data = ames_train,n.trees = 10000,interaction.depth = 1,
   shrinkage = 0.001,cv.folds = 5,n.cores = NULL,verbose = FALSE)  
 ```
@@ -571,32 +571,6 @@ hyper_grid <- expand.grid(
 nrow(hyper_grid)
 ```
 
-## Loop through hyperparameter combinations
-
-- We loop through each hyperparameter combination (5,000 trees). 
--  To speed up the tuning process, instead of performing 5-fold CV we train on 75% of the training observations and evaluate performance on the remaining 25%. 
-<!--
-Important note:
--->
-
-<!--
-After about 30 minutes of training time our grid search ends and we see a few important results pop out. 
--->
-- The top model has better performance than our previously fitted model, with a RMSE nearly $3,000 and lower. 
-
-### A look at the top 10 models:
-- None of the top models used a learning rate of 0.3; small incremental steps down the gradient descent work best,
-- None of the top models used stumps (`interaction.depth = 1`); there are likely some important interactions that the deeper trees are able to capture.
-- Adding a stochastic component with `bag.fraction` < 1 seems to help; there may be some local minimas in our loss function gradient,
-
-<!--
-- none of the top models used `n.minobsinnode = 15`; the smaller nodes may allow us to capture pockets of unique feature-price point instances,
-
-
-- in a few instances we appear to use nearly all 5,000 trees; 
-
-maybe we should increase this parameter in our next search?
--->
 
 ## Randomize data
 
@@ -639,13 +613,47 @@ load("../data/ml_gbm_tune.RData")
 
 
 ## The top 10 values
-
-```{r}
+  
+```{r,eval=F}
 hyper_grid %>% 
   dplyr::arrange(min_RMSE) %>%
   head(10)
 ```
 
+```{r,echo=F,eval=F}
+top10 <- hyper_grid %>% 
+  dplyr::arrange(min_RMSE) %>%
+  head(10)
+```
+
+![](figure/top10gbms.PNG)
+
+## Loop through hyperparameter combinations
+
+- We loop through each hyperparameter combination (5,000 trees). 
+-  To speed up the tuning process, instead of performing 5-fold CV we train on 75% of the training observations and evaluate performance on the remaining 25%. 
+<!--
+Important note:
+-->
+
+<!--
+After about 30 minutes of training time our grid search ends and we see a few important results pop out. 
+-->
+- The top model has better performance than our previously fitted model, with a RMSE nearly $3,000 and lower. 
+
+### A look at the top 10 models:
+- None of the top models used a learning rate of 0.3; small incremental steps down the gradient descent work best,
+- None of the top models used stumps (`interaction.depth = 1`); there are likely some important interactions that the deeper trees are able to capture.
+- Adding a stochastic component with `bag.fraction` < 1 seems to help; there may be some local minimas in our loss function gradient,
+
+<!--
+- none of the top models used `n.minobsinnode = 15`; the smaller nodes may allow us to capture pockets of unique feature-price point instances,
+
+
+- in a few instances we appear to use nearly all 5,000 trees; 
+
+maybe we should increase this parameter in our next search?
+-->
 
 
 ## Refine the search - adjust the grid
@@ -689,6 +697,10 @@ summary(gbm.fit.final,cBars = 10,
   # also can use permutation.test.gbm
   method = relative.influence,las = 2)
 ```
+
+## Variable importance
+
+![](figure/gbmtopmodelsvars.PNG)
 
 <!--
 par(mar = c(5, 8, 1, 1))
@@ -741,7 +753,7 @@ gbm.fit.final %>% partial(pred.var = "Gr_Liv_Area",
 ```
 
 
-## ICE curves ... 
+## [Individual Conditional Expectation (ICE) curves ... ](https://christophm.github.io/interpretable-ml-book/ice.html)
 
 - ... are an extension of PDP plots but 
 <!--
@@ -812,10 +824,10 @@ png("figure/ml_ice_curves.png")
 dev.off()
 ```
 
-![](figure/ml_ice_curves.png)
+![](figure/ml_ice_curves.png){height=80%}
 
 
-## LIME
+## [Local Interpretable Model-Agnostic Explanations – (LIME)](https://homes.cs.washington.edu/~marcotcr/blog/lime/)
 
 - [**LIME**](http://uc-r.github.io/lime) is a newer procedure for understanding why a prediction resulted in a given value for a single observation. 
 - To use the `lime` package on a `gbm` model we need to define model type and prediction methods.
@@ -849,9 +861,17 @@ explanation <- explain(local_obs, explainer, n_features = 5)
 
 ## LIME plot
 
-```{r}
+```{r,eval=F}
 plot_features(explanation)
 ```
+
+```{r,eval=F,echo=F}
+png("figure/limeplot.png")
+plot_features(explanation)
+dev.off()
+```
+
+![](figure/limeplot.png)
 
 
 ## Predicting
@@ -984,18 +1004,21 @@ load("../data/ml_rf_xgb.fit1.RData")
 
 - The `xgb.fit1` object contains lots of good information. 
 - In particular we can assess the `xgb.fit1$evaluation_log` to identify the minimum RMSE and the optimal number of trees for both the training data and the cross-validated error. 
-- The training error continues to decrease to 965 trees where the RMSE nearly reaches zero; 
-- The cross validated error reaches a minimum RMSE of 27,572 with only 60 trees.
+- The training error continues to decrease to 924 trees where the RMSE nearly reaches zero; 
+- The cross validated error reaches a minimum RMSE of 27,337 with only 60 trees.
 
 ```{r}
 xgb.fit1$evaluation_log %>%
   dplyr::summarise(
-  ntrees.train = which(train_rmse_mean == min(train_rmse_mean))[1],
+  ntrees.train=which(train_rmse_mean==min(train_rmse_mean))[1],
   rmse.train= min(train_rmse_mean),
   ntrees.test=which(test_rmse_mean==min(test_rmse_mean))[1],
   rmse.test   = min(test_rmse_mean)
 )
 ```
+
+
+
 
 ## Plot error vs number trees
 
@@ -1025,7 +1048,13 @@ xgb.fit2 <- xgb.cv(data = features_train,
 
 ## plot error vs number trees
 
-```{r}
+```{r, fig.height = 3, fig.width = 6, fig.align = "center"}
+ggplot(xgb.fit2$evaluation_log) +
+  geom_line(aes(iter, train_rmse_mean), color = "red") +
+  geom_line(aes(iter, test_rmse_mean), color = "blue")
+```
+
+```{r,eval=F,echo=F}
 ggplot(xgb.fit2$evaluation_log) +
   geom_line(aes(iter, train_rmse_mean), color = "red") +
   geom_line(aes(iter, test_rmse_mean), color = "blue")
