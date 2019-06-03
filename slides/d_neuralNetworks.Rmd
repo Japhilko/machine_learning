@@ -32,7 +32,9 @@ knitr::opts_chunk$set(echo = T,message=F,warning=F,eval=T)
 - Each individual neuron possesses little intrinsic approximation capability; 
 - When many neurons function cohesively together, their combined effects show remarkable learning performance. 
 
+### Source for slides 
 
+- Much of the following slides is based on UC Business Analytics R Programming Guide - [**neural networks**](http://uc-r.github.io/ann_fundamentals)
 
 ## Biologic Model
 
@@ -51,7 +53,7 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 ## ANN neurons
 
 - ANN neurons are simple representations of their biologic counterparts. 
-- In the biologic neuron figure please note the Dendrite, Cell body, and the Axon with the Synaptic terminals. 
+- In the biologic neuron figure please note the dendrite, cell body, and the axon with the synaptic terminals. 
 - In biologic systems, information (in the form of neuroelectric signals) flow into the neuron through the dendrites. 
 - If a sufficient number of input signals enter the neuron through the dendrites, the cell body generates a response signal and transmits it down the axon to the synaptic terminals. 
 - The specific number of input signals required for a response signal is dependent on the individual neuron. 
@@ -89,34 +91,36 @@ Source: Bruce Blaus at [**Wikipedia**](https://commons.wikimedia.org/wiki/File:B
 ANNs–Source: Click images
 -->
 
-![](figure/neuralnetfig.PNG)
+![](figure/neuralnetfig.PNG){height=120%}
 
 ## ANNs described
 
-- ANNs have an Input layer, hidden layer, and output layer. 
+- ANNs have an input layer, hidden layer, and output layer. 
 - The input layer reads in data values from a user provided input. 
 - Within the hidden layer a majority of the "learning" takes place, and the output layer displays the results of the ANN. 
-- In the bottom plot of the figure, each of the red input nodes correspond to an input vector $x_i$. Each of the black lines with correspond to a weight, $w^{(l)}_{ij}$, and describe how artificial neurons are connections to one another within the ANN. 
+- Each of the red input nodes correspond to an input vector $x_i$. Each of the black lines with correspond to a weight, $w^{(l)}_{ij}$, and describe how artificial neurons are connections to one another within the ANN. 
 - The $i$ subscript identifies the source and the $j$ subscript describes to which artificial neuron the weight connects the source to. The green output nodes are the output vectors $y_q$.
 
+<!--
 ## Examination of the figure
 
 - Examination of the figure’s top-left and top-right plots show two possible ANN configurations. 
 - In the top-left, we see a network with one hidden layer with $q$ artificial neurons, $p$ input vectors $x$, and generates $q$ output vectors $y$. 
-<!--
-- The bias inputs to each hidden node, denoted by the $b_q$. 
--->
 - The bias term is a simple constant valued 1 to each hidden node acting akin to the grand mean in a simple linear regression. 
 - Each bias term in a ANN has its own associated weight $w$. 
 - In the top-right ANN we have a network with two hidden layers. 
 - This network adds superscript notation to the bias terms and the weights to identify to which layer each term belongs. 
 - Weights and biases with a superscript 1 act on connecting the input layer to the first layer of artificial neurons and terms with a superscript 2 connect the output of the second hidden layer to the output vectors.
 - The size and structure of ANNs are only limited by the imagination of the analyst.
+-->
 
+<!--
+- The bias inputs to each hidden node, denoted by the $b_q$. 
+-->
 
 ## Activation Functions
 
-- The capability of ANNs to learn approximately any function, (given sufficient training data examples) are dependent on the appropriate selection of the Activation Function(s) present in the network. 
+- The capability of ANNs to learn approximately any function, (given sufficient training data examples) are dependent on the appropriate selection of the [**activation function(s)**](https://en.wikipedia.org/wiki/Activation_function) present in the network. 
 - Activation functions enable the ANN to learn non-linear properties present in the data. We represent the activation function here as $\Phi(\cdot)$. 
 - The input into the activation function is the weighted sum of the input features from the preceding layer. 
 - Let $o_j$ be the output from the jth neuron in a given layer for a network for k input vector features.
@@ -125,7 +129,9 @@ $$
 o_j = \Phi(b_j + \sum\limits_{i=1}^pw_ix_i)
 $$
 
+## Activation functions
 
+[![](figure/activation_funs.PNG)](https://en.wikipedia.org/wiki/Activation_function)
 
 ## The output ($o_j$)...
 

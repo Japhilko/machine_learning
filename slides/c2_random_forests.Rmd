@@ -4,6 +4,9 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output: 
+  slidy_presentation: 
+    highlight: haddock
+    keep_md: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -11,9 +14,6 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
-  slidy_presentation: 
-    highlight: haddock
-    keep_md: yes
 ---
 
 ```{r setupbaggingboosting, include=FALSE}

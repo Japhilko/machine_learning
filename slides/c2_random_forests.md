@@ -1,7 +1,7 @@
 ---
 title: "Random Forests"
 author: "Jan-Philipp Kolb"
-date: "02 Juni, 2019"
+date: "03 Juni, 2019"
 fontsize: 10pt
 output: 
   slidy_presentation: 
@@ -20,10 +20,10 @@ output:
 
 ## Random Forests
 
-- Thus, [**bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
+- [**Bagging**](https://en.wikipedia.org/wiki/Bootstrap_aggregating) can turn a single tree model with high variance and poor predictive power into a fairly accurate prediction function. 
 - But bagging suffers from [**tree correlation**](https://stats.stackexchange.com/questions/295868/why-is-tree-correlation-a-problem-when-working-with-bagging), which reduces the overall performance of the model. 
 - [**Random forests**](https://en.wikipedia.org/wiki/Random_forest) are a modification of bagging that builds a large collection of de-correlated trees 
-- It is a very popular [**out-of-the-box**](https://en.wikipedia.org/wiki/Out_of_the_box_(feature))) learning algorithm that enjoys good predictive performance. 
+- It is a very popular [**out-of-the-box**](https://en.wikipedia.org/wiki/Out_of_the_box_(feature)) learning algorithm that enjoys good predictive performance. 
 
 <!--
 out of the box - läuft ohne weitere Anpassungen
@@ -167,17 +167,17 @@ ames_test  <- rsample::testing(ames_split)
 ## Basic implementation
 
 - There are over 20 random forest packages in R.
-- To demonstrate the basic implementation we illustrate the use of the `randomForest` package, the oldest and most well known implementation of the random forest algorithm in R. 
+- To demonstrate the basic implementation we use the `randomForest` package, the oldest and most well known implementation of the random forest algorithm in R. 
 - As your data set grows in size `randomForest` does not scale well (although you can parallelize with `foreach`). 
-- To explore and compare a variety of tuning parameters we can also find more effective packages. 
+- To explore and compare a variety of tuning parameters we can find more effective packages. 
 - The package `ranger` will be presented in the tuning section.
 
 
 ## `randomForest::randomForest`
 
-- `randomForest` can use the formula or separate x, y matrix notation for specifying the model. 
+- `randomForest` can use the formula or  x-y matrix notation. 
 - Below we apply the default `randomForest` model using the formal specification. 
-- The default random forest performs 500 trees and $\dfrac{\text{features}}{3}=26$ randomly selected predictor variables at each split. 
+- The default random forest performs 500 trees and $\dfrac{\text{nr. features}}{3}=26$ randomly selected predictor variables at each split. 
 
 <!--
 - Averaging across all 500 trees provides an OOB MSE=659550782 (RMSE=25682).
@@ -236,20 +236,24 @@ plot(m1,main="Error rate")
 - Random forests are one of the best “out-of-the-box” machine learning algorithms. 
 -->
 - Random forests perform remarkably well with very little tuning.
-- We get an RMSE of less than 30K Dollar without any tuning 
-- This is more than 6K Dollar RMSE-reduction compared to a fully-tuned bagging model 
+- We get an RMSE of less than 30K dollar without any tuning.
+- This is more than 6K dollar RMSE-reduction compared to a fully-tuned bagging model 
 - and 4K dollar reduction to to a fully-tuned elastic net model. 
 - We can still seek improvement by tuning our random forest model.
 
 ### Tuning Random forests
 
 - Random forests are fairly easy to tune since there are only a handful of tuning parameters. 
-- The primary concern at the beginning is tuning the number of candidate variables to select from at each split. 
+- First we tune the number of candidate variables to select from at each split. 
 - A few additional hyperparameters are important. 
 
 ## Tuning parameters (I)
 
+<!--
 - The argument names may differ across packages, but these hyperparameters should be present:
+-->
+
+- The following hyperparameter are important (names may differ across packages):
 
 ### number of trees
 
@@ -257,7 +261,7 @@ plot(m1,main="Error rate")
 
 ### number of variables
 
-- `mtry` - number of variables as candidates at each split. When `mtry=p`the model equates to bagging. 
+- `mtry` - number of variables as candidates at each split. When `mtry=p` the model equates to bagging. 
 - When `mtry=1` the split variable is completely random, all variables get a chance but can lead to biased results. Suggestion: start with 5 values evenly spaced across the range from 2 to p.
 
 ## Tuning parameters (II)
@@ -265,18 +269,24 @@ plot(m1,main="Error rate")
 ### Number of samples
 
 - `sampsize` -  Default value is 63.25%  since this is the expected value of unique observations in the bootstrap sample. 
-- Lower sample sizes can reduce the training time but may introduce more bias. Increasing sample size can increase performance but at risk of overfitting - it introduces more variance. 
+- Lower sample sizes can reduce training time but may introduce more bias. Increasing sample size can increase performance but at risk of overfitting - it introduces more variance. 
+<!--
 - When tuning this parameter we stay near the 60-80% range.
-
+-->
 
 ## Tuning parameters (III)
 
 ### minimum number of samples within the terminal nodes:
 
 - `nodesize` - Controls the complexity of the trees. 
+- It is the minimum size of terminal nodes.
 - Smaller node size allow for deeper, more complex trees 
 - This is another bias-variance tradeoff where deeper trees introduce more variance (risk of overfitting) 
 - Shallower trees introduce more bias (risk of not fully capturing unique patters and relatonships in the data).
+
+<!--
+https://stats.stackexchange.com/questions/158583/what-does-node-size-refer-to-in-the-random-forest
+-->
 
 ### maximum number of terminal nodes
 
@@ -372,7 +382,6 @@ system.time(
 ## The grid search
 
 - To perform the grid search, we construct our grid of hyperparameters. 
-- We search across 96 different models with varying `mtry`, minimum node size, and sample size.
 
 
 ```r
@@ -383,7 +392,13 @@ hyper_grid <- expand.grid(
   sampe_size = c(.55, .632, .70, .80),
   OOB_RMSE   = 0
 )
+```
 
+- We search across 96 different models with varying `mtry`, minimum node size, and sample size.
+
+
+
+```r
 nrow(hyper_grid) # total number of combinations
 ```
 
@@ -394,19 +409,18 @@ nrow(hyper_grid) # total number of combinations
 
 ## Loop - hyperparameter combination (I)
 
+- We apply 500 trees since our previous example illustrated that 500 was plenty to achieve a stable error rate. 
+- We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
+
+
 
 ```r
 for(i in 1:nrow(hyper_grid)) {
-  # train model
-  model <- ranger(
-    formula         = Sale_Price ~ ., 
-    data            = ames_train, 
-    num.trees       = 500,
-    mtry            = hyper_grid$mtry[i],
+  model <- ranger(formula= Sale_Price ~ .,data= ames_train, 
+    num.trees       = 500,mtry= hyper_grid$mtry[i],
     min.node.size   = hyper_grid$node_size[i],
     sample.fraction = hyper_grid$sampe_size[i],
-    seed            = 123
-  )
+    seed            = 123)
     # add OOB error to grid
   hyper_grid$OOB_RMSE[i] <- sqrt(model$prediction.error)
 }
@@ -417,14 +431,18 @@ for(i in 1:nrow(hyper_grid)) {
 
 
 
-## The results
+## The results - samll difference between RMSE
+
+<!--
+- Our OOB RMSE ranges between 25000 - 26000. 
+-->
+
 
 
 ```r
-hyper_grid %>% 
-  dplyr::arrange(OOB_RMSE) %>%
-  head(10)
+hyper_grid %>% dplyr::arrange(OOB_RMSE) %>% head(10)
 ```
+
 
 ```
 ##    mtry node_size sampe_size OOB_RMSE
@@ -446,13 +464,14 @@ hyper_grid %>%
 
 
 
+<!--
 ## Loop - hyperparameter combination (I)
-
-- We apply 500 trees since our previous example illustrated that 500 was plenty to achieve a stable error rate. 
-- We set the random number generator seed. This allows us to consistently sample the same observations for each sample size and make the impact of each change clearer. 
-- Our OOB RMSE ranges between 25000 - 26000. 
-- Our top 10 performing models all have RMSE values right around 25500 and the results show that models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in an terminal node) perform best. 
-- We get a full range of `mtry` values showing up in our top 10 - not over influential.
+-->
+<!--
+- Our top 10 performing models all have RMSE values and 
+-->
+- Models with slighly larger sample sizes (70-80 per cent) and deeper trees (3-5 observations in terminal node) perform best. 
+- We get various `mtry` values in top 10 - not over influential.
 <!--
 in their original columnar form, 
 -->
@@ -495,86 +514,8 @@ ames_train_hot<-predict(one_hot,ames_train)%>%as.data.frame()
 ```
 
 
-```r
-ames_train_hot[1:8,1:8]
-```
 
-```
-##   MS_SubClass.One_Story_1946_and_Newer_All_Styles
-## 1                                               1
-## 2                                               1
-## 3                                               1
-## 4                                               0
-## 5                                               0
-## 6                                               0
-## 7                                               0
-## 8                                               1
-##   MS_SubClass.One_Story_1945_and_Older
-## 1                                    0
-## 2                                    0
-## 3                                    0
-## 4                                    0
-## 5                                    0
-## 6                                    0
-## 7                                    0
-## 8                                    0
-##   MS_SubClass.One_Story_with_Finished_Attic_All_Ages
-## 1                                                  0
-## 2                                                  0
-## 3                                                  0
-## 4                                                  0
-## 5                                                  0
-## 6                                                  0
-## 7                                                  0
-## 8                                                  0
-##   MS_SubClass.One_and_Half_Story_Unfinished_All_Ages
-## 1                                                  0
-## 2                                                  0
-## 3                                                  0
-## 4                                                  0
-## 5                                                  0
-## 6                                                  0
-## 7                                                  0
-## 8                                                  0
-##   MS_SubClass.One_and_Half_Story_Finished_All_Ages
-## 1                                                0
-## 2                                                0
-## 3                                                0
-## 4                                                0
-## 5                                                0
-## 6                                                0
-## 7                                                0
-## 8                                                0
-##   MS_SubClass.Two_Story_1946_and_Newer
-## 1                                    0
-## 2                                    0
-## 3                                    0
-## 4                                    1
-## 5                                    1
-## 6                                    0
-## 7                                    1
-## 8                                    0
-##   MS_SubClass.Two_Story_1945_and_Older
-## 1                                    0
-## 2                                    0
-## 3                                    0
-## 4                                    0
-## 5                                    0
-## 6                                    0
-## 7                                    0
-## 8                                    0
-##   MS_SubClass.Two_and_Half_Story_All_Ages
-## 1                                       0
-## 2                                       0
-## 3                                       0
-## 4                                       0
-## 5                                       0
-## 6                                       0
-## 7                                       0
-## 8                                       0
-```
-
-
+![](figure/OneHotEncoding.PNG)
 
 ## Hot encoding and hypergrid
 
@@ -583,8 +524,6 @@ ames_train_hot[1:8,1:8]
 # make ranger compatible names
 names(ames_train_hot) <- make.names(names(ames_train_hot), 
                                     allow_ = FALSE)
-ames_train_hot <- predict(one_hot, ames_train) %>% 
-  as.data.frame()
 # --> same as above but with increased mtry values
 hyper_grid_2 <- expand.grid(
   mtry       = seq(50, 200, by = 25),
@@ -599,14 +538,14 @@ hyper_grid_2 <- expand.grid(
 
 ### The best random forest model:
 
-- retains columnar categorical variables
+- uses columnar categorical variables
 - `mtry` = 24, 
 - terminal node size of 5 observations
 - sample size of 80%. 
 
 ### How to proceed
 
-- repeat the model to get a better expectation of error rate. 
+- Repeat the model to get a better expectation of error rate. 
 
 <!--
 - as expected error ranges between ~25,800-26,400 
@@ -618,22 +557,25 @@ with a most likely just shy of 26,200.
 
 ## Random forests with `ranger`
 
+- The `impurity` measure is the variance of the responses for regression
+- `impurity` is a measure for heterogeneity - it measures how well the classes are  
+<!--
+https://stats.stackexchange.com/questions/220321/what-is-node-impurity-purity-in-decision-trees-in-plain-english-why-do-we-need
+
+https://people.cs.pitt.edu/~milos/courses/cs2750-Spring03/lectures/class19.pdf
+-->
+
 
 ```r
 OOB_RMSE <- vector(mode = "numeric", length = 100)
-
 for(i in seq_along(OOB_RMSE)) {
-
-  optimal_ranger <- ranger(
-    formula         = Sale_Price ~ ., 
+  optimal_ranger <- ranger(formula= Sale_Price ~ ., 
     data            = ames_train, 
     num.trees       = 500,
     mtry            = 24,
     min.node.size   = 5,
     sample.fraction = .8,
-    importance      = 'impurity'
-  )
-  
+    importance      = 'impurity')
   OOB_RMSE[i] <- sqrt(optimal_ranger$prediction.error)
 }
 ```
@@ -644,24 +586,11 @@ for(i in seq_along(OOB_RMSE)) {
 
 
 
-## A histogram of OOB RMSE
 
-
-```r
-hist(OOB_RMSE, breaks = 20,col="royalblue")
-```
-
-
-
-
-![](figure/ml_rf_hist_OOB_RMSE.png){height=75%}
-
-## node impurity
+## Variable importance / node impurity
 
 - [**Node impurity**](https://stats.stackexchange.com/questions/223109/what-do-we-mean-by-node-impurity-ref-random-forest) represents how well the trees split the data. There are several impurity measures; 
 - Gini index, Entropy and misclassification error are [options](https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf) to measure the node impurity
-
-## Variable importance / node impurity
 
 - We set `importance = 'impurity'`, which allows us to assess variable importance. 
 - [**Variable importance**](https://topepo.github.io/caret/variable-importance.html) is measured by recording the decrease in MSE each time a variable is used as a node split in a tree. 
@@ -670,6 +599,10 @@ hist(OOB_RMSE, breaks = 20,col="royalblue")
 https://medium.com/the-artificial-impostor/feature-importance-measures-for-tree-models-part-i-47f187c1a2c3
 http://www.cse.msu.edu/~cse802/DecisionTrees.pdf
 https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf
+
+http://mason.gmu.edu/~jgentle/csi772/16s/L10_CART_16s.pdf
+
+https://stats.stackexchange.com/questions/158583/what-does-node-size-refer-to-in-the-random-forest
 -->
 - A variable that reduces this impurity is considered more imporant than those variables that do not. 
 - We accumulate the reduction in MSE for each variable across all the trees and the variable with the greatest accumulated impact is considered the more important. 
@@ -687,12 +620,25 @@ varimp_ranger <- optimal_ranger$variable.importance
 lattice::barchart(sort(varimp_ranger)[1:25],col="royalblue")
 ```
 
-- We see that 3.1272239\times 10^{7} has the greatest impact in reducing MSE across our trees, followed by `sort(varimp_ranger)[2]`, `sort(varimp_ranger)[3]`, etc.
+- We see that Utilities has the greatest impact in reducing MSE across our trees, followed by `names(sort(varimp_ranger))[2]`, Low_Qual_Fin_SF, etc.
 
 
 
 
 ![](figure/ml_rf_varimp_ranger.png){height=60%}
+
+
+## A histogram of OOB RMSE
+
+
+```r
+hist(OOB_RMSE, breaks = 20,col="royalblue")
+```
+
+
+
+
+![](figure/ml_rf_hist_OOB_RMSE.png){height=75%}
 
 
 ## Predicting
