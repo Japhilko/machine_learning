@@ -4,6 +4,11 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output:
+  slidy_presentation: 
+    keep_md: yes
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -12,12 +17,6 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
-  pdf_document: 
-    keep_tex: yes
-    toc: yes
-  slidy_presentation: 
-    css: mycss.css
-    keep_md: yes
 ---
 
 ```{r setupregression, include=FALSE}
@@ -769,7 +768,7 @@ model2 %>% predict(test.data)
 save(model2,file="../data/ml_ols_cv_model2.RData")
 ```
 
-```{r,echo=F}
+```{r,echo=F,eval=F}
 load("../data/ml_ols_cv_model2.RData")
 ```
 
@@ -778,14 +777,15 @@ load("../data/ml_ols_cv_model2.RData")
 ## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
 -->
 
+<!--
 ## Summarize the results
 
-```{r}
+```{r,eval=F}
 summary(model2)$coefficients
 ```
 
 
-<!--
+
 ## [The bias variance tradeoff](https://elitedatascience.com/bias-variance-tradeoff)
 
 ![](figure/bias_variance_tradeoff.PNG){ height=70% }

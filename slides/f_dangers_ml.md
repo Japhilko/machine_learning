@@ -7,9 +7,7 @@ output:
     keep_md: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+
 
 ## Models are often uninterpretable
 As the models produced by, e.g., a neural network are often
@@ -75,27 +73,20 @@ uncompressed.
 
 
 
-```{r}
-library(dplyr)
-library(glmnet)
-```
 
 
-```{r, echo=TRUE, eval=FALSE}
+
+
+```r
 glove.df <- read.csv("~/Downloads/glove.42B.300d.txt",
                  header=TRUE, sep=" ",quote="",
                  col.names=c("word",paste0("e",1:300)))
 ```
 
-```{r}
-load("../data/saved_data_loaded.RData")
-glove.df$word <- as.character(glove.df$word)
 
 
 
-```
-
-```{r, echo=TRUE}
+```r
 ## Did the file read in correctly?
 head(glove.df$word, n=100)
 
@@ -115,12 +106,10 @@ length(negative.words)
 
 head(positive.words)
 head(negative.words)
-
-
 ```
 
-```{r, echo=TRUE}
 
+```r
 ## Locating postive and negative words in our dataset.
 pos.vectors <- which(glove.df$word %in% positive.words)
 neg.vectors <- which(glove.df$word %in% negative.words)
@@ -164,13 +153,11 @@ fit.cv <- cv.glmnet(glove.df.reduc[train.df,], sentiment.vec[train.df],family="b
 pred.fit <- predict(fit.cv$glmnet.fit, glove.df.reduc[test.df,], s=fit.cv$lambda.min)
 
 pred.fit[sample(1:nrow(pred.fit), size=10),]
-
-
-
 ```
 
 
-```{r, echo=TRUE}
+
+```r
 library(ggplot2)
 library(dplyr)
 
@@ -182,12 +169,11 @@ ggplot(tibble(pred.fit,
   geom_boxplot() +
   labs(title = "Boxplot of model Coefficents by word type",
        x="Positive or Negative ", y = "Coefficent")
-
-
 ```
 
 
-```{r, echo=TRUE, message=FALSE}
+
+```r
 ## Calculating the mean sentiment of a sentence.
 calc.sentiment <- function(input.text="This is great!", reg.model = fit.cv,
                            known.word.list = word.backup, glove.df){
@@ -233,29 +219,26 @@ word.backup <- glove.df$word
 glove.df.final <- as.matrix(glove.df[, -1])
 
 gc()
-
 ```
 
 ## Now for the Racism
 
 
-```{r, echo=TRUE}
+
+```r
 calc.sentiment("Let's go out for Italian food.", glove.df=glove.df.final)
 
 calc.sentiment("Let's go out for Chinese food.", glove.df=glove.df.final)
 
 calc.sentiment("Let's go out for Mexican food.", glove.df=glove.df.final)
-
-
-
-
 ```
 So "Mexican" is rated lower than the other two.
 
 
 ## What about names?
 
-```{r, echo=TRUE}
+
+```r
 calc.sentiment("My name is Emily", glove.df=glove.df.final)
 
 calc.sentiment("My name is Heather", glove.df=glove.df.final)
@@ -263,8 +246,6 @@ calc.sentiment("My name is Heather", glove.df=glove.df.final)
 calc.sentiment("My name is Yvette", glove.df=glove.df.final)
 
 calc.sentiment("My name is Shaniqua", glove.df=glove.df.final)
-
-
 ```
 
 ## Exercise: calc.sentiment

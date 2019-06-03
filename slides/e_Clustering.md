@@ -7,9 +7,7 @@ output:
     keep_md: yes
 ---
 
-```{r setupClustering, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE,eval=F)
-```
+
 
 
 
@@ -17,25 +15,14 @@ knitr::opts_chunk$set(echo = FALSE,eval=F)
 ## Resources
 
 
-```{r,echo=F, eval=FALSE}
-slides_path <- getwd()
-git_path <- gsub("slides","",slides_path)
-if (Sys.info()$nodename=="MAC14077"){
-  git_path <- "D:/Daten/GitHub/machine_learning/"
-  slides_path <- paste0(git_path,"/slides")
-}
-```
+
 
 
 - [Package `kknn`](https://cran.r-project.org/web/packages/kknn/kknn.pdf)
 
-```{r,eval=F}
-install.packages("kknn")
-```
 
-```{r}
-library("kknn")
-```
+
+
 
 
 ## [Geographic clustering of UK cities](https://www.r-bloggers.com/geographic-clustering-of-uk-cities/)
@@ -60,43 +47,13 @@ cluster. This minimum number acts as a smoothing parameter (such as a
 density bandwidth parameter or a histograms bin/bar width), with lower
 values finding more clusters. Other advantages of hdbscan include .
 
-```{r, eval=FALSE}
-install.packages("dbscan")
-```
-
-
-
-```{r}
-library(ggplot2)
-library(dplyr)
-library(maps)
-library(dbscan)
-
-## Example where kmeans finds only 1 cluster.
-two.clust.eg <- rbind(matrix(rnorm(1000, sd = 0.8), ncol=2),
-                      matrix(rnorm(100, mean = 120, sd = 0.12), ncol = 2))
-
-clust <- kmeans(two.clust.eg, centers=2)
-
-plot(x, col = clust$cluster)
-##     points(cl$centers, col = 1:2, pch = 8, cex = 2)
-
-
-```
-
-```{r}
 
 
 
 
 
-data(moons)
 
-## Running HDBscan with the minimum number of points set to 5.
-res <- dbscan::hdbscan(moons, minPts = 3)
 
-plot(moons, col = res$cluster + 1, main="R implementation")
-```
 
 
 
@@ -111,26 +68,10 @@ plot(moons, col = res$cluster + 1, main="R implementation")
 
 
 
-```{r, eval=FALSE, echo=FALSE}
-## kmeans
-plot(ChickWeight[,1:2], col=kmeans(ChickWeight[,1:2], centers=4)$centers)
-
-## hdbscan, minPts=10
-plot(ChickWeight[,1:2], col=dbscan::hdbscan(ChickWeight[,1:2], minPts=10)$cluster)
-
-## Diet cat. for comparison.
-plot(ChickWeight[,1:2], col=ChickWeight$Diet)
-
-## Chick cat. for comparison.
-plot(ChickWeight[,1:2], col=ChickWeight$Chick)
 
 
-```
 
 
-```{r, eval=FALSE}
-load(paste0(git_path,"/data/osmsa_PLZ_14.RData"))
-```
 
 
 
