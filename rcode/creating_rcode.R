@@ -28,6 +28,7 @@ library(lme4)
 #-------------------------------------------------#
 
 main_path <- "D:/Daten/GitHub/machine_learning/"
+main_path <- "D:/github/machine_learning/" 
 slide_path <- paste0(main_path,"slides/")
 rcode_path <- paste0(main_path,"rcode/")
 
@@ -63,6 +64,10 @@ for (i in 1:length(presparts)){
   rmarkdown::render(presparts[i], "all")
 }
 
+
+for (i in 3:length(presparts)){
+  rmarkdown::render(presparts[i], "md_document")
+}
 
 # B1_DataProcessing
 

@@ -1,10 +1,11 @@
 ---
-title: "Regularization methods"
+title: "Machine Learning: Regularization methods"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  slidy_presentation:
+  slidy_presentation: 
     highlight: haddock
+    keep_md: yes
   beamer_presentation:
     colortheme: dolphin
     fig_caption: no
