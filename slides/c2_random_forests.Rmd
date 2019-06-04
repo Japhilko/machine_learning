@@ -132,7 +132,9 @@ during tuning;
 library(rsample)      # data splitting 
 library(randomForest) # basic implementation
 library(ranger)       # a faster implementation of randomForest
-# an aggregator package for performing many 
+
+
+# caret is an aggregator package for performing many 
 # machine learning models
 library(caret)        
 ```
