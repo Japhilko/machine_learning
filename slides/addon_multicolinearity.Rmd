@@ -110,3 +110,40 @@ coef(lridge)
 ridgemod <- glmnet::glmnet(x = modmatx,y = mody,alpha = 0)
 ```
 
+<!--
+https://drsimonj.svbtle.com/ridge-regression-with-glmnet
+-->
+
+```{r,eval=F,echo=F}
+install.packages("broom")
+```
+
+## [An $R^2$ for ridge regression](https://drsimonj.svbtle.com/ridge-regression-with-glmnet)
+
+```{r}
+rsquare <- function(true, predicted) {
+  sse <- sum((predicted - true)^2)
+  sst <- sum((true - mean(true))^2)
+  rsq <- 1 - sse / sst
+  if (rsq < 0) rsq <- 0
+  return (rsq)
+}
+```
+
+## Prediction and $R^2$
+
+### Make the prediction for the ridge model
+
+```{r}
+library(glmnet)
+cv_ridge <- cv.glmnet(modmatx,mody, alpha = 0)
+pred <- predict(cv_ridge,s = cv_ridge$lambda.min, modmatx)
+```
+
+### The $R^2$ for the ridge model
+
+```{r}
+rsquare(mtcars$mpg,pred)
+rsquare(mtcars$mpg,predict(olsmod))
+```
+

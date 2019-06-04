@@ -207,8 +207,9 @@ m1 <- rpart(formula = Sale_Price ~ .,data = ames_train,
 
 ## the `m1` output. 
 
+<!--
 ![](figure/tree_m1.PNG)
-
+-->
 
 ```{r}
 m1

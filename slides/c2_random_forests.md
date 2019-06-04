@@ -1,7 +1,7 @@
 ---
 title: "Random Forests"
 author: "Jan-Philipp Kolb"
-date: "03 Juni, 2019"
+date: "04 Juni, 2019"
 fontsize: 10pt
 output: 
   slidy_presentation: 

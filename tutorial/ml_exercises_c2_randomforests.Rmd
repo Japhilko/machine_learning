@@ -215,16 +215,16 @@ lattice::levelplot(cormat)
 
 ### Split the dataset 
 
-6) Split the dataset into Train and Test sample. You may use `caTools::sample.split()` and use the ratio as 0.7 and set the seed to be 1000. 
+6) Split the dataset into train and test sample. You may use `caTools::sample.split()` and use the ratio as 0.7 and set the seed to be 1000. 
 <!--
 Make sure to install and load `caTools` package.
 -->
-7) Check the number of rows of Train and Test
+7) Check the number of rows of train and test
 8) We are ready to use decision tree in our dataset. Load the package `rpart` and `rpart.plot` 
 <!--
 If it is not installed, then use the `install.packages()` commmand.
 -->
-9) Use `rpart` to build the decision tree on the Train set. Include all features. Store this model in `dec`
+9) Use `rpart` to build the decision tree on the train set. Include all features. Store this model in `dec`
 10) Use `prp()` to plot the decision tree. 
 <!--
 If you get any error use `par(mar = rep(2, 4))` before the `prp()` command
@@ -315,7 +315,7 @@ base <- rep(1,3183)
 
 15) Remember the `predict()` command in question 11. We will use the same mode and same command except we will set the method to “regression”. This gives us a probability estimates. Store this in pred_dec_reg
 
-16) Load the `ROCR` package. Use the `prediction()`, `performance()` and `plot()` command to print the [**ROC curve**](https://en.wikipedia.org/wiki/Receiver_operating_characteristic. Use `pred_dec_reg` variable from Q7. You can also refer to the previous exercise to see the code.
+16) Load the `ROCR` package. Use the `prediction()`, `performance()` and `plot()` command to print the [**ROC curve**](https://en.wikipedia.org/wiki/Receiver_operating_characteristic). Use `pred_dec_reg` variable from question 7. You can also refer to the previous exercise to see the code.
 
 17) `plot()` the same ROC curve but set `colorize=TRUE`
 

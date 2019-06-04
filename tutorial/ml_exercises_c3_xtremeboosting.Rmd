@@ -20,6 +20,11 @@ knitr::opts_chunk$set(echo = TRUE,cache=T,message=F,warning=F)
 
 ## [eXtremely Boost your machine learning Exercises (Part-1)](https://www.r-exercises.com/2017/09/24/extremely-boost-your-machine-learning-exercises-part-1/)
 
+```{r,eval=F,echo=F}
+install.packages("xgboost")
+```
+
+
 - eXtreme Gradient Boosting is a machine learning model which became really popular few years ago after winning several Kaggle competitions. 
 - It is very powerful algorithm that use an ensemble of weak learners to obtain a strong learner. 
 - Its R implementation is available in xgboost package and it is really worth including into anyone’s machine learning portfolio.
@@ -129,7 +134,7 @@ model <- xgboost(data = dtrain,
 
 ## Solutions boosting exercises - third part
 
-###    Exercise 5   
+### Solution    Exercise 5   
 
 ```{r}
 err<-mean(round(predict(model,dtest))!=getinfo(dtest,'label'))
@@ -137,7 +142,7 @@ print(paste("test-error=", err))
 ```
 
 
-###    Exercise 6   
+### Solution    Exercise 6   
 
 ```{r,eval=F}
 importance.matrix <- xgb.importance(model = model, 
@@ -154,7 +159,7 @@ xgb.plot.importance(importance.matrix)
 ```
 
 
-##    Exercise 7  
+##  Solution   Exercise 7  
 
 ```{r}
 model_watchlist <- xgb.train(data = dtrain,
@@ -168,14 +173,27 @@ model_watchlist <- xgb.train(data = dtrain,
 
 ##  Solution  Exercise 8   
 
-```{r}
+```{r,eval=F}
 model_auc<-xgb.train(data = dtrain,max_depth = 2,
-                       nrounds = 100,objective = "binary:logistic",
-                       watchlist = list(train=dtrain, 
-                                        test=dtest),
-                       eval_metric = 'auc',
-                       eval_metric = 'logloss')
+        nrounds = 100,objective = "binary:logistic",
+        watchlist = list(train=dtrain,test=dtest),
+        eval_metric = 'auc',eval_metric = 'logloss')
 ```
+
+```{r,eval=F,echo=F}
+save(model_auc,file="../data/model_auc.RData")
+```
+
+```{r,echo=F}
+load("../data/model_auc.RData")
+```
+
+## Output `model_auc`
+
+```{r}
+model_auc
+```
+
 
 ## Solution  Exercise 9   
 
@@ -202,19 +220,28 @@ model_auc$evaluation_log %>%
 ```
 
 
-###    Exercise 10  
+##  Solution Exercise 10  
 
-```{r}
-model_eta <- xgb.train(data = dtrain,
-                       max_depth = 2,
-                       eta = 0.05,
-                       nrounds = 100,
-                       objective = "binary:logistic",
-                       watchlist = list(train=dtrain, test=dtest),
-                       eval_metric = 'auc',
-                       eval_metric = 'logloss')
+```{r,eval=F}
+model_eta<-xgb.train(data=dtrain,max_depth = 2,eta = 0.05,
+          nrounds = 100,objective = "binary:logistic",
+          watchlist = list(train=dtrain, test=dtest),
+          eval_metric = 'auc',eval_metric = 'logloss')
 ```
 
+```{r,echo=F,eval=F}
+save(model_eta,file="../data/model_eta.RData")
+```
+
+```{r,echo=F}
+load("../data/model_eta.RData")
+```
+
+## Output of model eta
+
+```{r}
+model_eta
+```
 
 <!--
 https://www.r-exercises.com/2017/10/01/extremely-boost-your-machine-learning-exercises-part-2/
