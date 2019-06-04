@@ -169,7 +169,7 @@ Below we present activation functions commonly seen in may ANNs.
 <!--
 fall under machine learning techniques called Supervised Learning. 
 -->
-- To begin training our notional single-layer one-neuron neural network we initially randomly assign weights. 
+- To begin training our single-layer one-neuron neural network we initially randomly assign weights. 
 - We then run the neural network with the random weights and record the outputs generated. 
 - This is called a forward pass. Output values, in our case called $y$, are a function of the input values ($X$), the random initial weights ($w$) and our choice of the threshold function ($T$).
 
