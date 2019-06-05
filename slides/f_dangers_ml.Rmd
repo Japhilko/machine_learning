@@ -31,18 +31,12 @@ model, or if the problem is with the model parameters, functional
 relationship between variables, or some other
 cause. https://www.nature.com/news/when-google-got-flu-wrong-1.12413
 
-TODO: Insert image.
-
 ## Biased data
 
 Garbage in => Garbage out.
 
-TODO: Insert bit on racist Google image search 
-
 https://www.theguardian.com/technology/2018/jan/12/google-racism-ban-gorilla-black-people
 https://www.theverge.com/2018/1/12/16882408/google-racist-gorillas-photo-recognition-algorithm-ai
-
-TODO: Insert image.
 
 ## Example: How to make a racist AI
 

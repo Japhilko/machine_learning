@@ -150,11 +150,11 @@ plot(moons, col = clust.assignment + 1, main="Python implementation")
 
 Other algorithms are often too new to have mature R
 implementations. One of the more exciting examples of this is a
-non-linear dimension reduction technique called UMAP(TODO: INSERT
-MEANING OF ACRONYM). While at least one R version exists, it is
-significantly slower and more resource intensive than the python
-implementation. The python version is also constantly receiving
-updates, as it is the main focus of the originator of the algorithm.
+non-linear dimension reduction technique called UMAP. While at least
+one R version exists, it is significantly slower and more resource
+intensive than the python implementation. The python version is also
+constantly receiving updates, as it is the main focus of the
+originator of the algorithm.
 
 ```{r}
 
