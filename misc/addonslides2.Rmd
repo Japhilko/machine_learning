@@ -1,0 +1,31 @@
+---
+title: "Add On slides"
+author: "Jan-Philipp Kolb"
+date: "31 5 2019"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## [Three datasets to build a model](https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets)
+
+- In machine learning the model is initially fit on a training dataset that is a set of examples used to fit the parameters.
+
+-  the fitted model is used to predict the responses for the observations in a second dataset called the validation dataset.
+
+
+## 
+
+```{r}
+library(ROCR)
+data(ROCR.simple)
+pred <- prediction(ROCR.simple$predictions,ROCR.simple$labels)
+```
+
+## 
+
+<!--
+https://gerardnico.com/data_mining/error_rate
+-->

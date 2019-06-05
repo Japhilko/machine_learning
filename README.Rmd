@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part A - introduction
 
-- A1 - Laying the foundations in R ([Browser](slides/a1_intro_r.Rmd) | [pdf](slides/a1_intro_r.pdf) | [rcode]())
+- A1 - [Laying the foundations in R](slides/a1_intro_r.md) ([Browser](slides/a1_intro_r.md) | [pdf](slides/a1_intro_r.pdf) | [rcode](rcode/a1_intro_r.R))
 
 <!--
 - [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)
@@ -19,8 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 -->
 ## Part B - lasso and ridge regression
 
-- [B1 - A small recap on linear regression](slides/b1_regression.md)
-- [B2 - Using regularization to prevent overfitting and perform feature selection](slides/b2_regularization.md)
+- [B1 - A small recap on linear regression](slides/b1_regression.md) ([Browser](slides/b1_regression.md) | [pdf](slides/b1_regression.pdf) | [rcode](rcode/b1_regression.R))
+- [B2 - Using regularization to prevent overfitting and perform feature selection](slides/b2_regularization.md) ([Browser](slides/b2_regularization.md) | [pdf](slides/b2_regularization.pdf) | [rcode](rcode/b2_regularization.R))
+
 
 <!--
 - The `glmnet` package
@@ -29,12 +30,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part C - Supervised Learning: Bagging and Boosting, tree-methods 
 
-- [C3 - Supervised learning: random forests](slides/c3_gbm_regression.md)
+- [C1 - Supervised learning: tress and bagging](slides/c1_trees_bagging.md) ([Browser](slides/c1_trees_bagging.md) | [pdf](slides/c1_trees_bagging.pdf) | [rcode](rcode/c1_trees_bagging.R))
+
+- [C2 - Supervised learning: random forests](slides/c2_random_forests.md) ([Browser](slides/c2_random_forests.md) | [pdf](slides/c2_random_forests.pdf) | [rcode](rcode/c2_random_forests.R))
+
+- [C3 - Supervised learning: gradient boosting](slides/c3_gbm_regression.md) ([Browser](slides/c3_gbm_regression.md) | [pdf](slides/c3_gbm_regression.pdf) | [rcode](rcode/c3_gbm_regression.R))
 
 
 ## Part D - Supervised Learning: Neural Network
 
-- [D - Supervised learning: neural network](slides/d_neuralNetworks.md)
+- [D - Supervised learning: neural network](slides/d_neuralNetworks.md) ([Browser](slides/d_neuralNetworks.md) | [pdf](slides/d_neuralNetworks.pdf) | [rcode](rcode/d_neuralNetworks.R))
 
 ## Part E - Unsupervised Learning: kmeans, hdbscan
 

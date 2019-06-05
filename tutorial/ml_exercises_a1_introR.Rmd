@@ -4,6 +4,12 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output:
+  slidy_presentation: 
+    css: mycss.css
+    keep_md: yes
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -12,16 +18,10 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
-  pdf_document: 
-    keep_tex: yes
-    toc: yes
-  slidy_presentation: 
-    css: mycss.css
-    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = T,warning=F,message=F)
 ```
 
 
@@ -94,6 +94,8 @@ round(exp(diff(log(x))), 1)
 x <- runif(8) #1)
 round(exp(diff(log(x))), 1) #2) and 3)
 ```
+
+
 
 <!--
 Exercise cross validation

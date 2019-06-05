@@ -16,7 +16,6 @@ output:
     keep_tex: yes
     toc: yes
   slidy_presentation: 
-    css: mycss.css
     keep_md: yes
 ---
 
@@ -36,6 +35,11 @@ into a number of simple regions. ([**Hastie and Tibshirani**](https://lagunita.s
 ### But:
 
 - These methods do not deliver the best results concerning prediction accuracy. 
+
+### Source of slides
+
+- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
+
 
 <!--
 https://lagunita.stanford.edu/courses/HumanitiesSciences/StatLearning/Winter2016/about
@@ -132,9 +136,28 @@ $$
 - We typically get a very deep, complex tree that may produce good predictions on the training set, but is likely to [**overfit**](https://www.researchgate.net/post/What_is_over_fitting_in_decision_tree) the data, leading to poor performance on unseen data.
 
 
+## Pruning
+
+<!--
+[**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
+-->
+
+- We create three decision trees based on three different samples of the data. 
+- The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
+- These deeper nodes tend to overfit to specific attributes of the sample data; 
+- Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
+- By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
+
+
+
+## Three decision trees based on three samples.
+
+![](figure/decissiontree.PNG)
+
+
+
 ## Regression Trees - preparation
 
-- The following slides are based on the UC Business Analytics R Programming Guide on [**regression trees**](http://uc-r.github.io/regression_trees)
 
 ```{r}
 library(rsample)     # data splitting 
@@ -163,42 +186,7 @@ ames_test  <- testing(ames_split)
 ```
 
 
-## Pruning
 
-<!--
-[**Boston housing data set**](http://lib.stat.cmu.edu/datasets/boston)
--->
-
-- We create three decision trees based on three different samples of the data. 
-- The first few partitions are fairly similar at the top of each tree; - they tend to differ closer to the terminal nodes. 
-- These deeper nodes tend to overfit to specific attributes of the sample data; 
-- Slightly different samples will result in highly variable estimate/ predicted values in the terminal nodes. 
-- By [**pruning**](https://dzone.com/articles/decision-trees-and-pruning-in-r) these lower level decision nodes, we can introduce a little bit of bias in our model that help to stabilize predictions and will tend to generalize better to new, unseen data.
-
-
-
-## Three decision trees based on three samples.
-
-![](figure/decissiontree.PNG)
-
-## Cost complexity criterion
-
-- There is often a balance to be achieved in the depth and complexity of the tree to optimize predictive performance on some unseen data. 
-- To find this balance, we grow a very large tree as showed and then prune it back to find an optimal subtree. 
-- We find this subtree by using a cost complexity parameter ($\alpha$) that penalizes our objective function for the number of terminal nodes of the tree (T).
-
-$$
-\text{minimize}\{SSE + \alpha|T|\}
-$$
-
-## The complexity value $\alpha$  
-
-- For a given value of $\alpha$, we find the smallest pruned tree that has the lowest penalized error. 
-- $\rightarrow$ A close association to the lasso $L_1$ norm penalty. 
-- Smaller penalties tend to produce more complex models, which result in larger trees. 
-- Larger penalties result in much smaller trees. 
-- As a tree grows larger, the reduction in the SSE must be greater than the cost complexity penalty. 
-- We evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
 
 ## Fit a regression tree using `rpart`
 
@@ -219,8 +207,9 @@ m1 <- rpart(formula = Sale_Price ~ .,data = ames_train,
 
 ## the `m1` output. 
 
+<!--
 ![](figure/tree_m1.PNG)
-
+-->
 
 ```{r}
 m1
@@ -269,9 +258,8 @@ go to the 2nd branch.
 We can visualize our model with `rpart.plot`. 
 -->
 
-
-- `rpart.plot` has many plotting options
 <!--
+- `rpart.plot` has many plotting options
 , which we’ll leave to the reader to explore. 
 -->
 - In the default print it will show the percentage of data that fall to that node and the average sales price for that branch. 
@@ -292,8 +280,44 @@ rpart.plot(m1)
 
 There are 80 variables in `ames_train`. So what happened?
 
+- There is often a balance to be achieved in the depth and complexity of the tree to optimize predictive performance on some unseen data. 
+- To find this balance, we grow a very large tree as showed and then prune it back to find an optimal subtree. 
+- We find this subtree by using a cost complexity parameter ($\alpha$) that penalizes our objective function for the number of terminal nodes of the tree (T).
+
+$$
+\text{minimize}\{SSE + \alpha|T|\}
+$$
+
+
+```{r}
+TP <- prune(m1,cp=median(m1$cptable[,'CP']))
+```
+
+## Plot the pruned tree
+
+```{r}
+rpart.plot(TP)
+```
+
+
+<!--
 - `rpart` is automatically applying a range of cost complexity $\alpha$ values to prune the tree. 
 - To compare the error for each $\alpha$ value, `rpart` performs a 10-fold cross validation so that the error associated with a $\alpha$ value is computed on the hold-out validation data. 
+-->
+<!--
+## Cost complexity criterion
+
+
+## The complexity value $\alpha$  
+
+- For a given value of $\alpha$, we find the smallest pruned tree that has the lowest penalized error. 
+- $\rightarrow$ A close association to the lasso $L_1$ norm penalty. 
+- Smaller penalties tend to produce more complex models, which result in larger trees. 
+- Larger penalties result in much smaller trees. 
+- As a tree grows larger, the reduction in the SSE must be greater than the cost complexity penalty. 
+- We evaluate multiple models across a spectrum of $\alpha$ and use cross-validation to identify the optimal $\alpha$ and the optimal subtree.
+-->
+
 
 ## The `plotcp`
 <!--
@@ -485,7 +509,7 @@ hyper_grid %>%
 ```{r}
 optimal_tree <- rpart(formula = Sale_Price ~ .,
     data    = ames_train,method  = "anova",
-    control = list(minsplit = 11, maxdepth = 8, cp = 0.01)
+    control = list(minsplit = 5, maxdepth = 13, cp = 0.0108982)
     )
 ```
 
@@ -583,6 +607,38 @@ Disadvantages: Decision trees are prone to be overfit.
 - This can be addressed by ensemble methods like random forests or boosted trees.
 
 -->
+
+## [Ensembling](https://elitedatascience.com/overfitting-in-machine-learning)
+
+Ensembles are machine learning methods for combining predictions from multiple separate models. 
+
+<!--
+There are a few different methods for ensembling, but the two most common are:
+-->
+
+### Bagging 
+
+attempts to reduce the chance of overfitting complex models.
+
+
+- It trains a large number of "strong" learners in parallel.
+-  A strong learner is a model that's relatively unconstrained.
+-  Bagging then combines all the strong learners together in order to "smooth out" their predictions.
+
+### Boosting 
+
+attempts to improve the predictive flexibility of simple models.
+
+- It trains a large number of "weak" learners in sequence.
+- A weak learner is a constrained model (limit for max depth of tree).
+-    Each one in the sequence focuses on learning from the mistakes of the one before it.
+- Boosting combines all the weak learners into a single strong learner.
+
+## Bagging and boosting
+
+While bagging and boosting are both ensemble methods, they approach the problem from opposite directions.
+
+Bagging uses complex base models and tries to "smooth out" their predictions, while boosting uses simple base models and tries to "boost" their aggregate complexity.
 
 
 ## [Bagging](https://www.r-bloggers.com/improve-predictive-performance-in-r-with-bagging/)
@@ -697,11 +753,33 @@ abline(v = 25, col = "red", lty = "dashed")
 
 1.) Its easier to perform cross-validation. Although we can use the OOB error, performing cross validation will provide a more robust understanding of the true expected test error.
 
-2.) We can assess variable importance across the bagged trees.
+2.) We can assess [**variable importance**](https://topepo.github.io/caret/variable-importance.html) across the bagged trees.
 
+## [Excursus: Variable importance (vi)](https://cran.r-project.org/web/packages/datarobot/vignettes/VariableImportance.html)
 
+- vi measures help understand the results obtained from complex machine learning models 
+- There is no general consensus on the “best” way to compute - or even define - the concept of variable importance. 
+- See a list of many possible approaches to compute vi in the help file of the command `varImp` 
+
+```{r,eval=F}
+?caret::varImp
+```
+
+- vi refers to how much a given model "uses" that variable to make accurate predictions. The more a model relies on a variable to make predictions, the more important it is for the model. 
 
 <!--
+https://stats.stackexchange.com/questions/332960/what-is-variable-importance
+-->
+
+<!--
+
+
+https://topepo.github.io/caret/variable-importance.html
+https://www.salford-systems.com/blog/dan-steinberg/what-is-the-variable-importance-measure
+
+https://christophm.github.io/interpretable-ml-book/pdp.html
+
+
 - We see that the cross-validated RMSE is 36,477 dollar. 
 -->
 
@@ -717,6 +795,8 @@ ctrl <- trainControl(method = "cv",  number = 10)
 bagged_cv <- train(Sale_Price ~ .,data = ames_train,
   method = "treebag",trControl = ctrl,importance = TRUE)
 ```
+
+- `treebag`- means we use a bagging tree
 
 ## Assess results
 
@@ -744,14 +824,14 @@ plot(varImp(bagged_cv), 20)
 ## Extensions
 
 - If we compare this to the test set out of sample we see that our cross-validated error estimate was very close. 
-- We have successfully reduced our error to about $35,000; 
-- Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 
 ```{r predictbaggedcv}
 pred <- predict(bagged_cv, ames_test)
 RMSE(pred, ames_test$Sale_Price)
 ```
 
+- We have successfully reduced our error to about $35k; 
+- Extensions of this bagging concept (random forests and GBMs) can significantly reduce this further.
 
 <!--
 ## [Classification Tree example](https://www.guru99.com/r-decision-trees.html)

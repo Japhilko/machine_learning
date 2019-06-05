@@ -1,17 +1,20 @@
 ---
-title: "Regularization methods"
+title: "Machine Learning: Regularization methods"
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-fontsize: 10pt
-output: 
-  beamer_presentation: 
-    theme: Dresden
+output:
+  slidy_presentation: 
+    highlight: haddock
+    keep_md: yes
+  beamer_presentation:
     colortheme: dolphin
+    fig_caption: no
     fig_height: 3
     fig_width: 5
-    fig_caption: no
     fonttheme: structuresmallcapsserif
     highlight: haddock
+    theme: Dresden
+fontsize: 10pt
 ---
 
 ```{r setup, include=FALSE}

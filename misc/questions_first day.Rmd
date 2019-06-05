@@ -1,0 +1,36 @@
+---
+title: "Questions first day"
+author: "Jan-Philipp Kolb"
+date: "3 6 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+- How to measure colinearity?
+
+
+## 
+
+- Wie bekommt man $R^2$ für ein Ridge Modell
+
+- Was sind die Vorteile von ridge gegenüber ols?
+
+- Wie kann man alle Interaktionseffekte in das Modell mit rein nehmen?
+
+- Kann man auch die Musterlösung ausgedruckt bekommen?
+
+
+##
+
+- Was sagt uns die Variable importance
+- Warum muss man diese nutzen anstatt auf die Koeffizienten zu schauen?
+
+
+- Vorteile zeigen - evtl confusion matrix - warum soll ich ridge verwenden
+
+

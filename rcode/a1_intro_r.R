@@ -21,7 +21,7 @@
 #' ---
 #' 
 ## ----setupintror, include=FALSE------------------------------------------
-knitr::opts_chunk$set(echo = T,cache=T,message=F,warning=F)
+knitr::opts_chunk$set(echo = T,cache=F,message=F,warning=F,eval=T)
 library(knitr)
 
 #' 
@@ -149,15 +149,15 @@ library(knitr)
 
 #' 
 #' 
-#' ## Task: Find R-packages
+#' ## Exercise: Find R-packages
 #' 
 #' Go to https://cran.r-project.org/ and search for packages that can be used:
 #' 
-#' - to reduce overfitting
-#' - for random forests
-#' - for gradient boosting
-#' - for neural networks
-#' - for clustering
+#' 1) to reduce overfitting
+#' 2) for regression trees
+#' 3) for gradient boosting
+#' 4) for neural networks
+#' 5) for clustering
 #' 
 #' 
 #' <!--
@@ -173,11 +173,15 @@ library(dplyr)
 #' 
 #' ![](figure/dplyr_vignette.PNG)
 #' 
+#' ## The package `magrittr`
+#' 
 ## ------------------------------------------------------------------------
 library(magrittr)
 
 #' 
 #' ![](figure/magrittr_vignette.jpg)
+#' 
+#' 
 #' ## Import `.csv` data 
 #' 
 #' ### The `read.csv` command
@@ -243,7 +247,8 @@ cat("TITLE extra line", "# a comment","2 3 5 7", "11 13 17",
 
 #' 
 ## ------------------------------------------------------------------------
-pp <- scan("../data/ex.data",comment.char="#", skip = 1,quiet = TRUE)
+pp <- scan("../data/ex.data",comment.char="#", skip = 1,
+           quiet = TRUE)
 
 #' 
 #' 
@@ -291,10 +296,17 @@ data(iris)
 ## install.packages("datasets.load")
 
 #' 
+#' ## Help page for built in datasets
 #' 
-#' ## Exkurs [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+## ----eval=F--------------------------------------------------------------
+## ?kyphosis
+
 #' 
-#' - Oben rechts befindet sich ein Button Addins 
+#' ![](figure/kyphosis_helppage.PNG)
+#' 
+#' ## Excursus [RStudio Addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+#' 
+#' - In the upper right corner there is a button Addins
 #' 
 #' ![](figure/addins.PNG)
 #' 
@@ -302,16 +314,31 @@ data(iris)
 #' 
 #' 
 #' 
+#' ## How to get help
 #' 
-#' ## Exercise
+#' -  I use [**duckduckgo:**](figure/duckduckgo.PNG)
 #' 
-#' Load the the built-in dataset `swiss` and answer the following questions:
+#' ```
+#' R-project + "what I want to know" 
+#' ```
+#' -  this works of course for all search engines!
 #' 
-#' - How many observations and variables are available?
-#' - What is the scale level of the variables?
 #' 
-#' Create an interactive data table
+#' ![](figure/duckduckgo.PNG)
 #' 
+#' 
+#' ## Exercise: load built-in data
+#' 
+#' ### Load the the built-in dataset `swiss` 
+#' <!--
+#' and answer the following questions:
+#' -->
+#' 1) How many observations and variables are available?
+#' 2) What is the scale level of the variables?
+#' 
+#' ### Interactive data table 
+#' 
+#' 3) Create an interactive data table
 #' 
 #' 
 #' ## The R-package `data.table`
@@ -330,21 +357,28 @@ library(data.table)
 (airq <- data.table(airquality))
 
 #' 
+#' ## Column (and row) names of `airq`
 #' 
-#' ## How to get help
-#' 
-#' -  I use [**duckduckgo:**](figure/duckduckgo.PNG)
-#' 
-#' ```
-#' R-project + "what I want to know" 
-#' ```
-#' -  this works of course for all search engines!
+## ------------------------------------------------------------------------
+colnames(airq)
+rownames(airq)
+
 #' 
 #' 
-#' ![](figure/duckduckgo.PNG)
+#' ## Command `mutate` - create or transform variables
 #' 
 #' 
-#' ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
+## ----eval=F--------------------------------------------------------------
+## ?dplyr::mutate
+
+#' 
+## ------------------------------------------------------------------------
+airq %>%
+  mutate(Temp / max(Temp, na.rm = TRUE)) 
+
+#' 
+#' 
+#' ## [Exercise](https://www.datacamp.com/community/tutorials/pipe-r-tutorial): random numbers
 #' 
 ## ----echo=F--------------------------------------------------------------
 x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017, 
@@ -352,9 +386,9 @@ x <- c(0.109, 0.359, 0.63, 0.996, 0.515, 0.142, 0.017,
 x <- runif(8)
 
 #' 
-#' - Draw 8 random numbers from the uniform distribution and save them in a vector `x`
-#' - Compute the logarithm of `x`, return suitably lagged and iterated differences, 
-#' - compute the exponential function and round the result
+#' 1) Draw 8 random numbers from the uniform distribution and save them in a vector `x`
+#' 2) Compute the logarithm of `x`, return suitably lagged and iterated differences, 
+#' 3) compute the exponential function and round the result
 #' 
 ## ----echo=F--------------------------------------------------------------
 round(exp(diff(log(x))), 1)
@@ -392,6 +426,67 @@ airq
 na.omit(airq)
 
 #' 
+#' ## Available loops in R
+#' 
+#' ![](figure/content_flowchart1.png)
+#' 
+#' ## [Loops in R](https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r?utm_source=adwords_ppc&utm_campaignid=1655852085&utm_adgroupid=61045433942&utm_device=c&utm_keyword=%2Bloops%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=318880582254&utm_targetid=aud-392016246653:kwd-589281898934&utm_loc_interest_ms=&utm_loc_physical_ms=9041580&gclid=Cj0KCQjwocPnBRDFARIsAJJcf97mSXl9jWq7mdoRkuxbhu_LS_WCY00hyty2VW5AbXe7hetdvXio9VAaAmpMEALw_wcB)
+#' 
+#' - This loop calculates the square of the first 10 elements of vector u1
+#' 
+## ------------------------------------------------------------------------
+u1 <- rnorm(30)
+# Initialize `usq`
+usq <- 0
+for(i in 1:10) {
+  # i-th element of `u1` squared into `i`-th position of `usq`
+  usq[i] <- u1[i]*u1[i]
+  print(usq[i])
+}
+print(i)
+
+#' 
+#' ## [Library `purrr` ](https://r4ds.had.co.nz/iteration.html)
+#' 
+#' ### `purrr` - Functional Programming Tools
+#' 
+#' - The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. 
+#' 
+#' <!--
+#' https://cran.r-project.org/web/packages/purrr/purrr.pdf
+#' -->
+#' 
+## ------------------------------------------------------------------------
+library(purrr)
+
+#' 
+#' 
+#' -    `map()` makes a list.
+#' -    `map_lgl()` makes a logical vector.
+#' -    `map_int()` makes an integer vector.
+#' -    `map_dbl()` makes a double vector.
+#' -    `map_chr()` makes a character vector.
+#' 
+#' 
+#' ## Example `map_dbl`
+#' 
+## ------------------------------------------------------------------------
+map_dbl(airq, mean)
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+map_dbl(airq, mean,na.rm=T)
+
+#' 
+#' 
+#' ## Get an overview of the data
+#' 
+## ------------------------------------------------------------------------
+glimpse(clean_titanic)
+
+#' 
+#' 
 #' 
 #' ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
 #' 
@@ -417,12 +512,45 @@ na.omit()
 #' - `na.omit()`: Remove the NA observations 
 #' 
 #' 
-#' ## Get an overview of the data
+#' 
+#' 
+#' ## [With `gather` from wide to long format](http://stackoverflow.com/questions/1181060)
 #' 
 ## ------------------------------------------------------------------------
-glimpse(clean_titanic)
+library(dplyr)
+library(tidyr)
+stocks <- tibble(
+  time = as.Date('2009-01-01') + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+
+gather(stocks, "stock", "price", -time)
 
 #' 
+#' ## Sequences
+#' 
+#' - Later we will create hyperparameter grids.
+#' - To do so, we will need sequences
+#' 
+## ------------------------------------------------------------------------
+# the easiest sequence
+1:4
+# the other way
+4:1
+# the command sequence
+seq(start=1,to = 10,by = 2)
+# we will need the following for loops
+seq_along(14:21)
+
+#' 
+#' 
+#' ## The command `expand.grid`
+#' 
+## ------------------------------------------------------------------------
+expand.grid(letters[1:4],5:3,LETTERS[1:2])
+
 #' 
 #' ## [Example Data - Housing Values in Suburbs of Boston](https://datascienceplus.com/fitting-neural-network-in-r/)
 #' 
@@ -458,6 +586,7 @@ scaled <- as.data.frame(scale(bdat, center = mins,
 #' 
 #' ![](figure/bostonscaled.PNG)
 #' 
+#' 
 #' ## The command `sample`
 #' 
 #' - We can use this command to draw a sample. 
@@ -467,6 +596,29 @@ scaled <- as.data.frame(scale(bdat, center = mins,
 sample(1:10,3,replace=T)
 sample(1:10,3,replace=T)
 
+#' 
+#' ### Create test and training datasets
+#' 
+## ------------------------------------------------------------------------
+ntest <- round(nrow(bdat)*.2)
+ind <- sample(1:nrow(bdat),ntest)
+bdat_test <- bdat[ind,]
+bdat_train <- bdat[-ind,]
+
+#' 
+#' 
+#' ## Alternative to split a dataset
+#' 
+#' - `Y` - Vector of data labels. If there are only a few labels (as is expected) than relative ratio of data in both subsets will be the same.
+#' - `SplitRatio` - Splitting ratio
+#' 
+## ------------------------------------------------------------------------
+split <- caTools::sample.split(Y = bdat$lstat,SplitRatio = .8)
+Train <- bdat[split,]
+Test <- bdat[!split,]
+nrow(Train);nrow(Test)
+
+#' 
 #' 
 #' 
 #' ## Set a seed
@@ -543,6 +695,9 @@ stopCluster(cl)
 #' - [**Course materials for the Data Science Specialization**](https://github.com/DataScienceSpecialization/courses)
 #' - Data wrangling - [**`dplyr` vignette**](https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html) - 
 #' - The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
+#' - Gareth James et al (2013) [**An Introduction to
+#' Statistical Learning**](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf)
+#' 
 #' <!--
 #' Further possible topics of this section:
 #' 
@@ -552,6 +707,29 @@ stopCluster(cl)
 #' 
 #' - mutate function in dplyr package
 #' - the rescale package
+#' 
+#' - loops
+#' - exercise with loops
+#' 
+#' - paste und paste0
+#' - random number generation
+#' - the function diag
+#' 
+#' - mutate
+#' - purrr::map_dbl
+#' 
+#' - what to do with missing values
 #' -->
 #' 
+#' <!--
+#' https://www.r-exercises.com/start-here-to-learn-r/
+#' https://www.r-exercises.com/category/exercises/exercises-intermediate/
+#' 
+#' Exercises that Practice and Extend Skills with R
+#' https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
+#' 
+#' 
+#' Loops in R
+#' https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r?utm_source=adwords_ppc&utm_campaignid=1655852085&utm_adgroupid=61045433942&utm_device=c&utm_keyword=%2Bloops%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=318880582254&utm_targetid=aud-392016246653:kwd-589281898934&utm_loc_interest_ms=&utm_loc_physical_ms=9041580&gclid=Cj0KCQjwocPnBRDFARIsAJJcf97mSXl9jWq7mdoRkuxbhu_LS_WCY00hyty2VW5AbXe7hetdvXio9VAaAmpMEALw_wcB
+#' -->
 #' 

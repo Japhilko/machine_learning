@@ -2,7 +2,9 @@
 title: "The dangers of machine learning"
 author: "Alexander Murray-Watters"
 date: "12 April 2019"
-output: slidy_presentation
+output: 
+  slidy_presentation: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}

@@ -1,5 +1,5 @@
 #' ---
-#' title: "Regression in R"
+#' title: "Machine Learning: Regression in R"
 #' author: "Jan-Philipp Kolb"
 #' date: "`r format(Sys.time(), '%d %B, %Y')`"
 #' fontsize: 10pt
@@ -27,7 +27,8 @@ pres=T
 #' 
 #' ## Why a part on simple regression
 #' 
-#' - Some machine learning concepts are based on regression
+#' - OLS can be seen as a simple machine learning technique
+#' - Some other machine learning concepts are based on regression (e.g. regularization).
 #' - We would like to remind you how simple regression works in R. 
 #' - We also want to show the constraints
 #' - In a next step we will learn, how to coop with these constraints
@@ -128,6 +129,12 @@ m3 <- lm(fo,data=mtcars)
 #' 
 #' ## [Further possibilities to specify the formula](https://cran.r-project.org/web/packages/Formula/vignettes/Formula.pdf)
 #' 
+#' ### Take all available predictors
+#' 
+## ------------------------------------------------------------------------
+m3_a<-lm(mpg~.,data=mtcars) 
+
+#' 
 #' ### Interaction effect
 #' 
 ## ------------------------------------------------------------------------
@@ -144,7 +151,6 @@ m3b<-lm(mpg~wt:cyl,data=mtcars)
 ## 
 ## m3c<-lm(mpg~cyl/wt,data=mtcars)
 ## 
-## 
 ## summary(m3b)
 ## summary(m3c)
 
@@ -156,12 +162,27 @@ m3b<-lm(mpg~wt:cyl,data=mtcars)
 m3d<-lm(mpg~log(wt),data=mtcars) 
 
 #' 
-#' 
 #' <!--
 #' https://www.r-bloggers.com/r-tutorial-series-regression-with-interaction-variables/
 #' 
 #' https://www.r-bloggers.com/interpreting-interaction-coefficient-in-r-part1-lm/
 #' -->
+#' 
+#' ## The command `setdiff`
+#' 
+#' - We can use the command to create a dataset with only the features, without the dependent variable
+#' 
+## ------------------------------------------------------------------------
+names(mtcars)
+features <- setdiff(names(mtcars), "mpg")
+features
+
+#' 
+## ------------------------------------------------------------------------
+featdat <- mtcars[,features]
+
+#' 
+#' 
 #' 
 #' ## The command `model.matrix`
 #' 
@@ -171,7 +192,7 @@ m3d<-lm(mpg~log(wt),data=mtcars)
 #' https://genomicsclass.github.io/book/pages/expressing_design_formula.html
 #' -->
 #' 
-#' - With `model.matrix`the qualitative variables are automatically dummy encoded 
+#' - With `model.matrix` the qualitative variables are automatically dummy encoded 
 #' 
 ## ----eval=F--------------------------------------------------------------
 ## ?model.matrix
@@ -261,7 +282,7 @@ plot(m3,2)
 #' - If the residuals are normally distributed, they should be on the same line.
 #' 
 #' 
-#' ## Example: object orientation
+#' ## Another example for object orientation
 #' 
 #' - `m3` is now a special regression object
 #' - Various functions can be applied to this object
@@ -287,6 +308,8 @@ head(pre)
 #' 
 #' ## Regression diagnostic with base-R
 #' 
+#' ### Visualizing residuals
+#' 
 ## ----eval=F--------------------------------------------------------------
 ## plot(mtcars$wt,mtcars$mpg)
 ## abline(m1)
@@ -301,16 +324,30 @@ head(pre)
 ## plot(p)
 
 #' 
-#' ## The mean squared error
+#' ## The mean squared error (mse)
 #' 
 #' - The [**MSE**](https://en.wikipedia.org/wiki/Mean_squared_error) measures the average of the squares of the errors
 #' - [**The lower the better**](http://r-statistics.co/Linear-Regression.html)
 #' 
 ## ------------------------------------------------------------------------
 (mse5 <- mean((mtcars$mpg -  pre)^2)) # model 5
-(mse4 <- mean((mtcars$mpg -  predict(m4))^2)) # model 4
+(mse3 <- mean((mtcars$mpg -  predict(m3))^2)) 
 
 #' 
+#' <!--
+#' https://stats.stackexchange.com/questions/107643/how-to-get-the-value-of-mean-squared-error-in-a-linear-regression-in-r
+#' -->
+#' 
+#' ### Package `Metrics` to compute mse
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## install.packages("Metrics")
+
+#' 
+## ------------------------------------------------------------------------
+library(Metrics)
+mse(mtcars$mpg,predict(m3))
+
 #' 
 #' 
 #' ## The `visreg`-package
@@ -453,26 +490,26 @@ visreg2d(m6, "wt", "hp", plot.type = "persp")
 
 #' -->
 #' 
-#' ## Nice table output with [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
+#' ## [The bias-variance tradeoff](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) (I)
 #' 
+#' - The bias–variance tradeoff is the property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa. 
 #' 
-## ----eval=F,echo=F-------------------------------------------------------
-## install.packages("stargazer")
-
+#' [![](figure/bias_variance_tradeoff2.png)](https://towardsdatascience.com/understanding-the-bias-variance-tradeoff-165e6942b229)
 #' 
-## ----eval=F--------------------------------------------------------------
-## library(stargazer)
-## stargazer(m3, type="html")
-
+#' <!--
+#' https://lbelzile.github.io/lineaRmodels/bias-and-variance-tradeoff.html
+#' http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+#' https://daviddalpiaz.github.io/r4sl/biasvariance-tradeoff.html
+#' -->
 #' 
-#' ### Example HTML output:
+#' ## The bias-variance tradeoff (II)
 #' 
-#' ![](figure/stargazertabex.PNG)
+#' ![](figure/bias_variance_tradeoff.PNG)
 #' 
-#' ## Exercise
+#' ## Exercise: regression Ames housing data
 #' 
-#' - Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
-#' - Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
+#' 1) Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with (at least) the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
+#' 2) Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
 #' 
 #' <!--
 #' lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
@@ -515,6 +552,24 @@ ames_data <- AmesHousing::make_ames()
 ames_data <- AmesHousing::make_ames()
 cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
 
+#' 
+#' ## A correlation plot
+#' 
+#' <!--
+#' https://www.r-bloggers.com/variable-importance-plot-and-variable-selection/
+#' -->
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## install.packages("corrplot")
+
+#' 
+#' 
+## ------------------------------------------------------------------------
+library(corrplot)
+corrplot(cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")]))
+
+#' 
+#' 
 #' 
 #' 
 #' ## Multicollinearity
@@ -597,10 +652,9 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 #' 
 #' ## What can be done against overvitting
 #' 
-#' - Cross Validation 
+#' - [**Cross Validation **](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
 #' - Train with more data
 #' - Remove features
-#' 
 #' - Regularization - e.g. ridge and lasso regression
 #' - Ensembling - e.g. bagging and boosting
 #' 
@@ -633,31 +687,52 @@ library(tidyverse)
 library(caret)
 
 #' 
+#' <!--
 #' ### Swiss Fertility and Socioeconomic Indicators
 #' 
 ## ------------------------------------------------------------------------
 data("swiss")
 
+#' -->
 #' 
 #' ## [Cross Validation in R](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
 #' 
 #' 
 #' ### Split data into training and testing dataset
 #' 
-## ------------------------------------------------------------------------
-training.samples <- swiss$Fertility %>%
-createDataPartition(p = 0.8, list = FALSE)
-train.data  <- swiss[training.samples, ]
-test.data <- swiss[-training.samples, ]
+## ----eval=F,echo=F-------------------------------------------------------
+## training.samples <- swiss$Fertility %>%
+## createDataPartition(p = 0.8, list = FALSE)
+## train.data  <- swiss[training.samples, ]
+## test.data <- swiss[-training.samples, ]
 
+#' 
+## ------------------------------------------------------------------------
+training.samples <- ames_data$Sale_Price %>%
+createDataPartition(p = 0.8, list = FALSE)
+train.data  <- ames_data[training.samples, ]
+test.data <- ames_data[-training.samples, ]
+
+#' 
 #' 
 #' ### Build the model and make predictions
 #' 
+#' <!--
+#' # Make predictions and compute the R2, RMSE and MAE
+#' -->
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## model <- lm(Fertility ~., data = train.data)
+## (predictions <- model %>% predict(test.data))
+
+#' 
 ## ------------------------------------------------------------------------
-model <- lm(Fertility ~., data = train.data)
+model <- lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, 
+            data = train.data)
 # Make predictions and compute the R2, RMSE and MAE
 (predictions <- model %>% predict(test.data))
 
+#' 
 #' 
 #' ## Model with cross validation
 #' 
@@ -665,11 +740,31 @@ model <- lm(Fertility ~., data = train.data)
 #' 
 ## ------------------------------------------------------------------------
 train.control <- caret::trainControl(method = "LOOCV")
-# Train the model
-model <- train(Fertility ~., data = swiss, method = "lm",
-               trControl = train.control)
-model %>% predict(test.data)
 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## # Train the model
+## model2 <- train(Fertility ~., data = swiss, method = "lm",
+##                trControl = train.control)
+## model2 %>% predict(test.data)
+
+#' 
+## ----eval=F--------------------------------------------------------------
+## # Train the model
+## model2 <- train(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd,
+##                data = train.data, method = "lm",
+##                trControl = train.control)
+## model2 %>% predict(test.data)
+
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## save(model2,file="../data/ml_ols_cv_model2.RData")
+
+#' 
+## ----echo=F--------------------------------------------------------------
+load("../data/ml_ols_cv_model2.RData")
+
+#' 
 #' 
 #' <!--
 #' ## [k-fold cross validation](https://www.analyticsvidhya.com/blog/2018/05/improve-model-performance-cross-validation-in-python-r/)
@@ -678,7 +773,7 @@ model %>% predict(test.data)
 #' ## Summarize the results
 #' 
 ## ------------------------------------------------------------------------
-print(model)
+summary(model2)$coefficients
 
 #' 
 #' 
@@ -748,6 +843,21 @@ print(model)
 #' https://statisticsbyjim.com/regression/overfitting-regression-models/
 #' -->
 #' 
+#' ## Nice table output with [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
+#' 
+#' 
+## ----eval=F,echo=F-------------------------------------------------------
+## install.packages("stargazer")
+
+#' 
+## ----eval=F--------------------------------------------------------------
+## library(stargazer)
+## stargazer(m3, type="html")
+
+#' 
+#' ### Example HTML output:
+#' 
+#' ![](figure/stargazertabex.PNG)
 #' 
 #' 
 #' 
@@ -783,4 +893,18 @@ print(model)
 #' 
 #' Colinearity
 #' https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
+#' -->
+#' 
+#' <!--
+#' http://r-statistics.co/Linear-Regression.html
+#' https://machinelearningmastery.com/linear-regression-in-r/
+#' https://journal.r-project.org/archive/2017/RJ-2017-048/RJ-2017-048.pdf
+#' https://cran.r-project.org/web/packages/Metrics/Metrics.pdf
+#' -->
+#' 
+#' 
+#' <!--
+#' ToDo Liste
+#' 
+#' Den Effekt von cross validation zeigen
 #' -->

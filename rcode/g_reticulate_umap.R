@@ -5,8 +5,6 @@
 #' output: beamer_presentation
 #' ---
 #' 
-#' TODO: NEED TO ADD EXERCISES
-#' 
 #' 
 #' # Why Python? Isn't this an R course?
 #' 
@@ -29,12 +27,13 @@
 #' Install the `reticulate` package so that you can call python from R.
 #' 
 ## ---- eval=FALSE---------------------------------------------------------
-## install.packages("reticulate")
+## ##install.packages("reticulate")
 
 #' 
 #' Load the `reticulate` package.
 #' 
 ## ------------------------------------------------------------------------
+
 library(reticulate)
 library(ggplot2)
 
@@ -129,6 +128,7 @@ plot(moons, col = res$cluster + 1, main="R implementation")
 #' implementation.
 #' 
 ## ------------------------------------------------------------------------
+library(reticulate)
 
 hdbscan.main <- import("hdbscan")
 
@@ -267,6 +267,22 @@ ggplot(dim.reduct) +
 
 
 #' 
+#' ## Exercise: What happens if you extract more dimensions than original variables?
+#' Does it run? What does the plotted output look like? 
+#' 
+#' ## Exercise: Try changing the distance  metric  from 'euclidean'to something that doesn't make sense for this data. Do you still get an output?
+#' 
+#' ## Exercise: What happens as you change the minimum number of neighbors? 
+#' 
+#' 
+#' ## Exercise Apply hdbscan to the output of UMAP. 
+#' 
+#' 
+#' ## Exercise: try changing the minimum distance between poins in the embeding. Does hdbscan's performance improve or declineas the distance increases/increases? 
+#' 
+#' <!-- ## Exercise: TODO: Need to add another dataset to run stuff on. Maybe combine with clustering? -->
+#' 
+#' ## 
 #' 
 #' 
 #' # Additional resources and further reading

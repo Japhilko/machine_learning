@@ -4,6 +4,11 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output:
+  slidy_presentation: 
+    keep_md: yes
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -12,12 +17,6 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
-  pdf_document: 
-    keep_tex: yes
-    toc: yes
-  slidy_presentation: 
-    css: mycss.css
-    keep_md: yes
 ---
 
 ```{r setupintror, include=FALSE}
@@ -446,6 +445,41 @@ for(i in 1:10) {
 print(i)
 ```
 
+## [Library `purrr` ](https://r4ds.had.co.nz/iteration.html)
+
+### `purrr` - Functional Programming Tools
+
+- The pattern of looping over a vector, doing something to each element and saving the results is so common that the purrr package provides a family of functions to do it for you. 
+
+<!--
+https://cran.r-project.org/web/packages/purrr/purrr.pdf
+-->
+
+```{r}
+library(purrr)
+```
+
+
+-    `map()` makes a list.
+-    `map_lgl()` makes a logical vector.
+-    `map_int()` makes an integer vector.
+-    `map_dbl()` makes a double vector.
+-    `map_chr()` makes a character vector.
+
+
+## Example `map_dbl`
+
+```{r}
+map_dbl(airq, mean)
+```
+
+
+```{r}
+map_dbl(airq, mean,na.rm=T)
+```
+
+
+
 
 
 ## [Clean the titanic data set](https://www.guru99.com/r-decision-trees.html)
@@ -471,12 +505,13 @@ na.omit()
 
 - `na.omit()`: Remove the NA observations 
 
-
 ## Get an overview of the data
 
 ```{r}
 glimpse(clean_titanic)
 ```
+
+
 
 ## [With `gather` from wide to long format](http://stackoverflow.com/questions/1181060)
 
@@ -661,6 +696,7 @@ swirl()
 - The usage of pipes - [**`magrittr` vignette**](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)
 - Gareth James et al (2013) [**An Introduction to
 Statistical Learning**](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf)
+
 <!--
 Further possible topics of this section:
 
@@ -691,8 +727,39 @@ https://www.r-exercises.com/category/exercises/exercises-intermediate/
 Exercises that Practice and Extend Skills with R
 https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
 
-
 Loops in R
 https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r?utm_source=adwords_ppc&utm_campaignid=1655852085&utm_adgroupid=61045433942&utm_device=c&utm_keyword=%2Bloops%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=318880582254&utm_targetid=aud-392016246653:kwd-589281898934&utm_loc_interest_ms=&utm_loc_physical_ms=9041580&gclid=Cj0KCQjwocPnBRDFARIsAJJcf97mSXl9jWq7mdoRkuxbhu_LS_WCY00hyty2VW5AbXe7hetdvXio9VAaAmpMEALw_wcB
+
+confusion matrix
+https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/
+
+lime
+https://homes.cs.washington.edu/~marcotcr/blog/lime/
+https://www.oreilly.com/learning/introduction-to-local-interpretable-model-agnostic-explanations-lime
+https://homes.cs.washington.edu/~marcotcr/blog/lime/
+
+training error and test error
+https://rapidminer.com/blog/validate-models-training-test-error/
+
+Variable importance measures
+https://www.ifi.uzh.ch/dam/jcr:82fc9567-e690-40fa-baff-eb7a37aa00c0/MasterThesis.pdf
+
+support vector machines
+https://de.wikipedia.org/wiki/Support_Vector_Machine
+
+naive bias classifier
+https://en.wikipedia.org/wiki/Naive_Bayes_classifier
+
+stochastic gradient descent
+https://en.wikipedia.org/wiki/Stochastic_gradient_descent
+
+productionalization
+https://en.wiktionary.org/wiki/productionalization
+
+Machine Learning mit R und caret
+https://statistik-dresden.de/archives/14967
+
+ice curve
+https://christophm.github.io/interpretable-ml-book/ice.html
 -->
 

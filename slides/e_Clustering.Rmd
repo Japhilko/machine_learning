@@ -2,11 +2,13 @@
 title: "Clustering"
 author: "Jan-Philipp Kolb and Alexander Murray-Watters"
 date: "18 Januar 2019"
-output: beamer_presentation
+output: 
+  slidy_presentation: 
+    keep_md: yes
 ---
 
 ```{r setupClustering, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE,eval=F)
 ```
 
 

@@ -12,12 +12,33 @@
 #'     fig_caption: no
 #'     fonttheme: structuresmallcapsserif
 #'     highlight: haddock
-#' 
 #' ---
 #' 
 ## ----setup, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(echo = T,warning=F,message=F)
 
+#' 
+#' 
+#' ## Insufficient Solution
+#' 
+#' - When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
+#' - This causes significant issues because it means: 
+#' 
+#' (1) The least-squares estimates are not unique. There are an infinite set of solutions available and most of these solutions overfit the data. 
+#' 
+#' (2) In many instances the result will be computationally infeasible.
+#' 
+#' - To resolve this issue we can remove variables until $p<n$ and then fit an OLS regression model. 
+#' - Although we can use pre-processing tools to apply this manual approach ([**Kuhn and Johnson**](http://appliedpredictivemodeling.com/), 2013, pp. 43-47), it can be cumbersome and prone to errors.
+#' 
+#' 
+#' ## Regularized Regression
+#' 
+#' - When we experience these concerns, one alternative is to use regularized regression (also commonly referred to as penalized models or [**shrinkage methods**](https://gerardnico.com/lang/r/ridge_lasso)) to control the parameter estimates. 
+#' 
+#' - Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
+#' 
+#' 
 #' 
 #' ## [Regularization](https://elitedatascience.com/algorithm-selection)
 #' 
@@ -51,12 +72,12 @@ knitr::opts_chunk$set(echo = T,warning=F,message=F)
 #' 
 #' ### Strengths: 
 #' 
-#' Linear regression is straightforward to understand and explain, and can be regularized to avoid overfitting. In addition, linear models can be updated easily with new data
+#' - Linear regression is straightforward to understand and explain, and can be regularized to avoid overfitting. 
+#' - Linear models can be updated easily with new data
 #' 
 #' ### Weaknesses: 
 #' 
-#' Linear regression in general performs poorly when there are non-linear relationships. They are not naturally flexible enough to capture more complex patterns, and adding the right interaction terms or polynomials can be tricky and time-consuming.
-#' 
+#' - Linear regression in general performs poorly when there are non-linear relationships. - They are not naturally flexible enough to capture more complex patterns, and adding the right interaction terms or polynomials can be tricky and time-consuming.
 #' 
 #' ## [Three regularized regression algorithms](https://elitedatascience.com/algorithm-selection)
 #' 
@@ -78,6 +99,20 @@ knitr::opts_chunk$set(echo = T,warning=F,message=F)
 #' <!--
 #' - The ratio of the two penalty types should be tuned.
 #' -->
+#' 
+#' 
+#' ## The objective function of regularized regression methods...
+#' 
+#' - is very similar to OLS regression; 
+#' - And a penalty parameter (P) is added.
+#' 
+#' $$
+#' \text{minimize}\{SSE+P\}
+#' $$
+#'  
+#' - There are two main penalty parameters, which have a similar effect. 
+#' - They constrain the size of the coefficients such that the only way the coefficients can increase is if we experience a comparable decrease in the sum of squared errors (SSE). 
+#' 
 #' 
 #' 
 #' ## Preparations
@@ -179,18 +214,6 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 #' - Nor do we always wish to remove variables as this may be removing signal in our data.
 #' -->
 #' 
-#' ## Insufficient Solution
-#' 
-#' - When the number of features exceed the number of observations ($p>n$), the OLS solution matrix is not invertible. 
-#' - This causes significant issues because it means: 
-#' 
-#' (1) The least-squares estimates are not unique. There are an infinite set of solutions available and most of these solutions overfit the data. 
-#' 
-#' (2) In many instances the result will be computationally infeasible.
-#' 
-#' - To resolve this issue we can remove variables until $p<n$ and then fit an OLS regression model. 
-#' - Although we can use pre-processing tools to apply this manual approach ([**Kuhn and Johnson**](http://appliedpredictivemodeling.com/), 2013, pp. 43-47), it can be cumbersome and prone to errors.
-#' 
 #' <!--
 #' ## Interpretability
 #' 
@@ -199,25 +222,6 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 #' - Model selection approaches can be computationally inefficient, do not scale well, and they simply assume a feature as in or out. 
 #' - We may wish to use a soft threshholding approach that slowly pushes a feature’s effect towards zero. As will be demonstrated, this can provide additional understanding regarding predictive signals.
 #' -->
-#' 
-#' ## Regularized Regression
-#' 
-#' - When we experience these concerns, one alternative to OLS regression is to use regularized regression (also commonly referred to as penalized models or shrinkage methods) to control the parameter estimates. 
-#' 
-#' - Regularized regression puts contraints on the magnitude of the coefficients and will progressively shrink them towards zero. This constraint helps to reduce the magnitude and fluctuations of the coefficients and will reduce the variance of our model.
-#' 
-#' 
-#' ## The objective function of regularized regression methods...
-#' 
-#' - is very similar to OLS regression; 
-#' - And a penalty parameter (P) is added.
-#' 
-#' $$
-#' \text{minimize}\{SSE+P\}
-#' $$
-#'  
-#' - There are two main penalty parameters, which have a similar effect. 
-#' - They constrain the size of the coefficients such that the only way the coefficients can increase is if we experience a comparable decrease in the sum of squared errors (SSE). 
 #' 
 #' ## Ridge Regression
 #' 
@@ -258,20 +262,19 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_train)$coefficients
 #' 
 #' - We have a large negative parameter that fluctuates until $log(\lambda)\approx 2$ where it then continuously shrinks to zero. 
 #' 
-#' - This is indicitive of multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
+#' - This is indicates multicollinearity and likely illustrates that constraining our coefficients with $log(\lambda)>2$ may reduce the variance, and therefore the error, in our model.
 #' 
 #' - But how do we find the amount of shrinkage (or $\lambda$) that minimizes our error? 
 #' 
 #' ## Implementation in `glmnet`
 #' 
-#' - `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
-#' - The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
-#' - We also log transform our response variable due to its skeweness.
-#' 
 ## ----fig.height=2.5------------------------------------------------------
 plot(density(ames_data$Sale_Price),main="")
 
 #' 
+#' - `glmnet` does not use the formula method (y ~ x) so prior to modeling we need to create our feature and target set.
+#' - The `model.matrix` function is used on our feature set, which will automatically dummy encode qualitative variables 
+#' - We also log transform our response variable due to its skeweness.
 #' 
 #' 
 #' <!--
@@ -438,6 +441,81 @@ abline(v = log(ames_ridge$lambda.1se), col = "red",
 #' 
 #' ![](figure/ridgeTop25influentalVars.PNG)
 #' 
+#' ## Exercise: ridge regression (I)
+#' 
+#' 1) Load the `lars` package and the `diabetes` dataset 
+#' <!--
+#' (Efron, Hastie, Johnstone and Tibshirani (2003) “Least Angle Regression” (with discussion) Annals of Statistics). 
+#' This is the same dataset from the LASSO exercise set and has patient level data on the progression of diabetes. 
+#' -->
+#' 2) Load the `glmnet` package to implement ridge regression.
+#' 
+#' The dataset has three matrices x, x2 and y. x has a smaller set of independent variables while x2 contains the full set with quadratic and interaction terms. y is the dependent variable which is a quantitative measure of the progression of diabetes.
+#' 
+#' 3) Generate separate scatterplots with the line of best fit for all the predictors in x with y on the vertical axis.
+#' 
+#' 4) Regress y on the predictors in x using OLS. We will use this result as benchmark for comparison.
+#' 
+#' ## Exercise: ridge regression (II)
+#' <!-- 
+#' Exercise 2
+#' -->
+#' 
+#' 5) Fit the ridge regression model using the `glmnet` function and plot the trace of the estimated coefficients against lambdas. Note that coefficients are shrunk closer to zero for higher values of lambda.
+#' 
+#' <!--
+#' Exercise 3
+#' -->
+#' 
+#' 6) Use the cv.glmnet function to get the cross validation curve and the value of lambda that minimizes the mean cross validation error.
+#' 
+#' <!--
+#' Exercise 4
+#' -->
+#' 
+#' 7) Using the minimum value of lambda from the previous exercise, get the estimated beta matrix. Note that coefficients are lower than least squares estimates.
+#' 
+#' <!--
+#' Exercise 5
+#' -->
+#' 
+#' 8) To get a more parsimonious model we can use a higher value of lambda that is within one standard error of the minimum. Use this value of lambda to get the beta coefficients. Note the shrinkage effect on the estimates.
+#' 
+#' ## Exercise: ridge regression (III)
+#' 
+#' <!--
+#' Exercise 6
+#' -->
+#' 
+#' 9) Split the data randomly between a training set (80%) and test set (20%). We will use these to get the prediction standard error for least squares and ridge regression models.
+#' 
+#' <!--
+#' Exercise 7
+#' -->
+#' 
+#' 10) Fit the ridge regression model on the training and get the estimated beta coefficients for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+#' 
+#' <!--
+#' Exercise 8
+#' -->
+#' 
+#' 11) Get predictions from the ridge regression model for the test set and calculate the prediction standard error. Do this for both the minimum lambda and the higher lambda within 1-standard error of the minimum.
+#' 
+#' <!--
+#' Exercise 9
+#' -->
+#' 
+#' 12) Fit the least squares model on the training set.
+#' 
+#' 
+#' <!-- 
+#' Exercise 10
+#' -->
+#' 
+#' 13) Get predictions from the least squares model for the test set and calculate the prediction standard error.
+#' 
+#' 
+#' 
 #' 
 #' ## Ridge and Lasso
 #' 
@@ -523,7 +601,7 @@ abline(v = log(ames_ridge$lambda.1se), col = "red",
 #' ## Lasso Regression
 #' 
 #' - Originally introduced in geophysics literature in 1986
-#' - The least absolute shrinkage and selection operator (Lasso) model was rediscovered and popularized in 1996 by Robert Tibshirani 
+#' - The least absolute shrinkage and selection operator (Lasso) model was rediscovered and popularized in [**1996 by Robert Tibshirani**](https://www.jstor.org/stable/2346178?seq=1#page_scan_tab_contents) 
 #' - It is an alternative to Ridge regression that has a small modification to the penalty in the objective function.
 #' - Rather than the $L_2$ penalty we use the following $L_1$ penalty $\lambda\sum_{j=1}^p |\beta_j|$ in the objective function.
 #' 
@@ -614,6 +692,15 @@ abline(v=log(ames_lasso$lambda.min),col="red",lty="dashed")
 abline(v=log(ames_lasso$lambda.1se),col="red",lty="dashed")
 
 #' 
+#' ## Lasso for other models than least squares
+#' 
+#' - Though originally defined for least squares, Lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
+#' 
+#' - Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
+#' 
+#' - The Lasso is closely related to basis pursuit denoising.
+#' 
+#' 
 #' ## Advantages and Disadvantages
 #' 
 #' - Similar to Ridge, the Lasso pushes many of the collinear features towards each other rather than allowing for one to be wildly positive and the other wildly negative. 
@@ -680,7 +767,7 @@ min(ames_lasso$cvm)
 #' 
 #' ## Elastic Nets
 #' 
-#' A generalization of the Ridge and Lasso models is the Elastic Net (Zou and Hastie, 2005), which combines the two penalties.
+#' A generalization of the Ridge and Lasso models is the Elastic Net ([**Zou and Hastie, 2005**](https://rss.onlinelibrary.wiley.com/doi/full/10.1111/j.1467-9868.2005.00503.x)), which combines the two penalties.
 #' 
 #' $$
 #' minimize \{SSE+\lambda \sum^p_{j=1} \beta^2_j+\lambda_2\sum_{j=1}^p |\beta_j|\}
@@ -718,7 +805,7 @@ ridge    <- glmnet(ames_train_x, ames_train_y, alpha = 0.0)
 #' ## Tuning the Elastic Net model
 #' 
 #' - $\lambda$  is the primary tuning parameter in Ridge and Lasso models. 
-#' - With Elastic Nets, we want to tune the $\lambda$ and the alpha parameters. 
+#' - With elastic nets, we want to tune the $\lambda$ and the $\alpha$ parameters. 
 #' - To set up our tuning, we create a common `fold_id`, which just allows us to apply the same CV folds to each model. 
 #' 
 ## ------------------------------------------------------------------------
@@ -821,6 +908,9 @@ mean((ames_test_y - pred)^2)
 ## install.packages("caret")
 
 #' 
+#' ### [**Vignette for the `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
+#' 
+#' 
 ## ------------------------------------------------------------------------
 library(caret)
 train_control <- trainControl(method = "cv", number = 10)
@@ -831,7 +921,6 @@ caret_mod <- train(x = ames_train_x,y = ames_train_y,
                    tuneLength = 10)
 
 #' 
-#' - [**Vignette for the `caret` package **](https://cran.r-project.org/web/packages/caret/vignettes/caret.html)
 #' 
 #' 
 #' ## Output for `caret` model 
@@ -926,13 +1015,6 @@ caret::varImp(fit2,lambda=0.0007567)
 #' 
 #' ![](figure/biglasso.PNG)
 #' 
-#' ## Lasso for other models than least squares
-#' 
-#' - Though originally defined for least squares, Lasso regularization is easily extended to a wide variety of statistical models including generalized linear models, generalized estimating equations, proportional hazards models, and M-estimators, in a straightforward fashion.
-#' 
-#' - Lasso’s ability to perform subset selection relies on the form of the constraint and has a variety of interpretations including in terms of geometry, Bayesian statistics, and convex analysis.
-#' 
-#' - The Lasso is closely related to basis pursuit denoising.
 #' 
 #' ## Resources and Links  
 #' 
@@ -961,10 +1043,11 @@ caret::varImp(fit2,lambda=0.0007567)
 #' 
 #' - [Penalized Regression in R](https://machinelearningmastery.com/penalized-regression-in-r/)
 #' 
+#' <!--
 #' - [Penalized Logistic Regression Essentials in R](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/)
 #' 
 #' - [All you need to know about Regularization](https://towardsdatascience.com/all-you-need-to-know-about-regularization-b04fc4300369)
-#' 
+#' --
 #' <!--
 #' Evtl könnte ich hier noch eine Aufgabe draus machen:
 #' https://www.r-bloggers.com/ridge-regression-and-the-lasso/
