@@ -280,8 +280,6 @@ Does it run? What does the plotted output look like?
 
 ## Exercise: try changing the minimum distance between poins in the embeding. Does hdbscan's performance improve or declineas the distance increases/increases? 
 
-<!-- ## Exercise: TODO: Need to add another dataset to run stuff on. Maybe combine with clustering? -->
-
 ## 
 
 

@@ -79,7 +79,7 @@ two.clust.eg <- rbind(matrix(rnorm(1000, sd = 0.8), ncol=2),
 
 clust <- kmeans(two.clust.eg, centers=2)
 
-plot(x, col = clust$cluster)
+plot(two.clust.eg, col = clust$cluster)
 ##     points(cl$centers, col = 1:2, pch = 8, cex = 2)
 
 

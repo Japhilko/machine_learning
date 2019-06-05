@@ -302,7 +302,6 @@ leading to more patrol assignments in that area, etc.
   credit system in China](https://en.wikipedia.org/wiki/Social_Credit_System)).
 
 
-- TODO: Add bit on adversarial neural networks. : https://towardsdatascience.com/breaking-neural-networks-with-adversarial-attacks-f4290a9a45aa?gi=c4e5bf7acb50
 
 ## There is no magic to machine learning
 
