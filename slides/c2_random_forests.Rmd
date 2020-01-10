@@ -17,7 +17,7 @@ output:
 ---
 
 ```{r setupbaggingboosting, include=FALSE}
-knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=T,eval=T)
+knitr::opts_chunk$set(echo = T,message=F,warning=F,cache=F,eval=T)
 library(knitr)
 ```
 
@@ -598,7 +598,10 @@ load("../data/ml_rf_optimal_ranger.RData")
 
 ## Variable importance / node impurity
 
-- [**Node impurity**](https://stats.stackexchange.com/questions/223109/what-do-we-mean-by-node-impurity-ref-random-forest) represents how well the trees split the data. There are several impurity measures; 
+- [**Node impurity**](https://stats.stackexchange.com/questions/223109/what-do-we-mean-by-node-impurity-ref-random-forest) represents how well the trees split the data. 
+<!--
+There are several impurity measures; 
+-->
 - Gini index, Entropy and misclassification error are [options](https://www.cs.indiana.edu/~predrag/classes/2017fallb365/ch4.pdf) to measure the node impurity
 
 - We set `importance = 'impurity'`, which allows us to assess variable importance. 

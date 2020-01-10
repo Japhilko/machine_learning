@@ -1,13 +1,29 @@
 ---
 title: "Machine Learning - what is it"
-author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: beamer_presentation
+fontsize: 10pt
+output: 
+  beamer_presentation: 
+    colortheme: dolphin
+    fig_height: 3
+    fig_width: 5
+    fonttheme: structuresmallcapsserif
+    highlight: haddock
+    theme: Dresden
+  slidy_presentation: 
+    highlight: haddock
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+
+## Target of the course
+
+- What is machine learning?
+- Why do we need it? / When do we need it?
 
 
 ## [The curse of dimensionality](https://www.freecodecamp.org/news/the-curse-of-dimensionality-how-we-can-save-big-data-from-itself-d9fa0f872335/)
