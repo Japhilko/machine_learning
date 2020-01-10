@@ -1,7 +1,7 @@
 ---
-title: "To Do Machine Learning Course"
+title: "The packages magrittr, dplyr and purrr"
 author: "Jan-Philipp Kolb"
-date: "12 April 2019"
+date: "28 5 2019"
 output: html_document
 ---
 
@@ -9,10 +9,45 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Parts not used yet
+## 
 
-- The datasets we use for this course
-- What to do with missing data?
+```{r}
+library(magrittr)
+```
+
+
+## Create or transform variables
+
+
+```{r}
+?dplyr::mutate
+```
+
+## Apply a function to each element of a vector
+
+```{r}
+?purrr::map_dbl
+```
+
+## Arrange rows by variables
+
+```{r}
+?dplyr::arrange
+```
+
+```{r}
+dplyr::arrange(mtcars, cyl, disp)
+```
+
+## Select top (or bottom) n rows (by value)
+
+```{r}
+?dplyr::top_n
+```
+
+```{r}
+mtcars %>% dplyr::top_n(-2)
+```
 
 
 
@@ -168,6 +203,8 @@ best_h2o_model <- sorted_grid@model_ids[[1]]
 best_model <- h2o.getModel(best_h2o_model)
 ```
 
+
+
 <!--
 ames_lasso, s
 -->
@@ -180,4 +217,151 @@ ames_lasso, s
 - Unfortunately, decision trees suffer from a major flaw. 
 - If you allow them to grow limitlessly, they can completely "memorize" the training data, just from creating more and more and more branches.
 - As a result, individual unconstrained decision trees are very prone to being overfit.
+
+
+
+## [Three datasets to build a model](https://en.wikipedia.org/wiki/Training,_validation,_and_test_sets)
+
+- In machine learning the model is initially fit on a training dataset that is a set of examples used to fit the parameters.
+
+-  the fitted model is used to predict the responses for the observations in a second dataset called the validation dataset.
+
+
+```{r}
+library(ROCR)
+data(ROCR.simple)
+pred <- prediction(ROCR.simple$predictions,ROCR.simple$labels)
+```
+
+
+<!--
+https://gerardnico.com/data_mining/error_rate
+-->
+
+
+## The plotted error rate
+
+```{r,echo=F}
+sqrtm1 <- sqrt(m1$mse[which.min(m1$mse)])
+```
+
+
+- The plotted error rate above is based on the OOB sample error and can be accessed directly at 
+
+```{r,eval=F}
+m1$mse
+```
+
+- The lowest error rate, is 344 trees providing an average home sales price error of  `r sqrtm1` Dollar.
+
+```{r}
+which.min(m1$mse)
+sqrt(m1$mse[which.min(m1$mse)])
+```
+
+
+<!--
+if we did not want to use the OOB samples. 
+valid_split <- valid_split%>% na.omit()
+-->
+
+<!--
+## A validation set to measure predictive accuracy
+
+- `randomForest` also allows us to use a validation set to measure predictive accuracy 
+- Here we split our training set further to create a training and validation set. 
+- The validation data is in `xtest` and `ytest`.
+
+```{r,eval=F}
+set.seed(123)
+valid_split <- initial_split(ames_train, .8)
+# training data
+ames_train_v2 <- analysis(valid_split)
+# validation data
+ames_valid <- rsample::assessment(valid_split)
+x_test <- ames_valid[setdiff(names(ames_valid), "Sale_Price")]
+y_test <- ames_valid$Sale_Price
+```
+
+
+## Run the model   
+
+- With the command `randomForest`
+
+```{r,eval=F}
+rf_oob_comp <- randomForest(formula=Sale_Price ~ .,
+  data=ames_train_v2,xtest = x_test,ytest=y_test)
+```
+
+```{r,eval=F,echo=F}
+save(rf_oob_comp,file="../data/ml_rf_oob_comp.RData")
+```
+
+```{r,echo=F}
+load("../data/ml_rf_oob_comp.RData")
+```
+
+### extract OOB & validation errors
+
+```{r}
+oob <- sqrt(rf_oob_comp$mse)
+validation <- sqrt(rf_oob_comp$test$mse)
+```
+
+
+
+## compare error rates
+
+- Extract OOB & validation errors
+
+```{r,eval=F}
+tibble::tibble(
+  `Out of Bag Error` = oob,
+  `Test error` = validation,
+  ntrees = 1:rf_oob_comp$ntree
+) %>%
+  gather(Metric, RMSE, -ntrees) %>%
+  ggplot(aes(ntrees, RMSE, color = Metric)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  xlab("Number of trees")
+```
+
+## 
+
+```{r,echo=F}
+## Compare error rates
+tibble::tibble(
+  `Out of Bag Error` = oob,
+  `Test error` = validation,
+  ntrees = 1:rf_oob_comp$ntree
+) %>%
+  gather(Metric, RMSE, -ntrees) %>%
+  ggplot(aes(ntrees, RMSE, color = Metric)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  xlab("Number of trees")
+```
+
+-->
+
+
+## Annex 
+
+
+### Scoring models - metrics
+
+- Many packages do not keep track of which observations were part of the OOB sample for a given tree and which were not. 
+- If you are comparing multiple models, you’d want to score each on the same validation set to compare performance. 
+- It is possible to compute certain metrics such as [**root mean squared logarithmic error**](https://peltarion.com/knowledge-center/documentation/modeling-view/build-an-ai-model/loss-functions/mean-squared-logarithmic-error) (RMSLE) on the OOB sample, but it is not built in to all packages. 
+- So if you want to compare multiple models or use a slightly less traditional loss function you will likely want to still perform cross validation.
+
+
+<!--
+https://maths-people.anu.edu.au/~johnm/courses/r/exercises/pdf/r-exercises.pdf
+https://www.hackerearth.com/practice/machine-learning/machine-learning-algorithms/tutorial-random-forest-parameter-tuning-r/tutorial/
+-->
+
+  
+
 

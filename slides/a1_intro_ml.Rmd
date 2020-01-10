@@ -1,0 +1,23 @@
+---
+title: "Machine Learning - what is it"
+author: "Jan-Philipp Kolb"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## [The curse of dimensionality](https://www.freecodecamp.org/news/the-curse-of-dimensionality-how-we-can-save-big-data-from-itself-d9fa0f872335/)
+
+- We have a high number of possible features
+- We want to find the best representation of data in a lower-dimensional space
+
+<!--
+## Parts not used yet
+
+- The datasets we use for this course
+- What to do with missing data?
+-->
