@@ -4,11 +4,6 @@ author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt
 output:
-  slidy_presentation: 
-    keep_md: yes
-  pdf_document: 
-    keep_tex: yes
-    toc: yes
   beamer_presentation: 
     colortheme: dolphin
     fig_height: 3
@@ -17,10 +12,15 @@ output:
     fonttheme: structuresmallcapsserif
     highlight: haddock
     theme: Dresden
+  pdf_document: 
+    keep_tex: yes
+    toc: yes
+  slidy_presentation: 
+    keep_md: yes
 ---
 
 ```{r setupregression, include=FALSE}
-knitr::opts_chunk$set(echo = T,warning = F,message = F)
+knitr::opts_chunk$set(echo = T,warning = F,message = F,cache=F)
 pres=T
 ```
 
