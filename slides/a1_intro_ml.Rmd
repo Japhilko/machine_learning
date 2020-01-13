@@ -55,6 +55,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - It is critical to have a clear idea of the which is a priority
 
+
+## [Bootstrapping](https://www.statmethods.net/advstats/bootstrapping.html)
+
+- [**Bootstrap**](https://www.datacamp.com/community/tutorials/bootstrap-r) is a method of inference about a population using sample data.
+
 ## [The curse of dimensionality](https://www.freecodecamp.org/news/the-curse-of-dimensionality-how-we-can-save-big-data-from-itself-d9fa0f872335/)
 
 - We have a high number of possible features

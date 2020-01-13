@@ -560,26 +560,7 @@ ames_data <- AmesHousing::make_ames()
 cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")])
 ```
 
-## A correlation plot
-
-<!--
-https://www.r-bloggers.com/variable-importance-plot-and-variable-selection/
--->
-
-```{r,eval=F,echo=F}
-install.packages("corrplot")
-```
-
-
-```{r}
-library(corrplot)
-corrplot(cor(ames_data[,c("Sale_Price","Gr_Liv_Area","TotRms_AbvGrd")]))
-```
-
-
-
-
-## Multicollinearity
+## Effects of multicollinearity
 
 ```{r}
 lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
@@ -602,6 +583,19 @@ lm(Sale_Price ~ TotRms_AbvGrd, data = ames_data)$coefficients
 
 - This is a common result when collinearity exists. 
 - Coefficients for correlated features become over-inflated and can fluctuate significantly. 
+
+
+<!--
+How to test for multicollinearity
+-->
+
+## [](https://www.r-bloggers.com/multicollinearity-in-r/)
+
+```{r}
+library(GGally)
+ggpairs(ames_data[,c("Sale_Price","TotRms_AbvGrd","Gr_Liv_Area")])
+```
+
 
 
 ## Consequences
