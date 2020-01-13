@@ -53,6 +53,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 - [G - reticulate package: Umap](slides/g_reticulate_umap.md)
 
+
+
+# Remarks
+
+The sources are often linked in the headline. Please ask if something is unclear. 
+
 <!--
 - work with python and R
 -->
