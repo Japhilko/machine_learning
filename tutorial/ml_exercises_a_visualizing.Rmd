@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T,message = F,warning=F)
+knitr::opts_chunk$set(echo = T,message = F,warning=F,cache=F)
 ```
 
 ## Exercises: Visualizing dataset to apply machine learning
