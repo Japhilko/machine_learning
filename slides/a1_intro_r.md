@@ -1,7 +1,7 @@
 ---
 title: "Machine Learning - the basics in R"
 author: "Jan-Philipp Kolb"
-date: "09 Januar, 2020"
+date: "10 Januar, 2020"
 fontsize: 10pt
 output:
   slidy_presentation: 
@@ -601,7 +601,7 @@ airq %>%
 
 
 ```
-## [1]  0.5  3.0  0.2  0.2 29.9  0.8  0.0
+## [1] 0.4 1.8 0.8 0.3 5.6 0.7 0.3
 ```
 
 
@@ -620,7 +620,7 @@ x %>% log() %>%
 ```
 
 ```
-## [1]  0.5  3.0  0.2  0.2 29.9  0.8  0.0
+## [1] 0.4 1.8 0.8 0.3 5.6 0.7 0.3
 ```
 
 
@@ -695,16 +695,16 @@ for(i in 1:10) {
 ```
 
 ```
-## [1] 0.03161853
-## [1] 0.7767657
-## [1] 0.08629954
-## [1] 3.220062
-## [1] 0.4655009
-## [1] 0.07906708
-## [1] 0.1317907
-## [1] 0.207933
-## [1] 1.257818
-## [1] 0.08255892
+## [1] 0.0125462
+## [1] 0.7652947
+## [1] 0.004381737
+## [1] 0.3330371
+## [1] 2.449474
+## [1] 0.1049677
+## [1] 0.1397859
+## [1] 1.198122
+## [1] 4.630858
+## [1] 0.05172757
 ```
 
 ```r
@@ -836,16 +836,16 @@ gather(stocks, "stock", "price", -time)
 ## # A tibble: 30 x 3
 ##    time       stock   price
 ##    <date>     <chr>   <dbl>
-##  1 2009-01-01 X     -0.334 
-##  2 2009-01-02 X      0.223 
-##  3 2009-01-03 X      2.06  
-##  4 2009-01-04 X      2.68  
-##  5 2009-01-05 X     -2.24  
-##  6 2009-01-06 X      1.31  
-##  7 2009-01-07 X      0.164 
-##  8 2009-01-08 X      0.359 
-##  9 2009-01-09 X     -0.591 
-## 10 2009-01-10 X      0.0713
+##  1 2009-01-01 X     -0.708 
+##  2 2009-01-02 X     -0.584 
+##  3 2009-01-03 X     -1.04  
+##  4 2009-01-04 X      0.0611
+##  5 2009-01-05 X     -0.586 
+##  6 2009-01-06 X     -0.446 
+##  7 2009-01-07 X      0.209 
+##  8 2009-01-08 X      0.0214
+##  9 2009-01-09 X      0.162 
+## 10 2009-01-10 X     -0.619 
 ## # … with 20 more rows
 ```
 
@@ -973,7 +973,7 @@ sample(1:10,3,replace=T)
 ```
 
 ```
-## [1] 3 3 3
+## [1] 4 9 7
 ```
 
 ```r
@@ -981,7 +981,7 @@ sample(1:10,3,replace=T)
 ```
 
 ```
-## [1] 5 6 9
+## [1] 1 4 5
 ```
 
 ### Create test and training datasets
@@ -1016,6 +1016,39 @@ nrow(Train);nrow(Test)
 ## [1] 102
 ```
 
+## [Dealing with missingness](https://bradleyboehmke.github.io/HOML/engineering.html#dealing-with-missingness)
+
+
+
+```r
+sum(is.na(AmesHousing::ames_raw))
+```
+
+```
+## [1] 13997
+```
+
+
+
+```r
+library(magrittr)
+library(tidyverse)
+
+AmesHousing::ames_raw %>%
+  is.na() %>%
+  reshape2::melt() %>%
+  ggplot(aes(Var2, Var1, fill=value)) + 
+    geom_raster() + 
+    coord_flip() +
+    scale_y_continuous(NULL, expand = c(0, 0)) +
+    scale_fill_grey(name = "", 
+                    labels = c("Present", 
+                               "Missing")) +
+    xlab("Observation") +
+    theme(axis.text.y  = element_text(size = 4))
+```
+
+![](a1_intro_r_files/figure-slidy/unnamed-chunk-51-1.png)<!-- -->
 
 
 ## Set a seed
@@ -1055,7 +1088,7 @@ end_time - start_time
 ```
 
 ```
-## Time difference of 0.646827 secs
+## Time difference of 1.043894 secs
 ```
 
 
@@ -1090,7 +1123,7 @@ end_time - start_time
 ```
 
 ```
-## Time difference of 0.468081 secs
+## Time difference of 0.5147061 secs
 ```
 
 

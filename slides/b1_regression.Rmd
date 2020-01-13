@@ -662,7 +662,7 @@ https://en.wikipedia.org/wiki/Overfitting
 - [**Cross Validation **](http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/)
 - Train with more data
 - Remove features
-- Regularization - e.g. ridge and lasso regression
+- [**Regularization**](https://bradleyboehmke.github.io/HOML/regularized-regression.html) - e.g. ridge and lasso regression
 - Ensembling - e.g. bagging and boosting
 
 <!--

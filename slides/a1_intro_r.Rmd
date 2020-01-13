@@ -618,6 +618,31 @@ Test <- bdat[!split,]
 nrow(Train);nrow(Test)
 ```
 
+## [Dealing with missingness](https://bradleyboehmke.github.io/HOML/engineering.html#dealing-with-missingness)
+
+
+```{r}
+sum(is.na(AmesHousing::ames_raw))
+```
+
+
+```{r,cache=T}
+library(magrittr)
+library(tidyverse)
+
+AmesHousing::ames_raw %>%
+  is.na() %>%
+  reshape2::melt() %>%
+  ggplot(aes(Var2, Var1, fill=value)) + 
+    geom_raster() + 
+    coord_flip() +
+    scale_y_continuous(NULL, expand = c(0, 0)) +
+    scale_fill_grey(name = "", 
+                    labels = c("Present", 
+                               "Missing")) +
+    xlab("Observation") +
+    theme(axis.text.y  = element_text(size = 4))
+```
 
 
 ## Set a seed

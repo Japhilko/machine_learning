@@ -440,7 +440,7 @@ list-style-type: none;
   <p class="author">
 Jan-Philipp Kolb
   </p>
-  <p class="date">09 Januar, 2020</p>
+  <p class="date">10 Januar, 2020</p>
 </div>
 <div id="introduction-round" class="slide section level2">
 <h1>Introduction round</h1>
@@ -884,7 +884,7 @@ and answer the following questions:
 <li>Compute the logarithm of <code>x</code>, return suitably lagged and iterated differences,</li>
 <li>compute the exponential function and round the result</li>
 </ol>
-<pre><code>## [1]  0.5  3.0  0.2  0.2 29.9  0.8  0.0</code></pre>
+<pre><code>## [1] 0.4 1.8 0.8 0.3 5.6 0.7 0.3</code></pre>
 </div>
 <div id="the-pipe-operator" class="slide section level2">
 <h1><a href="https://www.datacamp.com/community/tutorials/pipe-r-tutorial">The pipe operator</a></h1>
@@ -895,7 +895,7 @@ and answer the following questions:
 <a class="sourceLine" id="cb32-5" title="5"><span class="st">    </span><span class="kw">diff</span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb32-6" title="6"><span class="st">    </span><span class="kw">exp</span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb32-7" title="7"><span class="st">    </span><span class="kw">round</span>(<span class="dv">1</span>)</a></code></pre></div>
-<pre><code>## [1]  0.5  3.0  0.2  0.2 29.9  0.8  0.0</code></pre>
+<pre><code>## [1] 0.4 1.8 0.8 0.3 5.6 0.7 0.3</code></pre>
 </div>
 <div id="how-to-deal-with-missing-values" class="slide section level2">
 <h1>How to deal with missing values</h1>
@@ -947,16 +947,16 @@ and answer the following questions:
 <a class="sourceLine" id="cb39-6" title="6">  usq[i] &lt;-<span class="st"> </span>u1[i]<span class="op">*</span>u1[i]</a>
 <a class="sourceLine" id="cb39-7" title="7">  <span class="kw">print</span>(usq[i])</a>
 <a class="sourceLine" id="cb39-8" title="8">}</a></code></pre></div>
-<pre><code>## [1] 0.03161853
-## [1] 0.7767657
-## [1] 0.08629954
-## [1] 3.220062
-## [1] 0.4655009
-## [1] 0.07906708
-## [1] 0.1317907
-## [1] 0.207933
-## [1] 1.257818
-## [1] 0.08255892</code></pre>
+<pre><code>## [1] 0.0125462
+## [1] 0.7652947
+## [1] 0.004381737
+## [1] 0.3330371
+## [1] 2.449474
+## [1] 0.1049677
+## [1] 0.1397859
+## [1] 1.198122
+## [1] 4.630858
+## [1] 0.05172757</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">print</span>(i)</a></code></pre></div>
 <pre><code>## [1] 10</code></pre>
 </div>
@@ -1041,16 +1041,16 @@ https://cran.r-project.org/web/packages/purrr/purrr.pdf
 <pre><code>## # A tibble: 30 x 3
 ##    time       stock   price
 ##    &lt;date&gt;     &lt;chr&gt;   &lt;dbl&gt;
-##  1 2009-01-01 X     -0.334 
-##  2 2009-01-02 X      0.223 
-##  3 2009-01-03 X      2.06  
-##  4 2009-01-04 X      2.68  
-##  5 2009-01-05 X     -2.24  
-##  6 2009-01-06 X      1.31  
-##  7 2009-01-07 X      0.164 
-##  8 2009-01-08 X      0.359 
-##  9 2009-01-09 X     -0.591 
-## 10 2009-01-10 X      0.0713
+##  1 2009-01-01 X     -0.708 
+##  2 2009-01-02 X     -0.584 
+##  3 2009-01-03 X     -1.04  
+##  4 2009-01-04 X      0.0611
+##  5 2009-01-05 X     -0.586 
+##  6 2009-01-06 X     -0.446 
+##  7 2009-01-07 X      0.209 
+##  8 2009-01-08 X      0.0214
+##  9 2009-01-09 X      0.162 
+## 10 2009-01-10 X     -0.619 
 ## # … with 20 more rows</code></pre>
 </div>
 <div id="sequences" class="slide section level2">
@@ -1127,9 +1127,9 @@ https://cran.r-project.org/web/packages/purrr/purrr.pdf
 <li>We need the command later to split our dataset into a test and a training dataset.</li>
 </ul>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
-<pre><code>## [1] 3 3 3</code></pre>
+<pre><code>## [1] 4 9 7</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
-<pre><code>## [1] 5 6 9</code></pre>
+<pre><code>## [1] 1 4 5</code></pre>
 <h3 id="create-test-and-training-datasets">Create test and training datasets</h3>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1">ntest &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">nrow</span>(bdat)<span class="op">*</span>.<span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb70-2" title="2">ind &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(bdat),ntest)</a>
@@ -1149,6 +1149,27 @@ https://cran.r-project.org/web/packages/purrr/purrr.pdf
 <pre><code>## [1] 404</code></pre>
 <pre><code>## [1] 102</code></pre>
 </div>
+<div id="dealing-with-missingness" class="slide section level2">
+<h1><a href="https://bradleyboehmke.github.io/HOML/engineering.html#dealing-with-missingness">Dealing with missingness</a></h1>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">sum</span>(<span class="kw">is.na</span>(AmesHousing<span class="op">::</span>ames_raw))</a></code></pre></div>
+<pre><code>## [1] 13997</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="kw">library</span>(magrittr)</a>
+<a class="sourceLine" id="cb76-2" title="2"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb76-3" title="3"></a>
+<a class="sourceLine" id="cb76-4" title="4">AmesHousing<span class="op">::</span>ames_raw <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb76-5" title="5"><span class="st">  </span><span class="kw">is.na</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb76-6" title="6"><span class="st">  </span>reshape2<span class="op">::</span><span class="kw">melt</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb76-7" title="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(Var2, Var1, <span class="dt">fill=</span>value)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-8" title="8"><span class="st">    </span><span class="kw">geom_raster</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-9" title="9"><span class="st">    </span><span class="kw">coord_flip</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-10" title="10"><span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="ot">NULL</span>, <span class="dt">expand =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-11" title="11"><span class="st">    </span><span class="kw">scale_fill_grey</span>(<span class="dt">name =</span> <span class="st">&quot;&quot;</span>, </a>
+<a class="sourceLine" id="cb76-12" title="12">                    <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Present&quot;</span>, </a>
+<a class="sourceLine" id="cb76-13" title="13">                               <span class="st">&quot;Missing&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-14" title="14"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Observation&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-15" title="15"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.text.y  =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">4</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
 <div id="set-a-seed" class="slide section level2">
 <h1>Set a seed</h1>
 <ul>
@@ -1156,40 +1177,40 @@ https://cran.r-project.org/web/packages/purrr/purrr.pdf
 <li>If we set a seed, we get the same result for random events.</li>
 <li>This function is mainly required for simulations.</li>
 </ul>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="kw">set.seed</span>(<span class="dv">234</span>)</a>
-<a class="sourceLine" id="cb74-2" title="2"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="kw">set.seed</span>(<span class="dv">234</span>)</a>
+<a class="sourceLine" id="cb77-2" title="2"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
 <pre><code>## [1] 1 2 2</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="kw">set.seed</span>(<span class="dv">234</span>)</a>
-<a class="sourceLine" id="cb76-2" title="2"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="kw">set.seed</span>(<span class="dv">234</span>)</a>
+<a class="sourceLine" id="cb79-2" title="2"><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,<span class="dv">3</span>,<span class="dt">replace=</span>T)</a></code></pre></div>
 <pre><code>## [1] 1 2 2</code></pre>
 </div>
 <div id="time-measurement" class="slide section level2">
 <h1><a href="https://www.r-bloggers.com/5-ways-to-measure-running-time-of-r-code/">Time measurement</a></h1>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1">start_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb78-2" title="2">ab &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000000</span>)</a>
-<a class="sourceLine" id="cb78-3" title="3">end_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb78-4" title="4"></a>
-<a class="sourceLine" id="cb78-5" title="5">end_time <span class="op">-</span><span class="st"> </span>start_time</a></code></pre></div>
-<pre><code>## Time difference of 0.646827 secs</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1">start_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb81-2" title="2">ab &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000000</span>)</a>
+<a class="sourceLine" id="cb81-3" title="3">end_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb81-4" title="4"></a>
+<a class="sourceLine" id="cb81-5" title="5">end_time <span class="op">-</span><span class="st"> </span>start_time</a></code></pre></div>
+<pre><code>## Time difference of 1.043894 secs</code></pre>
 </div>
 <div id="how-many-cores-are-available" class="slide section level2">
 <h1>How many cores are available</h1>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="kw">library</span>(doParallel)</a>
-<a class="sourceLine" id="cb80-2" title="2"><span class="kw">detectCores</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="kw">library</span>(doParallel)</a>
+<a class="sourceLine" id="cb83-2" title="2"><span class="kw">detectCores</span>()</a></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 </div>
 <div id="make-cluster" class="slide section level2">
 <h1>Make cluster</h1>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1">cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())</a>
-<a class="sourceLine" id="cb82-2" title="2"><span class="kw">registerDoParallel</span>(cl)</a></code></pre></div>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1">start_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb83-2" title="2">ab &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000000</span>)</a>
-<a class="sourceLine" id="cb83-3" title="3">end_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
-<a class="sourceLine" id="cb83-4" title="4"></a>
-<a class="sourceLine" id="cb83-5" title="5">end_time <span class="op">-</span><span class="st"> </span>start_time</a></code></pre></div>
-<pre><code>## Time difference of 0.468081 secs</code></pre>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1"><span class="kw">stopCluster</span>(cl)</a></code></pre></div>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">?parallel<span class="op">::</span>makeCluster</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1">cl &lt;-<span class="st"> </span><span class="kw">makeCluster</span>(<span class="kw">detectCores</span>())</a>
+<a class="sourceLine" id="cb85-2" title="2"><span class="kw">registerDoParallel</span>(cl)</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1">start_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb86-2" title="2">ab &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">10000000</span>)</a>
+<a class="sourceLine" id="cb86-3" title="3">end_time &lt;-<span class="st"> </span><span class="kw">Sys.time</span>()</a>
+<a class="sourceLine" id="cb86-4" title="4"></a>
+<a class="sourceLine" id="cb86-5" title="5">end_time <span class="op">-</span><span class="st"> </span>start_time</a></code></pre></div>
+<pre><code>## Time difference of 0.5147061 secs</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="kw">stopCluster</span>(cl)</a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1">?parallel<span class="op">::</span>makeCluster</a></code></pre></div>
 <!--
 ## [The `swirl` package](https://swirlstats.com/)
 
