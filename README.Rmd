@@ -11,7 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part A - introduction
 
-- A1 - [Laying the foundations in R](slides/a1_intro_r.md) ([Browser](slides/a1_intro_r.md) | [pdf](slides/a1_intro_r.pdf) | [rcode](rcode/a1_intro_r.R))
+- A1 - [Introduction to machine learning](slides/a1_intro_ml.md) ([pdf](slides/a1_intro_ml.pdf))
+- A2 - [Laying the foundations in R](slides/a1_intro_r.md) ([Browser](slides/a1_intro_r.md) | [pdf](slides/a1_intro_r.pdf) | [rcode](rcode/a1_intro_r.R))
 
 <!--
 - [A2 - What is machine learning and why should you care](slides/intro_ml.Rmd)

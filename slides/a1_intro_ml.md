@@ -1,6 +1,6 @@
 ---
 title: "Machine Learning - what is it"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "13 Januar, 2020"
 fontsize: 10pt
 output: 
   slidy_presentation: 
@@ -15,9 +15,7 @@ output:
     theme: Dresden
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+
 
 
 ## Target of the course
