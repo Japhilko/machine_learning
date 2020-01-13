@@ -56,6 +56,23 @@ knitr::opts_chunk$set(echo = FALSE)
 - It is critical to have a clear idea of the which is a priority
 
 
+## [The bias-variance tradeoff](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) (I)
+
+- The bias–variance tradeoff is the property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa. 
+
+[![](figure/bias_variance_tradeoff2.png)](https://towardsdatascience.com/understanding-the-bias-variance-tradeoff-165e6942b229)
+
+<!--
+https://lbelzile.github.io/lineaRmodels/bias-and-variance-tradeoff.html
+http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
+https://daviddalpiaz.github.io/r4sl/biasvariance-tradeoff.html
+-->
+
+## The bias-variance tradeoff (II)
+
+![](figure/bias_variance_tradeoff.PNG)
+
+
 ## [Bootstrapping](https://www.statmethods.net/advstats/bootstrapping.html)
 
 - [**Bootstrap**](https://www.datacamp.com/community/tutorials/bootstrap-r) is a method of inference about a population using sample data.

@@ -36,54 +36,47 @@ pres=T
 http://enhancedatascience.com/2017/06/29/machine-learning-explained-overfitting/
 -->
 
-## Variables of the `mtcars` dataset
 
-Help for the `mtcars` dataset:
-
-```{r,eval=F}
-?mtcars
-```
-<!--
-displacement - Hubraum
--->
--	 mpg -	 Miles/(US) gallon
--	 cyl -	 Number of cylinders
--	 disp	- Displacement (cu.in.)
--	 hp	- Gross horsepower
--	 drat -	 Rear axle ratio
-- wt	- Weight (1000 lbs)
--	 qsec	- 1/4 mile time
--	 vs	- Engine (0 = V-shaped, 1 = straight)
--	 am	-  Transmission (0 = automatic, 1 = manual)
--	 gear	-  Number of forward gears
--	 carb -	 Number of carburetors
-
-
-## Dataset `mtcars`
-
-```{r,echo=F}
-library(knitr)
-kable(mtcars)
-```
-
-
-## Distributions of two variables of `mtcars`
+## [The Ames Iowa Housing Data](http://ww2.amstat.org/publications/jse)
 
 ```{r}
-par(mfrow=c(1,2))
-plot(density(mtcars$wt)); plot(density(mtcars$mpg))
+ames_data <- AmesHousing::make_ames()
 ```
+
+### Some Variables
+
+- `Gr_Liv_Area`: Above grade (ground) living area square feet
+- `TotRms_AbvGrd`: Total rooms above grade (does not include bathrooms
+- `MS_SubClass`: Identifies the type of dwelling involved in the sale.
+- `MS_Zoning`: Identifies the general zoning classification of the sale.
+- `Lot_Frontage`: Linear feet of street connected to property
+- `Lot_Area`: Lot size in square feet
+- `Street`: Type of road access to property
+- `Alley`: Type of alley access to property
+- `Lot_Shape`: General shape of property
+- `Land_Contour`: Flatness of the propert
+
+
+
+## Exercise: regression Ames housing data
+
+1) Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with (at least) the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
+2) Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
+
+<!--
+lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
+-->
 
 
 
 ## A simple regression model
 
-### Dependent variable - miles per gallon (mpg)
+### Dependent variable - `Sale_Price`
 
-### Independent variable - weight (wt)
+### Independent variable - `Gr_Liv_Area`
 
 ```{r}
-m1 <- lm(mpg ~ wt,data=mtcars)
+m1 <- lm(Sale_Price ~ Gr_Liv_Area,data=ames_data)
 m1
 ```
 
@@ -98,14 +91,14 @@ summary(m1)
 ### Model without intercept
 
 ```{r}
-m2 <- lm(mpg ~ - 1 + wt,data=mtcars)
+m2 <- lm(Sale_Price ~ - 1 + Gr_Liv_Area,data=ames_data)
 summary(m2)$coefficients
 ```
 
 ### Adding further variables
 
 ```{r}
-m3 <- lm(mpg ~ wt + cyl,data=mtcars)
+m3 <- lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd,data=ames_data)
 summary(m3)$coefficients
 ```
 
@@ -497,49 +490,6 @@ visreg2d(m6, "wt", "hp", plot.type = "persp")
 ```
 -->
 
-## [The bias-variance tradeoff](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff) (I)
-
-- The bias–variance tradeoff is the property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa. 
-
-[![](figure/bias_variance_tradeoff2.png)](https://towardsdatascience.com/understanding-the-bias-variance-tradeoff-165e6942b229)
-
-<!--
-https://lbelzile.github.io/lineaRmodels/bias-and-variance-tradeoff.html
-http://www.sthda.com/english/articles/38-regression-model-validation/157-cross-validation-essentials-in-r/
-https://daviddalpiaz.github.io/r4sl/biasvariance-tradeoff.html
--->
-
-## The bias-variance tradeoff (II)
-
-![](figure/bias_variance_tradeoff.PNG)
-
-## Exercise: regression Ames housing data
-
-1) Install the package `AmesHousing` and create a [**processed version**](https://cran.r-project.org/web/packages/AmesHousing/AmesHousing.pdf) of the Ames housing data with (at least) the variables `Sale_Price`, `Gr_Liv_Area` and `TotRms_AbvGrd`
-2) Create a regression model with `Sale_Price` as dependent and `Gr_Liv_Area` and `TotRms_AbvGrd` as independent variables. Then create seperated models for the two independent variables. Compare the results. What do you think?
-
-<!--
-lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
--->
-
-## [The Ames Iowa Housing Data](http://ww2.amstat.org/publications/jse)
-
-```{r}
-ames_data <- AmesHousing::make_ames()
-```
-
-### Some Variables
-
-- `Gr_Liv_Area`: Above grade (ground) living area square feet
-- `TotRms_AbvGrd`: Total rooms above grade (does not include bathrooms
-- `MS_SubClass`: Identifies the type of dwelling involved in the sale.
-- `MS_Zoning`: Identifies the general zoning classification of the sale.
-- `Lot_Frontage`: Linear feet of street connected to property
-- `Lot_Area`: Lot size in square feet
-- `Street`: Type of road access to property
-- `Alley`: Type of alley access to property
-- `Lot_Shape`: General shape of property
-- `Land_Contour`: Flatness of the propert
 
 
 ## Multicollinearity
