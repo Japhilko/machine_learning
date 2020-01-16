@@ -1,0 +1,16 @@
+---
+title: "Along the project"
+author: "Jan-Philipp Kolb"
+date: "16 1 2020"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## 
+
+[The Lasso under Heteroscedasticity](https://statistics.berkeley.edu/sites/default/files/tech-reports/783.pdf)
+
+https://sites.google.com/site/nationalekonomigrunder/regression-analysis/assumptions
