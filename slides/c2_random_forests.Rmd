@@ -49,7 +49,7 @@ that reduces the variance of a single tree’s prediction.
 
 ## Similar trees - tree correlation
 
-- If we create six decision trees with different bootstrapped samples of the Boston housing data, the top of the trees all have a very similar structure. 
+- Six decision trees with different bootstrapped samples of the Boston housing data, the top of the trees all have a very similar structure. 
 - Although there are 15 predictor variables to split on, all six trees have both `lstat` and `rm` variables driving the first few splits.
 
 ![Six decision trees based on different bootstrap samples.](figure/tree-correlation-1.png)

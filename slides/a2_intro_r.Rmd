@@ -163,6 +163,20 @@ library(magrittr)
 
 ![](figure/magrittr_vignette.jpg)
 
+## The package `purrr`
+
+### Functional programming tools
+
+```{r,eval=F}
+install.packages("purrr")
+```
+
+```{r}
+library(purrr)
+```
+
+![](figure/purrr_inspiration.PNG)
+
 
 ## Import `.csv` data 
 

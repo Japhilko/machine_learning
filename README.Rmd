@@ -77,4 +77,6 @@ The sources are often linked in the headline. Please ask if something is unclear
     learning](https://www.showmeshiny.com/machlearn/)
 
 https://www.r-exercises.com/?s=machine+learning
+
+https://www.youtube.com/watch?v=5N9V07EIfIg&list=PLOg0ngHtcqbPTlZzRHA2ocQZqB1D_qZ5V
 -->

@@ -103,3 +103,13 @@ https://www.codecentric.de/karriere/standorte/karlsruhe/
 
 
 -->
+
+## [regression and classification](https://www.youtube.com/watch?v=Z0v9QMkA3dA&list=PLOg0ngHtcqbPTlZzRHA2ocQZqB1D_qZ5V&index=2)
+
+### regression problem
+
+y is quantitative
+
+### classification problem
+
+y is binomial/categorical

@@ -1,5 +1,5 @@
 ---
-title: 'Visualizing dataset to apply machine learning'
+title: 'Visualizing dataset as preparation for machine learning'
 author: "Jan-Philipp Kolb"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 10pt

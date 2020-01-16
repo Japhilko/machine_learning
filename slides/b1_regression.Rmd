@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = T,warning = F,message = F,cache=F)
 pres=T
 ```
 
-## Why a part on simple regression
+## Why a part on linear regression
 
 - OLS can be seen as a simple machine learning technique
 - Some other machine learning concepts are based on regression (e.g. regularization).
@@ -38,6 +38,20 @@ http://enhancedatascience.com/2017/06/29/machine-learning-explained-overfitting/
 
 
 ## [The Ames Iowa Housing Data](http://ww2.amstat.org/publications/jse)
+
+ The dataset describes the sale of individual residential property in Ames, Iowa from 2006 to 2010. 
+
+<!--
+https://www.perkinsml.me/ames-housing
+
+http://jse.amstat.org/v19n3/decock.pdf
+https://github.com/MrGHPrice/Ames-Housing-Data
+
+http://jse.amstat.org/jse_data_archive.htm
+
+TODO:
+ameshousing data variable description
+-->
 
 ```{r}
 ames_data <- AmesHousing::make_ames()
@@ -56,7 +70,10 @@ ames_data <- AmesHousing::make_ames()
 - `Lot_Shape`: General shape of property
 - `Land_Contour`: Flatness of the propert
 
-
+<!--
+hier kann man sehen, wo sich das Wohngebiet befindet
+https://beacon.schneidercorp.com/
+-->
 
 ## Exercise: regression Ames housing data
 
@@ -67,11 +84,15 @@ ames_data <- AmesHousing::make_ames()
 lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd, data = ames_data)
 -->
 
+## [The sale price](http://www.mariopasquato.com/fun-with-data/ames-housing-dataset/)
 
+![](figure/AmesTableau01.png)
 
 ## A simple regression model
 
 ### Dependent variable - `Sale_Price`
+
+- the sale price of houses
 
 ### Independent variable - `Gr_Liv_Area`
 
@@ -91,31 +112,16 @@ summary(m1)
 ### Model without intercept
 
 ```{r}
-m2 <- lm(Sale_Price ~ - 1 + Gr_Liv_Area,data=ames_data)
+m2 <- lm(Sale_Price ~ - 1 +Gr_Liv_Area,data=ames_data)
 summary(m2)$coefficients
 ```
 
 ### Adding further variables
 
 ```{r}
-m3 <- lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd,data=ames_data)
+m3 <- lm(Sale_Price ~ Gr_Liv_Area + TotRms_AbvGrd,
+         data=ames_data)
 summary(m3)$coefficients
-```
-
-## The command `as.formula`
-
-```{r,eval=F}
-?as.formula
-```
-
-
-```{r}
-class(fo <- mpg ~ wt + cyl)
-```
-
-```{r}
-# The formula object can be used in the regression:
-m3 <- lm(fo,data=mtcars)
 ```
 
 
@@ -124,34 +130,27 @@ m3 <- lm(fo,data=mtcars)
 ### Take all available predictors
 
 ```{r}
-m3_a<-lm(mpg~.,data=mtcars) 
+m3_a<-lm(Sale_Price~.,data=ames_data) 
 ```
 
 ### Interaction effect
 
 ```{r}
 # effect of cyl and interaction effect:
-m3a<-lm(mpg~wt*cyl,data=mtcars) 
+m3a<-lm(Sale_Price~Lot_Area*Bedroom_AbvGr,data=ames_data) 
 
 # only interaction effect:
-m3b<-lm(mpg~wt:cyl,data=mtcars) 
+m3b<-lm(Sale_Price~Lot_Area:Bedroom_AbvGr,data=ames_data) 
 ```
 
+<!--
 
-```{r,eval=F,echo=F}
-m3c<-lm(mpg~cyl|wt,data=mtcars)
-
-m3c<-lm(mpg~cyl/wt,data=mtcars)
-
-summary(m3b)
-summary(m3c)
-```
-
+-->
 
 ### Take the logarithm
 
 ```{r}
-m3d<-lm(mpg~log(wt),data=mtcars) 
+m3d<-lm(Sale_Price~log(Lot_Area),data=ames_data) 
 ```
 
 <!--
@@ -160,77 +159,6 @@ https://www.r-bloggers.com/r-tutorial-series-regression-with-interaction-variabl
 https://www.r-bloggers.com/interpreting-interaction-coefficient-in-r-part1-lm/
 -->
 
-## The command `setdiff`
-
-- We can use the command to create a dataset with only the features, without the dependent variable
-
-```{r}
-names(mtcars)
-features <- setdiff(names(mtcars), "mpg")
-features
-```
-
-```{r}
-featdat <- mtcars[,features]
-```
-
-
-
-## The command `model.matrix`
-
-<!--
-- Construct Design Matrices
-
-https://genomicsclass.github.io/book/pages/expressing_design_formula.html
--->
-
-- With `model.matrix` the qualitative variables are automatically dummy encoded 
-
-```{r,eval=F}
-?model.matrix
-```
-
-
-```{r}
-model.matrix(m3d)
-```
-
-
-## Model matrix (II)
-
-- [We can also create a model matrix directly from the formula and data arguments](http://pages.stat.wisc.edu/~st849-1/Rnotes/ModelMatrices.html)
-- See `Matrix::sparse.model.matrix` for increased efficiency on large dimension data.
-
-```{r}
-ff <- mpg ~ log(wt):cyl
-m <- model.frame(ff, mtcars)
-```
-
-```{r}
-(mat <- model.matrix(ff, m))
-```
-
-
-<!--
-m3c <- lm(y = mtcars$mpg,x=mat[,-1])
--->
-
- 
-
-
-## A model with interaction effect
-
-<!--
-drat - Hinterachsenübersetzung
-disp - Hubraum
--->
-
-```{r}
-# disp	-  Displacement (cu.in.)
-m3d<-lm(mpg~wt*disp,data=mtcars) 
-m3dsum <- summary(m3d)
-m3dsum$coefficients
-```
 
 
 <!--
@@ -296,19 +224,24 @@ head(resid(m3)) # Residuals
 
 ```{r}
 pre <- predict(m1)
-head(mtcars$mpg)
+head(ames_data$Sale_Price)
 head(pre)
 ```
 
-## Regression diagnostic with base-R
+## Plot the predictions 
 
 ### Visualizing residuals
 
 ```{r,eval=F}
-plot(mtcars$wt,mtcars$mpg)
+plot(ames_data$Gr_Liv_Area,ames_data$Sale_Price)
 abline(m1)
-segments(mtcars$wt, mtcars$mpg, mtcars$wt, pre, col="red")
+segments(ames_data$Gr_Liv_Area, ames_data$Sale_Price, 
+         ames_data$Gr_Liv_Area, pre, col="red")
 ```
+
+<!--
+https://www.displayr.com/autocorrelation/
+-->
 
 ![](figure/prediction_mtcars.PNG)
 
@@ -631,13 +564,6 @@ DAAG::cv.lm(data=ames_data,form.lm =  amod1, m=3) # 3 fold cross-validation
 - Use your initial training data to generate multiple mini train-test splits. Use these splits to tune your model.
 
 
-### Necessary packages
-
-```{r}
-library(tidyverse)
-library(caret)
-```
-
 <!--
 ### Swiss Fertility and Socioeconomic Indicators
 
@@ -651,22 +577,25 @@ data("swiss")
 
 ### Split data into training and testing dataset
 
-```{r,eval=F,echo=F}
-training.samples <- swiss$Fertility %>%
-createDataPartition(p = 0.8, list = FALSE)
-train.data  <- swiss[training.samples, ]
-test.data <- swiss[-training.samples, ]
-```
-
 ```{r}
+library(caret)
+library(tidyverse)
 training.samples <- ames_data$Sale_Price %>%
 createDataPartition(p = 0.8, list = FALSE)
 train.data  <- ames_data[training.samples, ]
 test.data <- ames_data[-training.samples, ]
 ```
 
+```{r}
 
-### Build the model and make predictions
+nrow(train.data) # used to train (i.e. build) the model
+
+nrow(test.data) # used to test (i.e. validate) the model 
+                # by estimating the prediction error.
+```
+
+
+## Build the model and make predictions
 
 <!--
 # Make predictions and compute the R2, RMSE and MAE
@@ -794,23 +723,6 @@ https://www.analyticsvidhya.com/blog/2016/12/practical-guide-to-implement-machin
 
 https://statisticsbyjim.com/regression/overfitting-regression-models/
 -->
-
-## Nice table output with [`stargazer`](https://cran.r-project.org/web/packages/stargazer/vignettes/stargazer.pdf)
-
-
-```{r,eval=F,echo=F}
-install.packages("stargazer")
-```
-
-```{r,eval=F}
-library(stargazer)
-stargazer(m3, type="html")
-```
-
-### Example HTML output:
-
-![](figure/stargazertabex.PNG)
-
 
 
 
