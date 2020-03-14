@@ -1,3 +1,6 @@
+Machine Learning with R
+-----------------------
+
 Part A - introduction
 ---------------------
 
